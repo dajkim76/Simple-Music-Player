@@ -4,7 +4,7 @@
     android:id="@+id/cue_item_holder"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="?attr/selectableItemBackground"
+    android:background="#f0000000"
     android:orientation="horizontal"
     android:padding="@dimen/small_margin">
 

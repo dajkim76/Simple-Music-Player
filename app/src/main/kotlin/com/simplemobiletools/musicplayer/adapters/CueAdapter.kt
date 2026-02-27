@@ -1,5 +1,6 @@
 package com.simplemobiletools.musicplayer.adapters
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.appcompat.widget.PopupMenu
@@ -8,6 +9,7 @@ import com.simplemobiletools.commons.extensions.adjustAlpha
 import com.simplemobiletools.commons.extensions.getFormattedDuration
 import com.simplemobiletools.commons.extensions.getProperPrimaryColor
 import com.simplemobiletools.commons.extensions.getProperTextColor
+import com.simplemobiletools.commons.extensions.toInt
 import com.simplemobiletools.commons.helpers.MEDIUM_ALPHA
 import com.simplemobiletools.commons.views.MyTextView
 import com.simplemobiletools.musicplayer.R
@@ -51,10 +53,10 @@ class CueAdapter(
     inner class ViewHolder(private val binding: ItemCueBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(cue: Cue) {
             val isActive = adapterPosition == currentTimestamp
-            var textColor = if (isActive) primaryColor else properTextColor
+            var textColor = if (isActive) 0xff_ffa500.toInt() else Color.WHITE
             
             if (!cue.enabled) {
-                textColor = textColor.adjustAlpha(MEDIUM_ALPHA)
+                textColor = 0xff_777777.toInt()
             }
 
             binding.apply {
