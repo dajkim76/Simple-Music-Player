@@ -143,7 +143,7 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
         setupTopArt(track)
         setupCues(track)
         binding.apply {
-            activityTrackTitle.text = track.title
+            activityTrackTitle.text = cueAdapter?.getCurrentTitle()?: track.title
             activityTrackArtist.text = track.artist
             activityTrackTitle.setOnLongClickListener {
                 copyToClipboard(activityTrackTitle.value)
@@ -176,9 +176,46 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
 
     private fun setupButtons() = binding.apply {
         activityTrackToggleShuffle.setOnClickListener { withPlayer { toggleShuffle() } }
-        activityTrackPrevious.setOnClickListener { withPlayer { forceSeekToPrevious() } }
+        activityTrackPrevious.setOnClickListener {
+            val adapter = cueAdapter
+            if (adapter != null && adapter.cues.isNotEmpty()) {
+                withPlayer {
+                    val currentSec = currentPosition.milliseconds.inWholeSeconds.toInt()
+                    // Find the previous enabled cue. If we are just a few seconds into the current cue, go to the one before it.
+                    val activeCueIndex = adapter.cues.indexOfLast { it.timestamp <= currentSec }
+                    val targetIndex = if (activeCueIndex > 0 && currentSec - adapter.cues[activeCueIndex].timestamp < 3) {
+                        adapter.cues.subList(0, activeCueIndex).indexOfLast { it.enabled }
+                    } else {
+                        activeCueIndex
+                    }
+
+                    if (targetIndex != -1) {
+                        seekTo(adapter.cues[targetIndex].timestamp * 1000L)
+                    } else {
+                        forceSeekToPrevious()
+                    }
+                }
+            } else {
+                withPlayer { forceSeekToPrevious() }
+            }
+        }
         activityTrackPlayPause.setOnClickListener { togglePlayback() }
-        activityTrackNext.setOnClickListener { withPlayer { forceSeekToNext() } }
+        activityTrackNext.setOnClickListener {
+            val adapter = cueAdapter
+            if (adapter != null && adapter.cues.isNotEmpty()) {
+                withPlayer {
+                    val currentSec = currentPosition.milliseconds.inWholeSeconds.toInt()
+                    val nextEnabledCue = adapter.cues.filter { it.enabled && it.timestamp > currentSec }.firstOrNull()
+                    if (nextEnabledCue != null) {
+                        seekTo(nextEnabledCue.timestamp * 1000L)
+                    } else {
+                        forceSeekToNext()
+                    }
+                }
+            } else {
+                withPlayer { forceSeekToNext() }
+            }
+        }
         activityTrackProgressCurrent.setOnClickListener { seekBack() }
         activityTrackProgressMax.setOnClickListener { seekForward() }
         activityTrackPlaybackSetting.setOnClickListener { togglePlaybackSetting() }
@@ -452,7 +489,16 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
         binding.activityTrackProgressbar.progress = seconds
         
         cueAdapter?.let { adapter ->
-            adapter.updateCurrentPosition(seconds)
+            val newPosition = adapter.updateCurrentPosition(seconds)
+            if (newPosition >= 0) {
+                // auto scroll to cue position
+                binding.activityTrackCuesList.scrollToPosition(newPosition)
+
+                // Update cue title
+                adapter.getCurrentTitle()?.let {
+                    binding.activityTrackTitle.text = it
+                }
+            }
             
             // Skip disabled cues
             val activeCueIndex = adapter.cues.indexOfLast { it.timestamp <= seconds }

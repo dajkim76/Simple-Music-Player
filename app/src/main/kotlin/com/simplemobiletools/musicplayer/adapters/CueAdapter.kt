@@ -40,14 +40,24 @@ class CueAdapter(
 
     override fun getItemCount() = cues.size
 
-    fun updateCurrentPosition(positionSeconds: Int) {
+    fun getCurrentTitle(): String? {
+        if (currentTimestamp >= 0) {
+            val cue = cues.getOrNull(currentTimestamp)
+            return cue?.title
+        }
+        return null
+    }
+
+    fun updateCurrentPosition(positionSeconds: Int): Int {
         val activeCueIndex = cues.indexOfLast { it.timestamp <= positionSeconds }
         if (activeCueIndex != currentTimestamp) {
             val oldTimestamp = currentTimestamp
             currentTimestamp = activeCueIndex
             if (oldTimestamp != -1) notifyItemChanged(oldTimestamp)
             if (currentTimestamp != -1) notifyItemChanged(currentTimestamp)
+            return currentTimestamp
         }
+        return -1
     }
 
     inner class ViewHolder(private val binding: ItemCueBinding) : RecyclerView.ViewHolder(binding.root) {
