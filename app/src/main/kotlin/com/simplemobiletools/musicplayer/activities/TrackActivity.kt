@@ -529,19 +529,25 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
             val cues = CueListHelper.getCueList(applicationContext, track.mediaStoreId)
             runOnUiThread {
                 if (cues.isNotEmpty()) {
-                    cueAdapter = CueAdapter(this, cues, { cue ->
-                        withPlayer {
-                            seekTo(cue.timestamp * 1000L)
+                    if (cueAdapter == null) {
+                        cueAdapter = CueAdapter(this, cues, { cue ->
+                            withPlayer {
+                                seekTo(cue.timestamp * 1000L)
+                            }
+                        }, { updatedCues ->
+                            ensureBackgroundThread {
+                                audioHelper.updateTrackCue(track.mediaStoreId, Gson().toJson(updatedCues))
+                                CueListHelper.updateCueList(track.mediaStoreId, updatedCues)
+                            }
+                        })
+                        binding.activityTrackCuesList.apply {
+                            layoutManager = LinearLayoutManager(this@TrackActivity)
+                            adapter = cueAdapter
+                            beVisible()
                         }
-                    }, { updatedCues ->
-                        ensureBackgroundThread {
-                            audioHelper.updateTrackCue(track.mediaStoreId, Gson().toJson(updatedCues))
-                        }
-                    })
-                    binding.activityTrackCuesList.apply {
-                        layoutManager = LinearLayoutManager(this@TrackActivity)
-                        adapter = cueAdapter
-                        beVisible()
+                    } else {
+                        cueAdapter?.cues = cues
+                        cueAdapter?.notifyDataSetChanged()
                     }
 
                     withPlayer {
@@ -550,7 +556,6 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
                     }
                 } else {
                     binding.activityTrackCuesList.beGone()
-                    cueAdapter = null
                 }
             }
         }

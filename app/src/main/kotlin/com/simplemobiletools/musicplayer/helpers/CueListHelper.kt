@@ -40,6 +40,10 @@ object CueListHelper {
         cueListMap[mediaStoreId] = cues
     }
 
+    fun updateCueList(mediaStoreId: Long, cueList: List<Cue>) {
+        cueListMap[mediaStoreId] = cueList
+    }
+
     private fun loadCueList(context: Context, mediaStoreId: Long): List<Cue> {
         val cueJson = context.audioHelper.getTrackCue(mediaStoreId)
         return getCuesFromJson(cueJson)
