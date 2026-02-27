@@ -1,5 +1,10 @@
 package com.simplemobiletools.musicplayer.playback
 
+import android.bluetooth.BluetoothDevice
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.os.Handler
 import android.os.HandlerThread
 import android.os.Looper
@@ -28,17 +33,31 @@ class PlaybackService : MediaLibraryService(), MediaSessionService.Listener {
 
     internal var currentRoot = ""
 
+    private val bluetoothReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context, intent: Intent) {
+            if (intent.action == BluetoothDevice.ACTION_ACL_CONNECTED && config.autoplayOnBluetoothConnect) {
+                withPlayer {
+                    play()
+                }
+            }
+        }
+    }
+
     override fun onCreate() {
         super.onCreate()
         setListener(this)
         initializeSessionAndPlayer(handleAudioFocus = true, handleAudioBecomingNoisy = true, skipSilence = config.gaplessPlayback)
         initializeLibrary()
+
+        val filter = IntentFilter(BluetoothDevice.ACTION_ACL_CONNECTED)
+        registerReceiver(bluetoothReceiver, filter)
     }
 
     override fun onGetSession(controllerInfo: MediaSession.ControllerInfo) = mediaSession
 
     override fun onDestroy() {
         super.onDestroy()
+        unregisterReceiver(bluetoothReceiver)
         releaseMediaSession()
         clearListener()
         stopSleepTimer()
