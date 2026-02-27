@@ -2,11 +2,13 @@ package com.simplemobiletools.musicplayer.playback.player
 
 import androidx.media3.common.ForwardingPlayer
 import androidx.media3.common.MediaItem
+import androidx.media3.common.MediaMetadata
 import androidx.media3.common.Player
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.exoplayer.source.ShuffleOrder.DefaultShuffleOrder
 import com.simplemobiletools.musicplayer.extensions.*
+import com.simplemobiletools.musicplayer.helpers.CueListHelper
 import com.simplemobiletools.musicplayer.inlines.indexOfFirstOrNull
 import kotlinx.coroutines.*
 
@@ -17,9 +19,19 @@ class SimpleMusicPlayer(private val exoPlayer: ExoPlayer) : ForwardingPlayer(exo
 
     private var seekToNextCount = 0
     private var seekToPreviousCount = 0
+    var overriddenMetadata: MediaMetadata? = null
 
     private val scope = CoroutineScope(Dispatchers.Default)
     private var seekJob: Job? = null
+
+    override fun getMediaMetadata(): MediaMetadata {
+        return overriddenMetadata ?: super.getMediaMetadata()
+    }
+
+    // This ensures that when we skip to next/prev track, the custom title is cleared
+    fun clearOverriddenMetadata() {
+        overriddenMetadata = null
+    }
 
     /**
      * The default implementation only advertises the seek to next and previous item in the case
@@ -58,6 +70,7 @@ class SimpleMusicPlayer(private val exoPlayer: ExoPlayer) : ForwardingPlayer(exo
     }
 
     override fun seekToNext() {
+        if (seekToNextCue()) return
         play()
         if (!maybeForceNext()) {
             seekToNextCount += 1
@@ -66,6 +79,7 @@ class SimpleMusicPlayer(private val exoPlayer: ExoPlayer) : ForwardingPlayer(exo
     }
 
     override fun seekToPrevious() {
+        if (seekToPreviousCue()) return
         play()
         if (!maybeForcePrevious()) {
             seekToPreviousCount += 1
@@ -74,6 +88,7 @@ class SimpleMusicPlayer(private val exoPlayer: ExoPlayer) : ForwardingPlayer(exo
     }
 
     override fun seekToNextMediaItem() {
+        if (seekToNextCue()) return
         play()
         if (!maybeForceNext()) {
             seekToNextCount += 1
@@ -82,10 +97,50 @@ class SimpleMusicPlayer(private val exoPlayer: ExoPlayer) : ForwardingPlayer(exo
     }
 
     override fun seekToPreviousMediaItem() {
+        if (seekToPreviousCue()) return
         play()
         if (!maybeForcePrevious()) {
             seekToPreviousCount += 1
             seekWithDelay()
+        }
+    }
+
+    private fun seekToNextCue(): Boolean {
+        val currentItem = currentMediaItem ?: return false
+        val track = currentItem.toTrack() ?: return false
+        val currentSec = currentPosition / 1000
+        val cues = CueListHelper.getCueList(track.mediaStoreId).filter { it.enabled }
+        if (cues.isEmpty()) return false
+
+        val nextCue = cues.firstOrNull { it.timestamp > currentSec }
+        return if (nextCue != null) {
+            seekTo(nextCue.timestamp * 1000L)
+            true
+        } else {
+            false
+        }
+    }
+
+    private fun seekToPreviousCue(): Boolean {
+        val currentItem = currentMediaItem ?: return false
+        val track = currentItem.toTrack() ?: return false
+        val currentSec = currentPosition / 1000
+        val cues = CueListHelper.getCueList(track.mediaStoreId).filter { it.enabled }
+        if (cues.isEmpty()) return false
+
+        val activeCueIndex = cues.indexOfLast { it.timestamp <= currentSec }
+        return if (activeCueIndex != -1) {
+            val currentCue = cues[activeCueIndex]
+            val targetIndex = if (currentSec - currentCue.timestamp < 3 && activeCueIndex > 0) {
+                activeCueIndex - 1
+            } else {
+                activeCueIndex
+            }
+            
+            seekTo(cues[targetIndex].timestamp * 1000L)
+            true
+        } else {
+            false
         }
     }
 

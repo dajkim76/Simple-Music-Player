@@ -526,8 +526,7 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
 
     private fun setupCues(track: Track) {
         ensureBackgroundThread {
-            val cuesJson = audioHelper.getTrackCue(track.mediaStoreId)
-            val cues = getCuesFromJson(cuesJson)
+            val cues = CueListHelper.getCueList(applicationContext, track.mediaStoreId)
             runOnUiThread {
                 if (cues.isNotEmpty()) {
                     cueAdapter = CueAdapter(this, cues, { cue ->
@@ -557,15 +556,6 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
         }
     }
 
-    private fun getCuesFromJson(cueJson: String): List<Cue> {
-        return try {
-            val type = object : TypeToken<List<Cue>>() {}.type
-            Gson().fromJson<List<Cue>>(cueJson, type) ?: emptyList()
-        } catch (e: Exception) {
-            emptyList()
-        }
-    }
-
     private fun showEditCuesDialog() {
         val track = currentTrack ?: return
         ensureBackgroundThread {
@@ -582,12 +572,13 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
                 editText.setPadding(padding, padding, padding, padding)
 
                 androidx.appcompat.app.AlertDialog.Builder(this)
-                    .setTitle(R.string.edit_cues)
+                    .setTitle("Youtube timestamp text")
                     .setView(editText)
                     .setPositiveButton(com.simplemobiletools.commons.R.string.ok) { _, _ ->
                         val newCueJson = parseCueText(editText.text.toString())
                         ensureBackgroundThread {
                             audioHelper.updateTrackCue(track.mediaStoreId, newCueJson)
+                            CueListHelper.updateCueList(track.mediaStoreId, newCueJson)
                             runOnUiThread {
                                 setupCues(track)
                             }
