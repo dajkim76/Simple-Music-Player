@@ -450,7 +450,28 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
     private fun updateProgress(currentPosition: Long) {
         val seconds = currentPosition.milliseconds.inWholeSeconds.toInt()
         binding.activityTrackProgressbar.progress = seconds
-        cueAdapter?.updateCurrentPosition(seconds)
+        
+        cueAdapter?.let { adapter ->
+            adapter.updateCurrentPosition(seconds)
+            
+            // Skip disabled cues
+            val activeCueIndex = adapter.cues.indexOfLast { it.timestamp <= seconds }
+            if (activeCueIndex != -1) {
+                val currentCue = adapter.cues[activeCueIndex]
+                if (!currentCue.enabled) {
+                    val nextEnabledCue = adapter.cues.subList(activeCueIndex + 1, adapter.cues.size).firstOrNull { it.enabled }
+                    if (nextEnabledCue != null) {
+                        withPlayer {
+                            seekTo(nextEnabledCue.timestamp * 1000L)
+                        }
+                    } else {
+                        // If no more enabled cues, skip to the end of the track or next song
+                        // For now, let's just seek to the very end if there are no more cues at all
+                        // but actually, just letting it play to the end of the file is fine if that's what's intended.
+                    }
+                }
+            }
+        }
     }
 
     private fun updatePlayPause(isPlaying: Boolean) {
@@ -463,11 +484,15 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
             val cues = getCuesFromJson(cuesJson)
             runOnUiThread {
                 if (cues.isNotEmpty()) {
-                    cueAdapter = CueAdapter(this, cues) { cue ->
+                    cueAdapter = CueAdapter(this, cues, { cue ->
                         withPlayer {
                             seekTo(cue.timestamp * 1000L)
                         }
-                    }
+                    }, { updatedCues ->
+                        ensureBackgroundThread {
+                            audioHelper.updateTrackCue(track.mediaStoreId, Gson().toJson(updatedCues))
+                        }
+                    })
                     binding.activityTrackCuesList.apply {
                         layoutManager = LinearLayoutManager(this@TrackActivity)
                         adapter = cueAdapter
@@ -540,7 +565,7 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
                 val seconds = timeGroups[3].toInt()
                 val timestamp = hours * 3600 + minutes * 60 + seconds
                 val title = line.replace(match.value, "").trim().removePrefix("-").trim()
-                cues.add(Cue(timestamp, title))
+                cues.add(Cue(timestamp, title, enabled = true))
             }
         }
         return Gson().toJson(cues.sortedBy { it.timestamp })
