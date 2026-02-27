@@ -10,26 +10,35 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.provider.MediaStore
+import android.util.Log
 import android.util.Size
 import android.view.GestureDetector
 import android.view.MotionEvent
 import android.view.View
 import android.widget.SeekBar
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.os.postDelayed
 import androidx.core.view.GestureDetectorCompat
 import androidx.media3.common.MediaItem
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import com.simplemobiletools.commons.extensions.*
 import com.simplemobiletools.commons.helpers.MEDIUM_ALPHA
+import com.simplemobiletools.commons.helpers.ensureBackgroundThread
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.simplemobiletools.musicplayer.R
+import com.simplemobiletools.musicplayer.adapters.CueAdapter
 import com.simplemobiletools.musicplayer.databinding.ActivityTrackBinding
 import com.simplemobiletools.musicplayer.extensions.*
 import com.simplemobiletools.musicplayer.fragments.PlaybackSpeedFragment
 import com.simplemobiletools.musicplayer.helpers.*
 import com.simplemobiletools.musicplayer.interfaces.PlaybackSpeedListener
+import com.simplemobiletools.musicplayer.models.Cue
 import com.simplemobiletools.musicplayer.models.Track
 import com.simplemobiletools.musicplayer.playback.CustomCommands
 import com.simplemobiletools.musicplayer.playback.PlaybackService
@@ -41,6 +50,8 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
     private val SWIPE_DOWN_THRESHOLD = 100
 
     private var isThirdPartyIntent = false
+    private var currentTrack: Track? = null
+    private var cueAdapter: CueAdapter? = null
     private lateinit var nextTrackPlaceholder: Drawable
 
     private val handler = Handler(Looper.getMainLooper())
@@ -61,6 +72,15 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
             activityTrackHolder.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
             activityTrackToolbar.setNavigationOnClickListener {
                 finish()
+            }
+
+            activityTrackToolbar.inflateMenu(R.menu.menu_track)
+            activityTrackToolbar.setOnMenuItemClickListener { menuItem ->
+                when (menuItem.itemId) {
+                    R.id.edit_cues -> showEditCuesDialog()
+                    else -> return@setOnMenuItemClickListener false
+                }
+                return@setOnMenuItemClickListener true
             }
 
             isThirdPartyIntent = intent.action == Intent.ACTION_VIEW
@@ -118,8 +138,10 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
 
     private fun setupTrackInfo(item: MediaItem?) {
         val track = item?.toTrack() ?: return
+        currentTrack = track
 
         setupTopArt(track)
+        setupCues(track)
         binding.apply {
             activityTrackTitle.text = track.title
             activityTrackArtist.text = track.artist
@@ -426,10 +448,121 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
     }
 
     private fun updateProgress(currentPosition: Long) {
-        binding.activityTrackProgressbar.progress = currentPosition.milliseconds.inWholeSeconds.toInt()
+        val seconds = currentPosition.milliseconds.inWholeSeconds.toInt()
+        binding.activityTrackProgressbar.progress = seconds
+        cueAdapter?.updateCurrentPosition(seconds)
     }
 
     private fun updatePlayPause(isPlaying: Boolean) {
         binding.activityTrackPlayPause.updatePlayPauseIcon(isPlaying, getProperTextColor())
+    }
+
+    private fun setupCues(track: Track) {
+        ensureBackgroundThread {
+            val cuesJson = audioHelper.getTrackCue(track.mediaStoreId)
+            val cues = getCuesFromJson(cuesJson)
+            runOnUiThread {
+                if (cues.isNotEmpty()) {
+                    cueAdapter = CueAdapter(this, cues) { cue ->
+                        withPlayer {
+                            seekTo(cue.timestamp * 1000L)
+                        }
+                    }
+                    binding.activityTrackCuesList.apply {
+                        layoutManager = LinearLayoutManager(this@TrackActivity)
+                        adapter = cueAdapter
+                        beVisible()
+                    }
+
+                    withPlayer {
+                        val seconds = currentPosition.milliseconds.inWholeSeconds.toInt()
+                        cueAdapter?.updateCurrentPosition(seconds)
+                    }
+                } else {
+                    binding.activityTrackCuesList.beGone()
+                    cueAdapter = null
+                }
+            }
+        }
+    }
+
+    private fun getCuesFromJson(cueJson: String): List<Cue> {
+        return try {
+            val type = object : TypeToken<List<Cue>>() {}.type
+            Gson().fromJson<List<Cue>>(cueJson, type) ?: emptyList()
+        } catch (e: Exception) {
+            emptyList()
+        }
+    }
+
+    private fun showEditCuesDialog() {
+        val track = currentTrack ?: return
+        ensureBackgroundThread {
+            val currentCuesJson = audioHelper.getTrackCue(track.mediaStoreId)
+            runOnUiThread {
+                val editText = androidx.appcompat.widget.AppCompatEditText(this)
+                editText.setText(cuesToText(currentCuesJson))
+                editText.setTextColor(getProperTextColor())
+                editText.setHintTextColor(getProperTextColor().adjustAlpha(0.5f))
+                editText.background = null
+                editText.minLines = 5
+                editText.gravity = android.view.Gravity.TOP
+                val padding = resources.getDimensionPixelSize(com.simplemobiletools.commons.R.dimen.activity_margin)
+                editText.setPadding(padding, padding, padding, padding)
+
+                androidx.appcompat.app.AlertDialog.Builder(this)
+                    .setTitle(R.string.edit_cues)
+                    .setView(editText)
+                    .setPositiveButton(com.simplemobiletools.commons.R.string.ok) { _, _ ->
+                        val newCueJson = parseCueText(editText.text.toString())
+                        ensureBackgroundThread {
+                            audioHelper.updateTrackCue(track.mediaStoreId, newCueJson)
+                            runOnUiThread {
+                                setupCues(track)
+                            }
+                        }
+                    }
+                    .setNegativeButton(com.simplemobiletools.commons.R.string.cancel, null)
+                    .show()
+            }
+        }
+    }
+
+    private fun parseCueText(text: String): String {
+        val cues = mutableListOf<Cue>()
+        val lines = text.split("\n")
+        for (line in lines) {
+            val match = Regex("""(\d{1,2}:)?(\d{1,2}):(\d{1,2})""").find(line)
+            if (match != null) {
+                val timeGroups = match.groupValues
+                val hours = if (timeGroups[1].isNotEmpty()) timeGroups[1].replace(":", "").toInt() else 0
+                val minutes = timeGroups[2].toInt()
+                val seconds = timeGroups[3].toInt()
+                val timestamp = hours * 3600 + minutes * 60 + seconds
+                val title = line.replace(match.value, "").trim().removePrefix("-").trim()
+                cues.add(Cue(timestamp, title))
+            }
+        }
+        return Gson().toJson(cues.sortedBy { it.timestamp })
+    }
+
+    private fun cuesToText(cueJson: String): String {
+        if (cueJson.isEmpty()) return ""
+        return try {
+            val type = object : TypeToken<List<Cue>>() {}.type
+            val cues: List<Cue> = Gson().fromJson(cueJson, type)
+            cues.joinToString("\n") { cue ->
+                val h = cue.timestamp / 3600
+                val m = (cue.timestamp % 3600) / 60
+                val s = cue.timestamp % 60
+                if (h > 0) {
+                    String.format("%02d:%02d:%02d %s", h, m, s, cue.title)
+                } else {
+                    String.format("%02d:%02d %s", m, s, cue.title)
+                }
+            }
+        } catch (e: Exception) {
+            ""
+        }
     }
 }

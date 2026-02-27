@@ -10,7 +10,7 @@ import com.simplemobiletools.musicplayer.interfaces.*
 import com.simplemobiletools.musicplayer.models.*
 import com.simplemobiletools.musicplayer.objects.MyExecutor
 
-@Database(entities = [Track::class, Playlist::class, QueueItem::class, Artist::class, Album::class, Genre::class], version = 13)
+@Database(entities = [Track::class, Playlist::class, QueueItem::class, Artist::class, Album::class, Genre::class, CueEntity::class], version = 14)
 abstract class SongsDatabase : RoomDatabase() {
 
     abstract fun SongsDao(): SongsDao
@@ -24,6 +24,8 @@ abstract class SongsDatabase : RoomDatabase() {
     abstract fun AlbumsDao(): AlbumsDao
 
     abstract fun GenresDao(): GenresDao
+
+    abstract fun CueDao(): CueDao
 
     companion object {
         private var db: SongsDatabase? = null
@@ -46,6 +48,7 @@ abstract class SongsDatabase : RoomDatabase() {
                             .addMigrations(MIGRATION_10_11)
                             .addMigrations(MIGRATION_11_12)
                             .addMigrations(MIGRATION_12_13)
+                            .addMigrations(MIGRATION_13_14)
                             .build()
                     }
                 }
@@ -199,6 +202,12 @@ abstract class SongsDatabase : RoomDatabase() {
                     execSQL("CREATE TABLE `genres` (`id` INTEGER NOT NULL PRIMARY KEY, `title` TEXT NOT NULL, `track_cnt` INTEGER NOT NULL, `album_art` TEXT NOT NULL)")
                     execSQL("CREATE UNIQUE INDEX IF NOT EXISTS `index_genres_id` ON `genres` (`id`)")
                 }
+            }
+        }
+
+        private val MIGRATION_13_14 = object : Migration(14, 15) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                database.execSQL("CREATE TABLE IF NOT EXISTS `track_cues` (`media_store_id` INTEGER NOT NULL, `cues_json` TEXT NOT NULL, PRIMARY KEY(`media_store_id`))")
             }
         }
     }
