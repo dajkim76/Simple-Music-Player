@@ -9,7 +9,7 @@ import android.media.AudioManager
 import android.net.Uri
 import android.os.Bundle
 import android.widget.Toast
-import androidx.viewpager.widget.ViewPager
+import androidx.viewpager2.widget.ViewPager2
 import com.simplemobiletools.commons.databinding.BottomTablayoutItemBinding
 import com.simplemobiletools.commons.dialogs.FilePickerDialog
 import com.simplemobiletools.commons.dialogs.RadioGroupDialog
@@ -214,11 +214,7 @@ class MainActivity : SimpleMusicActivity() {
     private fun initFragments() {
         binding.viewPager.adapter = ViewPagerAdapter(this)
         binding.viewPager.offscreenPageLimit = tabsList.size - 1
-        binding.viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
-            override fun onPageScrollStateChanged(state: Int) {}
-
-            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {}
-
+        binding.viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 binding.mainTabsHolder.getTabAt(position)?.select()
                 getAllFragments().forEach {
@@ -227,7 +223,7 @@ class MainActivity : SimpleMusicActivity() {
                 refreshMenuItems()
             }
         })
-        binding.viewPager.currentItem = config.lastUsedViewPagerPage
+        binding.viewPager.setCurrentItem(config.lastUsedViewPagerPage, false)
     }
 
     private fun setupTabs() {
@@ -479,7 +475,7 @@ class MainActivity : SimpleMusicActivity() {
 
     private fun getAllFragments() = getAdapter()?.getAllFragments().orEmpty()
 
-    private fun getCurrentFragment() = getAdapter()?.getCurrentFragment()
+    private fun getCurrentFragment() = getAdapter()?.getFragment(binding.viewPager.currentItem)
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun sleepTimerChanged(event: Events.SleepTimerChanged) {

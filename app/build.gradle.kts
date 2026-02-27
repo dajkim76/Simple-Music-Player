@@ -97,11 +97,14 @@ android {
 }
 
 dependencies {
-    implementation(libs.simple.mobile.tools.commons)
+    implementation(libs.simple.mobile.tools.commons) {
+        exclude(group = "com.github.duolingo", module = "rtl-viewpager")
+    }
     implementation(libs.eventbus)
     implementation(libs.androidx.media)
     implementation(libs.androidx.swiperefreshlayout)
     implementation(libs.androidx.constraintlayout)
+    implementation(libs.androidx.viewpager2)
     implementation(libs.androidx.lifecycle.process)
     implementation(libs.androidx.media3.session)
     implementation(libs.androidx.media3.exoplayer)

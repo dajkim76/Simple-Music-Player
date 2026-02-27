@@ -1,8 +1,7 @@
 package com.simplemobiletools.musicplayer.adapters
 
-import android.view.View
 import android.view.ViewGroup
-import androidx.viewpager.widget.PagerAdapter
+import androidx.recyclerview.widget.RecyclerView
 import com.simplemobiletools.commons.extensions.getProperPrimaryColor
 import com.simplemobiletools.commons.extensions.getProperTextColor
 import com.simplemobiletools.musicplayer.activities.SimpleActivity
@@ -13,51 +12,43 @@ import com.simplemobiletools.musicplayer.fragments.PlaylistsFragment
 import com.simplemobiletools.musicplayer.fragments.TracksFragment
 import com.simplemobiletools.musicplayer.helpers.*
 
-class ViewPagerAdapter(val activity: SimpleActivity) : PagerAdapter() {
-    private val fragments = arrayListOf<MyViewPagerFragment>()
-    private var primaryItem: MyViewPagerFragment? = null
+class ViewPagerAdapter(val activity: SimpleActivity) : RecyclerView.Adapter<ViewPagerAdapter.ViewHolder>() {
+    private val fragments = mutableMapOf<Int, MyViewPagerFragment>()
 
-    override fun instantiateItem(container: ViewGroup, position: Int): Any {
-        return getFragment(position, container).apply {
-            fragments.add(this)
-            container.addView(this)
-            setupFragment(activity)
-            setupColors(activity.getProperTextColor(), activity.getProperPrimaryColor())
-        }
-    }
+    inner class ViewHolder(val view: MyViewPagerFragment) : RecyclerView.ViewHolder(view)
 
-    override fun destroyItem(container: ViewGroup, position: Int, item: Any) {
-        fragments.remove(item)
-        container.removeView(item as View)
-    }
-
-    override fun setPrimaryItem(container: ViewGroup, position: Int, `object`: Any) {
-        primaryItem = `object` as MyViewPagerFragment
-    }
-
-    override fun getCount() = activity.getVisibleTabs().size
-
-    override fun isViewFromObject(view: View, item: Any) = view == item
-
-    private fun getFragment(position: Int, container: ViewGroup): MyViewPagerFragment {
-        val tab = activity.getVisibleTabs()[position]
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val tab = activity.getVisibleTabs()[viewType]
         val layoutInflater = activity.layoutInflater
-        return when (tab) {
-            TAB_PLAYLISTS -> FragmentPlaylistsBinding.inflate(layoutInflater, container, false).root
-            TAB_FOLDERS -> FragmentFoldersBinding.inflate(layoutInflater, container, false).root
-            TAB_ARTISTS -> FragmentArtistsBinding.inflate(layoutInflater, container, false).root
-            TAB_ALBUMS -> FragmentAlbumsBinding.inflate(layoutInflater, container, false).root
-            TAB_TRACKS -> FragmentTracksBinding.inflate(layoutInflater, container, false).root
-            TAB_GENRES -> FragmentGenresBinding.inflate(layoutInflater, container, false).root
+        val view = when (tab) {
+            TAB_PLAYLISTS -> FragmentPlaylistsBinding.inflate(layoutInflater, parent, false).root
+            TAB_FOLDERS -> FragmentFoldersBinding.inflate(layoutInflater, parent, false).root
+            TAB_ARTISTS -> FragmentArtistsBinding.inflate(layoutInflater, parent, false).root
+            TAB_ALBUMS -> FragmentAlbumsBinding.inflate(layoutInflater, parent, false).root
+            TAB_TRACKS -> FragmentTracksBinding.inflate(layoutInflater, parent, false).root
+            TAB_GENRES -> FragmentGenresBinding.inflate(layoutInflater, parent, false).root
             else -> throw IllegalArgumentException("Unknown tab: $tab")
         }
+        view.layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+        return ViewHolder(view)
     }
 
-    fun getAllFragments() = fragments
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        val fragment = holder.view
+        fragments[position] = fragment
+        fragment.setupFragment(activity)
+        fragment.setupColors(activity.getProperTextColor(), activity.getProperPrimaryColor())
+    }
 
-    fun getCurrentFragment() = primaryItem
+    override fun getItemCount() = activity.getVisibleTabs().size
 
-    fun getPlaylistsFragment() = fragments.find { it is PlaylistsFragment }
+    override fun getItemViewType(position: Int) = position
 
-    fun getTracksFragment() = fragments.find { it is TracksFragment }
+    fun getAllFragments() = fragments.values.toList()
+
+    fun getFragment(position: Int) = fragments[position]
+
+    fun getPlaylistsFragment() = fragments.values.find { it is PlaylistsFragment }
+
+    fun getTracksFragment() = fragments.values.find { it is TracksFragment }
 }
