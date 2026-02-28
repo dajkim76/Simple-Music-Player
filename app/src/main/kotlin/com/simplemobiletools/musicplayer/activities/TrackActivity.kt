@@ -550,7 +550,7 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
             runOnUiThread {
                 if (cues.isNotEmpty()) {
                     if (cueAdapter == null) {
-                        cueAdapter = CueAdapter(this, cues, track.mediaStoreId, { cue ->
+                        cueAdapter = CueAdapter(this, { cue ->
                             withPlayer {
                                 if(!isPlaying) play()
                                 seekTo(cue.timestamp * 1000L)
@@ -565,9 +565,8 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
                             layoutManager = LinearLayoutManager(this@TrackActivity)
                             adapter = cueAdapter
                         }
-                    } else {
-                        cueAdapter?.refreshList(cues, track.mediaStoreId)
                     }
+                    cueAdapter?.refreshList(cues, track.mediaStoreId)
 
                     withPlayer {
                         val seconds = currentPosition.milliseconds.inWholeSeconds.toInt()
@@ -619,6 +618,17 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
                         }
                     }
                     .setNegativeButton(com.simplemobiletools.commons.R.string.cancel, null)
+                    .setNeutralButton("No Cue") { _, _ ->
+                        val cues = listOf(Cue(0, "<NO_CUE>", false))
+                        val newCueJson = Gson().toJson(cues)
+                        ensureBackgroundThread {
+                            audioHelper.updateTrackCue(track.mediaStoreId, newCueJson)
+                            CueListHelper.updateCueList(track.mediaStoreId, newCueJson)
+                            runOnUiThread {
+                                setupCues(track)
+                            }
+                        }
+                    }
                     .show()
             }
         }

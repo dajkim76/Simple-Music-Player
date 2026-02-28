@@ -4,6 +4,7 @@ import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.appcompat.widget.PopupMenu
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.simplemobiletools.commons.extensions.getFormattedDuration
 import com.simplemobiletools.commons.extensions.getProperPrimaryColor
@@ -14,12 +15,13 @@ import com.simplemobiletools.musicplayer.models.Cue
 
 class CueAdapter(
     private val activity: SimpleActivity,
-    var cues: List<Cue>,
-    private var mediaStoreId: Long,
     private val itemClick: (Cue) -> Unit,
     private val itemUpdated: (List<Cue>) -> Unit
 ) : RecyclerView.Adapter<CueAdapter.ViewHolder>() {
 
+    var cues: List<Cue> = emptyList()
+    private var mediaStoreId: Long = 0
+    private var isNoCueTitle = false
     private var currentCueIndex: Int = -1
     private val properTextColor = activity.getProperTextColor()
     private val primaryColor = activity.getProperPrimaryColor()
@@ -41,10 +43,16 @@ class CueAdapter(
         this.mediaStoreId = mediaStoreId
         this.currentCueIndex = -1
         notifyDataSetChanged()
+        if (cues.size == 1) {
+            val cue = cues.first()
+            isNoCueTitle = cue.title == "<NO_CUE>" && cue.timestamp == 0 && !cue.enabled
+        } else {
+            isNoCueTitle = false
+        }
     }
 
     fun getCurrentTitle(mediaStoreId: Long): String? {
-        if (cues.isEmpty() && this.mediaStoreId != mediaStoreId) return null
+        if (cues.isEmpty() || isNoCueTitle || this.mediaStoreId != mediaStoreId) return null
         if (currentCueIndex >= 0) {
             val cue = cues.getOrNull(currentCueIndex)
             return cue?.title
@@ -70,24 +78,27 @@ class CueAdapter(
             var textColor = if (isActive) 0xff_ffa500.toInt() else Color.WHITE
             
             if (!cue.enabled) {
-                textColor = 0xff_777777.toInt()
+                textColor = if (isNoCueTitle) Color.WHITE else 0xff_777777.toInt()
             }
 
             binding.apply {
                 cueTimestamp.text = cue.timestamp.getFormattedDuration()
-                cueTitle.text = cue.title
+                cueTitle.text = if (isNoCueTitle) "No Cue" else cue.title
                 
+                cueTimestamp.isVisible = !isNoCueTitle
                 cueTimestamp.setTextColor(textColor)
                 cueTitle.setTextColor(textColor)
                 
                 root.setOnClickListener { 
-                    if (cue.enabled) {
+                    if (!isNoCueTitle && cue.enabled) {
                         itemClick(cue)
                     }
                 }
                 
                 root.setOnLongClickListener {
-                    showPopupMenu(cue, adapterPosition)
+                    if (!isNoCueTitle) {
+                        showPopupMenu(cue, adapterPosition)
+                    }
                     true
                 }
             }
