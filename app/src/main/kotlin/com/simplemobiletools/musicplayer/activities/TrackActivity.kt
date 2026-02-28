@@ -25,6 +25,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.os.postDelayed
 import androidx.core.view.GestureDetectorCompat
+import androidx.core.view.isVisible
 import androidx.media3.common.MediaItem
 import androidx.media3.common.util.Util
 import androidx.media3.container.MdtaMetadataEntry
@@ -126,6 +127,7 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
         super.onResume()
         updateTextColors(binding.activityTrackHolder)
         binding.activityTrackTitle.setTextColor(getProperTextColor())
+        binding.activityCueTitle.setTextColor(getProperPrimaryColor())
         binding.activityTrackArtist.setTextColor(getProperTextColor())
         updatePlayerState()
         updateTrackInfo()
@@ -160,7 +162,18 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
         setupTopArt(track)
         setupCues(track)
         binding.apply {
-            activityTrackTitle.text = cueAdapter?.getCurrentTitle(track.mediaStoreId)?: track.title
+            activityTrackTitle.text = track.title
+            cueAdapter?.getCurrentTitle(track.mediaStoreId)?.let {
+                activityCueTitle.isVisible = true
+                activityCueTitle.text = it
+                activityCueTitle.setOnLongClickListener {
+                    copyToClipboard(activityCueTitle.value)
+                    true
+                }
+            } ?: run {
+                activityCueTitle.isVisible = false
+            }
+
             activityTrackArtist.text = track.artist
             activityTrackTitle.setOnLongClickListener {
                 copyToClipboard(activityTrackTitle.value)
@@ -514,7 +527,16 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
 
                 // Update cue title
                 adapter.getCurrentTitle(currentTrack?.mediaStoreId ?: 0)?.let {
-                    binding.activityTrackTitle.text = it
+                    binding.apply {
+                        activityCueTitle.isVisible = true
+                        activityCueTitle.text = it
+                        activityCueTitle.setOnLongClickListener {
+                            copyToClipboard(activityCueTitle.value)
+                            true
+                        }
+                    }
+                } ?: run {
+                    binding.activityCueTitle.isVisible = false
                 }
             }
             
