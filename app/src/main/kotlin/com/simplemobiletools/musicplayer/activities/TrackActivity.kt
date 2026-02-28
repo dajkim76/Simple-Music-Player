@@ -593,14 +593,6 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
                 editText.background = null
                 editText.minLines = 5
                 editText.gravity = android.view.Gravity.TOP
-                editText.filters = arrayOf(InputFilter { source, start, end, dest, dstart, dend ->
-                    if (source is Spanned) {
-                        // 서식이 있는 텍스트(Spanned)인 경우, 서식을 제외한 문자열만 반환
-                        source.toString()
-                    } else {
-                        null // 변경 없음
-                    }
-                })
                 val padding = resources.getDimensionPixelSize(com.simplemobiletools.commons.R.dimen.activity_margin)
                 editText.setPadding(padding, padding, padding, padding)
 
@@ -873,7 +865,13 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
                 val minutes = timeGroups[2].toInt()
                 val seconds = timeGroups[3].toInt()
                 val timestamp = hours * 3600 + minutes * 60 + seconds
-                val title = line.replace(match.value, "").trim(' ', '-', '–', '—', '~', '•', '♪', '▶', '[' , ']', '(', ')', ':', '\u200B')
+                val title = line.replace(match.value, "")
+                    .trim()
+                    .removePrefix("()").removeSuffix("()")
+                    .removePrefix("[]").removeSuffix("[]")
+                    .removePrefix("{}").removeSuffix("{}")
+                    .removePrefix("<>").removeSuffix("<>")
+                    .trim(' ', '-', '–', '—', '~', '•', '♪', '▶', ':', '\u200B')
                 cues.add(Cue(timestamp, title, enabled = true))
             }
         }
