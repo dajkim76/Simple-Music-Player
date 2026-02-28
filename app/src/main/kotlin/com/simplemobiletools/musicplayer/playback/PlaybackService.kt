@@ -8,8 +8,6 @@ import android.content.IntentFilter
 import android.os.Handler
 import android.os.HandlerThread
 import android.os.Looper
-import android.util.Log
-import android.widget.Toast
 import androidx.annotation.OptIn
 import androidx.core.os.postDelayed
 import androidx.media3.common.*
@@ -18,7 +16,7 @@ import androidx.media3.session.*
 import com.simplemobiletools.commons.extensions.hasPermission
 import com.simplemobiletools.commons.extensions.showErrorToast
 import com.simplemobiletools.musicplayer.extensions.*
-import com.simplemobiletools.musicplayer.helpers.CueListHelper
+import com.simplemobiletools.musicplayer.helpers.CueListCache
 import com.simplemobiletools.musicplayer.helpers.NotificationHelper
 import com.simplemobiletools.musicplayer.helpers.getPermissionToRequest
 import com.simplemobiletools.musicplayer.playback.library.MediaItemProvider
@@ -83,7 +81,7 @@ class PlaybackService : MediaLibraryService(), MediaSessionService.Listener {
             val track = currentItem.toTrack() ?: return@withPlayer
             val currentSec = currentPosition / 1000
 
-            val cues = CueListHelper.getCueList(applicationContext, track.mediaStoreId)
+            val cues = CueListCache.getCueList(applicationContext, track.mediaStoreId)
             val currentCue = cues.lastOrNull { it.enabled && it.timestamp <= currentSec }
             val displayTitle = currentCue?.title ?: track.title
 

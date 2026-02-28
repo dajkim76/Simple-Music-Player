@@ -6,7 +6,7 @@ import com.google.gson.reflect.TypeToken
 import com.simplemobiletools.musicplayer.extensions.audioHelper
 import com.simplemobiletools.musicplayer.models.Cue
 
-object CueListHelper {
+object CueListCache {
     private var context: Context? = null
     private val cueListMap = mutableMapOf<Long, List<Cue>>()
 

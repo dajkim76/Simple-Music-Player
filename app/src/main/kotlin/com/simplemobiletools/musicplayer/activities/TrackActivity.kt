@@ -12,8 +12,6 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.provider.MediaStore
-import android.text.InputFilter
-import android.text.Spanned
 import android.util.Log
 import android.util.Size
 import android.view.GestureDetector
@@ -51,7 +49,7 @@ import com.simplemobiletools.musicplayer.BuildConfig
 import com.simplemobiletools.musicplayer.databinding.ActivityTrackBinding
 import com.simplemobiletools.musicplayer.extensions.*
 import com.simplemobiletools.musicplayer.fragments.PlaybackSpeedFragment
-import com.simplemobiletools.musicplayer.helpers.CueListHelper
+import com.simplemobiletools.musicplayer.helpers.CueListCache
 import com.simplemobiletools.musicplayer.helpers.PlaybackSetting
 import com.simplemobiletools.musicplayer.helpers.SEEK_INTERVAL_S
 import com.simplemobiletools.musicplayer.interfaces.PlaybackSpeedListener
@@ -546,7 +544,7 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
 
     private fun setupCues(track: Track) {
         ensureBackgroundThread {
-            val cues = CueListHelper.getCueList(applicationContext, track.mediaStoreId)
+            val cues = CueListCache.getCueList(applicationContext, track.mediaStoreId)
             runOnUiThread {
                 if (cues.isNotEmpty()) {
                     if (cueAdapter == null) {
@@ -558,7 +556,7 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
                         }, { updatedCues ->
                             ensureBackgroundThread {
                                 audioHelper.updateTrackCue(track.mediaStoreId, Gson().toJson(updatedCues))
-                                CueListHelper.updateCueList(track.mediaStoreId, updatedCues)
+                                CueListCache.updateCueList(track.mediaStoreId, updatedCues)
                             }
                         })
                         binding.activityTrackCuesList.apply {
@@ -603,7 +601,7 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
                         val newCueJson = parseCueText(editText.text.toString())
                         ensureBackgroundThread {
                             audioHelper.updateTrackCue(track.mediaStoreId, newCueJson)
-                            CueListHelper.updateCueList(track.mediaStoreId, newCueJson)
+                            CueListCache.updateCueList(track.mediaStoreId, newCueJson)
                             runOnUiThread {
                                 setupCues(track)
                             }
@@ -615,7 +613,7 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
                         val newCueJson = Gson().toJson(cues)
                         ensureBackgroundThread {
                             audioHelper.updateTrackCue(track.mediaStoreId, newCueJson)
-                            CueListHelper.updateCueList(track.mediaStoreId, newCueJson)
+                            CueListCache.updateCueList(track.mediaStoreId, newCueJson)
                             runOnUiThread {
                                 setupCues(track)
                             }
@@ -771,7 +769,7 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
                     showAllMetaData(allText, linkList)
                 }
             }
-            val isCueListEmpty = CueListHelper.getCueList(this, currentTrack?.mediaStoreId?:0).isEmpty()
+            val isCueListEmpty = CueListCache.getCueList(this, currentTrack?.mediaStoreId?:0).isEmpty()
             if (isCueListEmpty && cuesJson.isNotEmpty()) {
                 builder.setNegativeButton("Make Cue List") { _, _ ->
                     showEditCuesDialog(cuesJson)

@@ -8,7 +8,7 @@ import androidx.media3.common.util.UnstableApi
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.exoplayer.source.ShuffleOrder.DefaultShuffleOrder
 import com.simplemobiletools.musicplayer.extensions.*
-import com.simplemobiletools.musicplayer.helpers.CueListHelper
+import com.simplemobiletools.musicplayer.helpers.CueListCache
 import com.simplemobiletools.musicplayer.inlines.indexOfFirstOrNull
 import kotlinx.coroutines.*
 
@@ -109,7 +109,7 @@ class SimpleMusicPlayer(private val exoPlayer: ExoPlayer) : ForwardingPlayer(exo
         val currentItem = currentMediaItem ?: return false
         val track = currentItem.toTrack() ?: return false
         val currentSec = currentPosition / 1000
-        val cues = CueListHelper.getCueList(track.mediaStoreId).filter { it.enabled }
+        val cues = CueListCache.getCueList(track.mediaStoreId).filter { it.enabled }
         if (cues.isEmpty()) return false
 
         val nextCue = cues.firstOrNull { it.timestamp > currentSec }
@@ -125,7 +125,7 @@ class SimpleMusicPlayer(private val exoPlayer: ExoPlayer) : ForwardingPlayer(exo
         val currentItem = currentMediaItem ?: return false
         val track = currentItem.toTrack() ?: return false
         val currentSec = currentPosition / 1000
-        val cues = CueListHelper.getCueList(track.mediaStoreId).filter { it.enabled }
+        val cues = CueListCache.getCueList(track.mediaStoreId).filter { it.enabled }
         if (cues.isEmpty()) return false
 
         val activeCueIndex = cues.indexOfLast { it.timestamp <= currentSec }
