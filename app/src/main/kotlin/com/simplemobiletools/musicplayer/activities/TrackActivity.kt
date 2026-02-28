@@ -162,7 +162,7 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
         setupTopArt(track)
         setupCues(track)
         binding.apply {
-            activityTrackTitle.text = cueAdapter?.getCurrentTitle()?: track.title
+            activityTrackTitle.text = cueAdapter?.getCurrentTitle(track.mediaStoreId)?: track.title
             activityTrackArtist.text = track.artist
             activityTrackTitle.setOnLongClickListener {
                 copyToClipboard(activityTrackTitle.value)
@@ -506,7 +506,8 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
     private fun updateProgress(currentPosition: Long) {
         val seconds = currentPosition.milliseconds.inWholeSeconds.toInt()
         binding.activityTrackProgressbar.progress = seconds
-        
+        // Update active cue item
+        if (cueAdapter?.itemCount == 0) return
         cueAdapter?.let { adapter ->
             val newPosition = adapter.updateCurrentPosition(seconds)
             if (newPosition >= 0) {
@@ -514,7 +515,7 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
                 binding.activityTrackCuesList.scrollToPosition(newPosition)
 
                 // Update cue title
-                adapter.getCurrentTitle()?.let {
+                adapter.getCurrentTitle(currentTrack?.mediaStoreId ?: 0)?.let {
                     binding.activityTrackTitle.text = it
                 }
             }
@@ -549,7 +550,7 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
             runOnUiThread {
                 if (cues.isNotEmpty()) {
                     if (cueAdapter == null) {
-                        cueAdapter = CueAdapter(this, cues, { cue ->
+                        cueAdapter = CueAdapter(this, cues, track.mediaStoreId, { cue ->
                             withPlayer {
                                 if(!isPlaying) play()
                                 seekTo(cue.timestamp * 1000L)
@@ -565,8 +566,7 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
                             adapter = cueAdapter
                         }
                     } else {
-                        cueAdapter?.cues = cues
-                        cueAdapter?.notifyDataSetChanged()
+                        cueAdapter?.refreshList(cues, track.mediaStoreId)
                     }
 
                     withPlayer {
@@ -575,6 +575,7 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
                     }
                     binding.activityTrackCuesList.beVisible()
                 } else {
+                    cueAdapter?.refreshList(cues, track.mediaStoreId)
                     binding.activityTrackCuesList.beGone()
                 }
             }

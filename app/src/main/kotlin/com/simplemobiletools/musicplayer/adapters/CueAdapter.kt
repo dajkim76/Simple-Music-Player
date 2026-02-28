@@ -5,23 +5,19 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.appcompat.widget.PopupMenu
 import androidx.recyclerview.widget.RecyclerView
-import com.simplemobiletools.commons.extensions.adjustAlpha
 import com.simplemobiletools.commons.extensions.getFormattedDuration
 import com.simplemobiletools.commons.extensions.getProperPrimaryColor
 import com.simplemobiletools.commons.extensions.getProperTextColor
-import com.simplemobiletools.commons.extensions.toInt
-import com.simplemobiletools.commons.helpers.MEDIUM_ALPHA
-import com.simplemobiletools.commons.views.MyTextView
-import com.simplemobiletools.musicplayer.R
 import com.simplemobiletools.musicplayer.activities.SimpleActivity
 import com.simplemobiletools.musicplayer.databinding.ItemCueBinding
 import com.simplemobiletools.musicplayer.models.Cue
 
 class CueAdapter(
-    val activity: SimpleActivity,
+    private val activity: SimpleActivity,
     var cues: List<Cue>,
-    val itemClick: (Cue) -> Unit,
-    val itemUpdated: (List<Cue>) -> Unit
+    private var mediaStoreId: Long,
+    private val itemClick: (Cue) -> Unit,
+    private val itemUpdated: (List<Cue>) -> Unit
 ) : RecyclerView.Adapter<CueAdapter.ViewHolder>() {
 
     private var currentTimestamp: Int = -1
@@ -40,7 +36,15 @@ class CueAdapter(
 
     override fun getItemCount() = cues.size
 
-    fun getCurrentTitle(): String? {
+    fun refreshList(cues: List<Cue>, mediaStoreId: Long) {
+        this.cues = cues
+        this.mediaStoreId = mediaStoreId
+        this.currentTimestamp = -1
+        notifyDataSetChanged()
+    }
+
+    fun getCurrentTitle(mediaStoreId: Long): String? {
+        if (cues.isEmpty() && this.mediaStoreId != mediaStoreId) return null
         if (currentTimestamp >= 0) {
             val cue = cues.getOrNull(currentTimestamp)
             return cue?.title
