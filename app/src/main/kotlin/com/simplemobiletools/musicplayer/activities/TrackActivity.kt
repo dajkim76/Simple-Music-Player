@@ -1,11 +1,13 @@
 package com.simplemobiletools.musicplayer.activities
 
 import android.annotation.SuppressLint
+import android.content.ContentUris
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
+import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -17,29 +19,38 @@ import android.util.Size
 import android.view.GestureDetector
 import android.view.MotionEvent
 import android.view.View
-import android.widget.EditText
 import android.widget.SeekBar
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import androidx.core.os.postDelayed
 import androidx.core.view.GestureDetectorCompat
 import androidx.media3.common.MediaItem
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
+import androidx.media3.container.MdtaMetadataEntry
+import androidx.media3.exoplayer.MetadataRetriever
+import androidx.media3.extractor.metadata.id3.CommentFrame
+import androidx.media3.extractor.metadata.id3.TextInformationFrame
+import androidx.media3.extractor.metadata.id3.UrlLinkFrame
+import androidx.media3.extractor.metadata.vorbis.VorbisComment
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.simplemobiletools.commons.extensions.*
 import com.simplemobiletools.commons.helpers.MEDIUM_ALPHA
 import com.simplemobiletools.commons.helpers.ensureBackgroundThread
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.simplemobiletools.musicplayer.R
 import com.simplemobiletools.musicplayer.adapters.CueAdapter
 import com.simplemobiletools.musicplayer.databinding.ActivityTrackBinding
 import com.simplemobiletools.musicplayer.extensions.*
 import com.simplemobiletools.musicplayer.fragments.PlaybackSpeedFragment
-import com.simplemobiletools.musicplayer.helpers.*
+import com.simplemobiletools.musicplayer.helpers.CueListHelper
+import com.simplemobiletools.musicplayer.helpers.PlaybackSetting
+import com.simplemobiletools.musicplayer.helpers.SEEK_INTERVAL_S
 import com.simplemobiletools.musicplayer.interfaces.PlaybackSpeedListener
 import com.simplemobiletools.musicplayer.models.Cue
 import com.simplemobiletools.musicplayer.models.Track
@@ -81,6 +92,7 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
             activityTrackToolbar.setOnMenuItemClickListener { menuItem ->
                 when (menuItem.itemId) {
                     R.id.edit_cues -> showEditCuesDialog()
+                    R.id.show_meta_data -> showMetaDataDialog()
                     else -> return@setOnMenuItemClickListener false
                 }
                 return@setOnMenuItemClickListener true
@@ -605,6 +617,167 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
                     .show()
             }
         }
+    }
+
+    private fun showMetaDataDialog() {
+        val track = currentTrack ?: return
+        val mediaItem = if (track.path.isNotEmpty()) {
+            MediaItem.fromUri(track.path)
+        }else {
+            val uriStr = ContentUris.withAppendedId(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, track.mediaStoreId).toString()
+            val uri = Uri.parse(uriStr)
+            MediaItem.fromUri(uri)
+        }
+
+        val metadataFuture = MetadataRetriever.retrieveMetadata(this, mediaItem)
+        metadataFuture.addListener({
+            val keyList = mutableListOf<String>()
+            val valueList = mutableListOf<String>()
+            val raw = StringBuilder()
+
+            try {
+                val trackGroupArray = metadataFuture.get()
+                for (i in 0 until trackGroupArray.length) {
+                    val trackGroup = trackGroupArray.get(i)
+                    val metadata = trackGroup.getFormat(0).metadata
+
+                    if (metadata != null) {
+                        for (j in 0 until metadata.length()) {
+                            val entry = metadata.get(j)
+                            raw.append(entry.toString()).append("\n\n")
+                            Log.d("Metadata", "찾은 내용: ${entry.toString()}")
+                            // Opus/Ogg의 경우 VorbisComment 형태로 들어옵니다.
+                            if (entry is VorbisComment) {
+                                Log.d("Metadata", "찾은 내용: ${entry.value}")
+                                val key = entry.key.lowercase()
+                                if (key == "description" || key == "purl" || key == "comment" || key == "synopsis") {
+                                    val value = entry.value
+                                    if (!valueList.contains(value)) {
+                                        keyList.add("(V)" + key)
+                                        valueList.add(value)
+                                    }
+                                }
+                            } else if (entry is TextInformationFrame) {
+                                val key = entry.description?.lowercase()
+                                if (key == "description" || key == "purl" || key == "comment" || key == "synopsis") {
+                                    val value = entry.value
+                                    if (!valueList.contains(value)) {
+                                        keyList.add("(T)" + key)
+                                        valueList.add(value)
+                                    }
+                                }
+                            } else if (entry is CommentFrame) {
+                                val value = entry.description
+                                //if (key == "description" || key == "purl" || key == "comment" || key == "synopsis") {
+                                    if (!valueList.contains(value)) {
+                                        keyList.add("(C)" + "description")
+                                        valueList.add(value)
+                                    }
+                                //}
+                            } else if (entry is MdtaMetadataEntry) { // apple
+                                val value = entry.toString()
+                                keyList.add("(M) " + entry.key)
+                                valueList.add(value)
+                            } else if (entry is UrlLinkFrame) {
+                                val value = entry.url
+                                if (!valueList.contains(value)) {
+                                    keyList.add("(U)url")
+                                    valueList.add(value)
+                                }
+                            }
+                        }
+                    }
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+
+            val linkList = mutableListOf<String>()
+            val sb = StringBuilder()
+            keyList.forEachIndexed { index, key ->
+                val value = valueList[index]
+                sb.append(key).append("=").append(value).append("\n\n")
+                linkList.addAll(extractYoutubeLinks(value))
+            }
+            val text = sb.toString()
+            val rawText = raw.toString()
+            val textView = TextView(this)
+            textView.text = text.ifEmpty { rawText }
+            val p = 30
+            textView.setPadding(p, p, p, p)
+            textView.setTextIsSelectable(true)
+
+            val builder = AlertDialog.Builder(this)
+                .setTitle("Youtube meta data")
+                .setView(textView)
+                .setPositiveButton(com.simplemobiletools.commons.R.string.ok, null)
+            if (text.isNotEmpty()) {
+                builder.setNeutralButton("All") { _, _ ->
+                    showAllMetaData(rawText, linkList)
+                }
+            }
+            if (linkList.isNotEmpty()) {
+                builder.setNegativeButton("Youtube") { _, _ ->
+                    openYoutubeLink(linkList)
+                }
+            }
+            builder.show()
+
+        }, ContextCompat.getMainExecutor(this))
+    }
+
+    private fun showAllMetaData(text: String, linkList: List<String>) {
+        val textView = TextView(this)
+        textView.text = text
+        val p = 30
+        textView.setPadding(p, p, p, p)
+        textView.setTextIsSelectable(true)
+
+        val builder = AlertDialog.Builder(this)
+            .setTitle("All meta data")
+            .setView(textView)
+            .setPositiveButton(com.simplemobiletools.commons.R.string.ok, null)
+        if (linkList.isNotEmpty()) {
+            builder.setNegativeButton("Youtube") { _, _ ->
+                openYoutubeLink(linkList)
+            }
+        }
+        builder.show()
+    }
+
+    private fun openYoutubeLink(linkList: List<String>) {
+        if (linkList.size == 1) {
+            openUrl(linkList[0])
+        } else {
+            AlertDialog.Builder(this)
+                .setItems(linkList.toTypedArray()) { _, w ->
+                    openUrl(linkList[w])
+                }
+                .setPositiveButton(com.simplemobiletools.commons.R.string.ok, null)
+                .show()
+        }
+    }
+
+    private fun openUrl(url: String) {
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+        intent.addCategory(Intent.CATEGORY_BROWSABLE)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        //intent.setPackage("com.google.android.youtube")
+        try {
+            startActivity(intent)
+        } catch (ex: Exception) {
+            Toast.makeText(this, ex.message, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun extractYoutubeLinks(text: String): List<String> {
+        // YouTube 주소 패턴 정의 (다양한 포맷 대응)
+        val youtubeRegex = ("(?:https?:\\/\\/)?(?:www\\.)?" +
+            "(?:youtube\\.com\\/(?:(?:[^\\/\\n\\s]+\\/\\S+\\/|(?:v|e(?:mbed)?)\\/|\\S*?[?&]v=)|shorts\\/)|" +
+            "youtu\\.be\\/)([a-zA-Z0-9_-]{11})").toRegex()
+
+        // 텍스트 내의 모든 매칭 결과 추출
+        return youtubeRegex.findAll(text).map { it.value }.toList()
     }
 
     private fun parseCueText(text: String): String {

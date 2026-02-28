@@ -5,4 +5,9 @@
         android:id="@+id/edit_cues"
         android:title="Youtube timestamp text"
         app:showAsAction="never" />
+
+    <item
+        android:id="@+id/show_meta_data"
+        android:title="Youtube meta data"
+        app:showAsAction="never" />
 </menu>
