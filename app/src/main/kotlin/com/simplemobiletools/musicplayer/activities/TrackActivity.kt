@@ -535,6 +535,7 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
                     if (cueAdapter == null) {
                         cueAdapter = CueAdapter(this, cues, { cue ->
                             withPlayer {
+                                if(!isPlaying) play()
                                 seekTo(cue.timestamp * 1000L)
                             }
                         }, { updatedCues ->
