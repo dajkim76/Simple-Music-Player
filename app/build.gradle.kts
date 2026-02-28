@@ -52,9 +52,13 @@ android {
 
     buildTypes {
         debug {
-            applicationIdSuffix = ".debug"
+            applicationIdSuffix = ".mdiwebma"
+            if (keystorePropertiesFile.exists()) {
+                signingConfig = signingConfigs.getByName("release")
+            }
         }
         release {
+            applicationIdSuffix = ".mdiwebma"
             isMinifyEnabled = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
@@ -93,6 +97,14 @@ android {
     lint {
         checkReleaseBuilds = false
         abortOnError = false
+    }
+
+    applicationVariants.all {
+        outputs.all {
+            val output = this as com.android.build.gradle.internal.api.BaseVariantOutputImpl
+            val fileName = "music-player-v${versionCode}-${name}.apk"
+            output.outputFileName = fileName
+        }
     }
 }
 

@@ -22,3 +22,7 @@
     @org.greenrobot.eventbus.Subscribe <methods>;
 }
 -keep enum org.greenrobot.eventbus.ThreadMode { *; }
+
+# RtlViewPager (referenced from Simple-Commons)
+-dontwarn com.duolingo.open.rtlviewpager.**
+
