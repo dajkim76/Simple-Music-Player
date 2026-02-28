@@ -20,7 +20,7 @@ class CueAdapter(
     private val itemUpdated: (List<Cue>) -> Unit
 ) : RecyclerView.Adapter<CueAdapter.ViewHolder>() {
 
-    private var currentTimestamp: Int = -1
+    private var currentCueIndex: Int = -1
     private val properTextColor = activity.getProperTextColor()
     private val primaryColor = activity.getProperPrimaryColor()
 
@@ -39,14 +39,14 @@ class CueAdapter(
     fun refreshList(cues: List<Cue>, mediaStoreId: Long) {
         this.cues = cues
         this.mediaStoreId = mediaStoreId
-        this.currentTimestamp = -1
+        this.currentCueIndex = -1
         notifyDataSetChanged()
     }
 
     fun getCurrentTitle(mediaStoreId: Long): String? {
         if (cues.isEmpty() && this.mediaStoreId != mediaStoreId) return null
-        if (currentTimestamp >= 0) {
-            val cue = cues.getOrNull(currentTimestamp)
+        if (currentCueIndex >= 0) {
+            val cue = cues.getOrNull(currentCueIndex)
             return cue?.title
         }
         return null
@@ -54,19 +54,19 @@ class CueAdapter(
 
     fun updateCurrentPosition(positionSeconds: Int): Int {
         val activeCueIndex = cues.indexOfLast { it.timestamp <= positionSeconds }
-        if (activeCueIndex != currentTimestamp) {
-            val oldTimestamp = currentTimestamp
-            currentTimestamp = activeCueIndex
+        if (activeCueIndex != currentCueIndex) {
+            val oldTimestamp = currentCueIndex
+            currentCueIndex = activeCueIndex
             if (oldTimestamp != -1) notifyItemChanged(oldTimestamp)
-            if (currentTimestamp != -1) notifyItemChanged(currentTimestamp)
-            return currentTimestamp
+            if (currentCueIndex != -1) notifyItemChanged(currentCueIndex)
+            return currentCueIndex
         }
         return -1
     }
 
     inner class ViewHolder(private val binding: ItemCueBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(cue: Cue) {
-            val isActive = adapterPosition == currentTimestamp
+            val isActive = adapterPosition == currentCueIndex
             var textColor = if (isActive) 0xff_ffa500.toInt() else Color.WHITE
             
             if (!cue.enabled) {
