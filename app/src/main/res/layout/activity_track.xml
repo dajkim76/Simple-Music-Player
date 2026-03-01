@@ -202,8 +202,21 @@
             android:padding="@dimen/tiny_margin"
             android:src="@drawable/ic_previous_vector"
             app:layout_constraintBottom_toTopOf="@+id/next_track_holder"
-            app:layout_constraintEnd_toStartOf="@+id/activity_track_play_pause"
+            app:layout_constraintEnd_toStartOf="@+id/activity_track_seek_back"
             app:layout_constraintStart_toEndOf="@+id/activity_track_toggle_shuffle"
+            app:layout_constraintTop_toBottomOf="@+id/activity_track_artist" />
+
+        <ImageView
+            android:id="@+id/activity_track_seek_back"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/smaller_icon_size"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/media3_controls_seek_back_description"
+            android:padding="@dimen/tiny_margin"
+            android:src="@drawable/ic_prev_10"
+            app:layout_constraintBottom_toTopOf="@+id/next_track_holder"
+            app:layout_constraintEnd_toStartOf="@+id/activity_track_play_pause"
+            app:layout_constraintStart_toEndOf="@+id/activity_track_previous"
             app:layout_constraintTop_toBottomOf="@+id/activity_track_artist" />
 
         <com.airbnb.lottie.LottieAnimationView
@@ -215,12 +228,25 @@
             android:padding="@dimen/tiny_margin"
             android:scaleType="fitCenter"
             app:layout_constraintBottom_toTopOf="@+id/next_track_holder"
-            app:layout_constraintEnd_toStartOf="@+id/activity_track_next"
-            app:layout_constraintStart_toEndOf="@+id/activity_track_previous"
+            app:layout_constraintEnd_toStartOf="@+id/activity_track_seek_forward"
+            app:layout_constraintStart_toEndOf="@+id/activity_track_seek_back"
             app:layout_constraintTop_toBottomOf="@+id/activity_track_artist"
             app:lottie_autoPlay="false"
             app:lottie_loop="false"
             app:lottie_rawRes="@raw/playpause" />
+
+        <ImageView
+            android:id="@+id/activity_track_seek_forward"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/smaller_icon_size"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/media3_controls_seek_forward_description"
+            android:padding="@dimen/tiny_margin"
+            android:src="@drawable/ic_next_10"
+            app:layout_constraintBottom_toTopOf="@+id/next_track_holder"
+            app:layout_constraintEnd_toStartOf="@+id/activity_track_next"
+            app:layout_constraintStart_toEndOf="@+id/activity_track_play_pause"
+            app:layout_constraintTop_toBottomOf="@+id/activity_track_artist" />
 
         <ImageView
             android:id="@+id/activity_track_next"
@@ -232,7 +258,7 @@
             android:src="@drawable/ic_next_vector"
             app:layout_constraintBottom_toTopOf="@+id/next_track_holder"
             app:layout_constraintEnd_toStartOf="@+id/activity_track_playback_setting"
-            app:layout_constraintStart_toEndOf="@+id/activity_track_play_pause"
+            app:layout_constraintStart_toEndOf="@+id/activity_track_seek_forward"
             app:layout_constraintTop_toBottomOf="@+id/activity_track_artist" />
 
         <ImageView

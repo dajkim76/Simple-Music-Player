@@ -229,7 +229,9 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
                 withPlayer { forceSeekToPrevious() }
             }
         }
+        activityTrackSeekBack.setOnClickListener { withPlayer { seekBack() } }
         activityTrackPlayPause.setOnClickListener { togglePlayback() }
+        activityTrackSeekForward.setOnClickListener { withPlayer { seekForward() } }
         activityTrackNext.setOnClickListener {
             val adapter = cueAdapter
             if (adapter != null && adapter.cues.isNotEmpty()) {
@@ -254,7 +256,7 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
         setupPlaybackSettingButton()
         setupSeekbar()
 
-        arrayOf(activityTrackPrevious, activityTrackPlayPause, activityTrackNext).forEach {
+        arrayOf(activityTrackPrevious, activityTrackSeekBack, activityTrackPlayPause, activityTrackSeekForward, activityTrackNext).forEach {
             it.applyColorFilter(getProperTextColor())
         }
     }
