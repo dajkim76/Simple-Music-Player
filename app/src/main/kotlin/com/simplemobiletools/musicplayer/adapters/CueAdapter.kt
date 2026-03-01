@@ -61,7 +61,8 @@ class CueAdapter(
         return null
     }
 
-    fun updateCurrentPosition(positionSeconds: Int): Int {
+    fun updateCurrentPosition(mediaStoreId: Long, positionSeconds: Int): Int {
+        if (this.mediaStoreId != mediaStoreId) return -1
         val activeCueIndex = cues.indexOfLast { it.timestamp <= positionSeconds }
         if (activeCueIndex != currentCueIndex) {
             val oldTimestamp = currentCueIndex

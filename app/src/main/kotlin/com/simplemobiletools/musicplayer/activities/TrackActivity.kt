@@ -163,17 +163,7 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
         setupCues(track)
         binding.apply {
             activityTrackTitle.text = track.title
-            cueAdapter?.getCurrentTitle(track.mediaStoreId)?.let {
-                activityCueTitle.isVisible = true
-                activityCueTitle.text = it
-                activityCueTitle.setOnLongClickListener {
-                    copyToClipboard(activityCueTitle.value)
-                    true
-                }
-            } ?: run {
-                activityCueTitle.isVisible = false
-            }
-
+            updateCueTitle(track.mediaStoreId, -1)
             activityTrackArtist.text = track.artist
             activityTrackTitle.setOnLongClickListener {
                 copyToClipboard(activityTrackTitle.value)
@@ -521,25 +511,11 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
         binding.activityTrackProgressbar.progress = seconds
         // Update active cue item
         if (cueAdapter?.itemCount == 0) return
+        val mediaStoreId = currentTrack?.mediaStoreId ?: return
         cueAdapter?.let { adapter ->
-            val newPosition = adapter.updateCurrentPosition(seconds)
+            val newPosition = adapter.updateCurrentPosition(mediaStoreId, seconds)
             if (newPosition >= 0) {
-                // auto scroll to cue position
-                binding.activityTrackCuesList.scrollToPosition(newPosition)
-
-                // Update cue title
-                adapter.getCurrentTitle(currentTrack?.mediaStoreId ?: 0)?.let {
-                    binding.apply {
-                        activityCueTitle.isVisible = true
-                        activityCueTitle.text = it
-                        activityCueTitle.setOnLongClickListener {
-                            copyToClipboard(activityCueTitle.value)
-                            true
-                        }
-                    }
-                } ?: run {
-                    binding.activityCueTitle.isVisible = false
-                }
+                updateCueTitle(mediaStoreId, newPosition)
             }
             
             // Skip disabled cues
@@ -559,6 +535,27 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
                     }
                 }
             }
+        }
+    }
+
+    private fun updateCueTitle(mediaStoreId: Long, position: Int) {
+        // auto scroll to cue position
+        if (position >= 0) {
+            binding.activityTrackCuesList.scrollToPosition(position)
+        }
+
+        // Update cue title
+        cueAdapter?.getCurrentTitle(mediaStoreId)?.let {
+            binding.apply {
+                activityCueTitle.isVisible = true
+                activityCueTitle.text = it
+                activityCueTitle.setOnLongClickListener {
+                    copyToClipboard(activityCueTitle.value)
+                    true
+                }
+            }
+        } ?: run {
+            binding.activityCueTitle.isVisible = false
         }
     }
 
@@ -592,7 +589,12 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
 
                     withPlayer {
                         val seconds = currentPosition.milliseconds.inWholeSeconds.toInt()
-                        cueAdapter?.updateCurrentPosition(seconds)
+                        runOnUiThread {
+                            val position = cueAdapter?.updateCurrentPosition(track.mediaStoreId, seconds) ?: -1
+                            if (position >= 0) {
+                                updateCueTitle(track.mediaStoreId, position)
+                            }
+                        }
                     }
                     binding.activityTrackCuesList.beVisible()
                 } else {
