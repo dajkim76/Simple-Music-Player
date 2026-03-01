@@ -77,6 +77,7 @@ class PlaybackService : MediaLibraryService(), MediaSessionService.Listener {
 
     private fun updateCueMetadata() {
         withPlayer {
+            if (!isPlaying) return@withPlayer
             val currentItem = currentMediaItem ?: return@withPlayer
             val track = currentItem.toTrack() ?: return@withPlayer
             val currentSec = currentPosition / 1000

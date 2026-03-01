@@ -575,9 +575,9 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
                                 seekTo(cue.timestamp * 1000L)
                             }
                         }, { updatedCues ->
+                            CueListCache.updateCueList(track.mediaStoreId, updatedCues)
                             ensureBackgroundThread {
                                 audioHelper.updateTrackCue(track.mediaStoreId, Gson().toJson(updatedCues))
-                                CueListCache.updateCueList(track.mediaStoreId, updatedCues)
                             }
                         })
                         binding.activityTrackCuesList.apply {
@@ -625,9 +625,9 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
                     .setView(editText)
                     .setPositiveButton(com.simplemobiletools.commons.R.string.ok) { _, _ ->
                         val newCueJson = parseCueText(editText.text.toString())
+                        CueListCache.updateCueJson(track.mediaStoreId, newCueJson)
                         ensureBackgroundThread {
                             audioHelper.updateTrackCue(track.mediaStoreId, newCueJson)
-                            CueListCache.updateCueList(track.mediaStoreId, newCueJson)
                             runOnUiThread {
                                 setupCues(track)
                             }
@@ -637,9 +637,9 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
                     .setNeutralButton(R.string.no_cue) { _, _ ->
                         val cues = listOf(Cue(0, "<NO_CUE>", false))
                         val newCueJson = Gson().toJson(cues)
+                        CueListCache.updateCueJson(track.mediaStoreId, newCueJson)
                         ensureBackgroundThread {
                             audioHelper.updateTrackCue(track.mediaStoreId, newCueJson)
-                            CueListCache.updateCueList(track.mediaStoreId, newCueJson)
                             runOnUiThread {
                                 setupCues(track)
                             }
