@@ -749,6 +749,9 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
             }
 
             var cuesJson = ""
+            if (chapterList.isNotEmpty()) {
+                cuesJson = parseCueText(chapterList.joinToString("\n"))
+            }
             val linkList = mutableListOf<String>()
             val sb = StringBuilder()
             metaDataList.forEach { (type, key, value) ->
@@ -765,11 +768,10 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
             }
 
             if (cuesJson.isNotEmpty()) {
-                sb.append("CUE:\n").append(cuesToText(cuesJson))
-            } else if (chapterList.isNotEmpty()) {
-                cuesJson = parseCueText(chapterList.joinToString("\n"))
-                if (cuesJson.isNotEmpty()) {
+                if (chapterList.isNotEmpty()) {
                     sb.append("CHAPTER:\n").append(cuesToText(cuesJson))
+                } else {
+                    sb.append("CUE:\n").append(cuesToText(cuesJson))
                 }
             }
 
