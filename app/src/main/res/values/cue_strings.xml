@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="youtube_timestamp_text">Youtube timestamp text</string>
+    <string name="no_cue">No Cue</string>
+    <string name="youtube_meta_data">Youtube meta data</string>
+    <string name="all_data">All Data</string>
+    <string name="youtube">Youtube</string>
+    <string name="make_cue_list">Make Cue List</string>
+    <string name="not_playing">Not playing</string>
+    <string name="playable">Playable</string>
+</resources>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="youtube_timestamp_text">유튜브 타임스탬프 텍스트</string>
+    <string name="no_cue">Cue 없음</string>
+    <string name="youtube_meta_data">유튜브 메타 데이타</string>
+    <string name="all_data">모든 데이타</string>
+    <string name="youtube">유튜브</string>
+    <string name="make_cue_list">Cue 목록 만들기</string>
+    <string name="not_playing">플레이하지 않음</string>
+    <string name="playable">플레이 가능</string>
+</resources>

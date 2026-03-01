@@ -4,13 +4,13 @@
 
     <item
         android:id="@+id/edit_cues"
-        android:title="Youtube timestamp text"
+        android:title="@string/youtube_timestamp_text"
         android:icon="@drawable/ic_cue_list"
         app:showAsAction="always" />
 
     <item
         android:id="@+id/show_meta_data"
-        android:title="Youtube meta data"
+        android:title="@string/youtube_meta_data"
         android:icon="@drawable/ic_youtube_meta"
         app:showAsAction="always" />
 </menu>

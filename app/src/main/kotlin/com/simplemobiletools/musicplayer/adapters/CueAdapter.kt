@@ -12,6 +12,7 @@ import com.simplemobiletools.commons.extensions.getProperTextColor
 import com.simplemobiletools.musicplayer.activities.SimpleActivity
 import com.simplemobiletools.musicplayer.databinding.ItemCueBinding
 import com.simplemobiletools.musicplayer.models.Cue
+import com.simplemobiletools.musicplayer.R
 
 class CueAdapter(
     private val activity: SimpleActivity,
@@ -83,7 +84,7 @@ class CueAdapter(
 
             binding.apply {
                 cueTimestamp.text = cue.timestamp.getFormattedDuration()
-                cueTitle.text = if (isNoCueTitle) "No Cue" else cue.title
+                cueTitle.text = if (isNoCueTitle) activity.getString(R.string.no_cue) else cue.title
                 
                 cueTimestamp.isVisible = !isNoCueTitle
                 cueTimestamp.setTextColor(textColor)
@@ -106,7 +107,7 @@ class CueAdapter(
 
         private fun showPopupMenu(cue: Cue, position: Int) {
             val popup = PopupMenu(activity, binding.root)
-            val skipLabel = if (cue.enabled) "Skip" else "Play"
+            val skipLabel = if (cue.enabled) activity.getString(R.string.not_playing) else activity.getString(R.string.playable)
             popup.menu.add(0, 0, 0, skipLabel)
             popup.setOnMenuItemClickListener { item ->
                 when (item.itemId) {

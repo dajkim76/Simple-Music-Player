@@ -619,7 +619,7 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
                 editText.setPadding(padding, padding, padding, padding)
 
                 androidx.appcompat.app.AlertDialog.Builder(this)
-                    .setTitle("Youtube timestamp text")
+                    .setTitle(R.string.youtube_timestamp_text)
                     .setView(editText)
                     .setPositiveButton(com.simplemobiletools.commons.R.string.ok) { _, _ ->
                         val newCueJson = parseCueText(editText.text.toString())
@@ -632,7 +632,7 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
                         }
                     }
                     .setNegativeButton(com.simplemobiletools.commons.R.string.cancel, null)
-                    .setNeutralButton("No Cue") { _, _ ->
+                    .setNeutralButton(R.string.no_cue) { _, _ ->
                         val cues = listOf(Cue(0, "<NO_CUE>", false))
                         val newCueJson = Gson().toJson(cues)
                         ensureBackgroundThread {
@@ -786,22 +786,22 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
             textView.setTextIsSelectable(true)
 
             val builder = AlertDialog.Builder(this)
-                .setTitle("Youtube meta data")
+                .setTitle(R.string.youtube_meta_data)
                 .setView(textView)
                 .setPositiveButton(com.simplemobiletools.commons.R.string.ok, null)
 
             if (text.isNotEmpty()) {
-                builder.setNeutralButton("All") { _, _ ->
+                builder.setNeutralButton(R.string.all_data) { _, _ ->
                     showAllMetaData(allText, linkList)
                 }
             }
             val isCueListEmpty = CueListCache.getCueList(this, currentTrack?.mediaStoreId?:0).isEmpty()
             if (isCueListEmpty && cuesJson.isNotEmpty()) {
-                builder.setNegativeButton("Make Cue List") { _, _ ->
+                builder.setNegativeButton(R.string.make_cue_list) { _, _ ->
                     showEditCuesDialog(cuesJson)
                 }
             } else if (linkList.isNotEmpty()) {
-                builder.setNegativeButton("Youtube") { _, _ ->
+                builder.setNegativeButton(R.string.youtube) { _, _ ->
                     openYoutubeLink(linkList)
                 }
             }
@@ -818,11 +818,11 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
         textView.setTextIsSelectable(true)
 
         val builder = AlertDialog.Builder(this)
-            .setTitle("All meta data")
+            .setTitle(R.string.youtube_meta_data)
             .setView(textView)
             .setPositiveButton(com.simplemobiletools.commons.R.string.ok, null)
         if (linkList.isNotEmpty()) {
-            builder.setNegativeButton("Youtube") { _, _ ->
+            builder.setNegativeButton(R.string.youtube) { _, _ ->
                 openYoutubeLink(linkList)
             }
         }
