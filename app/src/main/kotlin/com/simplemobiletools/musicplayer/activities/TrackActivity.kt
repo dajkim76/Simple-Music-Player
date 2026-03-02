@@ -517,24 +517,6 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
             if (newPosition >= 0) {
                 updateCueTitle(mediaStoreId, newPosition)
             }
-            
-            // Skip disabled cues
-            val activeCueIndex = adapter.cues.indexOfLast { it.timestamp <= seconds }
-            if (activeCueIndex != -1) {
-                val currentCue = adapter.cues[activeCueIndex]
-                if (!currentCue.enabled) {
-                    val nextEnabledCue = adapter.cues.subList(activeCueIndex + 1, adapter.cues.size).firstOrNull { it.enabled }
-                    if (nextEnabledCue != null) {
-                        withPlayer {
-                            seekTo(nextEnabledCue.timestamp * 1000L)
-                        }
-                    } else {
-                        // If no more enabled cues, skip to the end of the track or next song
-                        // For now, let's just seek to the very end if there are no more cues at all
-                        // but actually, just letting it play to the end of the file is fine if that's what's intended.
-                    }
-                }
-            }
         }
     }
 
@@ -765,7 +747,8 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
                     sb.append("(${type[0]})")
                 }
                 sb.append(key).append("=").append(value).append("\n\n")
-                linkList.addAll(extractYoutubeLinks(value))
+                val links = extractYoutubeLinks(value)
+                links.forEach { if (!linkList.contains(it)) linkList.add(it) }
                 if (cuesJson.isEmpty() && (key == "description" || key == "synopsis" || key == "comment")) {
                     cuesJson = parseCueText(value)
                 }

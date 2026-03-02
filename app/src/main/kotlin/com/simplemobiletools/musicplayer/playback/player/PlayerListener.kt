@@ -29,6 +29,9 @@ internal fun PlaybackService.getPlayerListener() = object : Player.Listener {
             )
         ) {
             updatePlaybackState()
+            if (events.contains(Player.EVENT_IS_PLAYING_CHANGED)) {
+                scheduleProgressUpdate()
+            }
         }
     }
 

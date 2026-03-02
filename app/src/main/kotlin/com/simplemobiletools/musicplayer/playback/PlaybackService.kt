@@ -34,6 +34,7 @@ class PlaybackService : MediaLibraryService(), MediaSessionService.Listener {
 
     internal var currentRoot = ""
 
+    private var progressUpdateHandler = Handler(Looper.getMainLooper())
     private val bluetoothReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
             if (intent.action == BluetoothDevice.ACTION_ACL_CONNECTED && config.autoplayOnBluetoothConnect) {
@@ -52,12 +53,14 @@ class PlaybackService : MediaLibraryService(), MediaSessionService.Listener {
 
         val filter = IntentFilter(BluetoothDevice.ACTION_ACL_CONNECTED)
         registerReceiver(bluetoothReceiver, filter)
+        scheduleProgressUpdate()
     }
 
     override fun onGetSession(controllerInfo: MediaSession.ControllerInfo) = mediaSession
 
     override fun onDestroy() {
         super.onDestroy()
+        progressUpdateHandler.removeCallbacksAndMessages(null)
         unregisterReceiver(bluetoothReceiver)
         releaseMediaSession()
         clearListener()
@@ -91,6 +94,39 @@ class PlaybackService : MediaLibraryService(), MediaSessionService.Listener {
         }
     }
 
+    fun scheduleProgressUpdate() {
+        progressUpdateHandler.removeCallbacksAndMessages(null)
+        withPlayer {
+            if (isPlaying) {
+                skipDisabledCueOnPlayerThread()
+            } else {
+                // cancel scheduleProgressUpdate. When EVENT_IS_PLAYING_CHANGED occurred, scheduleProgressUpdate will be called again.
+                return@withPlayer
+            }
+            progressUpdateHandler.postDelayed(PROGRESS_UPDATE_INTERVAL) {
+                scheduleProgressUpdate()
+            }
+        }
+    }
+
+    private fun skipDisabledCueOnPlayerThread() {
+        val currentItem = currentMediaItem ?: return
+        val track = currentItem.toTrack() ?: return
+        val currentSec = player.currentPosition / 1000
+
+        val cues = CueListCache.getCueList(applicationContext, track.mediaStoreId)
+        val activeCueIndex = cues.indexOfLast { it.timestamp <= currentSec }
+        if (activeCueIndex != -1) {
+            val currentCue = cues[activeCueIndex]
+            if (!currentCue.enabled) {
+                val nextEnabledCue = cues.subList(activeCueIndex + 1, cues.size).firstOrNull { it.enabled }
+                if (nextEnabledCue != null) {
+                    player.seekTo(nextEnabledCue.timestamp * 1000L)
+                }
+            }
+        }
+    }
+
     internal fun withPlayer(callback: SimpleMusicPlayer.() -> Unit) = playerHandler.post { callback(player) }
 
     private fun showNoPermissionNotification() {
@@ -117,6 +153,7 @@ class PlaybackService : MediaLibraryService(), MediaSessionService.Listener {
 
     companion object {
         // Initializing a media controller might take a noticeable amount of time thus we expose current playback info here to keep things as quick as possible.
+        const val PROGRESS_UPDATE_INTERVAL = 500L
         var isPlaying: Boolean = false
             private set
         var currentMediaItem: MediaItem? = null
