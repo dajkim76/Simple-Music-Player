@@ -22,7 +22,7 @@ class CueAdapter(
 
     var cues: List<Cue> = emptyList()
     private var mediaStoreId: Long = 0
-    private var isNoCueTitle = false
+    var isNoCueTitle = false
     private var currentCueIndex: Int = -1
     private val properTextColor = activity.getProperTextColor()
     private val primaryColor = activity.getProperPrimaryColor()

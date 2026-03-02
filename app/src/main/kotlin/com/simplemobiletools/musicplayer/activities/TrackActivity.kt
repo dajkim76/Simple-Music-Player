@@ -198,19 +198,20 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
         activityTrackToggleShuffle.setOnClickListener { withPlayer { toggleShuffle() } }
         activityTrackPrevious.setOnClickListener {
             val adapter = cueAdapter
-            if (adapter != null && adapter.cues.isNotEmpty()) {
+            if (adapter != null && !adapter.isNoCueTitle && adapter.cues.isNotEmpty()) {
                 withPlayer {
                     val currentSec = currentPosition.milliseconds.inWholeSeconds.toInt()
                     // Find the previous enabled cue. If we are just a few seconds into the current cue, go to the one before it.
-                    val activeCueIndex = adapter.cues.indexOfLast { it.timestamp <= currentSec }
-                    val targetIndex = if (activeCueIndex > 0 && currentSec - adapter.cues[activeCueIndex].timestamp < 3) {
-                        adapter.cues.subList(0, activeCueIndex).indexOfLast { it.enabled }
+                    val cues = adapter.cues.filter { it.enabled }
+                    val activeCueIndex = cues.indexOfLast { it.timestamp <= currentSec }
+                    val targetIndex = if (activeCueIndex >= 0 && currentSec - cues[activeCueIndex].timestamp < 3) {
+                        activeCueIndex - 1
                     } else {
                         activeCueIndex
                     }
 
-                    if (targetIndex != -1) {
-                        seekTo(adapter.cues[targetIndex].timestamp * 1000L)
+                    if (targetIndex >= 0) {
+                        seekTo(cues[targetIndex].timestamp * 1000L)
                     } else {
                         forceSeekToPrevious()
                     }
@@ -224,10 +225,10 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
         activityTrackSeekForward.setOnClickListener { withPlayer { seekForward() } }
         activityTrackNext.setOnClickListener {
             val adapter = cueAdapter
-            if (adapter != null && adapter.cues.isNotEmpty()) {
+            if (adapter != null && !adapter.isNoCueTitle && adapter.cues.isNotEmpty()) {
                 withPlayer {
                     val currentSec = currentPosition.milliseconds.inWholeSeconds.toInt()
-                    val nextEnabledCue = adapter.cues.filter { it.enabled && it.timestamp > currentSec }.firstOrNull()
+                    val nextEnabledCue = adapter.cues.firstOrNull { it.enabled && it.timestamp > currentSec }
                     if (nextEnabledCue != null) {
                         seekTo(nextEnabledCue.timestamp * 1000L)
                     } else {

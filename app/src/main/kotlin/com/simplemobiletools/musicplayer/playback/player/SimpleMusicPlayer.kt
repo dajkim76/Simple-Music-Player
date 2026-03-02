@@ -1,5 +1,6 @@
 package com.simplemobiletools.musicplayer.playback.player
 
+import android.util.Log
 import androidx.media3.common.ForwardingPlayer
 import androidx.media3.common.MediaItem
 import androidx.media3.common.MediaMetadata
@@ -118,16 +119,19 @@ class SimpleMusicPlayer(private val exoPlayer: ExoPlayer) : ForwardingPlayer(exo
         if (cues.isEmpty()) return false
 
         val activeCueIndex = cues.indexOfLast { it.timestamp <= currentSec }
-        return if (activeCueIndex != -1) {
-            val currentCue = cues[activeCueIndex]
-            val targetIndex = if (currentSec - currentCue.timestamp < 3 && activeCueIndex > 0) {
+        return if (activeCueIndex >= 0) {
+            val targetIndex = if (currentSec - cues[activeCueIndex].timestamp < 3) {
                 activeCueIndex - 1
             } else {
                 activeCueIndex
             }
-            
-            seekTo(cues[targetIndex].timestamp * 1000L)
-            true
+
+            return if (targetIndex >= 0) {
+                seekTo(cues[targetIndex].timestamp * 1000L)
+                true
+            } else {
+                false
+            }
         } else {
             false
         }
