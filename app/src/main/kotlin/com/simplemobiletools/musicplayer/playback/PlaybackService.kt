@@ -33,14 +33,6 @@ class PlaybackService : MediaLibraryService(), MediaSessionService.Listener {
     internal lateinit var mediaItemProvider: MediaItemProvider
 
     internal var currentRoot = ""
-    private var lastCueTitle: String? = null
-    private val cueUpdateHandler = Handler(Looper.getMainLooper())
-    private val cueUpdateRunnable = object : Runnable {
-        override fun run() {
-            updateCueMetadata()
-            cueUpdateHandler.postDelayed(this, 1000L)
-        }
-    }
 
     private val bluetoothReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
@@ -60,43 +52,17 @@ class PlaybackService : MediaLibraryService(), MediaSessionService.Listener {
 
         val filter = IntentFilter(BluetoothDevice.ACTION_ACL_CONNECTED)
         registerReceiver(bluetoothReceiver, filter)
-        cueUpdateHandler.post(cueUpdateRunnable)
     }
 
     override fun onGetSession(controllerInfo: MediaSession.ControllerInfo) = mediaSession
 
     override fun onDestroy() {
         super.onDestroy()
-        cueUpdateHandler.removeCallbacks(cueUpdateRunnable)
         unregisterReceiver(bluetoothReceiver)
         releaseMediaSession()
         clearListener()
         stopSleepTimer()
         SimpleEqualizer.release()
-    }
-
-    private fun updateCueMetadata() {
-        withPlayer {
-            if (!isPlaying) return@withPlayer
-            val currentItem = currentMediaItem ?: return@withPlayer
-            val track = currentItem.toTrack() ?: return@withPlayer
-            val currentSec = currentPosition / 1000
-
-            val cues = CueListCache.getCueList(applicationContext, track.mediaStoreId)
-            val currentCue = cues.lastOrNull { it.enabled && it.timestamp <= currentSec }
-            val displayTitle = currentCue?.title ?: track.title
-
-            if (displayTitle != lastCueTitle) {
-                lastCueTitle = displayTitle
-                val newMetadata = currentItem.mediaMetadata.buildUpon()
-                    .setTitle(displayTitle)
-                    .build()
-
-                overriddenMetadata = newMetadata
-                player.playlistMetadata = newMetadata
-                mediaSession.setCustomLayout(getCustomLayout())
-            }
-        }
     }
 
     fun stopService() {

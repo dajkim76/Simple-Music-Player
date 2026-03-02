@@ -19,19 +19,8 @@ class SimpleMusicPlayer(private val exoPlayer: ExoPlayer) : ForwardingPlayer(exo
 
     private var seekToNextCount = 0
     private var seekToPreviousCount = 0
-    var overriddenMetadata: MediaMetadata? = null
-
     private val scope = CoroutineScope(Dispatchers.Default)
     private var seekJob: Job? = null
-
-    override fun getMediaMetadata(): MediaMetadata {
-        return overriddenMetadata ?: super.getMediaMetadata()
-    }
-
-    // This ensures that when we skip to next/prev track, the custom title is cleared
-    fun clearOverriddenMetadata() {
-        overriddenMetadata = null
-    }
 
     /**
      * The default implementation only advertises the seek to next and previous item in the case
