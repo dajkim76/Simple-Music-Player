@@ -15,6 +15,7 @@ import android.provider.MediaStore
 import android.util.Log
 import android.util.Size
 import android.view.GestureDetector
+import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.widget.SeekBar
@@ -43,10 +44,11 @@ import com.google.gson.Gson
 import com.simplemobiletools.commons.extensions.*
 import com.simplemobiletools.commons.helpers.MEDIUM_ALPHA
 import com.simplemobiletools.commons.helpers.ensureBackgroundThread
+import com.simplemobiletools.musicplayer.BuildConfig
 import com.simplemobiletools.musicplayer.R
 import com.simplemobiletools.musicplayer.adapters.CueAdapter
-import com.simplemobiletools.musicplayer.BuildConfig
 import com.simplemobiletools.musicplayer.databinding.ActivityTrackBinding
+import com.simplemobiletools.musicplayer.databinding.InputCueTextBinding
 import com.simplemobiletools.musicplayer.extensions.*
 import com.simplemobiletools.musicplayer.fragments.PlaybackSpeedFragment
 import com.simplemobiletools.musicplayer.helpers.CueListCache
@@ -593,20 +595,15 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
         ensureBackgroundThread {
             val currentCuesJson = cuesJson?: audioHelper.getTrackCue(track.mediaStoreId)
             runOnUiThread {
-                val editText = androidx.appcompat.widget.AppCompatEditText(this)
+                val binding = InputCueTextBinding.inflate(LayoutInflater.from(this))
+                val editText = binding.editText
                 editText.setText(CueListHelper.cueJsonToText(currentCuesJson))
                 editText.setTextColor(getProperTextColor())
                 editText.setHintTextColor(getProperTextColor().adjustAlpha(0.5f))
-                editText.background = null
-                editText.minLines = 5
-                editText.gravity = android.view.Gravity.TOP
-                val padding = resources.getDimensionPixelSize(com.simplemobiletools.commons.R.dimen.activity_margin)
-                editText.setPadding(padding, padding, padding, padding)
 
-                androidx.appcompat.app.AlertDialog.Builder(this)
+                AlertDialog.Builder(this)
                     .setTitle(R.string.youtube_timestamp_text)
-                    .setMessage(R.string.cue_not_playable_desc)
-                    .setView(editText)
+                    .setView(binding.root)
                     .setPositiveButton(com.simplemobiletools.commons.R.string.ok) { _, _ ->
                         val newCueJson = CueListHelper.getCueJsonFromText(editText.text.toString())
                         CueListCache.updateCueJson(track.mediaStoreId, newCueJson)
