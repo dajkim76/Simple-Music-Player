@@ -17,7 +17,7 @@ import com.simplemobiletools.musicplayer.R
 class CueAdapter(
     private val activity: SimpleActivity,
     private val itemClick: (Cue) -> Unit,
-    private val itemUpdated: (List<Cue>) -> Unit
+    private val itemUpdated: (mediaStoreId:Long, updatedCues: List<Cue>) -> Unit
 ) : RecyclerView.Adapter<CueAdapter.ViewHolder>() {
 
     var cues: List<Cue> = emptyList()
@@ -117,7 +117,7 @@ class CueAdapter(
                         newCues[position] = cue.copy(enabled = !cue.enabled)
                         cues = newCues
                         notifyItemChanged(position)
-                        itemUpdated(cues)
+                        itemUpdated(mediaStoreId, newCues)
                     }
                 }
                 true

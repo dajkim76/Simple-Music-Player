@@ -557,10 +557,10 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
                                 if(!isPlaying) play()
                                 seekTo(cue.timestamp * 1000L)
                             }
-                        }, { updatedCues ->
-                            CueListCache.updateCueList(track.mediaStoreId, updatedCues)
+                        }, { mediaStoreId, updatedCues ->
+                            CueListCache.updateCueList(mediaStoreId, updatedCues)
                             ensureBackgroundThread {
-                                audioHelper.updateTrackCue(track.mediaStoreId, Gson().toJson(updatedCues))
+                                audioHelper.updateTrackCue(mediaStoreId, Gson().toJson(updatedCues))
                             }
                         })
                         binding.activityTrackCuesList.apply {
