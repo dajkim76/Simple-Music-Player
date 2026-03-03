@@ -57,7 +57,7 @@ class NotificationHelper(private val context: Context) {
     fun cancel(id: Int) = notificationManager.cancel(id)
 
     private fun getContentIntent(): PendingIntent {
-        val contentIntent = Intent(context, MainActivity::class.java)
+        val contentIntent = context.packageManager.getLaunchIntentForPackage(context.packageName) ?: Intent(context, MainActivity::class.java)
         return PendingIntent.getActivity(context, 0, contentIntent, FLAG_IMMUTABLE)
     }
 

@@ -7,13 +7,12 @@ import android.content.Context
 import android.content.Intent
 import android.os.Handler
 import android.os.HandlerThread
-import android.util.Log
 import androidx.media3.common.AudioAttributes
 import androidx.media3.common.C
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.session.MediaLibraryService
-import com.simplemobiletools.musicplayer.activities.MainActivity
+import com.simplemobiletools.musicplayer.activities.SplashActivity
 import com.simplemobiletools.musicplayer.extensions.broadcastUpdateWidgetState
 import com.simplemobiletools.musicplayer.extensions.config
 import com.simplemobiletools.musicplayer.extensions.currentMediaItems
@@ -78,10 +77,11 @@ private fun PlaybackService.initializePlayer(handleAudioFocus: Boolean, handleAu
 }
 
 private fun Context.getSessionActivityIntent(): PendingIntent {
+    val intent = packageManager.getLaunchIntentForPackage(packageName) ?: Intent(this, SplashActivity::class.java)
     return PendingIntent.getActivity(
         this,
         0,
-        Intent(this, MainActivity::class.java),
+        intent,
         PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
     )
 }

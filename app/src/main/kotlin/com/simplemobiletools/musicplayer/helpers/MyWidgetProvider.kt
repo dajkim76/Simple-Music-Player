@@ -8,7 +8,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import android.os.Bundle
-import android.util.Log
 import android.widget.RemoteViews
 import androidx.media3.common.MediaMetadata
 import androidx.media3.session.MediaController
@@ -16,6 +15,7 @@ import com.simplemobiletools.commons.extensions.applyColorFilter
 import com.simplemobiletools.commons.extensions.getColoredBitmap
 import com.simplemobiletools.commons.extensions.getLaunchIntent
 import com.simplemobiletools.musicplayer.R
+import com.simplemobiletools.musicplayer.activities.MainActivity
 import com.simplemobiletools.musicplayer.activities.SplashActivity
 import com.simplemobiletools.musicplayer.extensions.config
 import com.simplemobiletools.musicplayer.extensions.maybePreparePlayer
@@ -93,7 +93,7 @@ class MyWidgetProvider : AppWidgetProvider() {
     }
 
     private fun setupAppOpenIntent(context: Context, views: RemoteViews, id: Int) {
-        val intent = context.getLaunchIntent() ?: Intent(context, SplashActivity::class.java)
+        val intent = context.packageManager.getLaunchIntentForPackage(context.packageName) ?: Intent(context, MainActivity::class.java)
         val pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_IMMUTABLE)
         views.setOnClickPendingIntent(id, pendingIntent)
     }
