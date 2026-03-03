@@ -44,6 +44,7 @@ const val EXTRA_ORDER_IN_PLAYLIST = "order_in_playlist"
 const val EXTRA_FLAGS = "flags"
 const val EXTRA_NEXT_MEDIA_ID = "EXTRA_NEXT_MEDIA_ID"
 const val EXTRA_SHUFFLE_INDICES = "EXTRA_SHUFFLE_INDICES"
+const val EXTRA_CUE_TITLE = "EXTRA_CUE_TITLE"
 
 // shared preferences
 const val SHUFFLE = "shuffle"

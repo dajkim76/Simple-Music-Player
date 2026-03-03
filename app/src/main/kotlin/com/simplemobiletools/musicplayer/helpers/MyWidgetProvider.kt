@@ -8,6 +8,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import android.os.Bundle
+import android.util.Log
 import android.widget.RemoteViews
 import androidx.media3.common.MediaMetadata
 import androidx.media3.session.MediaController
@@ -27,13 +28,13 @@ class MyWidgetProvider : AppWidgetProvider() {
         performUpdate(context)
     }
 
-    private fun performUpdate(context: Context) {
+    private fun performUpdate(context: Context, cueTitle:String? = null) {
         val appWidgetManager = AppWidgetManager.getInstance(context) ?: return
         appWidgetManager.getAppWidgetIds(getComponentName(context)).forEach {
             val views = getRemoteViews(appWidgetManager, context, it)
             updateColors(context, views)
             setupButtons(context, views)
-            updateSongInfo(views, PlaybackService.currentMediaItem?.mediaMetadata)
+            updateSongInfo(views, PlaybackService.currentMediaItem?.mediaMetadata, cueTitle)
             updatePlayPauseButton(context, views, PlaybackService.isPlaying)
             appWidgetManager.updateAppWidget(it, views)
         }
@@ -43,7 +44,7 @@ class MyWidgetProvider : AppWidgetProvider() {
 
     override fun onReceive(context: Context, intent: Intent) {
         when (val action = intent.action) {
-            TRACK_STATE_CHANGED -> performUpdate(context)
+            TRACK_STATE_CHANGED -> performUpdate(context, intent.getStringExtra(EXTRA_CUE_TITLE))
             PREVIOUS, PLAYPAUSE, NEXT -> handlePlayerControls(context, action)
             else -> super.onReceive(context, intent)
         }
@@ -97,9 +98,9 @@ class MyWidgetProvider : AppWidgetProvider() {
         views.setOnClickPendingIntent(id, pendingIntent)
     }
 
-    private fun updateSongInfo(views: RemoteViews, currSong: MediaMetadata?) {
+    private fun updateSongInfo(views: RemoteViews, currSong: MediaMetadata?, cueTitle: String?) {
         if (currSong != null) {
-            views.setTextViewText(R.id.song_info_title, currSong.title)
+            views.setTextViewText(R.id.song_info_title, cueTitle ?: currSong.title)
             views.setTextViewText(R.id.song_info_artist, currSong.artist)
         }
     }

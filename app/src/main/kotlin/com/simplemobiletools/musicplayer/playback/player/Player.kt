@@ -7,6 +7,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Handler
 import android.os.HandlerThread
+import android.util.Log
 import androidx.media3.common.AudioAttributes
 import androidx.media3.common.C
 import androidx.media3.common.util.UnstableApi
@@ -88,7 +89,7 @@ private fun Context.getSessionActivityIntent(): PendingIntent {
 internal fun PlaybackService.updatePlaybackState() {
     withPlayer {
         updatePlaybackInfo(player)
-        broadcastUpdateWidgetState()
+        broadcastUpdateWidgetState(lastCueTitle)
         val currentMediaItem = currentMediaItem
         if (currentMediaItem != null) {
             mediaItemProvider.saveRecentItemsWithStartPosition(

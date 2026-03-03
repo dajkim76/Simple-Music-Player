@@ -8,6 +8,7 @@ import android.content.IntentFilter
 import android.os.Handler
 import android.os.HandlerThread
 import android.os.Looper
+import android.util.Log
 import androidx.annotation.OptIn
 import androidx.core.os.postDelayed
 import androidx.media3.common.*
@@ -33,6 +34,7 @@ class PlaybackService : MediaLibraryService(), MediaSessionService.Listener {
     internal lateinit var mediaItemProvider: MediaItemProvider
 
     internal var currentRoot = ""
+    internal var lastCueTitle:String? = null
 
     private var progressUpdateHandler = Handler(Looper.getMainLooper())
     private val bluetoothReceiver = object : BroadcastReceiver() {
@@ -115,6 +117,13 @@ class PlaybackService : MediaLibraryService(), MediaSessionService.Listener {
         val currentSec = player.currentPosition / 1000
 
         val cues = CueListCache.getCueList(applicationContext, track.mediaStoreId)
+        if (cues.isEmpty() || cues.all { !it.enabled }) {
+            if (lastCueTitle != null) {
+                lastCueTitle = null
+                broadcastUpdateWidgetState(null)
+            }
+            return
+        }
         val activeCueIndex = cues.indexOfLast { it.timestamp <= currentSec }
         if (activeCueIndex != -1) {
             val currentCue = cues[activeCueIndex]
@@ -122,6 +131,11 @@ class PlaybackService : MediaLibraryService(), MediaSessionService.Listener {
                 val nextEnabledCue = cues.subList(activeCueIndex + 1, cues.size).firstOrNull { it.enabled }
                 if (nextEnabledCue != null) {
                     player.seekTo(nextEnabledCue.timestamp * 1000L)
+                }
+            } else {
+                if (lastCueTitle != currentCue.title) {
+                    lastCueTitle = currentCue.title
+                    broadcastUpdateWidgetState(currentCue.title)
                 }
             }
         }
