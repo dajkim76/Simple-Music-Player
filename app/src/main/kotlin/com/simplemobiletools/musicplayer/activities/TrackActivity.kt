@@ -40,7 +40,6 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import com.simplemobiletools.commons.extensions.*
 import com.simplemobiletools.commons.helpers.MEDIUM_ALPHA
 import com.simplemobiletools.commons.helpers.ensureBackgroundThread
@@ -51,6 +50,7 @@ import com.simplemobiletools.musicplayer.databinding.ActivityTrackBinding
 import com.simplemobiletools.musicplayer.extensions.*
 import com.simplemobiletools.musicplayer.fragments.PlaybackSpeedFragment
 import com.simplemobiletools.musicplayer.helpers.CueListCache
+import com.simplemobiletools.musicplayer.helpers.CueListHelper
 import com.simplemobiletools.musicplayer.helpers.PlaybackSetting
 import com.simplemobiletools.musicplayer.helpers.SEEK_INTERVAL_S
 import com.simplemobiletools.musicplayer.interfaces.PlaybackSpeedListener
@@ -594,7 +594,7 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
             val currentCuesJson = cuesJson?: audioHelper.getTrackCue(track.mediaStoreId)
             runOnUiThread {
                 val editText = androidx.appcompat.widget.AppCompatEditText(this)
-                editText.setText(cuesToText(currentCuesJson))
+                editText.setText(CueListHelper.cueJsonToText(currentCuesJson))
                 editText.setTextColor(getProperTextColor())
                 editText.setHintTextColor(getProperTextColor().adjustAlpha(0.5f))
                 editText.background = null
@@ -605,9 +605,10 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
 
                 androidx.appcompat.app.AlertDialog.Builder(this)
                     .setTitle(R.string.youtube_timestamp_text)
+                    .setMessage(R.string.cue_not_playable_desc)
                     .setView(editText)
                     .setPositiveButton(com.simplemobiletools.commons.R.string.ok) { _, _ ->
-                        val newCueJson = parseCueText(editText.text.toString())
+                        val newCueJson = CueListHelper.getCueJsonFromText(editText.text.toString())
                         CueListCache.updateCueJson(track.mediaStoreId, newCueJson)
                         ensureBackgroundThread {
                             audioHelper.updateTrackCue(track.mediaStoreId, newCueJson)
@@ -737,7 +738,7 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
 
             var cuesJson = ""
             if (chapterList.isNotEmpty()) {
-                cuesJson = parseCueText(chapterList.joinToString("\n"))
+                cuesJson = CueListHelper.getCueJsonFromText(chapterList.joinToString("\n"))
             }
             val linkList = mutableListOf<String>()
             val sb = StringBuilder()
@@ -751,15 +752,15 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
                 val links = extractYoutubeLinks(value)
                 links.forEach { if (!linkList.contains(it)) linkList.add(it) }
                 if (cuesJson.isEmpty() && (key == "description" || key == "synopsis" || key == "comment")) {
-                    cuesJson = parseCueText(value)
+                    cuesJson = CueListHelper.getCueJsonFromText(value)
                 }
             }
 
             if (cuesJson.isNotEmpty()) {
                 if (chapterList.isNotEmpty()) {
-                    sb.append("CHAPTER:\n").append(cuesToText(cuesJson))
+                    sb.append("CHAPTER:\n").append(CueListHelper.cueJsonToText(cuesJson))
                 } else {
-                    sb.append("CUE:\n").append(cuesToText(cuesJson))
+                    sb.append("CUE:\n").append(CueListHelper.cueJsonToText(cuesJson))
                 }
             }
 
@@ -861,51 +862,6 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
         } else {
             // 시간이 없을 경우 "mm:ss"
             String.format("%02d:%02d", minutes, seconds)
-        }
-    }
-
-    private fun parseCueText(text: String): String {
-        val cues = mutableListOf<Cue>()
-        val lines = text.split("\n")
-        for (line in lines) {
-            val match = Regex("""(\d{1,2}:)?(\d{1,2}):(\d{1,2})""").find(line)
-            if (match != null) {
-                val timeGroups = match.groupValues
-                val hours = if (timeGroups[1].isNotEmpty()) timeGroups[1].replace(":", "").toInt() else 0
-                val minutes = timeGroups[2].toInt()
-                val seconds = timeGroups[3].toInt()
-                val timestamp = hours * 3600 + minutes * 60 + seconds
-                val title = line.replace(match.value, "")
-                    .trim()
-                    .removePrefix("()").removeSuffix("()")
-                    .removePrefix("[]").removeSuffix("[]")
-                    .removePrefix("{}").removeSuffix("{}")
-                    .removePrefix("<>").removeSuffix("<>")
-                    .trim(' ', '-', '–', '—', '~', '•', '♪', '▶', ':', '\u200B')
-                cues.add(Cue(timestamp, title, enabled = true))
-            }
-        }
-        if (cues.isEmpty()) return ""
-        return Gson().toJson(cues.sortedBy { it.timestamp })
-    }
-
-    private fun cuesToText(cueJson: String): String {
-        if (cueJson.isEmpty()) return ""
-        return try {
-            val type = object : TypeToken<List<Cue>>() {}.type
-            val cues: List<Cue> = Gson().fromJson(cueJson, type)
-            cues.joinToString("\n") { cue ->
-                val h = cue.timestamp / 3600
-                val m = (cue.timestamp % 3600) / 60
-                val s = cue.timestamp % 60
-                if (h > 0) {
-                    String.format("%02d:%02d:%02d %s", h, m, s, cue.title)
-                } else {
-                    String.format("%02d:%02d %s", m, s, cue.title)
-                }
-            }
-        } catch (e: Exception) {
-            ""
         }
     }
 }

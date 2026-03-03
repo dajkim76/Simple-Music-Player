@@ -8,4 +8,5 @@
     <string name="make_cue_list">Make Cue List</string>
     <string name="not_playing">Not playing</string>
     <string name="playable">Playable</string>
+    <string name="cue_not_playable_desc">"If the track name starts with '@', it will not play."</string>
 </resources>
