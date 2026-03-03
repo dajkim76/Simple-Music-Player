@@ -72,7 +72,7 @@ class PlaylistsFragment(context: Context, attributeSet: AttributeSet) : MyViewPa
                         binding.playlistsList.scheduleLayoutAnimation()
                     }
                 } else {
-                    (adapter as PlaylistsAdapter).updateItems(playlists)
+                    (adapter as PlaylistsAdapter).updateItems(playlists, forceUpdate = true)
                 }
             }
         }

@@ -91,6 +91,7 @@ class PlaylistsAdapter(
             context.runOnUiThread {
                 finishActMode()
             }
+            EventBus.getDefault().post(Events.PlaylistsUpdated())
         }
     }
 
