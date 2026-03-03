@@ -33,7 +33,7 @@
             android:gravity="center"
             android:lines="1"
             android:textColor="@android:color/white"
-            android:textSize="@dimen/big_text_size"
+            android:textSize="@dimen/smaller_text_size"
             tools:text="@string/title" />
 
         <TextView
@@ -47,7 +47,7 @@
             android:gravity="center"
             android:lines="1"
             android:textColor="@android:color/white"
-            android:textSize="@dimen/bigger_text_size"
+            android:textSize="@dimen/normal_text_size"
             tools:text="@string/artist" />
     </RelativeLayout>
 
