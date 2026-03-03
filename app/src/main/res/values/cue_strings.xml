@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="youtube_timestamp_text">Youtube timestamp text</string>
+    <string name="youtube_timestamp_info">The YouTube timestamp feature allows you to automatically create song list by copying and pasting timestamp text from YouTube comments.\n\nWould you like to check the source code for this feature?</string>
+    <string name="source_code">Source code</string>
     <string name="no_cue">No Cue</string>
     <string name="youtube_meta_data">Youtube meta data</string>
     <string name="all_data">All Data</string>

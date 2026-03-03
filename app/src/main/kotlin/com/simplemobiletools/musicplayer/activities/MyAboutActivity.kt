@@ -41,6 +41,8 @@ import com.simplemobiletools.commons.extensions.*
 import com.simplemobiletools.commons.helpers.*
 import com.simplemobiletools.commons.models.FAQItem
 
+const private val MY_EMAIL = "kimdaejeong@gmail.com"
+
 class MyAboutActivity : ComponentActivity() {
     private val appName get() = intent.getStringExtra(APP_NAME) ?: ""
 
@@ -62,6 +64,7 @@ class MyAboutActivity : ComponentActivity() {
                 val showExternalLinks = remember { !resources.getBoolean(R.bool.hide_all_external_links) }
                 val showGoogleRelations = remember { !resources.getBoolean(R.bool.hide_google_relations) }
                 val onEmailClickAlertDialogState = getOnEmailClickAlertDialogState()
+                val youtubeTimestampAlertDialogState = getYoutubeTimestampAlertDialogState()
                 val rateStarsAlertDialogState = getRateStarsAlertDialogState()
                 val onRateUsClickAlertDialogState = getOnRateUsClickAlertDialogState(rateStarsAlertDialogState::show)
                 AboutScreen(
@@ -81,7 +84,7 @@ class MyAboutActivity : ComponentActivity() {
                             showDonate = resources.getBoolean(R.bool.show_donate_in_about) && showExternalLinks,
                             onDonateClick = ::onDonateClick,
                             showInvite = showHelpUsSection,
-                            showRateUs = showHelpUsSection
+                            showRateUs = false /* Disable App rating */
                         )
                     },
                     aboutSection = {
@@ -89,7 +92,7 @@ class MyAboutActivity : ComponentActivity() {
                         if (!showExternalLinks || setupFAQ) {
                             AboutSection(setupFAQ = setupFAQ, onFAQClick = ::launchFAQActivity, onEmailClick = {
                                 onEmailClick(onEmailClickAlertDialogState::show)
-                            })
+                            }, onYoutubeTimestampClick = youtubeTimestampAlertDialogState::show)
                         }
                     },
                     socialSection = {
@@ -185,6 +188,24 @@ class MyAboutActivity : ComponentActivity() {
             }
         }
 
+    @Composable
+    private fun getYoutubeTimestampAlertDialogState() =
+        rememberAlertDialogState().apply {
+            DialogMember {
+                ConfirmationAdvancedAlertDialog(
+                    alertDialogState = this,
+                    message = stringResource(id = com.simplemobiletools.musicplayer.R.string.youtube_timestamp_info),
+                    messageId = null,
+                    positive = com.simplemobiletools.musicplayer.R.string.source_code,
+                    negative = com.simplemobiletools.commons.R.string.cancel
+                ) { success ->
+                    if (success) {
+                        launchViewIntent("https://github.com/dajkim76/Simple-Music-Player")
+                    }
+                }
+            }
+        }
+
     private fun onEmailClick(
         showConfirmationAdvancedDialog: () -> Unit
     ) {
@@ -214,7 +235,7 @@ class MyAboutActivity : ComponentActivity() {
         val body = "$appVersion$newline$deviceOS$newline$separator$newline$newline"
 
         val address = if (packageName.startsWith("com.simplemobiletools")) {
-            getString(R.string.my_email)
+            MY_EMAIL
         } else {
             getString(R.string.my_fake_email)
         }
@@ -456,7 +477,8 @@ internal fun OtherSection(
 internal fun AboutSection(
     setupFAQ: Boolean,
     onFAQClick: () -> Unit,
-    onEmailClick: () -> Unit
+    onEmailClick: () -> Unit,
+    onYoutubeTimestampClick: () -> Unit
 ) {
     SettingsGroup(title = {
         SettingsTitleTextComponent(text = stringResource(id = R.string.support), modifier = startingTitlePadding)
@@ -468,9 +490,15 @@ internal fun AboutSection(
                 icon = R.drawable.ic_question_mark_vector
             )
         }
+        // Youtube timestamp text
+        TwoLinerTextItem(
+            click = onYoutubeTimestampClick,
+            text = stringResource(id = com.simplemobiletools.musicplayer.R.string.youtube_timestamp_text),
+            icon = R.drawable.ic_info_vector
+        )
         TwoLinerTextItem(
             click = onEmailClick,
-            text = stringResource(id = R.string.my_email),
+            text = MY_EMAIL,
             icon = R.drawable.ic_mail_vector
         )
         SettingsHorizontalDivider()
@@ -560,7 +588,7 @@ private fun AboutScreenPreview() {
                 )
             },
             aboutSection = {
-                AboutSection(setupFAQ = true, onFAQClick = {}, onEmailClick = {})
+                AboutSection(setupFAQ = true, onFAQClick = {}, onEmailClick = {}, onYoutubeTimestampClick = {})
             },
             socialSection = {
                 SocialSection(
