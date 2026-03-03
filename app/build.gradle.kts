@@ -48,6 +48,11 @@ android {
     buildFeatures {
         viewBinding = true
         buildConfig = true
+        compose = true
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.5.14"
     }
 
     buildTypes {
@@ -124,7 +129,13 @@ dependencies {
     implementation(libs.m3u.parser)
     implementation(libs.autofittextview)
     implementation(libs.jaudiotagger)
+    implementation(libs.androidx.compose.ui.text)
     coreLibraryDesugaring(libs.desugar.jdk.libs)
+
+    implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.bundles.compose)
+    implementation(libs.androidx.lifecycle.runtime.ktx)
+    debugImplementation(libs.androidx.ui.tooling)
 
     implementation(libs.bundles.room)
     ksp(libs.androidx.room.compiler)
