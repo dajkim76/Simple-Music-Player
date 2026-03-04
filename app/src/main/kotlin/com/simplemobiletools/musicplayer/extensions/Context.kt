@@ -237,17 +237,13 @@ fun Context.loadTrackCoverArt(track: Track?): Bitmap? {
     return null
 }
 
-fun Context.getTrackFileArt(track: Track?, callback: (coverArt: Any?) -> Unit) {
+fun Context.getTrackFileArt(track: Track, callback: (coverArt: Any?) -> Unit) {
     if (BuildConfig.DEBUG) {
         if (Looper.myLooper() != Looper.getMainLooper()) {
             throw RuntimeException("getTrackFileArt() Must be call from MainThread")
         }
     }
 
-    val track = track ?: run {
-        callback(null)
-        return
-    }
     val mediaStoreId = track.mediaStoreId
     val trackFileArtCache = TrackFileArtCache.getInstance(this)
 

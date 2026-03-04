@@ -12,9 +12,9 @@
         android:id="@+id/cue_timestamp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingStart="@dimen/medium_margin"
+        android:layout_gravity="center_vertical"
         android:paddingEnd="@dimen/medium_margin"
-        android:textSize="13sp"
+        android:textSize="@dimen/smaller_text_size"
         android:typeface="monospace"
         tools:text="01:23" />
 

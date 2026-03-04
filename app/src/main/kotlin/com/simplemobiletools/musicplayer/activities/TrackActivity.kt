@@ -272,14 +272,14 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
         binding.nextTrackLabel.text = "${getString(R.string.next_track)} ${track.title}$artist"
 
         getTrackFileArt(track) { coverArt ->
-            val cornerRadius = resources.getDimension(com.simplemobiletools.commons.R.dimen.rounded_corner_radius_small).toInt()
-            val wantedSize = resources.getDimension(R.dimen.song_image_size).toInt()
-
             // reduce thread overhead
             if (coverArt is Bitmap) {
                 binding.nextTrackImage.setImageBitmap(coverArt)
                 return@getTrackFileArt
             }
+
+            val cornerRadius = resources.getDimension(com.simplemobiletools.commons.R.dimen.rounded_corner_radius_small).toInt()
+            val wantedSize = resources.getDimension(R.dimen.song_image_size).toInt()
 
             // change cover image manually only once loaded successfully to avoid blinking at fails and placeholders
             loadGlideResource(
@@ -302,15 +302,15 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
 
     private fun setupTopArt(track: Track) {
         getTrackFileArt(track) { coverArt ->
-            var wantedHeight = resources.getCoverArtHeight()
-            wantedHeight = min(wantedHeight, realScreenSize.y / 2)
-            val wantedWidth = realScreenSize.x
-
             // reduce thread overhead
             if (coverArt is Bitmap) {
                 binding.activityTrackImage.setImageBitmap(coverArt)
                 return@getTrackFileArt
             }
+
+            var wantedHeight = resources.getCoverArtHeight()
+            wantedHeight = min(wantedHeight, realScreenSize.y / 2)
+            val wantedWidth = realScreenSize.x
 
             // change cover image manually only once loaded successfully to avoid blinking at fails and placeholders
             loadGlideResource(
