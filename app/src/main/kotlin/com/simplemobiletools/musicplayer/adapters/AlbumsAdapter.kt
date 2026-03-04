@@ -81,6 +81,8 @@ class AlbumsAdapter(activity: BaseSimpleActivity, items: ArrayList<Album>, recyc
         ItemAlbumBinding.bind(view).apply {
             root.setupViewBackground(context)
             albumFrame.isSelected = selectedKeys.contains(album.hashCode())
+            albumArtist.text = album.artist
+            albumArtist.setTextColor(textColor)
             albumTitle.text = if (textToHighlight.isEmpty()) album.title else album.title.highlightTextPart(textToHighlight, properPrimaryColor)
             albumTitle.setTextColor(textColor)
 

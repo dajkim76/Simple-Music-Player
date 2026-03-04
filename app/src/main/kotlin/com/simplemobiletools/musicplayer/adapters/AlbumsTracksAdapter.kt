@@ -139,6 +139,8 @@ class AlbumsTracksAdapter(
             albumFrame.isSelected = selectedKeys.contains(album.hashCode())
             albumTitle.text = album.title
             albumTitle.setTextColor(textColor)
+            albumArtist.text = album.artist
+            albumArtist.setTextColor(textColor)
             albumTracks.text = resources.getQuantityString(R.plurals.tracks_plural, album.trackCnt, album.trackCnt)
             albumTracks.setTextColor(textColor)
 
