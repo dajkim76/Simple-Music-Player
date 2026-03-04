@@ -54,7 +54,7 @@ class CurrentTrackBar(context: Context, attributeSet: AttributeSet) : RelativeLa
             .error(currentTrackPlaceholder)
             .transform(CenterCrop(), RoundedCorners(cornerRadius))
 
-        context.getTrackCoverArt(track) { coverArt ->
+        context.getTrackFileArt(track) { coverArt ->
             (context as? Activity)?.ensureActivityNotDestroyed {
                 Glide.with(this)
                     .load(coverArt)

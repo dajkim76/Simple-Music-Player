@@ -19,7 +19,10 @@ import com.simplemobiletools.commons.views.MyRecyclerView
 import com.simplemobiletools.musicplayer.R
 import com.simplemobiletools.musicplayer.databinding.ItemTrackBinding
 import com.simplemobiletools.musicplayer.dialogs.EditDialog
-import com.simplemobiletools.musicplayer.extensions.*
+import com.simplemobiletools.musicplayer.extensions.audioHelper
+import com.simplemobiletools.musicplayer.extensions.config
+import com.simplemobiletools.musicplayer.extensions.getTrackFileArt
+import com.simplemobiletools.musicplayer.extensions.swap
 import com.simplemobiletools.musicplayer.helpers.ALL_TRACKS_PLAYLIST_ID
 import com.simplemobiletools.musicplayer.helpers.PLAYER_SORT_BY_CUSTOM
 import com.simplemobiletools.musicplayer.inlines.indexOfFirstOrNull
@@ -198,7 +201,7 @@ class TracksAdapter(
             }
 
             trackDuration.text = track.duration.getFormattedDuration()
-            activity.getTrackCoverArt(track) { coverArt ->
+            activity.getTrackFileArt(track) { coverArt ->
                 loadImage(trackImage, coverArt, placeholderBig)
             }
 

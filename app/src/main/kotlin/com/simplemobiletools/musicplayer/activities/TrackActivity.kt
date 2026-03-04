@@ -271,7 +271,7 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
         @SuppressLint("SetTextI18n")
         binding.nextTrackLabel.text = "${getString(R.string.next_track)} ${track.title}$artist"
 
-        getTrackCoverArt(track) { coverArt ->
+        getTrackFileArt(track) { coverArt ->
             val cornerRadius = resources.getDimension(com.simplemobiletools.commons.R.dimen.rounded_corner_radius_small).toInt()
             val wantedSize = resources.getDimension(R.dimen.song_image_size).toInt()
 
@@ -295,7 +295,7 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
     }
 
     private fun setupTopArt(track: Track) {
-        getTrackCoverArt(track) { coverArt ->
+        getTrackFileArt(track) { coverArt ->
             var wantedHeight = resources.getCoverArtHeight()
             wantedHeight = min(wantedHeight, realScreenSize.y / 2)
             val wantedWidth = realScreenSize.x

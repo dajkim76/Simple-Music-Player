@@ -19,7 +19,7 @@ import com.simplemobiletools.musicplayer.databinding.ItemTrackBinding
 import com.simplemobiletools.musicplayer.dialogs.EditDialog
 import com.simplemobiletools.musicplayer.extensions.audioHelper
 import com.simplemobiletools.musicplayer.extensions.getAlbumCoverArt
-import com.simplemobiletools.musicplayer.extensions.getTrackCoverArt
+import com.simplemobiletools.musicplayer.extensions.getTrackFileArt
 import com.simplemobiletools.musicplayer.inlines.indexOfFirstOrNull
 import com.simplemobiletools.musicplayer.models.Album
 import com.simplemobiletools.musicplayer.models.AlbumSection
@@ -162,7 +162,7 @@ class AlbumsTracksAdapter(
             trackDuration.text = track.duration.getFormattedDuration()
             trackDuration.setTextColor(textColor)
 
-            context.getTrackCoverArt(track) { coverArt ->
+            context.getTrackFileArt(track) { coverArt ->
                 loadImage(trackImage, coverArt, placeholder)
             }
         }
