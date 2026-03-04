@@ -17,7 +17,7 @@ import com.simplemobiletools.musicplayer.models.Cue
 class CueAdapter(
     private val activity: SimpleActivity,
     private val itemClick: (Cue) -> Unit,
-    private val itemUpdated: (mediaStoreId:Long, updatedCues: List<Cue>) -> Unit
+    private val itemUpdated: (mediaStoreId: Long, updatedCues: List<Cue>) -> Unit
 ) : RecyclerView.Adapter<CueAdapter.ViewHolder>() {
 
     var cues: List<Cue> = emptyList()
@@ -89,7 +89,7 @@ class CueAdapter(
         fun bind(cue: Cue) {
             val isActive = adapterPosition == currentCueIndex
             var textColor = if (isActive) 0xff_ffa500.toInt() else Color.WHITE
-            
+
             if (!cue.enabled) {
                 textColor = if (isNoCueTitle) Color.WHITE else 0xff_777777.toInt()
             }
@@ -97,20 +97,20 @@ class CueAdapter(
             binding.apply {
                 cueTimestamp.text = cue.timestamp.getFormattedDuration()
                 cueTitle.text = if (isNoCueTitle) activity.getString(R.string.no_cue) else cue.title
-                
+
                 cueTimestamp.isVisible = !isNoCueTitle
                 cueTimestamp.setTextColor(if (cue.favorite && cue.enabled) Color.RED else textColor)
                 cueTitle.setTextColor(textColor)
                 cueDuration.setTextColor(textColor)
                 cueDuration.text = cue.duration.getFormattedDuration()
                 cueDuration.isVisible = cue.duration > 0 && !isNoCueTitle
-                
-                root.setOnClickListener { 
+
+                root.setOnClickListener {
                     if (!isNoCueTitle && cue.enabled) {
                         itemClick(cue)
                     }
                 }
-                
+
                 root.setOnLongClickListener {
                     if (!isNoCueTitle) {
                         showPopupMenu(cue, adapterPosition)

@@ -3,7 +3,6 @@ package com.simplemobiletools.musicplayer.dialogs
 import android.app.Activity
 import androidx.appcompat.app.AlertDialog
 import com.simplemobiletools.commons.extensions.*
-import com.simplemobiletools.musicplayer.R
 import com.simplemobiletools.musicplayer.databinding.DialogCustomSleepTimerPickerBinding
 
 class SleepTimerCustomDialog(val activity: Activity, val callback: (seconds: Int) -> Unit) {

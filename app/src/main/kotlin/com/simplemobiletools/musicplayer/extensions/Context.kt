@@ -61,7 +61,7 @@ fun Context.getTracksDB() = SongsDatabase.getInstance(this)
 
 fun Context.getPlaylistIdWithTitle(title: String) = playlistDAO.getPlaylistWithTitle(title)?.id ?: -1
 
-fun Context.broadcastUpdateWidgetState(cueTitle:String?) {
+fun Context.broadcastUpdateWidgetState(cueTitle: String?) {
     Intent(this, MyWidgetProvider::class.java).apply {
         action = TRACK_STATE_CHANGED
         putExtra(EXTRA_CUE_TITLE, cueTitle)

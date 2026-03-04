@@ -10,7 +10,7 @@ import java.util.concurrent.Executors
 object MyExecutors {
     private val executors = Executors.newCachedThreadPool()
     private val mainHandler = Handler(Looper.getMainLooper())
-    
+
     fun execute(callback: () -> Unit) = executors.execute(callback)
 
     fun executeOnMainThread(callback: () -> Unit) = mainHandler.post(callback)

@@ -568,7 +568,7 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
                     if (cueAdapter == null) {
                         cueAdapter = CueAdapter(this, { cue ->
                             withPlayer {
-                                if(!isPlaying) play()
+                                if (!isPlaying) play()
                                 seekTo(cue.timestamp * 1000L)
                             }
                         }, { mediaStoreId, updatedCues ->
@@ -602,10 +602,10 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
         }
     }
 
-    private fun showEditCuesDialog(cuesJson:String? = null) {
+    private fun showEditCuesDialog(cuesJson: String? = null) {
         val track = currentTrack ?: return
         ensureBackgroundThread {
-            val currentCuesJson = cuesJson?: audioHelper.getTrackCue(track.mediaStoreId)
+            val currentCuesJson = cuesJson ?: audioHelper.getTrackCue(track.mediaStoreId)
             runOnUiThread {
                 val binding = InputCueTextBinding.inflate(LayoutInflater.from(this))
                 val editText = binding.editText
@@ -647,13 +647,13 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
         val track = currentTrack ?: return
         val mediaItem = if (track.path.isNotEmpty()) {
             MediaItem.fromUri(track.path)
-        }else {
+        } else {
             val uriStr = ContentUris.withAppendedId(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, track.mediaStoreId).toString()
             val uri = Uri.parse(uriStr)
             MediaItem.fromUri(uri)
         }
 
-        data class MetaData(val type:String, val key:String, val value:String)
+        data class MetaData(val type: String, val key: String, val value: String)
 
         val metadataFuture = MetadataRetriever.retrieveMetadata(this, mediaItem)
         metadataFuture.addListener({
@@ -679,12 +679,12 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
                                 val key = entry.key.lowercase()
                                 if (key == "description" || key == "purl" || key == "comment" || key == "synopsis") {
                                     val value = entry.value
-                                    if (!metaDataList.any{it.value == value}) {
+                                    if (!metaDataList.any { it.value == value }) {
                                         metaDataList.add(MetaData("VorbisComment", key, value))
                                     }
-                                } else if (entry.key.startsWith("CHAPTER")){
+                                } else if (entry.key.startsWith("CHAPTER")) {
                                     val key = entry.key
-                                    if (key.endsWith("NAME"))  {
+                                    if (key.endsWith("NAME")) {
                                         if (lastChapterTimeString.isNotEmpty()) {
                                             chapterList.add(lastChapterTimeString + "  " + entry.value)
                                         }
@@ -697,13 +697,13 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
                                 val key = entry.description?.lowercase()
                                 if (key == "description" || key == "purl" || key == "comment" || key == "synopsis") {
                                     val value = entry.value
-                                    if (!metaDataList.any{it.value == value}) {
+                                    if (!metaDataList.any { it.value == value }) {
                                         metaDataList.add(MetaData("TextInformationFrame", key, value))
                                     }
                                 }
                             } else if (entry is CommentFrame) {
                                 val value = entry.description
-                                if (!metaDataList.any{it.value == value}) {
+                                if (!metaDataList.any { it.value == value }) {
                                     metaDataList.add(MetaData("CommentFrame", "comment", value))
                                 }
                             } else if (entry is MdtaMetadataEntry) { // apple
@@ -721,7 +721,7 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
 
                                 // 3. 챕터 타이틀 찾기 (서브 프레임 내부)
                                 var chapterTitle = "Untitled"
-                                for (index in  0 ..< entry.subFrameCount) {
+                                for (index in 0..<entry.subFrameCount) {
                                     val subEntry = entry.getSubFrame(index)
                                     // MP3에서 제목은 보통 'TIT2'라는 ID를 가진 TextInformationFrame에 담깁니다.
                                     if (subEntry is TextInformationFrame && subEntry.id == "TIT2") {
@@ -734,7 +734,7 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
                                 chapterList.add(formatMilliseconds(start.toLong()) + "  " + chapterTitle)
                             } else if (entry is UrlLinkFrame) {
                                 val value = entry.url
-                                if (!metaDataList.any{it.value == value}) {
+                                if (!metaDataList.any { it.value == value }) {
                                     metaDataList.add(MetaData("UrlLinkFrame", "url", value))
                                 }
                             }
@@ -791,7 +791,7 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
                     showAllMetaData(allText, linkList)
                 }
             }
-            val isCueListEmpty = CueListCache.getCueList(this, currentTrack?.mediaStoreId?:0).isEmpty()
+            val isCueListEmpty = CueListCache.getCueList(this, currentTrack?.mediaStoreId ?: 0).isEmpty()
             if (isCueListEmpty && cuesJson.isNotEmpty()) {
                 builder.setNegativeButton(R.string.make_cue_list) { _, _ ->
                     showEditCuesDialog(cuesJson)

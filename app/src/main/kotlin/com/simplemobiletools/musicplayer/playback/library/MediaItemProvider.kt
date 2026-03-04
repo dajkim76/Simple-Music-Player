@@ -15,12 +15,7 @@ import androidx.media3.session.MediaSession.MediaItemsWithStartPosition
 import com.google.common.util.concurrent.MoreExecutors
 import com.simplemobiletools.musicplayer.R
 import com.simplemobiletools.musicplayer.extensions.*
-import com.simplemobiletools.musicplayer.helpers.TAB_ALBUMS
-import com.simplemobiletools.musicplayer.helpers.TAB_ARTISTS
-import com.simplemobiletools.musicplayer.helpers.TAB_FOLDERS
-import com.simplemobiletools.musicplayer.helpers.TAB_GENRES
-import com.simplemobiletools.musicplayer.helpers.TAB_PLAYLISTS
-import com.simplemobiletools.musicplayer.helpers.TAB_TRACKS
+import com.simplemobiletools.musicplayer.helpers.*
 import com.simplemobiletools.musicplayer.models.QueueItem
 import com.simplemobiletools.musicplayer.models.toMediaItems
 import java.util.concurrent.Executors

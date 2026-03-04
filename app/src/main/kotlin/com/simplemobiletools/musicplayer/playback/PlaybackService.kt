@@ -8,12 +8,14 @@ import android.content.IntentFilter
 import android.os.Handler
 import android.os.HandlerThread
 import android.os.Looper
-import android.util.Log
 import androidx.annotation.OptIn
 import androidx.core.os.postDelayed
-import androidx.media3.common.*
+import androidx.media3.common.MediaItem
+import androidx.media3.common.Player
 import androidx.media3.common.util.UnstableApi
-import androidx.media3.session.*
+import androidx.media3.session.MediaLibraryService
+import androidx.media3.session.MediaSession
+import androidx.media3.session.MediaSessionService
 import com.simplemobiletools.commons.extensions.hasPermission
 import com.simplemobiletools.commons.extensions.showErrorToast
 import com.simplemobiletools.musicplayer.extensions.*
@@ -34,7 +36,7 @@ class PlaybackService : MediaLibraryService(), MediaSessionService.Listener {
     internal lateinit var mediaItemProvider: MediaItemProvider
 
     internal var currentRoot = ""
-    internal var lastCueTitle:String? = null
+    internal var lastCueTitle: String? = null
 
     private var progressUpdateHandler = Handler(Looper.getMainLooper())
     private val bluetoothReceiver = object : BroadcastReceiver() {

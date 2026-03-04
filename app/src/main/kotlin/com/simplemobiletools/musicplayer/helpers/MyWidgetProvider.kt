@@ -28,7 +28,7 @@ class MyWidgetProvider : AppWidgetProvider() {
         performUpdate(context)
     }
 
-    private fun performUpdate(context: Context, cueTitle:String? = null) {
+    private fun performUpdate(context: Context, cueTitle: String? = null) {
         val appWidgetManager = AppWidgetManager.getInstance(context) ?: return
         appWidgetManager.getAppWidgetIds(getComponentName(context)).forEach {
             val views = getRemoteViews(appWidgetManager, context, it)

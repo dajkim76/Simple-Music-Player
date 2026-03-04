@@ -6,25 +6,7 @@ import androidx.core.net.toUri
 import androidx.core.os.bundleOf
 import androidx.media3.common.MediaItem
 import androidx.media3.common.MediaMetadata
-import com.simplemobiletools.musicplayer.helpers.EXTRA_ALBUM
-import com.simplemobiletools.musicplayer.helpers.EXTRA_ALBUM_ID
-import com.simplemobiletools.musicplayer.helpers.EXTRA_ARTIST
-import com.simplemobiletools.musicplayer.helpers.EXTRA_ARTIST_ID
-import com.simplemobiletools.musicplayer.helpers.EXTRA_COVER_ART
-import com.simplemobiletools.musicplayer.helpers.EXTRA_DATE_ADDED
-import com.simplemobiletools.musicplayer.helpers.EXTRA_DURATION
-import com.simplemobiletools.musicplayer.helpers.EXTRA_FLAGS
-import com.simplemobiletools.musicplayer.helpers.EXTRA_FOLDER_NAME
-import com.simplemobiletools.musicplayer.helpers.EXTRA_GENRE
-import com.simplemobiletools.musicplayer.helpers.EXTRA_GENRE_ID
-import com.simplemobiletools.musicplayer.helpers.EXTRA_ID
-import com.simplemobiletools.musicplayer.helpers.EXTRA_MEDIA_STORE_ID
-import com.simplemobiletools.musicplayer.helpers.EXTRA_ORDER_IN_PLAYLIST
-import com.simplemobiletools.musicplayer.helpers.EXTRA_PATH
-import com.simplemobiletools.musicplayer.helpers.EXTRA_PLAYLIST_ID
-import com.simplemobiletools.musicplayer.helpers.EXTRA_TITLE
-import com.simplemobiletools.musicplayer.helpers.EXTRA_TRACK_ID
-import com.simplemobiletools.musicplayer.helpers.EXTRA_YEAR
+import com.simplemobiletools.musicplayer.helpers.*
 import com.simplemobiletools.musicplayer.inlines.indexOfFirstOrNull
 import com.simplemobiletools.musicplayer.models.*
 

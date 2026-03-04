@@ -22,7 +22,7 @@ interface QueueItemsDao {
 
     @Query("UPDATE queue_items SET is_current = 1 WHERE track_id = :trackId")
     fun saveCurrentTrack(trackId: Long)
-    
+
     @Query("UPDATE queue_items SET is_current = 1, last_position = :lastPosition WHERE track_id = :trackId")
     fun saveCurrentTrackProgress(trackId: Long, lastPosition: Int)
 
