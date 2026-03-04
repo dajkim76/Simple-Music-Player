@@ -76,6 +76,7 @@ object CueListCache {
 object CueListHelper {
 
     const val CUE_DISABLED_PREFIX = "@"
+    const val CUE_FAVORITE_PREFIX = "&"
 
     fun getCueJsonFromText(text: String): String {
         val cues = mutableListOf<Cue>()
@@ -110,6 +111,9 @@ object CueListHelper {
                 if (it.title.startsWith(CUE_DISABLED_PREFIX)) {
                     it.title = it.title.substring(1)
                     it.enabled = false
+                } else if (it.title.startsWith(CUE_FAVORITE_PREFIX)) {
+                    it.title = it.title.substring(1)
+                    it.favorite = true
                 }
             }
             cues
@@ -127,7 +131,7 @@ object CueListHelper {
                 val h = cue.timestamp / 3600
                 val m = (cue.timestamp % 3600) / 60
                 val s = cue.timestamp % 60
-                val prefix = if (!cue.enabled) CUE_DISABLED_PREFIX else ""
+                val prefix = if (!cue.enabled) CUE_DISABLED_PREFIX else if (cue.favorite) CUE_FAVORITE_PREFIX else ""
                 if (h > 0) {
                     String.format("%02d:%02d:%02d %s", h, m, s, prefix + cue.title)
                 } else {

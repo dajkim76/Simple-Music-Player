@@ -96,7 +96,7 @@ class CueAdapter(
                 cueTitle.text = if (isNoCueTitle) activity.getString(R.string.no_cue) else cue.title
                 
                 cueTimestamp.isVisible = !isNoCueTitle
-                cueTimestamp.setTextColor(textColor)
+                cueTimestamp.setTextColor(if (cue.favorite && cue.enabled) Color.RED else textColor)
                 cueTitle.setTextColor(textColor)
                 cueDuration.setTextColor(textColor)
                 cueDuration.text = cue.duration.getFormattedDuration()
@@ -121,11 +121,20 @@ class CueAdapter(
             val popup = PopupMenu(activity, binding.root)
             val skipLabel = if (cue.enabled) activity.getString(R.string.not_playing) else activity.getString(R.string.playable)
             popup.menu.add(0, 0, 0, skipLabel)
+            popup.menu.add(0, 1, 0, activity.getString(R.string.favorites_toggle))
             popup.setOnMenuItemClickListener { item ->
                 when (item.itemId) {
                     0 -> {
                         val newCues = cues.toMutableList()
-                        newCues[position] = cue.copy(enabled = !cue.enabled, duration = cue.duration)
+                        newCues[position] = cue.copy(enabled = !cue.enabled, duration = cue.duration, favorite = cue.favorite)
+                        cues = newCues
+                        notifyItemChanged(position)
+                        itemUpdated(mediaStoreId, newCues)
+                    }
+
+                    1 -> {
+                        val newCues = cues.toMutableList()
+                        newCues[position] = cue.copy(enabled = cue.enabled || !cue.favorite, duration = cue.duration, favorite = !cue.favorite)
                         cues = newCues
                         notifyItemChanged(position)
                         itemUpdated(mediaStoreId, newCues)

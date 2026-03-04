@@ -6,5 +6,6 @@ data class Cue(
     @SerializedName("timestamp") val timestamp: Int,
     @SerializedName("title") var title: String,
     @SerializedName("enabled") var enabled: Boolean = true,
+    @SerializedName("favorite") var favorite: Boolean = false,
     @Transient var duration: Int = 0
 )
