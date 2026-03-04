@@ -35,7 +35,7 @@ class TrackFileArtCache private constructor(private val context: Context) {
         if (!file.exists()) {
             try {
                 FileOutputStream(file).use { out ->
-                    bitmap.compress(Bitmap.CompressFormat.JPEG, 90, out)
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out)
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
