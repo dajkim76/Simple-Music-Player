@@ -570,7 +570,7 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
                             adapter = cueAdapter
                         }
                     }
-                    cueAdapter?.refreshList(cues, track.mediaStoreId)
+                    cueAdapter?.refreshList(cues, track.mediaStoreId, track.duration)
 
                     withPlayer {
                         val seconds = currentPosition.milliseconds.inWholeSeconds.toInt()
@@ -583,7 +583,7 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
                     }
                     binding.activityTrackCuesList.beVisible()
                 } else {
-                    cueAdapter?.refreshList(cues, track.mediaStoreId)
+                    cueAdapter?.refreshList(cues, track.mediaStoreId, track.duration)
                     binding.activityTrackCuesList.beGone()
                 }
             }

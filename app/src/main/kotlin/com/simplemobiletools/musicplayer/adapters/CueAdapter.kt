@@ -39,7 +39,7 @@ class CueAdapter(
 
     override fun getItemCount() = cues.size
 
-    fun refreshList(cues: List<Cue>, mediaStoreId: Long) {
+    fun refreshList(cues: List<Cue>, mediaStoreId: Long, totalDuration: Int) {
         this.cues = cues
         this.mediaStoreId = mediaStoreId
         this.currentCueIndex = -1
@@ -53,10 +53,13 @@ class CueAdapter(
 
         // make duration
         cues.forEachIndexed { index, cue ->
-            if (index < cues.size - 1) {
+            val nextCueTimeStamp = if (index < cues.size - 1) {
                 val nextCue = cues[index + 1]
-                cue.duration = nextCue.timestamp - cue.timestamp
+                nextCue.timestamp
+            } else {
+                totalDuration
             }
+            cue.duration = nextCueTimeStamp - cue.timestamp
         }
     }
 
