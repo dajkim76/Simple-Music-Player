@@ -9,10 +9,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.simplemobiletools.commons.extensions.getFormattedDuration
 import com.simplemobiletools.commons.extensions.getProperPrimaryColor
 import com.simplemobiletools.commons.extensions.getProperTextColor
+import com.simplemobiletools.musicplayer.R
 import com.simplemobiletools.musicplayer.activities.SimpleActivity
 import com.simplemobiletools.musicplayer.databinding.ItemCueBinding
 import com.simplemobiletools.musicplayer.models.Cue
-import com.simplemobiletools.musicplayer.R
 
 class CueAdapter(
     private val activity: SimpleActivity,
@@ -49,6 +49,14 @@ class CueAdapter(
             isNoCueTitle = cue.title == "<NO_CUE>" && cue.timestamp == 0 && !cue.enabled
         } else {
             isNoCueTitle = false
+        }
+
+        // make duration
+        cues.forEachIndexed { index, cue ->
+            if (index < cues.size - 1) {
+                val nextCue = cues[index + 1]
+                cue.duration = nextCue.timestamp - cue.timestamp
+            }
         }
     }
 
@@ -90,6 +98,9 @@ class CueAdapter(
                 cueTimestamp.isVisible = !isNoCueTitle
                 cueTimestamp.setTextColor(textColor)
                 cueTitle.setTextColor(textColor)
+                cueDuration.setTextColor(textColor)
+                cueDuration.text = cue.duration.getFormattedDuration()
+                cueDuration.isVisible = cue.duration > 0 && !isNoCueTitle
                 
                 root.setOnClickListener { 
                     if (!isNoCueTitle && cue.enabled) {
@@ -114,7 +125,7 @@ class CueAdapter(
                 when (item.itemId) {
                     0 -> {
                         val newCues = cues.toMutableList()
-                        newCues[position] = cue.copy(enabled = !cue.enabled)
+                        newCues[position] = cue.copy(enabled = !cue.enabled, duration = cue.duration)
                         cues = newCues
                         notifyItemChanged(position)
                         itemUpdated(mediaStoreId, newCues)

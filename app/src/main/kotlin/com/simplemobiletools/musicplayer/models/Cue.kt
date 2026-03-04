@@ -5,5 +5,6 @@ import com.google.gson.annotations.SerializedName
 data class Cue(
     @SerializedName("timestamp") val timestamp: Int,
     @SerializedName("title") var title: String,
-    @SerializedName("enabled") var enabled: Boolean = true
+    @SerializedName("enabled") var enabled: Boolean = true,
+    @Transient var duration: Int = 0
 )
