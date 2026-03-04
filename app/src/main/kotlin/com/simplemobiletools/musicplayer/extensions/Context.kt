@@ -11,7 +11,6 @@ import android.media.MediaMetadataRetriever
 import android.media.ThumbnailUtils
 import android.net.Uri
 import android.os.Build
-import android.os.Handler
 import android.os.Looper
 import android.provider.MediaStore
 import android.provider.MediaStore.Audio
@@ -25,7 +24,6 @@ import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.Target
 import com.simplemobiletools.commons.extensions.*
-import com.simplemobiletools.commons.helpers.ensureBackgroundThread
 import com.simplemobiletools.commons.helpers.isQPlus
 import com.simplemobiletools.musicplayer.BuildConfig
 import com.simplemobiletools.musicplayer.databases.SongsDatabase
@@ -35,6 +33,8 @@ import com.simplemobiletools.musicplayer.models.Album
 import com.simplemobiletools.musicplayer.models.Artist
 import com.simplemobiletools.musicplayer.models.Genre
 import com.simplemobiletools.musicplayer.models.Track
+import com.simplemobiletools.musicplayer.objects.executeBackgroundThread
+import com.simplemobiletools.musicplayer.objects.executeMainThread
 import java.io.File
 
 val Context.config: Config get() = Config.newInstance(applicationContext)
@@ -144,12 +144,12 @@ private fun getFolderTrackPaths(folder: File): ArrayList<String> {
 }
 
 fun Context.getArtistCoverArt(artist: Artist, callback: (coverArt: Any?) -> Unit) {
-    ensureBackgroundThread {
+    executeBackgroundThread {
         if (artist.albumArt.isEmpty()) {
             val track = audioHelper.getArtistTracks(artist.id).firstOrNull()
             getTrackCoverArt(track, callback)
         } else {
-            Handler(Looper.getMainLooper()).post {
+            executeMainThread {
                 callback(artist.albumArt)
             }
         }
@@ -157,12 +157,12 @@ fun Context.getArtistCoverArt(artist: Artist, callback: (coverArt: Any?) -> Unit
 }
 
 fun Context.getAlbumCoverArt(album: Album, callback: (coverArt: Any?) -> Unit) {
-    ensureBackgroundThread {
+    executeBackgroundThread {
         if (album.coverArt.isEmpty()) {
             val track = audioHelper.getAlbumTracks(album.id).firstOrNull()
             getTrackCoverArt(track, callback)
         } else {
-            Handler(Looper.getMainLooper()).post {
+            executeMainThread {
                 callback(album.coverArt)
             }
         }
@@ -170,12 +170,12 @@ fun Context.getAlbumCoverArt(album: Album, callback: (coverArt: Any?) -> Unit) {
 }
 
 fun Context.getGenreCoverArt(genre: Genre, callback: (coverArt: Any?) -> Unit) {
-    ensureBackgroundThread {
+    executeBackgroundThread {
         if (genre.albumArt.isEmpty()) {
             val track = audioHelper.getGenreTracks(genre.id).firstOrNull()
             getTrackCoverArt(track, callback)
         } else {
-            Handler(Looper.getMainLooper()).post {
+            executeMainThread {
                 callback(genre.albumArt)
             }
         }
@@ -183,19 +183,19 @@ fun Context.getGenreCoverArt(genre: Genre, callback: (coverArt: Any?) -> Unit) {
 }
 
 fun Context.getTrackCoverArt(track: Track?, callback: (coverArt: Any?) -> Unit) {
-    ensureBackgroundThread {
+    executeBackgroundThread {
         if (track == null) {
-            Handler(Looper.getMainLooper()).post {
+            executeMainThread {
                 callback(null)
             }
-            return@ensureBackgroundThread
+            return@executeBackgroundThread
         }
 
         val coverArt = track.coverArt.ifEmpty {
             loadTrackCoverArt(track)
         }
 
-        Handler(Looper.getMainLooper()).post {
+        executeMainThread {
             callback(coverArt)
         }
     }
@@ -249,13 +249,13 @@ fun Context.getTrackFileArt(track: Track?, callback: (coverArt: Any?) -> Unit) {
         return
     }
 
-    ensureBackgroundThread {
+    executeBackgroundThread {
         // Check cache hit
         TrackFileArtCache.getInstance(this).get(track.mediaStoreId)?.let { bitmap ->
-            Handler(Looper.getMainLooper()).post {
+            executeMainThread {
                 callback(bitmap)
             }
-            return@ensureBackgroundThread
+            return@executeBackgroundThread
         }
 
         // First, try loading the image from the track file.
@@ -268,7 +268,7 @@ fun Context.getTrackFileArt(track: Track?, callback: (coverArt: Any?) -> Unit) {
             TrackFileArtCache.getInstance(this).put(track.mediaStoreId, coverArt)
         }
 
-        Handler(Looper.getMainLooper()).post {
+        executeMainThread {
             callback(coverArt)
         }
     }
@@ -330,7 +330,7 @@ fun Context.loadGlideResource(
     onLoadFailed: (e: Exception?) -> Unit,
     onResourceReady: (resource: Drawable) -> Unit,
 ) {
-    ensureBackgroundThread {
+    executeBackgroundThread {
         try {
             Glide.with(this)
                 .load(model)
@@ -366,15 +366,15 @@ fun Context.getTrackFromUri(uri: Uri?, callback: (track: Track?) -> Unit) {
         return
     }
 
-    ensureBackgroundThread {
+    executeBackgroundThread {
         val path = getRealPathFromURI(uri)
         if (path == null) {
             callback(null)
-            return@ensureBackgroundThread
+            return@executeBackgroundThread
         }
 
         val allTracks = audioHelper.getAllTracks()
-        val track = allTracks.find { it.path == path } ?: RoomHelper(this).getTrackFromPath(path) ?: return@ensureBackgroundThread
+        val track = allTracks.find { it.path == path } ?: RoomHelper(this).getTrackFromPath(path) ?: return@executeBackgroundThread
         callback(track)
     }
 }
