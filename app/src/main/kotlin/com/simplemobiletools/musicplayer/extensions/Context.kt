@@ -1,12 +1,16 @@
 package com.simplemobiletools.musicplayer.extensions
 
 import android.app.Application
+import android.content.ContentUris
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.drawable.Drawable
+import android.media.MediaMetadataRetriever
 import android.media.ThumbnailUtils
 import android.net.Uri
+import android.os.Build
 import android.os.Handler
 import android.os.Looper
 import android.provider.MediaStore
@@ -23,6 +27,7 @@ import com.bumptech.glide.request.target.Target
 import com.simplemobiletools.commons.extensions.*
 import com.simplemobiletools.commons.helpers.ensureBackgroundThread
 import com.simplemobiletools.commons.helpers.isQPlus
+import com.simplemobiletools.musicplayer.BuildConfig
 import com.simplemobiletools.musicplayer.databases.SongsDatabase
 import com.simplemobiletools.musicplayer.helpers.*
 import com.simplemobiletools.musicplayer.interfaces.*
@@ -226,6 +231,92 @@ fun Context.loadTrackCoverArt(track: Track?): Bitmap? {
             } catch (ignored: OutOfMemoryError) {
             } catch (ignored: Exception) {
             }
+        }
+    }
+
+    return null
+}
+
+fun Context.getTrackFileArt(track: Track?, callback: (coverArt: Any?) -> Unit) {
+    if (BuildConfig.DEBUG) {
+        if (Looper.myLooper() != Looper.getMainLooper()) {
+            throw RuntimeException("getTrackFileArt() Must be call from MainThread")
+        }
+    }
+
+    val track = track ?: run {
+        callback(null)
+        return
+    }
+
+    ensureBackgroundThread {
+        // Check cache hit
+        TrackFileArtCache.getInstance(this).get(track.mediaStoreId)?.let { bitmap ->
+            Handler(Looper.getMainLooper()).post {
+                callback(bitmap)
+            }
+            return@ensureBackgroundThread
+        }
+
+        // First, try loading the image from the track file.
+        val coverArt = loadTrackFileArt(track) ?: track.coverArt.ifEmpty {
+            loadTrackCoverArt(track)
+        }
+
+        // Put cache item
+        if (coverArt is Bitmap) {
+            TrackFileArtCache.getInstance(this).put(track.mediaStoreId, coverArt)
+        }
+
+        Handler(Looper.getMainLooper()).post {
+            callback(coverArt)
+        }
+    }
+}
+
+fun Context.loadTrackFileArt(track: Track): Bitmap? {
+    // try MediaMetadataRetriever
+    track.path.takeIf { it.isNotEmpty() && File(it).exists() }?.let { path ->
+        val retriever = MediaMetadataRetriever()
+        try {
+            retriever.setDataSource(path)
+            val art = retriever.embeddedPicture
+            if (art != null) {
+                val bitmap = BitmapFactory.decodeByteArray(art, 0, art.size)
+                if (bitmap != null) {
+                    return bitmap
+                }
+            }
+        } catch (_: Exception) {
+        } finally {
+            try {
+                retriever.release()
+            } catch (_: Exception) {
+            }
+        }
+    }
+
+    val size = Size(resources.getCoverArtHeight(), resources.getCoverArtHeight())
+    val uri = ContentUris.withAppendedId(Audio.Media.EXTERNAL_CONTENT_URI, track.mediaStoreId)
+    val uriStr = uri.toString()
+
+    if (uriStr.startsWith("content://")) {
+        if (Build.VERSION.SDK_INT >= 29) {
+            try {
+                val bitmap = contentResolver.loadThumbnail(uri, size, null)
+                if (bitmap != null) {
+                    return bitmap
+                }
+            } catch (_: Exception) {
+            }
+        }
+
+        try {
+            val bitmap = MediaStore.Images.Media.getBitmap(contentResolver, uri)
+            if (bitmap != null) {
+                return bitmap
+            }
+        } catch (_: Exception) {
         }
     }
 
