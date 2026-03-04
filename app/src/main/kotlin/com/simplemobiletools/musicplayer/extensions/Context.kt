@@ -248,10 +248,18 @@ fun Context.getTrackFileArt(track: Track?, callback: (coverArt: Any?) -> Unit) {
         callback(null)
         return
     }
+    val mediaStoreId = track.mediaStoreId
+    val trackFileArtCache = TrackFileArtCache.getInstance(this)
+
+    // If it's in memory, let's eliminate thread overhead.
+    trackFileArtCache.peek(mediaStoreId)?.let { bitmap ->
+        callback(bitmap)
+        return
+    }
 
     executeBackgroundThread {
-        // Check cache hit
-        TrackFileArtCache.getInstance(this).get(track.mediaStoreId)?.let { bitmap ->
+        // Check memory & disk hit
+        trackFileArtCache.get(mediaStoreId)?.let { bitmap ->
             executeMainThread {
                 callback(bitmap)
             }
@@ -259,13 +267,24 @@ fun Context.getTrackFileArt(track: Track?, callback: (coverArt: Any?) -> Unit) {
         }
 
         // First, try loading the image from the track file.
-        val coverArt = loadTrackFileArt(track) ?: track.coverArt.ifEmpty {
+        val trackArt: Bitmap? = if (!trackFileArtCache.isNoEmbeddedPicture(mediaStoreId)) {
+            val bitmap = loadTrackFileArt(track)
+            if (bitmap == null) {
+                // MediaMetadataRetriever is expensive, so don't try again later.
+                trackFileArtCache.setNoEmbeddedPicture(mediaStoreId)
+            }
+            bitmap
+        } else {
+            null
+        }
+
+        val coverArt = trackArt ?: track.coverArt.ifEmpty {
             loadTrackCoverArt(track)
         }
 
         // Put cache item
         if (coverArt is Bitmap) {
-            TrackFileArtCache.getInstance(this).put(track.mediaStoreId, coverArt)
+            trackFileArtCache.put(mediaStoreId, coverArt)
         }
 
         executeMainThread {
@@ -330,34 +349,27 @@ fun Context.loadGlideResource(
     onLoadFailed: (e: Exception?) -> Unit,
     onResourceReady: (resource: Drawable) -> Unit,
 ) {
-    executeBackgroundThread {
-        try {
-            Glide.with(this)
-                .load(model)
-                .apply(options)
-                .listener(object : RequestListener<Drawable> {
-                    override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Drawable>, isFirstResource: Boolean): Boolean {
-                        onLoadFailed(e)
-                        return true
-                    }
+    Glide.with(this)
+        .load(model)
+        .apply(options)
+        .listener(object : RequestListener<Drawable> {
+            override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Drawable>, isFirstResource: Boolean): Boolean {
+                onLoadFailed(e)
+                return true
+            }
 
-                    override fun onResourceReady(
-                        resource: Drawable,
-                        model: Any,
-                        target: Target<Drawable>,
-                        dataSource: DataSource,
-                        isFirstResource: Boolean
-                    ): Boolean {
-                        onResourceReady(resource)
-                        return false
-                    }
-                })
-                .submit(size.width, size.height)
-                .get()
-        } catch (e: Exception) {
-            onLoadFailed(e)
-        }
-    }
+            override fun onResourceReady(
+                resource: Drawable,
+                model: Any,
+                target: Target<Drawable>,
+                dataSource: DataSource,
+                isFirstResource: Boolean
+            ): Boolean {
+                onResourceReady(resource)
+                return false
+            }
+        })
+        .submit(size.width, size.height)
 }
 
 fun Context.getTrackFromUri(uri: Uri?, callback: (track: Track?) -> Unit) {

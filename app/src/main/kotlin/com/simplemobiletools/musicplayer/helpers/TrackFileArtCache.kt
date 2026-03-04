@@ -17,6 +17,9 @@ class TrackFileArtCache private constructor(private val context: Context) {
         }
     }
 
+    // MediaMetadataRetriever is expensive, so don't try again later.
+    private val noEmbeddedPictureMap = mutableMapOf<Long, Boolean>()
+
     private fun getCacheSize(): Int {
         val memoryClass = (context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager).memoryClass
         return 1024 * 1024 * memoryClass / 8
@@ -57,6 +60,21 @@ class TrackFileArtCache private constructor(private val context: Context) {
             }
         }
         return bitmap
+    }
+
+    @Synchronized
+    fun peek(key: Long): Bitmap? {
+        return bitmapCache.get(key)
+    }
+
+    @Synchronized
+    fun isNoEmbeddedPicture(key: Long): Boolean {
+        return noEmbeddedPictureMap.contains(key)
+    }
+
+    @Synchronized
+    fun setNoEmbeddedPicture(key: Long) {
+        noEmbeddedPictureMap[key] = true
     }
 
     private fun makeFilename(key: Long) = "track_$key.jpg"

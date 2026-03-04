@@ -275,6 +275,12 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
             val cornerRadius = resources.getDimension(com.simplemobiletools.commons.R.dimen.rounded_corner_radius_small).toInt()
             val wantedSize = resources.getDimension(R.dimen.song_image_size).toInt()
 
+            // reduce thread overhead
+            if (coverArt is Bitmap) {
+                binding.nextTrackImage.setImageBitmap(coverArt)
+                return@getTrackFileArt
+            }
+
             // change cover image manually only once loaded successfully to avoid blinking at fails and placeholders
             loadGlideResource(
                 model = coverArt,
@@ -299,6 +305,12 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
             var wantedHeight = resources.getCoverArtHeight()
             wantedHeight = min(wantedHeight, realScreenSize.y / 2)
             val wantedWidth = realScreenSize.x
+
+            // reduce thread overhead
+            if (coverArt is Bitmap) {
+                binding.activityTrackImage.setImageBitmap(coverArt)
+                return@getTrackFileArt
+            }
 
             // change cover image manually only once loaded successfully to avoid blinking at fails and placeholders
             loadGlideResource(

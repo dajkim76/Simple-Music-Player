@@ -20,6 +20,7 @@
             android:adjustViewBounds="true"
             android:contentDescription="@string/album"
             android:src="@drawable/ic_headset"
+            android:scaleType="centerCrop"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -29,7 +30,7 @@
             app:layout_constraintBottom_toBottomOf="@+id/activity_track_image"
             app:layout_constraintEnd_toEndOf="@+id/activity_track_image"
             app:layout_constraintStart_toStartOf="@+id/activity_track_image"
-            app:layout_constraintTop_toTopOf="@+id/activity_track_image" >
+            app:layout_constraintTop_toTopOf="@+id/activity_track_image">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/activity_track_cues_list"
@@ -295,7 +296,8 @@
                 android:layout_marginStart="@dimen/normal_margin"
                 android:layout_marginTop="@dimen/normal_margin"
                 android:layout_marginEnd="@dimen/normal_margin"
-                android:layout_marginBottom="@dimen/normal_margin" />
+                android:layout_marginBottom="@dimen/normal_margin"
+                android:scaleType="centerCrop" />
 
             <com.simplemobiletools.commons.views.MyTextView
                 android:id="@+id/next_track_label"
