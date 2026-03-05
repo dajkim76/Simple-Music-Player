@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="youtube_timestamp_text">Youtube zaman damgası metni</string>
-    <string name="youtube_timestamp_info">YouTube zaman damgası özelliği, YouTube yorumlarındaki zaman damgası metnini kopyalayıp yapıştırarak otomatik olarak şarkı listesi oluşturmanıza olanak tanır.
-
-Bu özelliğin kaynak kodunu kontrol etmek ister misiniz?</string>
+    <string name="youtube_timestamp_info">YouTube zaman damgası özelliği, YouTube yorumlarındaki zaman damgası metnini kopyalayıp yapıştırarak otomatik olarak şarkı listesi oluşturmanıza olanak tanır.</string>
     <string name="source_code">Kaynak kodu</string>
     <string name="no_cue">İşaret Yok</string>
     <string name="youtube_meta_data">Youtube meta verileri</string>
@@ -15,4 +13,6 @@ Bu özelliğin kaynak kodunu kontrol etmek ister misiniz?</string>
     <string name="cue_not_playable_desc">"Parça adı '@' ile başlıyorsa çalınmaz."</string>
     <string name="favorites_toggle">Favorileri Değiştir</string>
     <string name="adjust_timestamp">Zaman damgasını ayarla</string>
+    <string name="youtube_timestamp_player">Youtube Zaman Damgası Oynatıcısı</string>
+    <string name="demo_video">Demo Videosu</string>
 </resources>

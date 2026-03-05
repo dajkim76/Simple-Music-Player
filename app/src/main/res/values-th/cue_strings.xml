@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="youtube_timestamp_text">ข้อความเวลาบน Youtube</string>
-    <string name="youtube_timestamp_info">ฟีเจอร์การประทับเวลาของ YouTube ช่วยให้คุณสร้างรายการเพลงได้โดยอัตโนมัติด้วยการคัดลอกและวางข้อความประทับเวลาจากความคิดเห็นของ YouTube
-
-คุณต้องการตรวจสอบซอร์สโค้ดสำหรับคุณลักษณะนี้หรือไม่</string>
+    <string name="youtube_timestamp_info">ฟีเจอร์การประทับเวลาของ YouTube ช่วยให้คุณสร้างรายการเพลงได้โดยอัตโนมัติด้วยการคัดลอกและวางข้อความประทับเวลาจากความคิดเห็นของ YouTube</string>
     <string name="source_code">รหัสที่มา</string>
     <string name="no_cue">ไม่มีคิว</string>
     <string name="youtube_meta_data">ข้อมูลเมตาของ Youtube</string>
@@ -15,4 +13,6 @@
     <string name="cue_not_playable_desc">"หากชื่อแทร็กเริ่มต้นด้วย '@' จะไม่มีการเล่น"</string>
     <string name="favorites_toggle">สลับรายการโปรด</string>
     <string name="adjust_timestamp">ปรับการประทับเวลา</string>
+    <string name="youtube_timestamp_player">เครื่องเล่นประทับเวลาของ Youtube</string>
+    <string name="demo_video">วิดีโอสาธิต</string>
 </resources>

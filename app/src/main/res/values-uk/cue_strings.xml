@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="youtube_timestamp_text">Текст із часовою міткою YouTube</string>
-    <string name="youtube_timestamp_info">Функція міток часу YouTube дозволяє автоматично створювати списки пісень шляхом копіювання та вставлення тексту міток часу з коментарів YouTube.
-
-Хочете перевірити вихідний код цієї функції?</string>
+    <string name="youtube_timestamp_info">Функція міток часу YouTube дозволяє автоматично створювати списки пісень шляхом копіювання та вставлення тексту міток часу з коментарів YouTube.</string>
     <string name="source_code">Вихідний код</string>
     <string name="no_cue">Немає сигналу</string>
     <string name="youtube_meta_data">Метадані Youtube</string>
@@ -15,4 +13,6 @@
     <string name="cue_not_playable_desc">"Якщо назва треку починається з '@', він не відтворюватиметься."</string>
     <string name="favorites_toggle">Увімкнути вибране</string>
     <string name="adjust_timestamp">Налаштуйте мітку часу</string>
+    <string name="youtube_timestamp_player">Програвач із позначкою часу Youtube</string>
+    <string name="demo_video">Демо відео</string>
 </resources>

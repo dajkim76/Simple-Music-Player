@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="youtube_timestamp_text">Tekst met YouTube-tijdstempel</string>
-    <string name="youtube_timestamp_info">Met de YouTube-tijdstempelfunctie kun je automatisch een nummerlijst maken door de tijdstempeltekst uit YouTube-reacties te kopiëren en te plakken.
-
-Wil je de broncode voor deze functie bekijken?</string>
+    <string name="youtube_timestamp_info">Met de YouTube-tijdstempelfunctie kun je automatisch een nummerlijst maken door de tijdstempeltekst uit YouTube-reacties te kopiëren en te plakken.</string>
     <string name="source_code">Broncode</string>
     <string name="no_cue">Geen keu</string>
     <string name="youtube_meta_data">YouTube-metadata</string>
@@ -15,4 +13,6 @@ Wil je de broncode voor deze functie bekijken?</string>
     <string name="cue_not_playable_desc">"Als de tracknaam begint met '@', wordt deze niet afgespeeld."</string>
     <string name="favorites_toggle">Schakel Favorieten in</string>
     <string name="adjust_timestamp">Pas tijdstempel aan</string>
+    <string name="youtube_timestamp_player">Youtube-tijdstempelspeler</string>
+    <string name="demo_video">Demovideo</string>
 </resources>

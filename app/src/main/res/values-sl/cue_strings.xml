@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="youtube_timestamp_text">Besedilo časovnega žiga Youtube</string>
-    <string name="youtube_timestamp_info">Funkcija časovnega žiga v YouTubu vam omogoča samodejno ustvarjanje seznama pesmi s kopiranjem in lepljenjem besedila časovnega žiga iz YouTubovih komentarjev.
-
-Bi radi preverili izvorno kodo za to funkcijo?</string>
+    <string name="youtube_timestamp_info">Funkcija časovnega žiga v YouTubu vam omogoča samodejno ustvarjanje seznama pesmi s kopiranjem in lepljenjem besedila časovnega žiga iz YouTubovih komentarjev.</string>
     <string name="source_code">Izvorna koda</string>
     <string name="no_cue">Ni iztočnice</string>
     <string name="youtube_meta_data">Youtube metapodatki</string>
@@ -15,4 +13,6 @@ Bi radi preverili izvorno kodo za to funkcijo?</string>
     <string name="cue_not_playable_desc">"Če se ime skladbe začne z '@', se ne bo predvajala."</string>
     <string name="favorites_toggle">Preklopi med priljubljenimi</string>
     <string name="adjust_timestamp">Prilagodite časovni žig</string>
+    <string name="youtube_timestamp_player">Predvajalnik časovnih žigov na YouTubu</string>
+    <string name="demo_video">Demo video</string>
 </resources>

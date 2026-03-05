@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="youtube_timestamp_text">Testo del timestamp di Youtube</string>
-    <string name="youtube_timestamp_info">La funzione timestamp di YouTube ti consente di creare automaticamente l\'elenco dei brani copiando e incollando il testo del timestamp dai commenti di YouTube.
-
-Desideri controllare il codice sorgente per questa funzionalità?</string>
+    <string name="youtube_timestamp_info">La funzione timestamp di YouTube ti consente di creare automaticamente l\'elenco dei brani copiando e incollando il testo del timestamp dai commenti di YouTube.</string>
     <string name="source_code">Codice sorgente</string>
     <string name="no_cue">Nessun segnale</string>
     <string name="youtube_meta_data">Metadati di YouTube</string>
@@ -15,4 +13,6 @@ Desideri controllare il codice sorgente per questa funzionalità?</string>
     <string name="cue_not_playable_desc">"Se il nome della traccia inizia con '@', non verrà riprodotta."</string>
     <string name="favorites_toggle">Attiva/disattiva Preferiti</string>
     <string name="adjust_timestamp">Regola timestamp</string>
+    <string name="youtube_timestamp_player">Lettore timestamp di Youtube</string>
+    <string name="demo_video">Video dimostrativo</string>
 </resources>

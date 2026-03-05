@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="youtube_timestamp_text">Текст с времево клеймо на Youtube</string>
-    <string name="youtube_timestamp_info">Функцията за клеймо за време на YouTube ви позволява автоматично да създавате списък с песни чрез копиране и поставяне на текст с клеймо за време от коментари в YouTube.
-
-Бихте ли искали да проверите изходния код за тази функция?</string>
+    <string name="youtube_timestamp_info">Функцията за клеймо за време на YouTube ви позволява автоматично да създавате списък с песни чрез копиране и поставяне на текст с клеймо за време от коментари в YouTube.</string>
     <string name="source_code">Изходен код</string>
     <string name="no_cue">Няма сигнал</string>
     <string name="youtube_meta_data">Метаданни на Youtube</string>
@@ -15,4 +13,6 @@
     <string name="cue_not_playable_desc">"Ако името на песента започва с '@', няма да се възпроизвежда."</string>
     <string name="favorites_toggle">Превключване на любими</string>
     <string name="adjust_timestamp">Коригирайте клеймото</string>
+    <string name="youtube_timestamp_player">Плейър за времеви клейма на Youtube</string>
+    <string name="demo_video">Демо видео</string>
 </resources>

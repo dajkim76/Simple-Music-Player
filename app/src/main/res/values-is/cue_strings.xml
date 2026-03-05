@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="youtube_timestamp_text">Youtube tímastimpill texti</string>
-    <string name="youtube_timestamp_info">Tímastimpill YouTube gerir þér kleift að búa sjálfkrafa til lagalista með því að afrita og líma tímastimpiltexta úr athugasemdum á YouTube.
-
-Viltu athuga frumkóðann fyrir þennan eiginleika?</string>
+    <string name="youtube_timestamp_info">Tímastimpill YouTube gerir þér kleift að búa sjálfkrafa til lagalista með því að afrita og líma tímastimpiltexta úr athugasemdum á YouTube.</string>
     <string name="source_code">Frumkóði</string>
     <string name="no_cue">Engin vísbending</string>
     <string name="youtube_meta_data">Youtube lýsigögn</string>
@@ -15,4 +13,6 @@ Viltu athuga frumkóðann fyrir þennan eiginleika?</string>
     <string name="cue_not_playable_desc">"Ef nafn lagsins byrjar á '@' verður það ekki spilað."</string>
     <string name="favorites_toggle">Skipta um uppáhald</string>
     <string name="adjust_timestamp">Stilla tímastimpil</string>
+    <string name="youtube_timestamp_player">Youtube Timestamp Player</string>
+    <string name="demo_video">Sýnimyndband</string>
 </resources>

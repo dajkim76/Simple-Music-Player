@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="youtube_timestamp_text">Κείμενο χρονικής σφραγίδας Youtube</string>
-    <string name="youtube_timestamp_info">Η λειτουργία χρονικής σφραγίδας YouTube σάς επιτρέπει να δημιουργείτε αυτόματα λίστα τραγουδιών αντιγράφοντας και επικολλώντας κείμενο χρονικής σφραγίδας από σχόλια στο YouTube.
-
-Θέλετε να ελέγξετε τον πηγαίο κώδικα για αυτήν τη λειτουργία;</string>
+    <string name="youtube_timestamp_info">Η λειτουργία χρονικής σφραγίδας YouTube σάς επιτρέπει να δημιουργείτε αυτόματα λίστα τραγουδιών αντιγράφοντας και επικολλώντας κείμενο χρονικής σφραγίδας από σχόλια στο YouTube.</string>
     <string name="source_code">Πηγαίος κώδικας</string>
     <string name="no_cue">Χωρίς ένδειξη</string>
     <string name="youtube_meta_data">Μεταδεδομένα Youtube</string>
@@ -15,4 +13,6 @@
     <string name="cue_not_playable_desc">"Εάν το όνομα του κομματιού ξεκινά με '@', δεν θα παίξει."</string>
     <string name="favorites_toggle">Εναλλαγή Αγαπημένων</string>
     <string name="adjust_timestamp">Προσαρμογή χρονικής σφραγίδας</string>
+    <string name="youtube_timestamp_player">Youtube Timestamp Player</string>
+    <string name="demo_video">Επίδειξη βίντεο</string>
 </resources>

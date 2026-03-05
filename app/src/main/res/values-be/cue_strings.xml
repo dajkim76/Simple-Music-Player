@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="youtube_timestamp_text">Тэкст пазнакі часу Youtube</string>
-    <string name="youtube_timestamp_info">Функцыя пазнакі часу YouTube дазваляе вам аўтаматычна ствараць спіс песень шляхам капіявання і ўстаўкі тэксту пазнакі часу з каментарыяў YouTube.
-
-Хочаце праверыць зыходны код гэтай функцыі?</string>
+    <string name="youtube_timestamp_info">Функцыя пазнакі часу YouTube дазваляе вам аўтаматычна ствараць спіс песень шляхам капіявання і ўстаўкі тэксту пазнакі часу з каментарыяў YouTube.</string>
     <string name="source_code">Зыходны код</string>
     <string name="no_cue">Няма сігналу</string>
     <string name="youtube_meta_data">Метададзеныя Youtube</string>
@@ -15,4 +13,6 @@
     <string name="cue_not_playable_desc">"Калі назва трэка пачынаецца з '@', ён не будзе прайгравацца."</string>
     <string name="favorites_toggle">Пераключэнне абранага</string>
     <string name="adjust_timestamp">Адрэгуляваць пазнаку часу</string>
+    <string name="youtube_timestamp_player">Плэер пазнак часу Youtube</string>
+    <string name="demo_video">Дэма відэа</string>
 </resources>

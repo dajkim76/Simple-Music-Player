@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="youtube_timestamp_text">טקסט של חותמת זמן ביוטיוב</string>
-    <string name="youtube_timestamp_info">תכונת חותמת הזמן של YouTube מאפשרת לך ליצור רשימת שירים באופן אוטומטי על ידי העתקה והדבקה של טקסט של חותמת זמן מהערות YouTube.
-
-האם תרצה לבדוק את קוד המקור של תכונה זו?</string>
+    <string name="youtube_timestamp_info">תכונת חותמת הזמן של YouTube מאפשרת לך ליצור רשימת שירים באופן אוטומטי על ידי העתקה והדבקה של טקסט של חותמת זמן מהערות YouTube.</string>
     <string name="source_code">קוד מקור</string>
     <string name="no_cue">אין רמז</string>
     <string name="youtube_meta_data">מטא נתונים של Youtube</string>
@@ -15,4 +13,6 @@
     <string name="cue_not_playable_desc">"אם שם הרצועה מתחיל ב-'@', הוא לא יושמע."</string>
     <string name="favorites_toggle">החלף מועדפים</string>
     <string name="adjust_timestamp">התאם את חותמת הזמן</string>
+    <string name="youtube_timestamp_player">נגן חותמות זמן של יוטיוב</string>
+    <string name="demo_video">סרטון הדגמה</string>
 </resources>

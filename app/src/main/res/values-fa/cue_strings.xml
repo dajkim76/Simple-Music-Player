@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="youtube_timestamp_text">متن مهر زمانی یوتیوب</string>
-    <string name="youtube_timestamp_info">ویژگی مُهر زمانی یوتیوب به شما امکان می‌دهد با کپی و جای‌گذاری متن مهر زمانی از نظرات یوتیوب، فهرست آهنگ‌ها را به‌طور خودکار ایجاد کنید.
-
-آیا می‌خواهید کد منبع این ویژگی را بررسی کنید؟</string>
+    <string name="youtube_timestamp_info">ویژگی مُهر زمانی یوتیوب به شما امکان می‌دهد با کپی و جای‌گذاری متن مهر زمانی از نظرات یوتیوب، فهرست آهنگ‌ها را به‌طور خودکار ایجاد کنید.</string>
     <string name="source_code">کد منبع</string>
     <string name="no_cue">بدون نشانه</string>
     <string name="youtube_meta_data">متا داده های یوتیوب</string>
@@ -15,4 +13,6 @@
     <string name="cue_not_playable_desc">"اگر نام آهنگ با '@' شروع شود، پخش نمی شود."</string>
     <string name="favorites_toggle">تغییر برگزیده ها</string>
     <string name="adjust_timestamp">تنظیم مهر زمانی</string>
+    <string name="youtube_timestamp_player">پخش کننده مهر زمانی یوتیوب</string>
+    <string name="demo_video">ویدئوی نمایشی</string>
 </resources>

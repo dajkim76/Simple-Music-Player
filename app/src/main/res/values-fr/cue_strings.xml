@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="youtube_timestamp_text">Texte de l\'horodatage Youtube</string>
-    <string name="youtube_timestamp_info">La fonction d\'horodatage YouTube vous permet de créer automatiquement une liste de chansons en copiant et en collant le texte de l\'horodatage à partir des commentaires YouTube.
-
-Souhaitez-vous vérifier le code source de cette fonctionnalité ?</string>
+    <string name="youtube_timestamp_info">La fonction d\'horodatage YouTube vous permet de créer automatiquement une liste de chansons en copiant et en collant le texte de l\'horodatage à partir des commentaires YouTube.</string>
     <string name="source_code">Code source</string>
     <string name="no_cue">Aucun signal</string>
     <string name="youtube_meta_data">Métadonnées Youtube</string>
@@ -15,4 +13,6 @@ Souhaitez-vous vérifier le code source de cette fonctionnalité ?</string>
     <string name="cue_not_playable_desc">"Si le nom de la piste commence par '@', elle ne sera pas lue."</string>
     <string name="favorites_toggle">Basculer les favoris</string>
     <string name="adjust_timestamp">Ajuster l\'horodatage</string>
+    <string name="youtube_timestamp_player">Lecteur d\'horodatage Youtube</string>
+    <string name="demo_video">Vidéo de démonstration</string>
 </resources>

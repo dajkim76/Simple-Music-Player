@@ -41,7 +41,8 @@ import com.simplemobiletools.commons.extensions.*
 import com.simplemobiletools.commons.helpers.*
 import com.simplemobiletools.commons.models.FAQItem
 
-const private val MY_EMAIL = "kimdaejeong@gmail.com"
+private const val MY_EMAIL = "kimdaejeong@gmail.com"
+private const val DEMO_VIDEO_URL = "https://www.youtube.com/watch?v=X_yMfMboIP4"
 
 class MyAboutActivity : ComponentActivity() {
     private val appName get() = intent.getStringExtra(APP_NAME) ?: ""
@@ -196,11 +197,11 @@ class MyAboutActivity : ComponentActivity() {
                     alertDialogState = this,
                     message = stringResource(id = com.simplemobiletools.musicplayer.R.string.youtube_timestamp_info),
                     messageId = null,
-                    positive = com.simplemobiletools.musicplayer.R.string.source_code,
+                    positive = com.simplemobiletools.musicplayer.R.string.demo_video,
                     negative = com.simplemobiletools.commons.R.string.cancel
                 ) { success ->
                     if (success) {
-                        launchViewIntent("https://github.com/dajkim76/Simple-Music-Player")
+                        launchViewIntent(DEMO_VIDEO_URL)
                     }
                 }
             }
@@ -493,7 +494,7 @@ internal fun AboutSection(
         // Youtube timestamp text
         TwoLinerTextItem(
             click = onYoutubeTimestampClick,
-            text = stringResource(id = com.simplemobiletools.musicplayer.R.string.youtube_timestamp_text),
+            text = stringResource(id = com.simplemobiletools.musicplayer.R.string.youtube_timestamp_player),
             icon = R.drawable.ic_info_vector
         )
         TwoLinerTextItem(

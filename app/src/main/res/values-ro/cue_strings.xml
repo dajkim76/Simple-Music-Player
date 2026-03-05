@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="youtube_timestamp_text">Text pentru marca de timp Youtube</string>
-    <string name="youtube_timestamp_info">Funcția de marcare temporală YouTube vă permite să creați automat lista de melodii prin copierea și inserarea textului privind marcajul temporal din comentariile YouTube.
-
-Doriți să verificați codul sursă pentru această funcție?</string>
+    <string name="youtube_timestamp_info">Funcția de marcare temporală YouTube vă permite să creați automat lista de melodii prin copierea și inserarea textului privind marcajul temporal din comentariile YouTube.</string>
     <string name="source_code">Codul sursă</string>
     <string name="no_cue">Fără indiciu</string>
     <string name="youtube_meta_data">Metadate YouTube</string>
@@ -15,4 +13,6 @@ Doriți să verificați codul sursă pentru această funcție?</string>
     <string name="cue_not_playable_desc">"Dacă numele melodiei începe cu '@', nu se va reda."</string>
     <string name="favorites_toggle">Comutați Favorite</string>
     <string name="adjust_timestamp">Reglați marcajul de timp</string>
+    <string name="youtube_timestamp_player">Player Youtube cu marcaj de timp</string>
+    <string name="demo_video">Video demonstrativ</string>
 </resources>

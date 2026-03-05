@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="youtube_timestamp_text">Youtube\'i ajatempli tekst</string>
-    <string name="youtube_timestamp_info">YouTube\'i ajatempli funktsioon võimaldab teil automaatselt luua laulude loendi, kopeerides ja kleepides YouTube\'i kommentaaridest ajatempli teksti.
-
-Kas soovite selle funktsiooni lähtekoodi vaadata?</string>
+    <string name="youtube_timestamp_info">YouTube\'i ajatempli funktsioon võimaldab teil automaatselt luua laulude loendi, kopeerides ja kleepides YouTube\'i kommentaaridest ajatempli teksti.</string>
     <string name="source_code">Lähtekood</string>
     <string name="no_cue">Märki pole</string>
     <string name="youtube_meta_data">Youtube\'i metaandmed</string>
@@ -15,4 +13,6 @@ Kas soovite selle funktsiooni lähtekoodi vaadata?</string>
     <string name="cue_not_playable_desc">"Kui loo nimi algab '-ga @', siis seda ei esitata."</string>
     <string name="favorites_toggle">Lülita lemmikuid ümber</string>
     <string name="adjust_timestamp">Reguleerige ajatemplit</string>
+    <string name="youtube_timestamp_player">Youtube\'i ajatempli mängija</string>
+    <string name="demo_video">Demovideo</string>
 </resources>

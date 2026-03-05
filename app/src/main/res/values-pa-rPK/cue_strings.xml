@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="youtube_timestamp_text">ਯੂਟਿਊਬ ਟਾਈਮਸਟੈਂਪ ਟੈਕਸਟ</string>
-    <string name="youtube_timestamp_info">YouTube ਟਾਈਮਸਟੈਂਪ ਵਿਸ਼ੇਸ਼ਤਾ ਤੁਹਾਨੂੰ YouTube ਟਿੱਪਣੀਆਂ ਤੋਂ ਟਾਈਮਸਟੈਂਪ ਟੈਕਸਟ ਨੂੰ ਕਾਪੀ ਅਤੇ ਪੇਸਟ ਕਰਕੇ ਆਪਣੇ ਆਪ ਗੀਤਾਂ ਦੀ ਸੂਚੀ ਬਣਾਉਣ ਦੀ ਆਗਿਆ ਦਿੰਦੀ ਹੈ।
-
-ਕੀ ਤੁਸੀਂ ਇਸ ਵਿਸ਼ੇਸ਼ਤਾ ਲਈ ਸਰੋਤ ਕੋਡ ਦੀ ਜਾਂਚ ਕਰਨਾ ਚਾਹੋਗੇ?</string>
+    <string name="youtube_timestamp_info">YouTube ਟਾਈਮਸਟੈਂਪ ਵਿਸ਼ੇਸ਼ਤਾ ਤੁਹਾਨੂੰ YouTube ਟਿੱਪਣੀਆਂ ਤੋਂ ਟਾਈਮਸਟੈਂਪ ਟੈਕਸਟ ਨੂੰ ਕਾਪੀ ਅਤੇ ਪੇਸਟ ਕਰਕੇ ਆਪਣੇ ਆਪ ਗੀਤਾਂ ਦੀ ਸੂਚੀ ਬਣਾਉਣ ਦੀ ਆਗਿਆ ਦਿੰਦੀ ਹੈ।</string>
     <string name="source_code">ਸਰੋਤ ਕੋਡ</string>
     <string name="no_cue">ਕੋਈ ਸੰਕੇਤ ਨਹੀਂ</string>
     <string name="youtube_meta_data">ਯੂਟਿਊਬ ਮੈਟਾ ਡੇਟਾ</string>
@@ -15,4 +13,6 @@
     <string name="cue_not_playable_desc">"ਜੇਕਰ ਟਰੈਕ ਦਾ ਨਾਮ '@' ਨਾਲ ਸ਼ੁਰੂ ਹੁੰਦਾ ਹੈ, ਤਾਂ ਇਹ ਨਹੀਂ ਚੱਲੇਗਾ।"</string>
     <string name="favorites_toggle">ਮਨਪਸੰਦ ਬਦਲੋ</string>
     <string name="adjust_timestamp">ਟਾਈਮਸਟੈਂਪ ਨੂੰ ਵਿਵਸਥਿਤ ਕਰੋ</string>
+    <string name="youtube_timestamp_player">ਯੂਟਿਊਬ ਟਾਈਮਸਟੈਂਪ ਪਲੇਅਰ</string>
+    <string name="demo_video">ਡੈਮੋ ਵੀਡੀਓ</string>
 </resources>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="youtube_timestamp_text">유튜브 타임스탬프 텍스트</string>
-    <string name="youtube_timestamp_info">유튜브 타임스탬프 기능은 유튜브 댓글의 타임스탬프 텍스트를 복사해 붙여넣어 곡의 목록을 자동으로 생성할 수 있게 해줍니다.\n\n이 기능의 소스코드를 확인하시겠습니까?</string>
+    <string name="youtube_timestamp_info">유튜브 타임스탬프 기능은 유튜브 댓글의 타임스탬프 텍스트를 복사해 붙여넣어 곡의 목록을 자동으로 생성할 수 있게 해줍니다.</string>
     <string name="source_code">소스코드</string>
     <string name="no_cue">Cue 없음</string>
     <string name="youtube_meta_data">유튜브 메타 데이타</string>
@@ -13,4 +13,6 @@
     <string name="cue_not_playable_desc">"트랙 이름이 '@'로 시작하면 재생되지 않습니다."</string>
     <string name="favorites_toggle">즐겨찾기 토글</string>
     <string name="adjust_timestamp">타임스탬프 조정</string>
+    <string name="youtube_timestamp_player">유튜브 타임스탬프 플레이어</string>
+    <string name="demo_video">데모 비디오</string>
 </resources>
