@@ -42,7 +42,7 @@ import com.simplemobiletools.commons.helpers.*
 import com.simplemobiletools.commons.models.FAQItem
 
 private const val MY_EMAIL = "kimdaejeong@gmail.com"
-private const val DEMO_VIDEO_URL = "https://www.youtube.com/watch?v=X_yMfMboIP4"
+const val DEMO_VIDEO_URL = "https://www.youtube.com/watch?v=X_yMfMboIP4"
 
 class MyAboutActivity : ComponentActivity() {
     private val appName get() = intent.getStringExtra(APP_NAME) ?: ""

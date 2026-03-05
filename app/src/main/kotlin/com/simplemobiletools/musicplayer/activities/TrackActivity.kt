@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.ContentUris
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.Color
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
@@ -12,6 +13,11 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.provider.MediaStore
+import android.text.SpannableString
+import android.text.Spanned
+import android.text.TextPaint
+import android.text.method.LinkMovementMethod
+import android.text.style.ClickableSpan
 import android.util.Log
 import android.util.Size
 import android.view.GestureDetector
@@ -617,6 +623,7 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
                 editText.setText(CueListHelper.cueJsonToText(currentCuesJson))
                 editText.setTextColor(getProperTextColor())
                 editText.setHintTextColor(getProperTextColor().adjustAlpha(0.5f))
+                initLinkTextView(binding.description)
 
                 AlertDialog.Builder(this)
                     .setTitle(R.string.youtube_timestamp_text)
@@ -646,6 +653,33 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
                     .show()
             }
         }
+    }
+
+    private fun initLinkTextView(textView: TextView) {
+        val desc = getString(R.string.cue_not_playable_desc) + " "
+        val start = desc.length
+        val linkText = getString(R.string.demo_video)
+        val end = start + linkText.length
+        val spannable = SpannableString(desc + linkText)
+
+        spannable.setSpan(
+            object : ClickableSpan() {
+                override fun onClick(widget: View) {
+                    this@TrackActivity.launchViewIntent(DEMO_VIDEO_URL)
+                }
+
+                override fun updateDrawState(ds: TextPaint) {
+                    ds.color = getProperPrimaryColor()
+                    ds.isUnderlineText = true
+                }
+            },
+            start,
+            end,
+            Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+        textView.text = spannable
+        textView.movementMethod = LinkMovementMethod.getInstance()
+        textView.highlightColor = Color.TRANSPARENT
     }
 
     private fun showMetaDataDialog() {
