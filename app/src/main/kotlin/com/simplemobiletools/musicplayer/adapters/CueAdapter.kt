@@ -3,7 +3,10 @@ package com.simplemobiletools.musicplayer.adapters
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.PopupMenu
+import androidx.core.view.children
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.simplemobiletools.commons.extensions.getFormattedDuration
@@ -11,6 +14,7 @@ import com.simplemobiletools.commons.extensions.getProperPrimaryColor
 import com.simplemobiletools.commons.extensions.getProperTextColor
 import com.simplemobiletools.musicplayer.R
 import com.simplemobiletools.musicplayer.activities.SimpleActivity
+import com.simplemobiletools.musicplayer.databinding.AdjustCueTimestampBinding
 import com.simplemobiletools.musicplayer.databinding.ItemCueBinding
 import com.simplemobiletools.musicplayer.models.Cue
 
@@ -24,6 +28,7 @@ class CueAdapter(
     private var mediaStoreId: Long = 0
     var isNoCueTitle = false
     private var currentCueIndex: Int = -1
+    private var totalDuration: Int = 0
     private val properTextColor = activity.getProperTextColor()
     private val primaryColor = activity.getProperPrimaryColor()
 
@@ -50,8 +55,11 @@ class CueAdapter(
         } else {
             isNoCueTitle = false
         }
+        this.totalDuration = totalDuration
+        makeDuration()
+    }
 
-        // make duration
+    private fun makeDuration() {
         cues.forEachIndexed { index, cue ->
             val nextCueTimeStamp = if (index < cues.size - 1) {
                 val nextCue = cues[index + 1]
@@ -129,6 +137,7 @@ class CueAdapter(
             val skipLabel = if (cue.enabled) activity.getString(R.string.not_playing) else activity.getString(R.string.playable)
             popup.menu.add(0, 0, 0, skipLabel)
             popup.menu.add(0, 1, 0, activity.getString(R.string.favorites_toggle))
+            popup.menu.add(0, 2, 0, activity.getString(R.string.adjust_timestamp))
             popup.setOnMenuItemClickListener { item ->
                 when (item.itemId) {
                     0 -> {
@@ -145,6 +154,37 @@ class CueAdapter(
                         cues = newCues
                         notifyItemChanged(position)
                         itemUpdated(mediaStoreId, newCues)
+                    }
+
+                    2 -> {
+                        val cue = cues[position]
+                        val binding = AdjustCueTimestampBinding.inflate(LayoutInflater.from(activity))
+                        binding.title.setText(cue.title)
+                        binding.buttons.children.forEach { it.setOnClickListener { binding.editText.setText((it as? TextView)?.text) } }
+                        AlertDialog.Builder(activity)
+                            .setTitle(R.string.adjust_timestamp)
+                            .setView(binding.root)
+                            .setNegativeButton(com.simplemobiletools.commons.R.string.cancel, null)
+                            .setPositiveButton(com.simplemobiletools.commons.R.string.ok) { _, _ ->
+                                val seconds = binding.editText.text.toString().toIntOrNull() ?: 0
+                                val newTitle = binding.title.text.toString().replace("\n", "").trim()
+                                if (seconds == 0 && cue.title == newTitle) return@setPositiveButton
+                                val newCues = cues.toMutableList()
+                                newCues[position] =
+                                    cue.copy(
+                                        timestamp = (cue.timestamp + seconds).takeIf { it >= 0 } ?: 0,
+                                        title = newTitle,
+                                        enabled = cue.enabled || cue.favorite,
+                                        duration = cue.duration,
+                                        favorite = cue.favorite
+                                    )
+                                newCues.sortedBy { it.timestamp }
+                                cues = newCues
+                                makeDuration()
+                                notifyDataSetChanged() // after sortedBy
+                                itemUpdated(mediaStoreId, newCues) // save and reload
+                            }
+                            .show()
                     }
                 }
                 true
