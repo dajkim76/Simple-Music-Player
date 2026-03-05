@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="youtube_timestamp_text">Youtube-ko denbora-markaren testua</string>
+    <string name="youtube_timestamp_info">YouTube-ko denbora-zigiluaren eginbideak abestien zerrenda automatikoki sortzeko aukera ematen du YouTube-ko iruzkinetako denbora-zigiluaren testua kopiatuz eta itsatsiz.
+
+Eginbide honen iturburu-kodea egiaztatu nahi al duzu?</string>
+    <string name="source_code">Iturburu-kodea</string>
+    <string name="no_cue">Pistarik ez</string>
+    <string name="youtube_meta_data">Youtube metadatuak</string>
+    <string name="all_data">Datu guztiak</string>
+    <string name="youtube">Youtube</string>
+    <string name="make_cue_list">Egin Cue Zerrenda</string>
+    <string name="not_playing">Ez da jolasten</string>
+    <string name="playable">Jokagarria</string>
+    <string name="cue_not_playable_desc">"Pistaren izena '@'-rekin hasten bada, ez da erreproduzituko."</string>
+    <string name="favorites_toggle">Trukatu Gogokoak</string>
+    <string name="adjust_timestamp">Doitu denbora-zigilua</string>
+</resources>

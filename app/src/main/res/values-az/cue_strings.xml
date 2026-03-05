@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="youtube_timestamp_text">Youtube zaman damğası mətni</string>
+    <string name="youtube_timestamp_info">YouTube zaman damğası funksiyası YouTube şərhlərindən zaman damğası mətnini kopyalayıb yapışdıraraq avtomatik mahnı siyahısı yaratmağa imkan verir.
+
+Bu funksiyanın mənbə kodunu yoxlamaq istərdinizmi?</string>
+    <string name="source_code">Mənbə kodu</string>
+    <string name="no_cue">İşarə yoxdur</string>
+    <string name="youtube_meta_data">Youtube meta məlumatları</string>
+    <string name="all_data">Bütün məlumatlar</string>
+    <string name="youtube">Youtube</string>
+    <string name="make_cue_list">İşarə siyahısı yaradın</string>
+    <string name="not_playing">Oynamır</string>
+    <string name="playable">Oynatıla bilən</string>
+    <string name="cue_not_playable_desc">"Trek adı '@' ilə başlayırsa, o, çalınmayacaq."</string>
+    <string name="favorites_toggle">Sevimliləri dəyişdir</string>
+    <string name="adjust_timestamp">Zaman damğasını tənzimləyin</string>
+</resources>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="youtube_timestamp_text">Youtubeのタイムスタンプテキスト</string>
+    <string name="youtube_timestamp_info">YouTube タイムスタンプ機能を使用すると、YouTube のコメントからタイムスタンプ テキストをコピーして貼り付けることで、曲リストを自動的に作成できます。
+
+この機能のソース コードを確認しますか?</string>
+    <string name="source_code">ソースコード</string>
+    <string name="no_cue">キューなし</string>
+    <string name="youtube_meta_data">Youtubeメタデータ</string>
+    <string name="all_data">全データ</string>
+    <string name="youtube">ユーチューブ</string>
+    <string name="make_cue_list">キューリストの作成</string>
+    <string name="not_playing">遊んでいない</string>
+    <string name="playable">プレイ可能</string>
+    <string name="cue_not_playable_desc">"トラック名が'@'で始まる場合、再生されません。"</string>
+    <string name="favorites_toggle">お気に入りの切り替え</string>
+    <string name="adjust_timestamp">タイムスタンプの調整</string>
+</resources>

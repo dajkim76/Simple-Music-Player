@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="youtube_timestamp_text">Texto do carimbo de data e hora do Youtube</string>
+    <string name="youtube_timestamp_info">O recurso de carimbo de data/hora do YouTube permite que você crie listas de músicas automaticamente, copiando e colando o texto do carimbo de data/hora dos comentários do YouTube.
+
+Gostaria de verificar o código-fonte desse recurso?</string>
+    <string name="source_code">Código-fonte</string>
+    <string name="no_cue">Nenhuma deixa</string>
+    <string name="youtube_meta_data">Metadados do Youtube</string>
+    <string name="all_data">Todos os dados</string>
+    <string name="youtube">YouTube</string>
+    <string name="make_cue_list">Faça a lista de sugestões</string>
+    <string name="not_playing">Não está a jogar</string>
+    <string name="playable">Jogável</string>
+    <string name="cue_not_playable_desc">"Se o nome da faixa começar com '@', ela não será reproduzida."</string>
+    <string name="favorites_toggle">Alternar favoritos</string>
+    <string name="adjust_timestamp">Ajustar o carimbo de data/hora</string>
+</resources>

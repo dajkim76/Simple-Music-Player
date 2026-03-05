@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="youtube_timestamp_text">Teks stempel waktu Youtube</string>
+    <string name="youtube_timestamp_info">Fitur stempel waktu YouTube memungkinkan Anda membuat daftar lagu secara otomatis dengan menyalin dan menempelkan teks stempel waktu dari komentar YouTube.
+
+Apakah Anda ingin memeriksa kode sumber untuk fitur ini?</string>
+    <string name="source_code">Kode sumber</string>
+    <string name="no_cue">Tanpa Isyarat</string>
+    <string name="youtube_meta_data">Data meta Youtube</string>
+    <string name="all_data">Semua Data</string>
+    <string name="youtube">Youtube</string>
+    <string name="make_cue_list">Buat Daftar Isyarat</string>
+    <string name="not_playing">Tidak bermain</string>
+    <string name="playable">Bisa dimainkan</string>
+    <string name="cue_not_playable_desc">"Jika nama trek dimulai dengan '@', ia tidak akan dimainkan."</string>
+    <string name="favorites_toggle">Alihkan Favorit</string>
+    <string name="adjust_timestamp">Sesuaikan stempel waktu</string>
+</resources>

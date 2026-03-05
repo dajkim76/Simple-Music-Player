@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="youtube_timestamp_text">Jutuba tempomarka teksto</string>
+    <string name="youtube_timestamp_info">La funkcio de tempomarko de Jutubo ebligas vin aŭtomate krei kantliston kopiante kaj algluante tempomarkon de jutubaj komentoj.
+
+Ĉu vi ŝatus kontroli la fontkodon por ĉi tiu funkcio?</string>
+    <string name="source_code">Fontkodo</string>
+    <string name="no_cue">Neniu indiko</string>
+    <string name="youtube_meta_data">Jutubaj metadatumoj</string>
+    <string name="all_data">Ĉiuj datumoj</string>
+    <string name="youtube">Jutubo</string>
+    <string name="make_cue_list">Faru indikan liston</string>
+    <string name="not_playing">Ne ludante</string>
+    <string name="playable">Ludeble</string>
+    <string name="cue_not_playable_desc">"Se la trako komenciĝas per '@', ĝi ne ludos."</string>
+    <string name="favorites_toggle">Baskuli ŝatatojn</string>
+    <string name="adjust_timestamp">Alĝustigu tempomarkon</string>
+</resources>

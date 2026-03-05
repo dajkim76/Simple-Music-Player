@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="youtube_timestamp_text">Youtube 时间戳文本</string>
+    <string name="youtube_timestamp_info">YouTube 时间戳功能允许您通过复制和粘贴 YouTube 评论中的时间戳文本来自动创建歌曲列表。
+
+您想查看此功能的源代码吗？</string>
+    <string name="source_code">源代码</string>
+    <string name="no_cue">没有提示</string>
+    <string name="youtube_meta_data">Youtube 元数据</string>
+    <string name="all_data">所有数据</string>
+    <string name="youtube">YouTube</string>
+    <string name="make_cue_list">制作提示列表</string>
+    <string name="not_playing">没玩</string>
+    <string name="playable">可玩</string>
+    <string name="cue_not_playable_desc">"如果轨道名称以'@'开头，则不会播放。"</string>
+    <string name="favorites_toggle">切换收藏夹</string>
+    <string name="adjust_timestamp">调整时间戳</string>
+</resources>

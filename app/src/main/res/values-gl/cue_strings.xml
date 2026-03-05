@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="youtube_timestamp_text">Texto da marca de tempo de Youtube</string>
+    <string name="youtube_timestamp_info">A función de marca de tempo de YouTube permítelle crear listas de cancións automaticamente copiando e pegando o texto da marca de tempo dos comentarios de YouTube.
+
+Gustaríache comprobar o código fonte desta función?</string>
+    <string name="source_code">Código fonte</string>
+    <string name="no_cue">Sen sinal</string>
+    <string name="youtube_meta_data">Metadatos de Youtube</string>
+    <string name="all_data">Todos os datos</string>
+    <string name="youtube">Youtube</string>
+    <string name="make_cue_list">Facer lista de indicacións</string>
+    <string name="not_playing">Non xogando</string>
+    <string name="playable">Xogable</string>
+    <string name="cue_not_playable_desc">"Se o nome da pista comeza con '@', non se reproducirá."</string>
+    <string name="favorites_toggle">Alternar os favoritos</string>
+    <string name="adjust_timestamp">Axusta a marca de tempo</string>
+</resources>

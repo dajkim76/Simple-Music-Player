@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="youtube_timestamp_text">Text časovej pečiatky Youtube</string>
+    <string name="youtube_timestamp_info">Funkcia časovej pečiatky YouTube vám umožňuje automaticky vytvoriť zoznam skladieb skopírovaním a vložením textu časovej pečiatky z komentárov na YouTube.
+
+Chceli by ste skontrolovať zdrojový kód tejto funkcie?</string>
+    <string name="source_code">Zdrojový kód</string>
+    <string name="no_cue">Žiadne tágo</string>
+    <string name="youtube_meta_data">Metadáta na Youtube</string>
+    <string name="all_data">Všetky dáta</string>
+    <string name="youtube">YouTube</string>
+    <string name="make_cue_list">Vytvoriť zoznam tág</string>
+    <string name="not_playing">Nehrám</string>
+    <string name="playable">Hrateľné</string>
+    <string name="cue_not_playable_desc">"Ak názov stopy začína zavináčom '@', nebude sa prehrávať."</string>
+    <string name="favorites_toggle">Prepnúť obľúbené</string>
+    <string name="adjust_timestamp">Upravte časovú pečiatku</string>
+</resources>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="youtube_timestamp_text">نص الطابع الزمني لـ Youtube</string>
+    <string name="youtube_timestamp_info">تتيح لك ميزة الطابع الزمني في YouTube إنشاء قائمة أغانٍ تلقائيًا عن طريق نسخ ولصق نص الطابع الزمني من تعليقات YouTube.
+
+هل ترغب في التحقق من الكود المصدري لهذه الميزة؟</string>
+    <string name="source_code">الكود المصدري</string>
+    <string name="no_cue">لا يوجد إشارة</string>
+    <string name="youtube_meta_data">بيانات Youtube الوصفية</string>
+    <string name="all_data">كل البيانات</string>
+    <string name="youtube">Youtube</string>
+    <string name="make_cue_list">إنشاء قائمة إشارات</string>
+    <string name="not_playing">لا يعزف</string>
+    <string name="playable">قابل للتشغيل</string>
+    <string name="cue_not_playable_desc">"إذا كان اسم المقطع يبدأ بـ '@'، فلن يتم تشغيله."</string>
+    <string name="favorites_toggle">تبديل المفضلة</string>
+    <string name="adjust_timestamp">ضبط الطابع الزمني</string>
+</resources>

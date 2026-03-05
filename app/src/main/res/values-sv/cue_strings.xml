@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="youtube_timestamp_text">Youtube tidsstämpeltext</string>
+    <string name="youtube_timestamp_info">YouTube tidsstämpling låter dig automatiskt skapa låtlista genom att kopiera och klistra in tidsstämplingstext från YouTube-kommentarer.
+
+Vill du kontrollera källkoden för den här funktionen?</string>
+    <string name="source_code">Källkod</string>
+    <string name="no_cue">Ingen cue</string>
+    <string name="youtube_meta_data">YouTube metadata</string>
+    <string name="all_data">Alla data</string>
+    <string name="youtube">Youtube</string>
+    <string name="make_cue_list">Gör cue-lista</string>
+    <string name="not_playing">Spelar inte</string>
+    <string name="playable">Spelbar</string>
+    <string name="cue_not_playable_desc">"Om spårnamnet börjar med '@' kommer det inte att spelas upp."</string>
+    <string name="favorites_toggle">Växla mellan favoriter</string>
+    <string name="adjust_timestamp">Justera tidsstämpeln</string>
+</resources>

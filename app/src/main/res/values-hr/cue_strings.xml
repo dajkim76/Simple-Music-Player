@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="youtube_timestamp_text">Tekst vremenske oznake Youtubea</string>
+    <string name="youtube_timestamp_info">Značajka YouTube vremenske oznake omogućuje automatsko stvaranje popisa pjesama kopiranjem i lijepljenjem teksta vremenske oznake iz YouTube komentara.
+
+Želite li provjeriti izvorni kod za ovu značajku?</string>
+    <string name="source_code">Izvorni kod</string>
+    <string name="no_cue">Nema znaka</string>
+    <string name="youtube_meta_data">Metapodaci Youtubea</string>
+    <string name="all_data">Svi podaci</string>
+    <string name="youtube">Youtube</string>
+    <string name="make_cue_list">Napravite popis znakova</string>
+    <string name="not_playing">Ne igranje</string>
+    <string name="playable">Igra se</string>
+    <string name="cue_not_playable_desc">"Ako naziv pjesme počinje s '@', neće se reproducirati."</string>
+    <string name="favorites_toggle">Uključi favorite</string>
+    <string name="adjust_timestamp">Podesite vremensku oznaku</string>
+</resources>

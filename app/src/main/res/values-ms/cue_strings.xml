@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="youtube_timestamp_text">Teks cap masa Youtube</string>
+    <string name="youtube_timestamp_info">Ciri cap masa YouTube membolehkan anda membuat senarai lagu secara automatik dengan menyalin dan menampal teks cap masa daripada ulasan YouTube.
+
+Adakah anda ingin menyemak kod sumber untuk ciri ini?</string>
+    <string name="source_code">Kod sumber</string>
+    <string name="no_cue">Tiada Isyarat</string>
+    <string name="youtube_meta_data">Data meta Youtube</string>
+    <string name="all_data">Semua Data</string>
+    <string name="youtube">Youtube</string>
+    <string name="make_cue_list">Buat Senarai Kiu</string>
+    <string name="not_playing">Bukan main</string>
+    <string name="playable">Boleh main</string>
+    <string name="cue_not_playable_desc">"Jika nama trek bermula dengan '@', ia tidak akan dimainkan."</string>
+    <string name="favorites_toggle">Togol Kegemaran</string>
+    <string name="adjust_timestamp">Laraskan cap masa</string>
+</resources>

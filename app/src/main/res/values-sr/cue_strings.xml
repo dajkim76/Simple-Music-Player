@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="youtube_timestamp_text">Текст временске ознаке на Иоутубе-у</string>
+    <string name="youtube_timestamp_info">Функција ИоуТубе временске ознаке вам омогућава да аутоматски креирате листу песама копирањем и лепљењем текста временске ознаке из ИоуТубе коментара.
+
+Да ли бисте желели да проверите изворни код за ову функцију?</string>
+    <string name="source_code">Изворни код</string>
+    <string name="no_cue">Без знака</string>
+    <string name="youtube_meta_data">Иоутубе мета подаци</string>
+    <string name="all_data">Сви подаци</string>
+    <string name="youtube">Иоутубе</string>
+    <string name="make_cue_list">Направите листу ознака</string>
+    <string name="not_playing">Не играм</string>
+    <string name="playable">Игра се</string>
+    <string name="cue_not_playable_desc">"Ако име нумере почиње са '@', неће се репродуковати."</string>
+    <string name="favorites_toggle">Укључи/искључи фаворите</string>
+    <string name="adjust_timestamp">Подесите временску ознаку</string>
+</resources>

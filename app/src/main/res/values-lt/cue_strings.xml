@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="youtube_timestamp_text">Youtube laiko žymos tekstas</string>
+    <string name="youtube_timestamp_info">„YouTube“ laiko žymos funkcija leidžia automatiškai sukurti dainų sąrašą nukopijuojant ir įklijuojant laiko žymos tekstą iš „YouTube“ komentarų.
+
+Ar norėtumėte patikrinti šios funkcijos šaltinio kodą?</string>
+    <string name="source_code">Šaltinio kodas</string>
+    <string name="no_cue">Nėra žymos</string>
+    <string name="youtube_meta_data">Youtubės meta duomenys</string>
+    <string name="all_data">Visi duomenys</string>
+    <string name="youtube">Youtube</string>
+    <string name="make_cue_list">Sukurkite žymų sąrašą</string>
+    <string name="not_playing">Nežaidžia</string>
+    <string name="playable">Galima žaisti</string>
+    <string name="cue_not_playable_desc">"Jei takelio pavadinimas prasideda '@', jis nebus paleistas."</string>
+    <string name="favorites_toggle">Perjungti mėgstamiausius</string>
+    <string name="adjust_timestamp">Koreguokite laiko žymą</string>
+</resources>

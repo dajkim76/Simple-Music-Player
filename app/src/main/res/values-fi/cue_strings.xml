@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="youtube_timestamp_text">Youtube-aikaleiman teksti</string>
+    <string name="youtube_timestamp_info">YouTuben aikaleimaominaisuuden avulla voit luoda automaattisesti kappaleluettelon kopioimalla ja liittämällä aikaleimatekstin YouTube-kommenteista.
+
+Haluatko tarkistaa tämän ominaisuuden lähdekoodin?</string>
+    <string name="source_code">Lähdekoodi</string>
+    <string name="no_cue">Ei vihjettä</string>
+    <string name="youtube_meta_data">Youtube metatiedot</string>
+    <string name="all_data">Kaikki tiedot</string>
+    <string name="youtube">Youtube</string>
+    <string name="make_cue_list">Tee vihjeluettelo</string>
+    <string name="not_playing">Ei pelaa</string>
+    <string name="playable">Pelattava</string>
+    <string name="cue_not_playable_desc">"Jos raidan nimi alkaa '@', sitä ei toisteta."</string>
+    <string name="favorites_toggle">Vaihda Suosikit</string>
+    <string name="adjust_timestamp">Säädä aikaleimaa</string>
+</resources>

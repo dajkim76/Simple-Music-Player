@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="youtube_timestamp_text">Текст с временной меткой YouTube</string>
+    <string name="youtube_timestamp_info">Функция временных меток YouTube позволяет автоматически создавать списки песен путем копирования и вставки текста с временными метками из комментариев YouTube.
+
+Хотели бы вы проверить исходный код этой функции?</string>
+    <string name="source_code">Исходный код</string>
+    <string name="no_cue">Нет сигнала</string>
+    <string name="youtube_meta_data">Метаданные Youtube</string>
+    <string name="all_data">Все данные</string>
+    <string name="youtube">YouTube</string>
+    <string name="make_cue_list">Создать список сигналов</string>
+    <string name="not_playing">Не играет</string>
+    <string name="playable">Игровой</string>
+    <string name="cue_not_playable_desc">"Если имя трека начинается с '@', оно не будет воспроизводиться."</string>
+    <string name="favorites_toggle">Переключить избранное</string>
+    <string name="adjust_timestamp">Отрегулируйте временную метку</string>
+</resources>

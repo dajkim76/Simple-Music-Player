@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="youtube_timestamp_text">Testo del timestamp di Youtube</string>
+    <string name="youtube_timestamp_info">La funzione timestamp di YouTube ti consente di creare automaticamente l\'elenco dei brani copiando e incollando il testo del timestamp dai commenti di YouTube.
+
+Desideri controllare il codice sorgente per questa funzionalità?</string>
+    <string name="source_code">Codice sorgente</string>
+    <string name="no_cue">Nessun segnale</string>
+    <string name="youtube_meta_data">Metadati di YouTube</string>
+    <string name="all_data">Tutti i dati</string>
+    <string name="youtube">Youtube</string>
+    <string name="make_cue_list">Crea elenco segnali</string>
+    <string name="not_playing">Non sta giocando</string>
+    <string name="playable">Giocabile</string>
+    <string name="cue_not_playable_desc">"Se il nome della traccia inizia con '@', non verrà riprodotta."</string>
+    <string name="favorites_toggle">Attiva/disattiva Preferiti</string>
+    <string name="adjust_timestamp">Regola timestamp</string>
+</resources>

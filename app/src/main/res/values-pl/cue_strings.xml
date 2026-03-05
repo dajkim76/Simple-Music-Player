@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="youtube_timestamp_text">Tekst ze znacznikiem czasu YouTube</string>
+    <string name="youtube_timestamp_info">Funkcja znaczników czasu w YouTube umożliwia automatyczne tworzenie listy utworów poprzez kopiowanie i wklejanie tekstu ze znacznikiem czasu z komentarzy w YouTube.
+
+Czy chcesz sprawdzić kod źródłowy tej funkcji?</string>
+    <string name="source_code">Kod źródłowy</string>
+    <string name="no_cue">Brak wskazówki</string>
+    <string name="youtube_meta_data">Metadane z YouTube</string>
+    <string name="all_data">Wszystkie dane</string>
+    <string name="youtube">Youtube</string>
+    <string name="make_cue_list">Utwórz listę wskazówek</string>
+    <string name="not_playing">Nie gra</string>
+    <string name="playable">Grywalne</string>
+    <string name="cue_not_playable_desc">"Jeśli nazwa utworu zaczyna się na '@', nie będzie on odtwarzany."</string>
+    <string name="favorites_toggle">Przełącz Ulubione</string>
+    <string name="adjust_timestamp">Dostosuj sygnaturę czasową</string>
+</resources>

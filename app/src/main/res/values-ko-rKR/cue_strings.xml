@@ -12,4 +12,5 @@
     <string name="playable">재생 가능</string>
     <string name="cue_not_playable_desc">"트랙 이름이 '@'로 시작하면 재생되지 않습니다."</string>
     <string name="favorites_toggle">즐겨찾기 토글</string>
+    <string name="adjust_timestamp">타임스탬프 조정</string>
 </resources>

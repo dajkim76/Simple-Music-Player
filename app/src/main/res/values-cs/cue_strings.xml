@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="youtube_timestamp_text">Text časového razítka Youtube</string>
+    <string name="youtube_timestamp_info">Funkce časového razítka YouTube vám umožňuje automaticky vytvořit seznam skladeb zkopírováním a vložením textu časového razítka z komentářů na YouTube.
+
+Chcete zkontrolovat zdrojový kód této funkce?</string>
+    <string name="source_code">Zdrojový kód</string>
+    <string name="no_cue">Žádné tágo</string>
+    <string name="youtube_meta_data">Metadata na Youtube</string>
+    <string name="all_data">Všechna data</string>
+    <string name="youtube">Youtube</string>
+    <string name="make_cue_list">Vytvořte seznam tág</string>
+    <string name="not_playing">Nehraje</string>
+    <string name="playable">Hratelné</string>
+    <string name="cue_not_playable_desc">"Pokud název stopy začíná '@', nebude se přehrávat."</string>
+    <string name="favorites_toggle">Přepnout oblíbené</string>
+    <string name="adjust_timestamp">Upravit časové razítko</string>
+</resources>

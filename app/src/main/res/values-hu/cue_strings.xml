@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="youtube_timestamp_text">Youtube időbélyeg szövege</string>
+    <string name="youtube_timestamp_info">A YouTube időbélyegző funkciója lehetővé teszi dallisták automatikus létrehozását a YouTube-megjegyzésekből származó időbélyegző szövegének másolásával és beillesztésével.
+
+Szeretné ellenőrizni a funkció forráskódját?</string>
+    <string name="source_code">Forráskód</string>
+    <string name="no_cue">Nincs dákó</string>
+    <string name="youtube_meta_data">Youtube metaadatok</string>
+    <string name="all_data">Minden adat</string>
+    <string name="youtube">Youtube</string>
+    <string name="make_cue_list">Dákólista készítése</string>
+    <string name="not_playing">Nem játszik</string>
+    <string name="playable">Játszható</string>
+    <string name="cue_not_playable_desc">"Ha a szám neve '@'-val kezdődik, nem fog lejátszani."</string>
+    <string name="favorites_toggle">Kedvencek váltása</string>
+    <string name="adjust_timestamp">Időbélyeg beállítása</string>
+</resources>

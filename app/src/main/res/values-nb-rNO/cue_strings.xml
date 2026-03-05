@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="youtube_timestamp_text">Youtube tidsstempeltekst</string>
+    <string name="youtube_timestamp_info">YouTube-tidsstempelfunksjonen lar deg automatisk lage sangliste ved å kopiere og lime inn tidsstempeltekst fra YouTube-kommentarer.
+
+Vil du sjekke kildekoden for denne funksjonen?</string>
+    <string name="source_code">Kildekode</string>
+    <string name="no_cue">Ingen cue</string>
+    <string name="youtube_meta_data">Youtube metadata</string>
+    <string name="all_data">Alle data</string>
+    <string name="youtube">Youtube</string>
+    <string name="make_cue_list">Lag cue-liste</string>
+    <string name="not_playing">Spiller ikke</string>
+    <string name="playable">Spillbar</string>
+    <string name="cue_not_playable_desc">"Hvis spornavnet starter med '@', spilles det ikke."</string>
+    <string name="favorites_toggle">Bytt favoritter</string>
+    <string name="adjust_timestamp">Juster tidsstempel</string>
+</resources>
