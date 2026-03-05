@@ -63,6 +63,10 @@ class CueAdapter(
         }
     }
 
+    fun onDestroy() {
+        cues = emptyList() // clear singleton cache to avoid leaks
+    }
+
     fun getCurrentTitle(mediaStoreId: Long): String? {
         if (cues.isEmpty() || isNoCueTitle || this.mediaStoreId != mediaStoreId) return null
         if (currentCueIndex >= 0) {

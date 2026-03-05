@@ -155,6 +155,10 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
                 }
             }
         }
+        // avoid activity memory leak (Reset singleton bitmap, cueList cache)
+        binding.activityTrackImage.setImageBitmap(null)
+        binding.activityTrackNext.setImageBitmap(null)
+        cueAdapter?.onDestroy()
     }
 
     private fun setupTrackInfo(item: MediaItem?) {
@@ -508,6 +512,7 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
 
     private fun scheduleProgressUpdate() {
         cancelProgressUpdate()
+        if (isFinishing || isDestroyed) return
         withPlayer {
             val delayInMillis = (updateIntervalMillis / config.playbackSpeed).toLong()
             handler.postDelayed(delayInMillis) {
