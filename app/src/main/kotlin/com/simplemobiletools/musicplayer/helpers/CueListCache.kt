@@ -1,83 +1,56 @@
 package com.simplemobiletools.musicplayer.helpers
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Looper
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.simplemobiletools.commons.extensions.toInt
-import com.simplemobiletools.commons.helpers.ensureBackgroundThread
 import com.simplemobiletools.musicplayer.extensions.audioHelper
 import com.simplemobiletools.musicplayer.models.Cue
+import com.simplemobiletools.musicplayer.models.Track
+import com.simplemobiletools.musicplayer.objects.executeBackgroundThread
+import java.util.concurrent.ConcurrentHashMap
 
 object CueListCache {
-    private var context: Context? = null
-    private val cueListMap = mutableMapOf<Long, List<Cue>>()
+    private val cueListMap = ConcurrentHashMap<Long, List<Cue>>()
 
-    fun initContext(context: Context) {
-        this.context = context.applicationContext
-    }
-
-    fun peekCueList(fileStableId: Long): List<Cue>? {
-        synchronized(cueListMap) {
-            cueListMap[fileStableId]?.let { return it }
-            return null
-        }
-    }
-
-    fun getCueList(fileStableId: Long): List<Cue> {
-        synchronized(cueListMap) {
-            cueListMap[fileStableId]?.let { return it }
-        }
-
-        if (context != null && isWorkerThread()) {
-            val cueJson = context!!.audioHelper.getTrackCue(fileStableId)
-            return updateCueJson(fileStableId, cueJson)
-        } else {
-            context?.let { loadCueListAsync(it, fileStableId) }
-            return emptyList()
-        }
-    }
+    fun peekCueList(fileStableId: Long): List<Cue>? = cueListMap[fileStableId]
 
     fun getCueList(context: Context, fileStableId: Long): List<Cue> {
-        if (this.context == null) {
-            this.context = context.applicationContext
-        }
-
-        synchronized(cueListMap) {
-            cueListMap[fileStableId]?.let { return it }
-        }
-
-        if (isWorkerThread()) {
-            val cueJson = context.audioHelper.getTrackCue(fileStableId)
-            return updateCueJson(fileStableId, cueJson)
-        } else {
-            loadCueListAsync(context, fileStableId)
-            return emptyList()
+        return cueListMap[fileStableId] ?: run {
+            if (Looper.myLooper() == Looper.getMainLooper()) {
+                loadCueListAsync(context, fileStableId)
+                return emptyList()
+            } else {
+                val cueJson = context.audioHelper.getTrackCue(fileStableId)
+                return updateCacheByCueJson(fileStableId, cueJson)
+            }
         }
     }
 
-    fun updateCueJson(fileStableId: Long, cueJson: String): List<Cue> {
-        val cues = CueListHelper.getCueListFromJson(cueJson)
-        synchronized(cueListMap) {
-            cueListMap[fileStableId] = cues
-        }
-        return cues
+    fun updateCacheByCueJson(fileStableId: Long, cueJson: String): List<Cue> {
+        val cueList = CueListHelper.getCueListFromJson(cueJson)
+        cueListMap[fileStableId] = cueList
+        return cueList
     }
 
-    fun updateCueList(fileStableId: Long, cueList: List<Cue>) {
-        synchronized(cueListMap) {
-            cueListMap[fileStableId] = cueList
-        }
+    fun updateCacheByCueList(fileStableId: Long, cueList: List<Cue>) {
+        cueListMap[fileStableId] = cueList
     }
 
     private fun loadCueListAsync(context: Context, fileStableId: Long) {
-        ensureBackgroundThread {
+        executeBackgroundThread {
             val cueJson = context.audioHelper.getTrackCue(fileStableId)
-            updateCueJson(fileStableId, cueJson)
+            updateCacheByCueJson(fileStableId, cueJson)
         }
     }
 
-    private fun isWorkerThread() = Looper.myLooper() != Looper.getMainLooper()
+    fun saveCueListAsync(context: Context, track: Track, newCueJson: String) {
+        executeBackgroundThread {
+            context.audioHelper.updateTrackCue(track, newCueJson)
+        }
+    }
 }
 
 object CueListHelper {
@@ -129,6 +102,7 @@ object CueListHelper {
         }
     }
 
+    @SuppressLint("DefaultLocale")
     fun cueJsonToText(cueJson: String): String {
         if (cueJson.isEmpty()) return ""
         return try {

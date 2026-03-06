@@ -594,10 +594,8 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
                         seekTo(cue.timestamp * 1000L)
                     }
                 }, { track, updatedCues ->
-                    CueListCache.updateCueList(track.fileStableId, updatedCues)
-                    executeBackgroundThread {
-                        audioHelper.updateTrackCue(track, Gson().toJson(updatedCues))
-                    }
+                    CueListCache.updateCacheByCueList(track.fileStableId, updatedCues)
+                    CueListCache.saveCueListAsync(this@TrackActivity, track, Gson().toJson(updatedCues))
                 })
                 binding.activityTrackCuesList.apply {
                     layoutManager = LinearLayoutManager(this@TrackActivity)
@@ -639,19 +637,15 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
                     .setView(binding.root)
                     .setPositiveButton(com.simplemobiletools.commons.R.string.ok) { _, _ ->
                         val newCueJson = CueListHelper.getCueJsonFromText(editText.text.toString())
-                        updateCueList(track, CueListCache.updateCueJson(track.fileStableId, newCueJson))
-                        executeBackgroundThread {
-                            audioHelper.updateTrackCue(track, newCueJson)
-                        }
+                        updateCueList(track, CueListCache.updateCacheByCueJson(track.fileStableId, newCueJson))
+                        CueListCache.saveCueListAsync(this@TrackActivity, track, newCueJson)
                     }
                     .setNegativeButton(com.simplemobiletools.commons.R.string.cancel, null)
                     .setNeutralButton(R.string.no_cue) { _, _ ->
                         val cues = listOf(Cue(0, "<NO_CUE>", false))
                         val newCueJson = Gson().toJson(cues)
-                        updateCueList(track, CueListCache.updateCueJson(track.fileStableId, newCueJson))
-                        executeBackgroundThread {
-                            audioHelper.updateTrackCue(track, newCueJson)
-                        }
+                        updateCueList(track, CueListCache.updateCacheByCueJson(track.fileStableId, newCueJson))
+                        CueListCache.saveCueListAsync(this@TrackActivity, track, newCueJson)
                     }
                     .show()
             }
