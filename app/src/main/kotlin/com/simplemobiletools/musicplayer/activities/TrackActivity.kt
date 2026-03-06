@@ -623,7 +623,7 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
     private fun showEditCuesDialog(cuesJson: String? = null) {
         val track = currentTrack ?: return
         executeBackgroundThread {
-            val currentCuesJson = cuesJson ?: audioHelper.getTrackCue(track.mediaStoreId)
+            val currentCuesJson = cuesJson ?: audioHelper.getTrackCue(track.fileStableId)
             runOnUiThread {
                 val binding = InputCueTextBinding.inflate(LayoutInflater.from(this))
                 val editText = binding.editText
