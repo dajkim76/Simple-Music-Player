@@ -72,8 +72,6 @@ import kotlin.math.min
 import kotlin.time.Duration.Companion.milliseconds
 
 class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
-    private val SWIPE_DOWN_THRESHOLD = 100
-
     private var isThirdPartyIntent = false
     private var currentTrack: Track? = null
     private var cueAdapter: CueAdapter? = null
@@ -127,6 +125,7 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
             nextTrackHolder.background = ColorDrawable(getProperBackgroundColor())
             nextTrackHolder.setOnClickListener {
                 startActivity(Intent(applicationContext, QueueActivity::class.java))
+                overridePendingTransition(R.anim.slide_up_enter, R.anim.slide_up_exit)
             }
         }
     }
@@ -353,15 +352,56 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
     @SuppressLint("ClickableViewAccessibility")
     private fun setupFlingListener() {
         val flingListener = object : GestureDetector.SimpleOnGestureListener() {
-            override fun onFling(e1: MotionEvent?, e2: MotionEvent, velocityX: Float, velocityY: Float): Boolean {
-                if (e1 != null) {
-                    if (velocityY > 0 && velocityY > velocityX && e2.y - e1.y > SWIPE_DOWN_THRESHOLD) {
-                        finish()
-                        binding.activityTrackTopShadow.animate().alpha(0f).start()
-                        overridePendingTransition(0, com.simplemobiletools.commons.R.anim.slide_down)
+            override fun onFling(
+                e1: MotionEvent?,
+                e2: MotionEvent,
+                velocityX: Float,
+                velocityY: Float
+            ): Boolean {
+                if (e1 == null) return false
+
+                val diffY = e2.y - e1.y
+                val diffX = e2.x - e1.x
+
+                val SWIPE_THRESHOLD = 50
+                val SWIPE_VELOCITY_THRESHOLD = 50
+
+                if (Math.abs(diffX) > Math.abs(diffY)) {
+                    if (Math.abs(diffX) > SWIPE_THRESHOLD && Math.abs(velocityX) > SWIPE_VELOCITY_THRESHOLD) {
+                        if (diffX > 0) {
+                            onSwipeRight()
+                        } else {
+                            onSwipeLeft()
+                        }
+                    }
+                } else {
+                    if (Math.abs(diffY) > SWIPE_THRESHOLD && Math.abs(velocityY) > SWIPE_VELOCITY_THRESHOLD) {
+                        if (diffY > 0) {
+                            onSwipeDown()
+                        } else {
+                            onSwipeUp()
+                        }
                     }
                 }
-                return super.onFling(e1, e2, velocityX, velocityY)
+                return true
+            }
+
+            private fun onSwipeDown() {
+                finish()
+                binding.activityTrackTopShadow.animate().alpha(0f).start()
+                overridePendingTransition(0, com.simplemobiletools.commons.R.anim.slide_down)
+            }
+
+            private fun onSwipeUp() {
+                binding.nextTrackHolder.performClick()
+            }
+
+            private fun onSwipeLeft() {
+                binding.activityTrackPrevious.performClick()
+            }
+
+            private fun onSwipeRight() {
+                binding.activityTrackNext.performClick()
             }
         }
 

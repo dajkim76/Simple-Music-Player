@@ -168,4 +168,9 @@ class QueueActivity : SimpleControllerActivity() {
             }
         }
     }
+
+    override fun finish() {
+        super.finish()
+        overridePendingTransition(0, com.simplemobiletools.commons.R.anim.slide_down)
+    }
 }
