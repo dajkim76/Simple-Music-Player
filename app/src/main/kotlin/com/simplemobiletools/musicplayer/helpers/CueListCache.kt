@@ -56,7 +56,7 @@ object CueListCache {
 object CueListHelper {
 
     const val CUE_DISABLED_PREFIX = "@"
-    const val CUE_FAVORITE_PREFIX = "&"
+    const val CUE_FAVORITE_PREFIX = "%"
 
     fun getCueJsonFromText(text: String): String {
         val cues = mutableListOf<Cue>()
