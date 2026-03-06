@@ -17,63 +17,63 @@ object CueListCache {
         this.context = context.applicationContext
     }
 
-    fun peekCueList(mediaStoreId: Long): List<Cue>? {
+    fun peekCueList(fileStableId: Long): List<Cue>? {
         synchronized(cueListMap) {
-            cueListMap[mediaStoreId]?.let { return it }
+            cueListMap[fileStableId]?.let { return it }
             return null
         }
     }
 
-    fun getCueList(mediaStoreId: Long): List<Cue> {
+    fun getCueList(fileStableId: Long): List<Cue> {
         synchronized(cueListMap) {
-            cueListMap[mediaStoreId]?.let { return it }
+            cueListMap[fileStableId]?.let { return it }
         }
 
         if (context != null && isWorkerThread()) {
-            val cueJson = context!!.audioHelper.getTrackCue(mediaStoreId)
-            return updateCueJson(mediaStoreId, cueJson)
+            val cueJson = context!!.audioHelper.getTrackCue(fileStableId)
+            return updateCueJson(fileStableId, cueJson)
         } else {
-            context?.let { loadCueListAsync(it, mediaStoreId) }
+            context?.let { loadCueListAsync(it, fileStableId) }
             return emptyList()
         }
     }
 
-    fun getCueList(context: Context, mediaStoreId: Long): List<Cue> {
+    fun getCueList(context: Context, fileStableId: Long): List<Cue> {
         if (this.context == null) {
             this.context = context.applicationContext
         }
 
         synchronized(cueListMap) {
-            cueListMap[mediaStoreId]?.let { return it }
+            cueListMap[fileStableId]?.let { return it }
         }
 
         if (isWorkerThread()) {
-            val cueJson = context.audioHelper.getTrackCue(mediaStoreId)
-            return updateCueJson(mediaStoreId, cueJson)
+            val cueJson = context.audioHelper.getTrackCue(fileStableId)
+            return updateCueJson(fileStableId, cueJson)
         } else {
-            loadCueListAsync(context, mediaStoreId)
+            loadCueListAsync(context, fileStableId)
             return emptyList()
         }
     }
 
-    fun updateCueJson(mediaStoreId: Long, cueJson: String): List<Cue> {
+    fun updateCueJson(fileStableId: Long, cueJson: String): List<Cue> {
         val cues = CueListHelper.getCueListFromJson(cueJson)
         synchronized(cueListMap) {
-            cueListMap[mediaStoreId] = cues
+            cueListMap[fileStableId] = cues
         }
         return cues
     }
 
-    fun updateCueList(mediaStoreId: Long, cueList: List<Cue>) {
+    fun updateCueList(fileStableId: Long, cueList: List<Cue>) {
         synchronized(cueListMap) {
-            cueListMap[mediaStoreId] = cueList
+            cueListMap[fileStableId] = cueList
         }
     }
 
-    private fun loadCueListAsync(context: Context, mediaStoreId: Long) {
+    private fun loadCueListAsync(context: Context, fileStableId: Long) {
         ensureBackgroundThread {
-            val cueJson = context.audioHelper.getTrackCue(mediaStoreId)
-            updateCueJson(mediaStoreId, cueJson)
+            val cueJson = context.audioHelper.getTrackCue(fileStableId)
+            updateCueJson(fileStableId, cueJson)
         }
     }
 

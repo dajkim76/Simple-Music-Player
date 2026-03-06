@@ -97,7 +97,7 @@ class SimpleMusicPlayer(private val exoPlayer: ExoPlayer) : ForwardingPlayer(exo
         val currentItem = currentMediaItem ?: return false
         val track = currentItem.toTrack() ?: return false
         val currentSec = currentPosition / 1000
-        val cues = CueListCache.getCueList(track.mediaStoreId).filter { it.enabled }
+        val cues = CueListCache.getCueList(track.fileStableId).filter { it.enabled }
         if (cues.isEmpty()) return false
 
         val nextCue = cues.firstOrNull { it.timestamp > currentSec }
@@ -113,7 +113,7 @@ class SimpleMusicPlayer(private val exoPlayer: ExoPlayer) : ForwardingPlayer(exo
         val currentItem = currentMediaItem ?: return false
         val track = currentItem.toTrack() ?: return false
         val currentSec = currentPosition / 1000
-        val cues = CueListCache.getCueList(track.mediaStoreId).filter { it.enabled }
+        val cues = CueListCache.getCueList(track.fileStableId).filter { it.enabled }
         if (cues.isEmpty()) return false
 
         val activeCueIndex = cues.indexOfLast { it.timestamp <= currentSec }

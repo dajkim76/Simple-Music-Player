@@ -118,7 +118,7 @@ class PlaybackService : MediaLibraryService(), MediaSessionService.Listener {
         val track = currentItem.toTrack() ?: return
         val currentSec = player.currentPosition / 1000
 
-        val cues = CueListCache.getCueList(applicationContext, track.mediaStoreId)
+        val cues = CueListCache.getCueList(applicationContext, track.fileStableId)
         if (cues.isEmpty() || cues.all { !it.enabled }) {
             if (lastCueTitle != null) {
                 lastCueTitle = null

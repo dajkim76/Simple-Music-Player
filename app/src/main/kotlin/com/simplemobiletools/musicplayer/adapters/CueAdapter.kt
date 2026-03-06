@@ -17,18 +17,18 @@ import com.simplemobiletools.musicplayer.activities.SimpleActivity
 import com.simplemobiletools.musicplayer.databinding.AdjustCueTimestampBinding
 import com.simplemobiletools.musicplayer.databinding.ItemCueBinding
 import com.simplemobiletools.musicplayer.models.Cue
+import com.simplemobiletools.musicplayer.models.Track
 
 class CueAdapter(
     private val activity: SimpleActivity,
     private val itemClick: (Cue) -> Unit,
-    private val itemUpdated: (mediaStoreId: Long, updatedCues: List<Cue>) -> Unit
+    private val itemUpdated: (track: Track, updatedCues: List<Cue>) -> Unit
 ) : RecyclerView.Adapter<CueAdapter.ViewHolder>() {
 
     var cues: List<Cue> = emptyList()
-    private var mediaStoreId: Long = 0
+    private lateinit var track: Track
     var isNoCueTitle = false
     private var currentCueIndex: Int = -1
-    private var totalDuration: Int = 0
     private val properTextColor = activity.getProperTextColor()
     private val primaryColor = activity.getProperPrimaryColor()
 
@@ -44,9 +44,9 @@ class CueAdapter(
 
     override fun getItemCount() = cues.size
 
-    fun refreshList(cues: List<Cue>, mediaStoreId: Long, totalDuration: Int) {
+    fun refreshList(cues: List<Cue>, track: Track) {
         this.cues = cues
-        this.mediaStoreId = mediaStoreId
+        this.track = track
         this.currentCueIndex = -1
         notifyDataSetChanged()
         if (cues.size == 1) {
@@ -55,7 +55,6 @@ class CueAdapter(
         } else {
             isNoCueTitle = false
         }
-        this.totalDuration = totalDuration
         makeDuration()
     }
 
@@ -65,7 +64,7 @@ class CueAdapter(
                 val nextCue = cues[index + 1]
                 nextCue.timestamp
             } else {
-                totalDuration
+                track.duration
             }
             cue.duration = nextCueTimeStamp - cue.timestamp
         }
@@ -76,7 +75,7 @@ class CueAdapter(
     }
 
     fun getCurrentTitle(mediaStoreId: Long): String? {
-        if (cues.isEmpty() || isNoCueTitle || this.mediaStoreId != mediaStoreId) return null
+        if (cues.isEmpty() || isNoCueTitle || track.mediaStoreId != mediaStoreId) return null
         if (currentCueIndex >= 0) {
             val cue = cues.getOrNull(currentCueIndex)
             return cue?.title
@@ -85,7 +84,7 @@ class CueAdapter(
     }
 
     fun updateCurrentPosition(mediaStoreId: Long, positionSeconds: Int): Int {
-        if (this.mediaStoreId != mediaStoreId) return -1
+        if (track.mediaStoreId != mediaStoreId) return -1
         val activeCueIndex = cues.indexOfLast { it.timestamp <= positionSeconds }
         if (activeCueIndex != currentCueIndex) {
             val oldTimestamp = currentCueIndex
@@ -145,7 +144,7 @@ class CueAdapter(
                         newCues[position] = cue.copy(enabled = !cue.enabled, duration = cue.duration, favorite = cue.favorite)
                         cues = newCues
                         notifyItemChanged(position)
-                        itemUpdated(mediaStoreId, newCues)
+                        itemUpdated(track, newCues)
                     }
 
                     1 -> {
@@ -153,7 +152,7 @@ class CueAdapter(
                         newCues[position] = cue.copy(enabled = cue.enabled || !cue.favorite, duration = cue.duration, favorite = !cue.favorite)
                         cues = newCues
                         notifyItemChanged(position)
-                        itemUpdated(mediaStoreId, newCues)
+                        itemUpdated(track, newCues)
                     }
 
                     2 -> {
@@ -182,7 +181,7 @@ class CueAdapter(
                                 cues = newCues
                                 makeDuration()
                                 notifyDataSetChanged() // after sortedBy
-                                itemUpdated(mediaStoreId, newCues) // save and reload
+                                itemUpdated(track, newCues) // Update cache, db
                             }
                             .show()
                     }

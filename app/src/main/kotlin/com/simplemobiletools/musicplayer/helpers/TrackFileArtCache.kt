@@ -1,5 +1,6 @@
 package com.simplemobiletools.musicplayer.helpers
 
+import android.annotation.SuppressLint
 import android.app.ActivityManager
 import android.content.Context
 import android.graphics.Bitmap
@@ -41,6 +42,7 @@ class TrackFileArtCache private constructor(private val context: Context) {
     }
 
     companion object {
+        @SuppressLint("StaticFieldLeak")
         private var instance: TrackFileArtCache? = null
 
         fun getInstance(context: Context): TrackFileArtCache {
