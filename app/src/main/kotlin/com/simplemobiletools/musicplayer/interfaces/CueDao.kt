@@ -11,9 +11,9 @@ interface CueDao {
     @Update
     fun update(cue: CueEntity): Int
 
-    @Query("SELECT * FROM track_cues WHERE media_store_id = :mediaStoreId")
-    fun getCue(mediaStoreId: Long): CueEntity?
+    @Query("SELECT * FROM track_cues WHERE file_stable_id = :fileStableId")
+    fun getCue(fileStableId: Long): CueEntity?
 
-    @Query("DELETE FROM track_cues WHERE media_store_id = :mediaStoreId")
-    fun deleteCue(mediaStoreId: Long)
+    @Query("DELETE FROM track_cues WHERE file_stable_id = :fileStableId")
+    fun deleteCue(fileStableId: Long)
 }

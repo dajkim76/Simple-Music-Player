@@ -212,12 +212,12 @@ class AudioHelper(private val context: Context) {
         context.tracksDAO.updateOrderInPlaylist(playlistId, trackId)
     }
 
-    fun getTrackCue(mediaStoreId: Long): String {
-        return context.cueDAO.getCue(mediaStoreId)?.cuesJson ?: ""
+    fun getTrackCue(fileStableId: Long): String {
+        return context.cueDAO.getCue(fileStableId)?.cuesJson ?: ""
     }
 
-    fun updateTrackCue(mediaStoreId: Long, cuesJson: String) {
-        val cueEntity = CueEntity(mediaStoreId, cuesJson)
+    fun updateTrackCue(track: Track, cuesJson: String) {
+        val cueEntity = CueEntity(track.fileStableId, track.path, track.fileLength, track.fileLastModified, cuesJson)
         if (context.cueDAO.update(cueEntity) == 0) {
             context.cueDAO.insert(cueEntity)
         }

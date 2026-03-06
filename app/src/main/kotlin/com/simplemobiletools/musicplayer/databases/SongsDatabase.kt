@@ -10,7 +10,7 @@ import com.simplemobiletools.musicplayer.interfaces.*
 import com.simplemobiletools.musicplayer.models.*
 import com.simplemobiletools.musicplayer.objects.MyExecutor
 
-@Database(entities = [Track::class, Playlist::class, QueueItem::class, Artist::class, Album::class, Genre::class, CueEntity::class], version = 14)
+@Database(entities = [Track::class, Playlist::class, QueueItem::class, Artist::class, Album::class, Genre::class, CueEntity::class], version = 15)
 abstract class SongsDatabase : RoomDatabase() {
 
     abstract fun SongsDao(): SongsDao

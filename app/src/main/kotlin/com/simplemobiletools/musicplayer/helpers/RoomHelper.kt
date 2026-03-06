@@ -91,10 +91,32 @@ class RoomHelper(val context: Context) {
                     genreId = 0
                 }
 
+                val (fileLength: Long, fileLastModified: Long) = File(path).takeIf { it.exists() }?.let {
+                    it.length() to it.lastModified()
+                } ?: run {
+                    0L to 0L
+                }
                 val song = Track(
-                    id = 0, mediaStoreId = mediaStoreId, title = title, artist = artist, path = path, duration = duration, album = album, genre = genre,
-                    coverArt = coverArt, playListId = playlistId, trackId = 0, folderName = folderName, albumId = albumId, artistId = artistId,
-                    genreId = genreId, year = year, dateAdded = dateAdded, orderInPlaylist = 0
+                    id = 0,
+                    mediaStoreId = mediaStoreId,
+                    title = title,
+                    artist = artist,
+                    path = path,
+                    duration = duration,
+                    album = album,
+                    genre = genre,
+                    coverArt = coverArt,
+                    playListId = playlistId,
+                    trackId = 0,
+                    folderName = folderName,
+                    albumId = albumId,
+                    artistId = artistId,
+                    genreId = genreId,
+                    year = year,
+                    dateAdded = dateAdded,
+                    orderInPlaylist = 0,
+                    fileLength = fileLength,
+                    fileLastModified = fileLastModified
                 )
                 song.title = song.getProperTitle(showFilename)
                 songs.add(song)
@@ -112,10 +134,32 @@ class RoomHelper(val context: Context) {
                 0
             }
 
+            val (fileLength: Long, fileLastModified: Long) = File(it).takeIf { it.exists() }?.let {
+                it.length() to it.lastModified()
+            } ?: run {
+                0L to 0L
+            }
             val song = Track(
-                id = 0, mediaStoreId = 0, title = title, artist = artist, path = it, duration = context.getDuration(it) ?: 0, album = "",
-                genre = "", coverArt = "", playListId = playlistId, trackId = 0, folderName = "", albumId = 0, artistId = 0, genreId = 0,
-                year = 0, dateAdded = dateAdded, orderInPlaylist = 0
+                id = 0,
+                mediaStoreId = 0,
+                title = title,
+                artist = artist,
+                path = it,
+                duration = context.getDuration(it) ?: 0,
+                album = "",
+                genre = "",
+                coverArt = "",
+                playListId = playlistId,
+                trackId = 0,
+                folderName = "",
+                albumId = 0,
+                artistId = 0,
+                genreId = 0,
+                year = 0,
+                dateAdded = dateAdded,
+                orderInPlaylist = 0,
+                fileLength = fileLength,
+                fileLastModified = fileLastModified
             )
             song.title = song.getProperTitle(showFilename)
             songs.add(song)

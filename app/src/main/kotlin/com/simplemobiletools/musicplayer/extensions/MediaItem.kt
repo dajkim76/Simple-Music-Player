@@ -144,6 +144,8 @@ private fun createBundleFromTrack(track: Track) = bundleOf(
     EXTRA_YEAR to track.year,
     EXTRA_DATE_ADDED to track.dateAdded,
     EXTRA_ORDER_IN_PLAYLIST to track.orderInPlaylist,
+    EXTRA_FILE_LENGTH to track.fileLength,
+    EXTRA_FILE_LAST_MODIFIED to track.fileLastModified,
     EXTRA_FLAGS to track.flags
 )
 
@@ -167,6 +169,8 @@ private fun createTrackFromBundle(bundle: Bundle): Track {
         year = bundle.getInt(EXTRA_YEAR),
         dateAdded = bundle.getInt(EXTRA_DATE_ADDED),
         orderInPlaylist = bundle.getInt(EXTRA_ORDER_IN_PLAYLIST),
+        fileLength = bundle.getLong(EXTRA_FILE_LENGTH),
+        fileLastModified = bundle.getLong(EXTRA_FILE_LAST_MODIFIED),
         flags = bundle.getInt(EXTRA_FLAGS)
     )
 }

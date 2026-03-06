@@ -38,8 +38,26 @@ data class Track(
     @ColumnInfo(name = "year") var year: Int,
     @ColumnInfo(name = "date_added") var dateAdded: Int,
     @ColumnInfo(name = "order_in_playlist") var orderInPlaylist: Int,
+    @ColumnInfo(name = "file_length") var fileLength: Long,
+    @ColumnInfo(name = "file_last_modified") var fileLastModified: Long,
     @ColumnInfo(name = "flags") var flags: Int = 0
 ) : Serializable, ListItem() {
+
+    val fileStableId: Long by lazy(LazyThreadSafetyMode.NONE) {
+        val filename = path.substringAfterLast('/')
+        val key = "$filename|$fileLength|$fileLastModified"
+        hash64(key)
+    }
+
+    private fun hash64(input: String): Long {
+        var hash = -0x340d631b8c46723bL  // 1469598103934665603 (offset basis)
+        val prime = 1099511628211L
+        for (b in input.toByteArray()) {
+            hash = hash xor (b.toLong() and 0xff)
+            hash *= prime
+        }
+        return hash
+    }
 
     companion object {
         private const val serialVersionUID = 6717978793256852245L
