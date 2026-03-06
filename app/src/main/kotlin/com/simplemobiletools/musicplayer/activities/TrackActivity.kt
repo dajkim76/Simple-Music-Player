@@ -49,7 +49,6 @@ import com.bumptech.glide.request.RequestOptions
 import com.google.gson.Gson
 import com.simplemobiletools.commons.extensions.*
 import com.simplemobiletools.commons.helpers.MEDIUM_ALPHA
-import com.simplemobiletools.commons.helpers.ensureBackgroundThread
 import com.simplemobiletools.musicplayer.BuildConfig
 import com.simplemobiletools.musicplayer.R
 import com.simplemobiletools.musicplayer.adapters.CueAdapter
@@ -64,6 +63,7 @@ import com.simplemobiletools.musicplayer.helpers.SEEK_INTERVAL_S
 import com.simplemobiletools.musicplayer.interfaces.PlaybackSpeedListener
 import com.simplemobiletools.musicplayer.models.Cue
 import com.simplemobiletools.musicplayer.models.Track
+import com.simplemobiletools.musicplayer.objects.executeBackgroundThread
 import com.simplemobiletools.musicplayer.playback.CustomCommands
 import com.simplemobiletools.musicplayer.playback.PlaybackService
 import java.text.DecimalFormat
@@ -88,7 +88,7 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
         showTransparentTop = true
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-        nextTrackPlaceholder = resources.getColoredDrawableWithColor(R.drawable.ic_headset, getProperTextColor())
+        nextTrackPlaceholder = resources.getColoredDrawableWithColor(R.drawable.ic_headset_small, getProperTextColor())
         setupButtons()
         setupFlingListener()
 
@@ -572,50 +572,59 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
     }
 
     private fun setupCues(track: Track) {
-        ensureBackgroundThread {
+        CueListCache.peekCueList(track.mediaStoreId)?.let {
+            updateCueList(track, it)
+            return
+        }
+
+        executeBackgroundThread {
             val cues = CueListCache.getCueList(applicationContext, track.mediaStoreId)
             runOnUiThread {
-                if (cues.isNotEmpty()) {
-                    if (cueAdapter == null) {
-                        cueAdapter = CueAdapter(this, { cue ->
-                            withPlayer {
-                                if (!isPlaying) play()
-                                seekTo(cue.timestamp * 1000L)
-                            }
-                        }, { mediaStoreId, updatedCues ->
-                            CueListCache.updateCueList(mediaStoreId, updatedCues)
-                            ensureBackgroundThread {
-                                audioHelper.updateTrackCue(mediaStoreId, Gson().toJson(updatedCues))
-                            }
-                        })
-                        binding.activityTrackCuesList.apply {
-                            layoutManager = LinearLayoutManager(this@TrackActivity)
-                            adapter = cueAdapter
-                        }
-                    }
-                    cueAdapter?.refreshList(cues, track.mediaStoreId, track.duration)
+                updateCueList(track, cues)
+            }
+        }
+    }
 
+    private fun updateCueList(track: Track, cues: List<Cue>) {
+        if (cues.isNotEmpty()) {
+            if (cueAdapter == null) {
+                cueAdapter = CueAdapter(this, { cue ->
                     withPlayer {
-                        val seconds = currentPosition.milliseconds.inWholeSeconds.toInt()
-                        runOnUiThread {
-                            val position = cueAdapter?.updateCurrentPosition(track.mediaStoreId, seconds) ?: -1
-                            if (position >= 0) {
-                                updateCueTitle(track.mediaStoreId, position)
-                            }
-                        }
+                        if (!isPlaying) play()
+                        seekTo(cue.timestamp * 1000L)
                     }
-                    binding.activityTrackCuesList.beVisible()
-                } else {
-                    cueAdapter?.refreshList(cues, track.mediaStoreId, track.duration)
-                    binding.activityTrackCuesList.beGone()
+                }, { mediaStoreId, updatedCues ->
+                    CueListCache.updateCueList(mediaStoreId, updatedCues)
+                    executeBackgroundThread {
+                        audioHelper.updateTrackCue(mediaStoreId, Gson().toJson(updatedCues))
+                    }
+                })
+                binding.activityTrackCuesList.apply {
+                    layoutManager = LinearLayoutManager(this@TrackActivity)
+                    adapter = cueAdapter
                 }
             }
+            cueAdapter?.refreshList(cues, track.mediaStoreId, track.duration)
+
+            withPlayer {
+                val seconds = currentPosition.milliseconds.inWholeSeconds.toInt()
+                runOnUiThread {
+                    val position = cueAdapter?.updateCurrentPosition(track.mediaStoreId, seconds) ?: -1
+                    if (position >= 0) {
+                        updateCueTitle(track.mediaStoreId, position)
+                    }
+                }
+            }
+            binding.activityTrackCuesList.beVisible()
+        } else {
+            cueAdapter?.refreshList(cues, track.mediaStoreId, track.duration)
+            binding.activityTrackCuesList.beGone()
         }
     }
 
     private fun showEditCuesDialog(cuesJson: String? = null) {
         val track = currentTrack ?: return
-        ensureBackgroundThread {
+        executeBackgroundThread {
             val currentCuesJson = cuesJson ?: audioHelper.getTrackCue(track.mediaStoreId)
             runOnUiThread {
                 val binding = InputCueTextBinding.inflate(LayoutInflater.from(this))
@@ -630,24 +639,18 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
                     .setView(binding.root)
                     .setPositiveButton(com.simplemobiletools.commons.R.string.ok) { _, _ ->
                         val newCueJson = CueListHelper.getCueJsonFromText(editText.text.toString())
-                        CueListCache.updateCueJson(track.mediaStoreId, newCueJson)
-                        ensureBackgroundThread {
+                        updateCueList(track, CueListCache.updateCueJson(track.mediaStoreId, newCueJson))
+                        executeBackgroundThread {
                             audioHelper.updateTrackCue(track.mediaStoreId, newCueJson)
-                            runOnUiThread {
-                                setupCues(track)
-                            }
                         }
                     }
                     .setNegativeButton(com.simplemobiletools.commons.R.string.cancel, null)
                     .setNeutralButton(R.string.no_cue) { _, _ ->
                         val cues = listOf(Cue(0, "<NO_CUE>", false))
                         val newCueJson = Gson().toJson(cues)
-                        CueListCache.updateCueJson(track.mediaStoreId, newCueJson)
-                        ensureBackgroundThread {
+                        updateCueList(track, CueListCache.updateCueJson(track.mediaStoreId, newCueJson))
+                        executeBackgroundThread {
                             audioHelper.updateTrackCue(track.mediaStoreId, newCueJson)
-                            runOnUiThread {
-                                setupCues(track)
-                            }
                         }
                     }
                     .show()

@@ -63,7 +63,11 @@ class SimpleMediaController(val context: Application) {
     fun withController(callback: MediaController.() -> Unit) {
         val controller = controller
         if (controller != null && controller.isConnected) {
-            controller.runOnPlayerThread(callback)
+            if (controller.applicationLooper == Looper.myLooper()) {
+                controller.callback()
+            } else {
+                controller.runOnPlayerThread(callback)
+            }
         } else {
             acquireController {
                 getControllerSync()?.runOnPlayerThread(callback)

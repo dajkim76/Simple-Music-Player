@@ -297,6 +297,7 @@
                 android:layout_marginTop="@dimen/normal_margin"
                 android:layout_marginEnd="@dimen/normal_margin"
                 android:layout_marginBottom="@dimen/normal_margin"
+                android:src="@drawable/ic_headset_small"
                 android:scaleType="centerCrop" />
 
             <com.simplemobiletools.commons.views.MyTextView

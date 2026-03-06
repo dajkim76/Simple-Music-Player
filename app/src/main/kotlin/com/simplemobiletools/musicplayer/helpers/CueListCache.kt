@@ -17,6 +17,13 @@ object CueListCache {
         this.context = context.applicationContext
     }
 
+    fun peekCueList(mediaStoreId: Long): List<Cue>? {
+        synchronized(cueListMap) {
+            cueListMap[mediaStoreId]?.let { return it }
+            return null
+        }
+    }
+
     fun getCueList(mediaStoreId: Long): List<Cue> {
         synchronized(cueListMap) {
             cueListMap[mediaStoreId]?.let { return it }
