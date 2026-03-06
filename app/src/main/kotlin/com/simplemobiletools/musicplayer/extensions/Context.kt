@@ -10,7 +10,6 @@ import android.graphics.drawable.Drawable
 import android.media.MediaMetadataRetriever
 import android.media.ThumbnailUtils
 import android.net.Uri
-import android.os.Build
 import android.os.Looper
 import android.provider.MediaStore
 import android.provider.MediaStore.Audio
@@ -248,7 +247,7 @@ fun Context.getTrackFileArt(track: Track, callback: (coverArt: Any?) -> Unit) {
     val trackFileArtCache = TrackFileArtCache.getInstance(this)
 
     // If it's in memory, let's eliminate thread overhead.
-    trackFileArtCache.peek(mediaStoreId)?.let { bitmap ->
+    trackFileArtCache.get(mediaStoreId)?.let { bitmap ->
         callback(bitmap)
         return
     }
@@ -290,48 +289,51 @@ fun Context.getTrackFileArt(track: Track, callback: (coverArt: Any?) -> Unit) {
 }
 
 fun Context.loadTrackFileArt(track: Track): Bitmap? {
-    // try MediaMetadataRetriever
-    track.path.takeIf { it.isNotEmpty() && File(it).exists() }?.let { path ->
-        val retriever = MediaMetadataRetriever()
-        try {
-            retriever.setDataSource(path)
-            val art = retriever.embeddedPicture
-            if (art != null) {
-                val bitmap = BitmapFactory.decodeByteArray(art, 0, art.size)
-                if (bitmap != null) {
-                    return bitmap
-                }
-            }
-        } catch (_: Exception) {
-        } finally {
-            try {
-                retriever.release()
-            } catch (_: Exception) {
-            }
-        }
-    }
-
-    val size = Size(resources.getCoverArtHeight(), resources.getCoverArtHeight())
+    val coverArtHeight = resources.getCoverArtHeight()
+    val size = Size(coverArtHeight, coverArtHeight)
     val uri = ContentUris.withAppendedId(Audio.Media.EXTERNAL_CONTENT_URI, track.mediaStoreId)
-    val uriStr = uri.toString()
 
-    if (uriStr.startsWith("content://")) {
-        if (Build.VERSION.SDK_INT >= 29) {
-            try {
-                val bitmap = contentResolver.loadThumbnail(uri, size, null)
-                if (bitmap != null) {
-                    return bitmap
-                }
-            } catch (_: Exception) {
-            }
-        }
-
+    if (isQPlus()) {
         try {
-            val bitmap = MediaStore.Images.Media.getBitmap(contentResolver, uri)
+            val bitmap = contentResolver.loadThumbnail(uri, size, null)
             if (bitmap != null) {
                 return bitmap
             }
-        } catch (_: Exception) {
+        } catch (ex: Throwable) {
+            ex.printStackTrace()
+        }
+    }
+
+    track.path.takeIf { it.isNotEmpty() && File(it).exists() }?.let { path ->
+        if (isQPlus()) {
+            try {
+                // MediaMetadataRetriever보다 좀더 효과적적이다. 경로의 albumart.jpg파일도 뒤진다.
+                val bitmap = ThumbnailUtils.createAudioThumbnail(File(track.path), size, null)
+                if (bitmap != null) {
+                    return bitmap
+                }
+            } catch (ex: Throwable) {
+                ex.printStackTrace()
+            }
+        } else {
+            val retriever = MediaMetadataRetriever()
+            try {
+                retriever.setDataSource(path)
+                val art = retriever.embeddedPicture
+                if (art != null) {
+                    val bitmap = BitmapFactory.decodeByteArray(art, 0, art.size)
+                    if (bitmap != null) {
+                        return bitmap
+                    }
+                }
+            } catch (ex: Throwable) {
+                ex.printStackTrace()
+            } finally {
+                try {
+                    retriever.release()
+                } catch (_: Exception) {
+                }
+            }
         }
     }
 
