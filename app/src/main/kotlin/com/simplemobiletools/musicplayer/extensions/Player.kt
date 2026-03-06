@@ -140,6 +140,7 @@ fun Player.prepareUsingTracks(
     startIndex: Int = 0,
     startPositionMs: Long = 0,
     play: Boolean = false,
+    isTracksSameWithCurrentItems: Boolean = false,
     callback: ((success: Boolean) -> Unit)? = null
 ) {
     if (tracks.isEmpty()) {
@@ -149,9 +150,13 @@ fun Player.prepareUsingTracks(
         return
     }
 
-    val mediaItems = tracks.toMediaItemsFast()
     runOnPlayerThread {
-        setMediaItems(mediaItems, startIndex, startPositionMs)
+        if (isTracksSameWithCurrentItems) {
+            seekTo(startIndex, startPositionMs)
+        } else {
+            val mediaItems = tracks.toMediaItemsFast()
+            setMediaItems(mediaItems, startIndex, startPositionMs)
+        }
         playWhenReady = play
         prepare()
         callback?.invoke(true)

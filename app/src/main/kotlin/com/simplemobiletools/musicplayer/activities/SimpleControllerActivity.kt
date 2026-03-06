@@ -60,7 +60,17 @@ abstract class SimpleControllerActivity : SimpleActivity(), Player.Listener {
                 )
             }
 
-            prepareUsingTracks(tracks = tracks, startIndex = startIndex, startPositionMs = startPositionMs, play = true) { success ->
+            val currentItems = currentMediaItems
+            val isTracksSameWithCurrentItems = currentItems.size == tracks.size &&
+                currentItems.zip(tracks).all { (current, track) -> current.isSameMedia(track) }
+
+            prepareUsingTracks(
+                tracks = tracks,
+                startIndex = startIndex,
+                startPositionMs = startPositionMs,
+                play = true,
+                isTracksSameWithCurrentItems = isTracksSameWithCurrentItems
+            ) { success ->
                 if (success) {
                     updatePlaybackInfo(this)
                 }
