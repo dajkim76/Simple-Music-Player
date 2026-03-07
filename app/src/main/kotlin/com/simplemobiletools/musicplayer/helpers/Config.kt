@@ -152,3 +152,11 @@ class Config(context: Context) : BaseConfig(context) {
         get() = prefs.getBoolean(SHOW_PLAYBACK_ACTIVITY, false)
         set(autoplayOnBluetoothConnect) = prefs.edit().putBoolean(SHOW_PLAYBACK_ACTIVITY, autoplayOnBluetoothConnect).apply()
 }
+
+fun isInExcludeFolders(path: String, excludeFolder: Set<String>): Boolean {
+    return excludeFolder.any { path.startsWith(it) }
+}
+
+fun isInExcludeFolders(path: String, excludeFolder: List<String>): Boolean {
+    return excludeFolder.any { path.startsWith(it) }
+}

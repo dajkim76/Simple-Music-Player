@@ -105,7 +105,7 @@ class SimpleMediaScanner(private val context: Application) {
         val excludedFolders = config.excludedFolders
         val tracksToExclude = mutableSetOf<Track>()
         for (track in newTracks) {
-            if (track.path.getParentPath() in excludedFolders) {
+            if (isInExcludeFolders(track.path.getParentPath(), excludedFolders)) {
                 tracksToExclude.add(track)
                 continue
             }
@@ -196,7 +196,7 @@ class SimpleMediaScanner(private val context: Application) {
         val excludedFolders = config.excludedFolders
         val tracksRemovedFromAllTracks = config.tracksRemovedFromAllTracksPlaylist.map { it.toLong() }
         val tracksWithPlaylist = newTracks
-            .filter { it.mediaStoreId !in tracksRemovedFromAllTracks && it.playListId == 0 && it.path.getParentPath() !in excludedFolders }
+            .filter { it.mediaStoreId !in tracksRemovedFromAllTracks && it.playListId == 0 && !isInExcludeFolders(it.path.getParentPath(), excludedFolders) }
             .onEach { it.playListId = ALL_TRACKS_PLAYLIST_ID }
         RoomHelper(context).insertTracksWithPlaylist(tracksWithPlaylist as ArrayList<Track>)
     }
@@ -524,7 +524,7 @@ class SimpleMediaScanner(private val context: Application) {
         }
 
         val path = file.absolutePath
-        if (path in excludedPaths || path.getParentPath() in excludedPaths) {
+        if (path in excludedPaths || isInExcludeFolders(path.getParentPath(), excludedPaths)) {
             return
         }
 

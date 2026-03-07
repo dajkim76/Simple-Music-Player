@@ -1,11 +1,13 @@
 package com.simplemobiletools.musicplayer.activities
 
 import android.os.Bundle
+import com.simplemobiletools.commons.dialogs.FilePickerDialog
 import com.simplemobiletools.commons.extensions.beVisibleIf
 import com.simplemobiletools.commons.extensions.getProperTextColor
 import com.simplemobiletools.commons.extensions.viewBinding
 import com.simplemobiletools.commons.helpers.NavigationIcon
 import com.simplemobiletools.commons.interfaces.RefreshRecyclerViewListener
+import com.simplemobiletools.musicplayer.R
 import com.simplemobiletools.musicplayer.adapters.ExcludedFoldersAdapter
 import com.simplemobiletools.musicplayer.databinding.ActivityExcludedFoldersBinding
 import com.simplemobiletools.musicplayer.extensions.config
@@ -22,6 +24,25 @@ class ExcludedFoldersActivity : SimpleActivity(), RefreshRecyclerViewListener {
         updateMaterialActivityViews(binding.excludedFoldersCoordinator, binding.excludedFoldersList, useTransparentNavigation = true, useTopSearchMenu = false)
         setupMaterialScrollListener(binding.excludedFoldersList, binding.excludedFoldersToolbar)
         updateFolders()
+
+        binding.excludedFoldersToolbar.inflateMenu(R.menu.menu_excluded_folders)
+        binding.excludedFoldersToolbar.setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.add_folder -> {
+                    FilePickerDialog(this, pickFile = false, enforceStorageRestrictions = false) { folderPath ->
+                        val excludedFolders = config.excludedFolders.toMutableList() as ArrayList<String>
+                        if (!excludedFolders.contains(folderPath)) {
+                            excludedFolders.add(folderPath)
+                            updateFolders()
+                            config.addExcludedFolder(folderPath)
+                        }
+                    }
+                    true
+                }
+
+                else -> false
+            }
+        }
     }
 
     override fun onResume() {
