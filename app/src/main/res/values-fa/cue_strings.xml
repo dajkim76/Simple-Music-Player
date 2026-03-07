@@ -15,4 +15,5 @@
     <string name="adjust_timestamp">تنظیم مهر زمانی</string>
     <string name="youtube_timestamp_player">پخش کننده مهر زمانی یوتیوب</string>
     <string name="demo_video">ویدئوی نمایشی</string>
+    <string name="show_playback_activity_when_play_track">هنگام پخش آهنگ، فعالیت پخش را شروع کنید</string>
 </resources>

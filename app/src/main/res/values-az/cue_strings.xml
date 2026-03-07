@@ -15,4 +15,5 @@
     <string name="adjust_timestamp">Zaman damğasını tənzimləyin</string>
     <string name="youtube_timestamp_player">Youtube Zaman Damğası Pleyeri</string>
     <string name="demo_video">Demo Video</string>
+    <string name="show_playback_activity_when_play_track">Trek oynadılarkən oxutma fəaliyyətini başladın</string>
 </resources>

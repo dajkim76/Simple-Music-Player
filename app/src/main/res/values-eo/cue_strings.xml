@@ -15,4 +15,5 @@
     <string name="adjust_timestamp">Alĝustigu tempomarkon</string>
     <string name="youtube_timestamp_player">Jutuba Tempomarko Ludanto</string>
     <string name="demo_video">Demo-Video</string>
+    <string name="show_playback_activity_when_play_track">Komencu reproduktan agadon kiam ludi trakon</string>
 </resources>

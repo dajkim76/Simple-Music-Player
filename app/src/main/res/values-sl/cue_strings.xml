@@ -15,4 +15,5 @@
     <string name="adjust_timestamp">Prilagodite časovni žig</string>
     <string name="youtube_timestamp_player">Predvajalnik časovnih žigov na YouTubu</string>
     <string name="demo_video">Demo video</string>
+    <string name="show_playback_activity_when_play_track">Zaženite dejavnost predvajanja pri predvajanju skladbe</string>
 </resources>

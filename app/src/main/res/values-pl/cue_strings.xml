@@ -15,4 +15,5 @@
     <string name="adjust_timestamp">Dostosuj sygnaturę czasową</string>
     <string name="youtube_timestamp_player">Odtwarzacz ze znacznikiem czasu na YouTube</string>
     <string name="demo_video">Wideo demonstracyjne</string>
+    <string name="show_playback_activity_when_play_track">Uruchom aktywność odtwarzania po odtworzeniu utworu</string>
 </resources>

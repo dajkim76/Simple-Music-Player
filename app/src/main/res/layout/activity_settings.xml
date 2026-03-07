@@ -241,6 +241,21 @@
                     android:text="@string/autoplay_on_bluetooth_connect" />
 
             </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/settings_show_playback_activity_holder"
+                style="@style/SettingsHolderCheckboxStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.simplemobiletools.commons.views.MyAppCompatCheckbox
+                    android:id="@+id/settings_show_playback_activity"
+                    style="@style/SettingsCheckboxStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/show_playback_activity_when_play_track" />
+
+            </RelativeLayout>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

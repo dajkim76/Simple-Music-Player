@@ -15,4 +15,5 @@
     <string name="adjust_timestamp">Подесите временску ознаку</string>
     <string name="youtube_timestamp_player">Иоутубе Тиместамп Плаиер</string>
     <string name="demo_video">Демо видео</string>
+    <string name="show_playback_activity_when_play_track">Покрени активност репродукције при репродукцији нумере</string>
 </resources>

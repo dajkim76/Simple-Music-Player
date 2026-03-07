@@ -15,4 +15,5 @@
     <string name="adjust_timestamp">Προσαρμογή χρονικής σφραγίδας</string>
     <string name="youtube_timestamp_player">Youtube Timestamp Player</string>
     <string name="demo_video">Επίδειξη βίντεο</string>
+    <string name="show_playback_activity_when_play_track">Έναρξη δραστηριότητας αναπαραγωγής κατά την αναπαραγωγή κομματιού</string>
 </resources>

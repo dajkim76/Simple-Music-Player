@@ -15,4 +15,5 @@
     <string name="adjust_timestamp">Reguleerige ajatemplit</string>
     <string name="youtube_timestamp_player">Youtube\'i ajatempli mängija</string>
     <string name="demo_video">Demovideo</string>
+    <string name="show_playback_activity_when_play_track">Käivitage taasesitustegevus loo esitamisel</string>
 </resources>

@@ -15,4 +15,5 @@
     <string name="adjust_timestamp">Podesite vremensku oznaku</string>
     <string name="youtube_timestamp_player">Reproduktor vremenske oznake na YouTubeu</string>
     <string name="demo_video">Demo video</string>
+    <string name="show_playback_activity_when_play_track">Pokreni aktivnost reprodukcije pri reprodukciji zapisa</string>
 </resources>

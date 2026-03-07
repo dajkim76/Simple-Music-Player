@@ -15,4 +15,5 @@
     <string name="adjust_timestamp">Ajustar o carimbo de data/hora</string>
     <string name="youtube_timestamp_player">Reprodutor de carimbo de data/hora do Youtube</string>
     <string name="demo_video">Vídeo de demonstração</string>
+    <string name="show_playback_activity_when_play_track">Iniciar atividade de reprodução ao reproduzir faixa</string>
 </resources>

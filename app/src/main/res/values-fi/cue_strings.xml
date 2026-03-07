@@ -15,4 +15,5 @@
     <string name="adjust_timestamp">Säädä aikaleimaa</string>
     <string name="youtube_timestamp_player">Youtuben aikaleimasoitin</string>
     <string name="demo_video">Demovideo</string>
+    <string name="show_playback_activity_when_play_track">Aloita toistotoiminto, kun toistat raitaa</string>
 </resources>

@@ -12,6 +12,7 @@ import com.simplemobiletools.musicplayer.R
 import com.simplemobiletools.musicplayer.adapters.AlbumsTracksAdapter
 import com.simplemobiletools.musicplayer.databinding.ActivityAlbumsBinding
 import com.simplemobiletools.musicplayer.extensions.audioHelper
+import com.simplemobiletools.musicplayer.extensions.config
 import com.simplemobiletools.musicplayer.helpers.ALBUM
 import com.simplemobiletools.musicplayer.helpers.ARTIST
 import com.simplemobiletools.musicplayer.models.*
@@ -62,7 +63,7 @@ class AlbumsActivity : SimpleMusicActivity() {
                         handleNotificationPermission { granted ->
                             if (granted) {
                                 val startIndex = albumTracks.indexOf(it as Track)
-                                prepareAndPlay(albumTracks, startIndex)
+                                prepareAndPlay(albumTracks, showPlayback = config.showPlaybackActivity, startIndex)
                             } else {
                                 PermissionRequiredDialog(
                                     this,

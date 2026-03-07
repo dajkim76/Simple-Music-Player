@@ -15,4 +15,5 @@
     <string name="adjust_timestamp">ปรับการประทับเวลา</string>
     <string name="youtube_timestamp_player">เครื่องเล่นประทับเวลาของ Youtube</string>
     <string name="demo_video">วิดีโอสาธิต</string>
+    <string name="show_playback_activity_when_play_track">เริ่มกิจกรรมการเล่นเมื่อเล่นแทร็ก</string>
 </resources>

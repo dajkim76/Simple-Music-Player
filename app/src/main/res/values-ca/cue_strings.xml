@@ -15,4 +15,5 @@
     <string name="adjust_timestamp">Ajusta la marca de temps</string>
     <string name="youtube_timestamp_player">Reproductor de marca de temps de Youtube</string>
     <string name="demo_video">Vídeo de demostració</string>
+    <string name="show_playback_activity_when_play_track">Inicieu l\'activitat de reproducció quan reprodueixis una pista</string>
 </resources>

@@ -15,4 +15,5 @@
     <string name="adjust_timestamp">Ajuster l\'horodatage</string>
     <string name="youtube_timestamp_player">Lecteur d\'horodatage Youtube</string>
     <string name="demo_video">Vidéo de démonstration</string>
+    <string name="show_playback_activity_when_play_track">Démarrer l\'activité de lecture lors de la lecture d\'une piste</string>
 </resources>

@@ -15,4 +15,5 @@
     <string name="adjust_timestamp">タイムスタンプの調整</string>
     <string name="youtube_timestamp_player">YouTubeタイムスタンププレーヤー</string>
     <string name="demo_video">デモビデオ</string>
+    <string name="show_playback_activity_when_play_track">トラック再生時に再生アクティビティを開始する</string>
 </resources>

@@ -15,4 +15,5 @@
     <string name="adjust_timestamp">Időbélyeg beállítása</string>
     <string name="youtube_timestamp_player">Youtube időbélyeg-lejátszó</string>
     <string name="demo_video">Demo videó</string>
+    <string name="show_playback_activity_when_play_track">Indítsa el a lejátszási tevékenységet műsorszám lejátszásakor</string>
 </resources>

@@ -15,4 +15,5 @@
     <string name="adjust_timestamp">ਟਾਈਮਸਟੈਂਪ ਨੂੰ ਵਿਵਸਥਿਤ ਕਰੋ</string>
     <string name="youtube_timestamp_player">ਯੂਟਿਊਬ ਟਾਈਮਸਟੈਂਪ ਪਲੇਅਰ</string>
     <string name="demo_video">ਡੈਮੋ ਵੀਡੀਓ</string>
+    <string name="show_playback_activity_when_play_track">ਟਰੈਕ ਚਲਾਉਣ \'ਤੇ ਪਲੇਬੈਕ ਗਤੀਵਿਧੀ ਸ਼ੁਰੂ ਕਰੋ</string>
 </resources>

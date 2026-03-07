@@ -49,6 +49,7 @@ class SettingsActivity : SimpleControllerActivity() {
         setupReplaceTitle()
         setupGaplessPlayback()
         setupAutoplayOnBluetoothConnect()
+        setupShowPlaybackActivity()
         updateTextColors(binding.settingsNestedScrollview)
 
         arrayOf(binding.settingsColorCustomizationSectionLabel, binding.settingsGeneralSettingsLabel, binding.settingsPlaybackSectionLabel).forEach {
@@ -167,6 +168,14 @@ class SettingsActivity : SimpleControllerActivity() {
         settingsAutoplayOnBluetoothConnectHolder.setOnClickListener {
             settingsAutoplayOnBluetoothConnect.toggle()
             config.autoplayOnBluetoothConnect = settingsAutoplayOnBluetoothConnect.isChecked
+        }
+    }
+
+    private fun setupShowPlaybackActivity() = binding.apply {
+        settingsShowPlaybackActivity.isChecked = config.showPlaybackActivity
+        settingsShowPlaybackActivityHolder.setOnClickListener {
+            settingsShowPlaybackActivity.toggle()
+            config.showPlaybackActivity = settingsShowPlaybackActivity.isChecked
         }
     }
 }

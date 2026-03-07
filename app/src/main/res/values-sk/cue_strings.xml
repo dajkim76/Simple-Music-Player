@@ -15,4 +15,5 @@
     <string name="adjust_timestamp">Upravte časovú pečiatku</string>
     <string name="youtube_timestamp_player">Prehrávač časových pečiatok na YouTube</string>
     <string name="demo_video">Ukážkové video</string>
+    <string name="show_playback_activity_when_play_track">Spustiť aktivitu prehrávania pri prehrávaní skladby</string>
 </resources>

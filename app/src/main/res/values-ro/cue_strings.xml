@@ -15,4 +15,5 @@
     <string name="adjust_timestamp">Reglați marcajul de timp</string>
     <string name="youtube_timestamp_player">Player Youtube cu marcaj de timp</string>
     <string name="demo_video">Video demonstrativ</string>
+    <string name="show_playback_activity_when_play_track">Porniți activitatea de redare la redarea piesei</string>
 </resources>

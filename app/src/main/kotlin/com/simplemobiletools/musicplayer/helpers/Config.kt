@@ -146,4 +146,9 @@ class Config(context: Context) : BaseConfig(context) {
     var autoplayOnBluetoothConnect: Boolean
         get() = prefs.getBoolean(AUTOPLAY_ON_BLUETOOTH_CONNECT, false)
         set(autoplayOnBluetoothConnect) = prefs.edit().putBoolean(AUTOPLAY_ON_BLUETOOTH_CONNECT, autoplayOnBluetoothConnect).apply()
+
+    // When you play a track, it takes you to the playback screen for that track.
+    var showPlaybackActivity: Boolean
+        get() = prefs.getBoolean(SHOW_PLAYBACK_ACTIVITY, false)
+        set(autoplayOnBluetoothConnect) = prefs.edit().putBoolean(SHOW_PLAYBACK_ACTIVITY, autoplayOnBluetoothConnect).apply()
 }

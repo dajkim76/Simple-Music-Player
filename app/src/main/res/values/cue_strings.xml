@@ -15,4 +15,5 @@
     <string name="adjust_timestamp">Adjust timestamp</string>
     <string name="youtube_timestamp_player">Youtube Timestamp Player</string>
     <string name="demo_video">Demo Video</string>
+    <string name="show_playback_activity_when_play_track">When you play a track, it takes you to the playback screen for that track.</string>
 </resources>

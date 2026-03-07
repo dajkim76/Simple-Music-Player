@@ -15,4 +15,5 @@
     <string name="adjust_timestamp">Адрэгуляваць пазнаку часу</string>
     <string name="youtube_timestamp_player">Плэер пазнак часу Youtube</string>
     <string name="demo_video">Дэма відэа</string>
+    <string name="show_playback_activity_when_play_track">Пачаць прайграванне пры прайграванні трэка</string>
 </resources>

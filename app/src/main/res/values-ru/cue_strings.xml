@@ -15,4 +15,5 @@
     <string name="adjust_timestamp">Отрегулируйте временную метку</string>
     <string name="youtube_timestamp_player">Плеер с отметкой времени на Youtube</string>
     <string name="demo_video">Демо-видео</string>
+    <string name="show_playback_activity_when_play_track">Запускать воспроизведение при воспроизведении трека</string>
 </resources>

@@ -196,7 +196,7 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
         getTrackFromUri(intent.data) { track ->
             runOnUiThread {
                 if (track != null) {
-                    prepareAndPlay(listOf(track), startActivity = false)
+                    prepareAndPlay(listOf(track), showPlayback = false)
                 } else {
                     toast(com.simplemobiletools.commons.R.string.unknown_error_occurred)
                     finish()

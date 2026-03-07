@@ -15,4 +15,5 @@
     <string name="adjust_timestamp">Upravit časové razítko</string>
     <string name="youtube_timestamp_player">Přehrávač časových razítek na YouTube</string>
     <string name="demo_video">Demo video</string>
+    <string name="show_playback_activity_when_play_track">Spustit aktivitu přehrávání při přehrávání skladby</string>
 </resources>

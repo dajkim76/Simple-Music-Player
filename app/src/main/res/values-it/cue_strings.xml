@@ -15,4 +15,5 @@
     <string name="adjust_timestamp">Regola timestamp</string>
     <string name="youtube_timestamp_player">Lettore timestamp di Youtube</string>
     <string name="demo_video">Video dimostrativo</string>
+    <string name="show_playback_activity_when_play_track">Avvia l\'attività di riproduzione quando viene riprodotta una traccia</string>
 </resources>

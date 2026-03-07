@@ -15,4 +15,5 @@
     <string name="adjust_timestamp">Sesuaikan stempel waktu</string>
     <string name="youtube_timestamp_player">Pemutar Stempel Waktu Youtube</string>
     <string name="demo_video">Video Demo</string>
+    <string name="show_playback_activity_when_play_track">Mulai aktivitas pemutaran saat memutar trek</string>
 </resources>

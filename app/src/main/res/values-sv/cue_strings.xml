@@ -15,4 +15,5 @@
     <string name="adjust_timestamp">Justera tidsstämpeln</string>
     <string name="youtube_timestamp_player">Youtube Timestamp Player</string>
     <string name="demo_video">Demovideo</string>
+    <string name="show_playback_activity_when_play_track">Starta uppspelningsaktivitet när du spelar upp spår</string>
 </resources>

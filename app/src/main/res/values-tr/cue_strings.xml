@@ -15,4 +15,5 @@
     <string name="adjust_timestamp">Zaman damgasını ayarla</string>
     <string name="youtube_timestamp_player">Youtube Zaman Damgası Oynatıcısı</string>
     <string name="demo_video">Demo Videosu</string>
+    <string name="show_playback_activity_when_play_track">Parça çalınırken oynatma etkinliğini başlat</string>
 </resources>

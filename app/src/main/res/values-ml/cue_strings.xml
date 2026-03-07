@@ -15,4 +15,5 @@
     <string name="adjust_timestamp">ടൈംസ്റ്റാമ്പ് ക്രമീകരിക്കുക</string>
     <string name="youtube_timestamp_player">Youtube ടൈംസ്റ്റാമ്പ് പ്ലെയർ</string>
     <string name="demo_video">ഡെമോ വീഡിയോ</string>
+    <string name="show_playback_activity_when_play_track">ട്രാക്ക് പ്ലേ ചെയ്യുമ്പോൾ പ്ലേബാക്ക് ആക്റ്റിവിറ്റി ആരംഭിക്കുക</string>
 </resources>

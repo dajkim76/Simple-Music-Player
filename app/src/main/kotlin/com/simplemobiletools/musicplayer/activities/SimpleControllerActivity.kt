@@ -52,9 +52,9 @@ abstract class SimpleControllerActivity : SimpleActivity(), Player.Listener {
 
     fun withPlayer(callback: MediaController.() -> Unit) = controller.withController(callback)
 
-    fun prepareAndPlay(tracks: List<Track>, startIndex: Int = 0, startPositionMs: Long = 0, startActivity: Boolean = true) {
+    fun prepareAndPlay(tracks: List<Track>, showPlayback: Boolean, startIndex: Int = 0, startPositionMs: Long = 0) {
         withPlayer {
-            if (startActivity) {
+            if (showPlayback) {
                 startActivity(
                     Intent(this@SimpleControllerActivity, TrackActivity::class.java)
                 )

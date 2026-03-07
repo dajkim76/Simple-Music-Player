@@ -15,4 +15,5 @@
     <string name="adjust_timestamp">ضبط الطابع الزمني</string>
     <string name="youtube_timestamp_player">مشغل الطابع الزمني لـ Youtube</string>
     <string name="demo_video">فيديو توضيحي</string>
+    <string name="show_playback_activity_when_play_track">بدء نشاط التشغيل عند تشغيل المقطع</string>
 </resources>
