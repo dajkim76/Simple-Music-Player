@@ -4,8 +4,8 @@ import androidx.room.*
 import com.simplemobiletools.commons.helpers.AlphanumericComparator
 import com.simplemobiletools.commons.helpers.SORT_DESCENDING
 import com.simplemobiletools.musicplayer.extensions.sortSafely
-import com.simplemobiletools.musicplayer.helpers.FAVORITE_TRACKS_PLAYLIST_ID
 import com.simplemobiletools.musicplayer.helpers.PLAYER_SORT_BY_TITLE
+import com.simplemobiletools.musicplayer.helpers.SMART_PLAYLIST_ID_MAX
 
 @Entity(tableName = "playlists", indices = [(Index(value = ["id"], unique = true))])
 data class Playlist(
@@ -19,8 +19,8 @@ data class Playlist(
     companion object {
         fun getComparator(sorting: Int) = Comparator<Playlist> { first, second ->
             // 1. id가 5 이하인지 여부를 먼저 확인
-            val firstIsSpecial = first.id <= FAVORITE_TRACKS_PLAYLIST_ID
-            val secondIsSpecial = second.id <= FAVORITE_TRACKS_PLAYLIST_ID
+            val firstIsSpecial = first.id <= SMART_PLAYLIST_ID_MAX
+            val secondIsSpecial = second.id <= SMART_PLAYLIST_ID_MAX
 
             val result = when {
                 // 둘 다 5 이하인 경우: id 순서대로 정렬

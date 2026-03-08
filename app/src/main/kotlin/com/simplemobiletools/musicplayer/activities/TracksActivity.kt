@@ -189,7 +189,7 @@ class TracksActivity : SimpleMusicActivity() {
                     val playlistTracks = audioHelper.getPlaylistTracks(playlist!!.id)
                     runOnUiThread {
                         binding.tracksPlaceholder.beVisibleIf(playlistTracks.isEmpty())
-                        binding.tracksPlaceholder2.beVisibleIf(playlistTracks.isEmpty())
+                        binding.tracksPlaceholder2.beVisibleIf(playlistTracks.isEmpty() && playlist!!.id > SMART_PLAYLIST_ID_MAX)
                     }
 
                     tracks.addAll(playlistTracks)

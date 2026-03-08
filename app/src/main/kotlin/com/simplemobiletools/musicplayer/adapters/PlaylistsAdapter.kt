@@ -7,6 +7,7 @@ import com.qtalk.recyclerviewfastscroller.RecyclerViewFastScroller
 import com.simplemobiletools.commons.activities.BaseSimpleActivity
 import com.simplemobiletools.commons.extensions.highlightTextPart
 import com.simplemobiletools.commons.extensions.setupViewBackground
+import com.simplemobiletools.commons.extensions.toast
 import com.simplemobiletools.commons.helpers.ensureBackgroundThread
 import com.simplemobiletools.commons.views.MyRecyclerView
 import com.simplemobiletools.musicplayer.R
@@ -15,6 +16,9 @@ import com.simplemobiletools.musicplayer.dialogs.NewPlaylistDialog
 import com.simplemobiletools.musicplayer.dialogs.RemovePlaylistDialog
 import com.simplemobiletools.musicplayer.extensions.audioHelper
 import com.simplemobiletools.musicplayer.extensions.config
+import com.simplemobiletools.musicplayer.helpers.ALL_TRACKS_PLAYLIST_ID
+import com.simplemobiletools.musicplayer.helpers.FAVORITE_TRACKS_PLAYLIST_ID
+import com.simplemobiletools.musicplayer.helpers.SMART_PLAYLIST_ID_MAX
 import com.simplemobiletools.musicplayer.inlines.indexOfFirstOrNull
 import com.simplemobiletools.musicplayer.models.Events
 import com.simplemobiletools.musicplayer.models.Playlist
@@ -54,8 +58,12 @@ class PlaylistsAdapter(
     }
 
     private fun askConfirmDelete() {
+        val playlists = getSelectedItems().filter { it.id > SMART_PLAYLIST_ID_MAX }.toMutableList() as ArrayList<Playlist>
+        if (playlists.isEmpty()) {
+            context.toast(com.simplemobiletools.commons.R.string.no_items_found)
+            return
+        }
         RemovePlaylistDialog(context) { deleteFiles ->
-            val playlists = getSelectedItems().toMutableList() as ArrayList<Playlist>
             val ids = playlists.map { it.id } as ArrayList<Int>
             if (deleteFiles) {
                 ensureBackgroundThread {
@@ -102,8 +110,12 @@ class PlaylistsAdapter(
             playlistTitle.text = if (textToHighlight.isEmpty()) playlist.title else playlist.title.highlightTextPart(textToHighlight, properPrimaryColor)
             playlistTitle.setTextColor(textColor)
 
-            val tracks = resources.getQuantityString(R.plurals.tracks_plural, playlist.trackCount, playlist.trackCount)
-            playlistTracks.text = tracks
+            if (playlist.id == ALL_TRACKS_PLAYLIST_ID || playlist.id == FAVORITE_TRACKS_PLAYLIST_ID || playlist.id > SMART_PLAYLIST_ID_MAX) {
+                val tracks = resources.getQuantityString(R.plurals.tracks_plural, playlist.trackCount, playlist.trackCount)
+                playlistTracks.text = tracks
+            } else {
+                playlistTracks.text = resources.getString(R.string.auto)
+            }
             playlistTracks.setTextColor(textColor)
         }
     }

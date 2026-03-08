@@ -11,6 +11,7 @@ import com.simplemobiletools.commons.helpers.ensureBackgroundThread
 import com.simplemobiletools.musicplayer.databinding.DialogSelectPlaylistBinding
 import com.simplemobiletools.musicplayer.databinding.ItemSelectPlaylistBinding
 import com.simplemobiletools.musicplayer.extensions.audioHelper
+import com.simplemobiletools.musicplayer.helpers.SMART_PLAYLIST_ID_MAX
 import com.simplemobiletools.musicplayer.models.Playlist
 
 class SelectPlaylistDialog(val activity: Activity, val callback: (playlistId: Int) -> Unit) {
@@ -19,9 +20,9 @@ class SelectPlaylistDialog(val activity: Activity, val callback: (playlistId: In
 
     init {
         ensureBackgroundThread {
-            val playlists = activity.audioHelper.getAllPlaylists()
+            val playlists = activity.audioHelper.getAllPlaylists().filter { it.id > SMART_PLAYLIST_ID_MAX }
             activity.runOnUiThread {
-                initDialog(playlists)
+                initDialog(ArrayList(playlists))
 
                 if (playlists.isEmpty()) {
                     showNewPlaylistDialog()
