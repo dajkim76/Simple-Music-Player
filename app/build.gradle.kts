@@ -6,6 +6,8 @@ plugins {
     alias(libs.plugins.android)
     alias(libs.plugins.kotlinAndroid)
     alias(libs.plugins.ksp)
+    alias(libs.plugins.google.services)
+    alias(libs.plugins.firebase.crashlytics)
     base
 }
 
@@ -131,6 +133,10 @@ dependencies {
     implementation(libs.jaudiotagger)
     implementation(libs.androidx.compose.ui.text)
     coreLibraryDesugaring(libs.desugar.jdk.libs)
+
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.crashlytics)
+    implementation(libs.firebase.analytics)
 
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.bundles.compose)

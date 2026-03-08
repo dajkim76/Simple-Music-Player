@@ -41,6 +41,9 @@ app-version-appId = "com.simplemobiletools.musicplayer"
 app-version-versionCode = "119"
 app-version-versionName = "5.18.3"
 uiText = "1.10.3"
+firebase-bom = "32.8.0"
+google-services = "4.4.1"
+firebase-crashlytics-gradle = "2.9.9"
 [libraries]
 #AndroidX
 androidx-constraintlayout = { module = "androidx.constraintlayout:constraintlayout", version.ref = "androidx-constraintlayout" }
@@ -73,6 +76,9 @@ lottie = { module = "com.airbnb.android:lottie", version.ref = "lottie" }
 autofittextview = { module = "me.grantland:autofittextview", version.ref = "autofittextview" }
 m3u-parser = { module = "com.github.bjoernpetersen:m3u-parser", version.ref = "m3uParser" }
 androidx-compose-ui-text = { group = "androidx.compose.ui", name = "ui-text", version.ref = "uiText" }
+firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebase-bom" }
+firebase-crashlytics = { group = "com.google.firebase", name = "firebase-crashlytics" }
+firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics" }
 [bundles]
 room = [
     "androidx-room-ktx",
@@ -89,3 +95,5 @@ compose = [
 android = { id = "com.android.application", version.ref = "gradlePlugins-agp" }
 kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+google-services = { id = "com.google.gms.google-services", version.ref = "google-services" }
+firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebase-crashlytics-gradle" }
