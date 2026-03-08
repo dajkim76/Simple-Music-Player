@@ -153,9 +153,11 @@ class QueueActivity : SimpleControllerActivity() {
                             }
 
                             val startIndex = currentMediaItems.indexOfTrack(track)
-                            seekTo(startIndex, lastPosition)
-                            if (!isReallyPlaying) {
-                                play()
+                            if (startIndex >= 0) {
+                                seekTo(startIndex, lastPosition)
+                                if (!isReallyPlaying) {
+                                    play()
+                                }
                             }
                         }
                     }
