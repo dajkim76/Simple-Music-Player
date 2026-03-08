@@ -16,6 +16,7 @@ import com.simplemobiletools.musicplayer.helpers.SimpleMediaController
 import com.simplemobiletools.musicplayer.models.Events
 import com.simplemobiletools.musicplayer.models.Track
 import com.simplemobiletools.musicplayer.models.toMediaItems
+import com.simplemobiletools.musicplayer.objects.executeBackgroundThread
 import com.simplemobiletools.musicplayer.playback.CustomCommands
 import com.simplemobiletools.musicplayer.playback.PlaybackService.Companion.updatePlaybackInfo
 import org.greenrobot.eventbus.EventBus
@@ -53,6 +54,9 @@ abstract class SimpleControllerActivity : SimpleActivity(), Player.Listener {
     fun withPlayer(callback: MediaController.() -> Unit) = controller.withController(callback)
 
     fun prepareAndPlay(tracks: List<Track>, showPlayback: Boolean, startIndex: Int = 0, startPositionMs: Long = 0) {
+        executeBackgroundThread {
+            audioHelper.updatePlayback(tracks[startIndex])
+        }
         withPlayer {
             if (showPlayback) {
                 startActivity(

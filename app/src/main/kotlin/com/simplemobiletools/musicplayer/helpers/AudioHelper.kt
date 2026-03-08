@@ -197,11 +197,36 @@ class AudioHelper(private val context: Context) {
     }
 
     fun getPlaylistTracks(playlistId: Int): ArrayList<Track> {
-        val tracks = context.tracksDAO.getTracksFromPlaylist(playlistId)
-            .applyProperFilenames(config.showFilename)
+        val tracks = if (playlistId == RECENTLY_ADDED_TRACKS_PLAYLIST_ID)
+            context.tracksDAO.getTracksFromPlaylist(ALL_TRACKS_PLAYLIST_ID).applyProperFilenames(config.showFilename)
+        else if (playlistId == MOST_PLAYED_TRACKS_PLAYLIST_ID)
+            context.tracksDAO.getTracksFromPlaylist(RECENTLY_PLAYED_TRACKS_PLAYLIST_ID).applyProperFilenames(config.showFilename)
+        else
+            context.tracksDAO.getTracksFromPlaylist(playlistId).applyProperFilenames(config.showFilename)
 
-        tracks.sortSafely(config.getProperPlaylistSorting(playlistId))
+        if (playlistId == RECENTLY_ADDED_TRACKS_PLAYLIST_ID) {
+            tracks.sortByDescending { it.dateAdded }
+        } else if (playlistId == MOST_PLAYED_TRACKS_PLAYLIST_ID) {
+            tracks.sortByDescending { it.playCount }
+        } else if (playlistId == RECENTLY_PLAYED_TRACKS_PLAYLIST_ID) {
+            tracks.sortByDescending { it.updatedTimestamp }
+        } else {
+            tracks.sortSafely(config.getProperPlaylistSorting(playlistId))
+        }
         return tracks
+    }
+
+    fun updatePlayback(track: Track) {
+        val playListId = RECENTLY_PLAYED_TRACKS_PLAYLIST_ID
+        context.tracksDAO.getPlayback(playListId, track.mediaStoreId)?.let {
+            it.updatedTimestamp = System.currentTimeMillis()
+            it.playCount += 1
+            context.tracksDAO.updatePlayback(it.id, it.updatedTimestamp, it.playCount)
+        } ?: run {
+            val newTrack =
+                track.copy(id = 0 /*Prevent Replace existing track*/, playListId = playListId, playCount = 1, updatedTimestamp = System.currentTimeMillis())
+            context.tracksDAO.insert(newTrack)
+        }
     }
 
     fun getPlaylistTrackCount(playlistId: Int): Int {

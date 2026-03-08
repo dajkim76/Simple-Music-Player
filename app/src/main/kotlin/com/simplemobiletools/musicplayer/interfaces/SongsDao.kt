@@ -52,4 +52,10 @@ interface SongsDao {
 
     @Query("UPDATE tracks SET order_in_playlist = :index WHERE id = :id")
     fun updateOrderInPlaylist(index: Int, id: Long)
+
+    @Query("SELECT * FROM tracks WHERE playlist_id = :playListId AND media_store_id = :mediaStoreId")
+    fun getPlayback(playListId: Int, mediaStoreId: Long): Track?
+
+    @Query("UPDATE tracks SET updated_timestamp = :updatedTimeStamp, play_count = :playCount WHERE id = :id")
+    fun updatePlayback(id: Long, updatedTimeStamp: Long, playCount: Int): Int
 }
