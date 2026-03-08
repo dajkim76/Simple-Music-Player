@@ -116,7 +116,10 @@ class SimpleMusicPlayer(private val exoPlayer: ExoPlayer) : ForwardingPlayer(exo
     }
 
     private fun seekToPreviousCue(): Boolean {
-        if (seekToPreviousCueInternal() == SeekToPreviousCueResult.NoCueList) {
+        val result = seekToPreviousCueInternal()
+        if (result == SeekToPreviousCueResult.Handled) {
+            return true
+        } else if (result == SeekToPreviousCueResult.NoCueList) {
             val positionMillis = currentPosition
             if (positionMillis >= 3000) {
                 seekTo(0)
