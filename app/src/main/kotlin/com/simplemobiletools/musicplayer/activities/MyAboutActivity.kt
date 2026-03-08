@@ -6,8 +6,6 @@ import android.content.Intent.*
 import android.content.res.Resources
 import android.os.Build
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.padding
@@ -43,17 +41,10 @@ import com.simplemobiletools.commons.models.FAQItem
 
 private const val MY_EMAIL = "kimdaejeong@gmail.com"
 const val DEMO_VIDEO_URL = "https://www.youtube.com/watch?v=X_yMfMboIP4"
+private const val RELEASE_URL = "https://github.com/dajkim76/Simple-Music-Player/releases"
 
 class MyAboutActivity : ComponentActivity() {
     private val appName get() = intent.getStringExtra(APP_NAME) ?: ""
-
-    private var firstVersionClickTS = 0L
-    private var clicksSinceFirstClick = 0
-
-    companion object {
-        private const val EASTER_EGG_TIME_LIMIT = 3000L
-        private const val EASTER_EGG_REQUIRED_CLICKS = 7
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -287,7 +278,7 @@ class MyAboutActivity : ComponentActivity() {
     }
 
     private fun onInviteClick() {
-        val text = String.format(getString(R.string.share_text), appName, getStoreUrl())
+        val text = String.format(getString(R.string.share_text), appName, RELEASE_URL)
         Intent().apply {
             action = ACTION_SEND
             putExtra(EXTRA_SUBJECT, appName)
@@ -352,20 +343,7 @@ class MyAboutActivity : ComponentActivity() {
     }
 
     private fun onVersionClick() {
-        if (firstVersionClickTS == 0L) {
-            firstVersionClickTS = System.currentTimeMillis()
-            Handler(Looper.getMainLooper()).postDelayed({
-                firstVersionClickTS = 0L
-                clicksSinceFirstClick = 0
-            }, EASTER_EGG_TIME_LIMIT)
-        }
-
-        clicksSinceFirstClick++
-        if (clicksSinceFirstClick >= EASTER_EGG_REQUIRED_CLICKS) {
-            toast(R.string.hello)
-            firstVersionClickTS = 0L
-            clicksSinceFirstClick = 0
-        }
+        launchViewIntent(RELEASE_URL)
     }
 }
 
