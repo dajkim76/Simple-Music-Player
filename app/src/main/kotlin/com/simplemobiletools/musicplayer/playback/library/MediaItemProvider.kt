@@ -153,6 +153,7 @@ internal class MediaItemProvider(private val context: Context) {
             return
         }
 
+        val keepTrackLastPosition = context.config.keepTrackLastPosition
         executor.execute {
             val trackId = current.mediaId.toLong()
             val queueItems = mediaItems.mapIndexed { index, mediaItem ->
@@ -160,7 +161,9 @@ internal class MediaItemProvider(private val context: Context) {
             }
 
             audioHelper.resetQueue(queueItems, trackId, startPosition)
-            audioHelper.updateRecentPlayedTrackLastPosition(mediaStoreId = trackId, lastPosition = startPosition)
+            if (keepTrackLastPosition) {
+                audioHelper.updateRecentPlayedTrackLastPosition(mediaStoreId = trackId, lastPosition = startPosition)
+            }
         }
     }
 

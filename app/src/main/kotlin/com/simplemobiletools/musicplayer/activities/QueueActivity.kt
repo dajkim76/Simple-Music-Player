@@ -135,17 +135,21 @@ class QueueActivity : SimpleControllerActivity() {
                     currentTrack = currentMediaItem?.toTrack(),
                     recyclerView = binding.queueList
                 ) {
+                    val keepTrackLastPosition = config.keepTrackLastPosition
                     executeBackgroundThread {
                         val track = it as Track
                         var lastPosition = audioHelper.updateRecentPlayedTrack(track)
+                        if (!keepTrackLastPosition) lastPosition = 0
 
                         withPlayer {
                             if (isPlaying) {
                                 val playingMediaStoreId = currentMediaItem?.mediaId?.toLong() ?: 0
                                 if (playingMediaStoreId != track.mediaStoreId) {
                                     val playingLastPosition = currentPosition
-                                    executeBackgroundThread {
-                                        audioHelper.updateRecentPlayedTrackLastPosition(playingMediaStoreId, playingLastPosition)
+                                    if (keepTrackLastPosition) {
+                                        executeBackgroundThread {
+                                            audioHelper.updateRecentPlayedTrackLastPosition(playingMediaStoreId, playingLastPosition)
+                                        }
                                     }
                                 } else {
                                     lastPosition = 0

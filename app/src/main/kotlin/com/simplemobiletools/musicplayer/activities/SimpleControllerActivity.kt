@@ -54,17 +54,21 @@ abstract class SimpleControllerActivity : SimpleActivity(), Player.Listener {
     fun withPlayer(callback: MediaController.() -> Unit) = controller.withController(callback)
 
     fun prepareAndPlay(tracks: List<Track>, showPlayback: Boolean, startIndex: Int = 0, startPositionMs: Long = 0) {
+        val keepTrackLastPosition = config.keepTrackLastPosition
         executeBackgroundThread {
             val track = tracks[startIndex]
             var lastPosition = audioHelper.updateRecentPlayedTrack(track)
+            if (!keepTrackLastPosition) lastPosition = 0
 
             withPlayer {
                 if (isPlaying) {
                     val playingMediaStoreId = currentMediaItem?.mediaId?.toLong() ?: 0
                     if (playingMediaStoreId != track.mediaStoreId) {
-                        val playingLastPosition = currentPosition
-                        executeBackgroundThread {
-                            audioHelper.updateRecentPlayedTrackLastPosition(playingMediaStoreId, playingLastPosition)
+                        if (keepTrackLastPosition) {
+                            val playingLastPosition = currentPosition
+                            executeBackgroundThread {
+                                audioHelper.updateRecentPlayedTrackLastPosition(playingMediaStoreId, playingLastPosition)
+                            }
                         }
                     } else {
                         lastPosition = 0

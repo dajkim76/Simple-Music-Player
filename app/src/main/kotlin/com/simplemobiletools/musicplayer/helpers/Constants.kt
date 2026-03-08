@@ -74,6 +74,7 @@ const val SORT_PLAYLIST_PREFIX = "sort_playlist_"
 const val GAPLESS_PLAYBACK = "gapless_playback"
 const val AUTOPLAY_ON_BLUETOOTH_CONNECT = "autoplay_on_bluetooth_connect"
 const val SHOW_PLAYBACK_ACTIVITY = "SHOW_PLAYBACK_ACTIVITY"
+const val KEEP_TRACK_LAST_POSITION = "KEEP_TRACK_LAST_POSITION"
 
 const val SEEK_INTERVAL_MS = 10000L
 const val SEEK_INTERVAL_S = 10

@@ -19,6 +19,7 @@ import androidx.media3.session.MediaSessionService
 import com.simplemobiletools.commons.extensions.hasPermission
 import com.simplemobiletools.commons.extensions.showErrorToast
 import com.simplemobiletools.musicplayer.extensions.*
+import com.simplemobiletools.musicplayer.helpers.Config
 import com.simplemobiletools.musicplayer.helpers.CueListCache
 import com.simplemobiletools.musicplayer.helpers.NotificationHelper
 import com.simplemobiletools.musicplayer.helpers.getPermissionToRequest
@@ -34,6 +35,7 @@ class PlaybackService : MediaLibraryService(), MediaSessionService.Listener {
     internal lateinit var playerHandler: Handler
     internal lateinit var mediaSession: MediaLibrarySession
     internal lateinit var mediaItemProvider: MediaItemProvider
+    internal lateinit var config: Config
 
     internal var currentRoot = ""
     internal var lastCueTitle: String? = null
@@ -51,6 +53,7 @@ class PlaybackService : MediaLibraryService(), MediaSessionService.Listener {
 
     override fun onCreate() {
         super.onCreate()
+        config = Config.newInstance(applicationContext)
         setListener(this)
         initializeSessionAndPlayer(handleAudioFocus = true, handleAudioBecomingNoisy = true, skipSilence = config.gaplessPlayback)
         initializeLibrary()
@@ -103,11 +106,13 @@ class PlaybackService : MediaLibraryService(), MediaSessionService.Listener {
         withPlayer {
             if (isPlaying) {
                 skipDisabledCueOnPlayerThread()
-                // 마지막 1초를 남겨두고 last position을 0으로..
-                if (player.currentPosition >= player.duration - 1000) {
-                    currentMediaItem?.let {
-                        val mediaStoreId = it.mediaId.toLong()
-                        audioHelper.updateRecentPlayedTrackLastPosition(mediaStoreId, 0)
+                if (config.keepTrackLastPosition) {
+                    // 마지막 1초를 남겨두고 last position을 0으로..
+                    if (player.currentPosition >= player.duration - 1000) {
+                        currentMediaItem?.let {
+                            val mediaStoreId = it.mediaId.toLong()
+                            audioHelper.updateRecentPlayedTrackLastPosition(mediaStoreId, 0)
+                        }
                     }
                 }
             } else {

@@ -150,7 +150,12 @@ class Config(context: Context) : BaseConfig(context) {
     // When you play a track, it takes you to the playback screen for that track.
     var showPlaybackActivity: Boolean
         get() = prefs.getBoolean(SHOW_PLAYBACK_ACTIVITY, false)
-        set(autoplayOnBluetoothConnect) = prefs.edit().putBoolean(SHOW_PLAYBACK_ACTIVITY, autoplayOnBluetoothConnect).apply()
+        set(showPlaybackActivity) = prefs.edit().putBoolean(SHOW_PLAYBACK_ACTIVITY, showPlaybackActivity).apply()
+
+    // When the user plays a track, it starts from the last playback position.
+    var keepTrackLastPosition: Boolean
+        get() = prefs.getBoolean(KEEP_TRACK_LAST_POSITION, false)
+        set(keepTrackLastPosition) = prefs.edit().putBoolean(KEEP_TRACK_LAST_POSITION, keepTrackLastPosition).apply()
 }
 
 fun isInExcludeFolders(path: String, excludeFolder: Set<String>): Boolean {

@@ -50,6 +50,7 @@ class SettingsActivity : SimpleControllerActivity() {
         setupGaplessPlayback()
         setupAutoplayOnBluetoothConnect()
         setupShowPlaybackActivity()
+        setupKeepTrackLastPosition()
         updateTextColors(binding.settingsNestedScrollview)
 
         arrayOf(binding.settingsColorCustomizationSectionLabel, binding.settingsGeneralSettingsLabel, binding.settingsPlaybackSectionLabel).forEach {
@@ -176,6 +177,14 @@ class SettingsActivity : SimpleControllerActivity() {
         settingsShowPlaybackActivityHolder.setOnClickListener {
             settingsShowPlaybackActivity.toggle()
             config.showPlaybackActivity = settingsShowPlaybackActivity.isChecked
+        }
+    }
+
+    private fun setupKeepTrackLastPosition() = binding.apply {
+        settingsKeeTrackLastPosition.isChecked = config.keepTrackLastPosition
+        settingsKeeTrackLastPositionHolder.setOnClickListener {
+            settingsKeeTrackLastPosition.toggle()
+            config.keepTrackLastPosition = settingsKeeTrackLastPosition.isChecked
         }
     }
 }
