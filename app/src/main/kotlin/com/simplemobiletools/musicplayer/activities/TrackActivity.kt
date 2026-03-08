@@ -230,7 +230,14 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
                     }
                 }
             } else {
-                withPlayer { forceSeekToPrevious() }
+                withPlayer {
+                    val positionMillis = currentPosition
+                    if (positionMillis < 3000) {
+                        forceSeekToPrevious()
+                    } else {
+                        seekTo(0)
+                    }
+                }
             }
         }
         activityTrackSeekBack.setOnClickListener { withPlayer { seekBack() } }

@@ -15,7 +15,13 @@ private const val DEFAULT_SHUFFLE_ORDER_SEED = 42L
 
 @UnstableApi
 class SimpleMusicPlayer(private val exoPlayer: ExoPlayer) : ForwardingPlayer(exoPlayer) {
-
+    enum class SeekToPreviousCueResult {
+        Oops,
+        NoCueList,
+        Handled,
+        NotHandled
+    }
+    
     private var seekToNextCount = 0
     private var seekToPreviousCount = 0
     private val scope = CoroutineScope(Dispatchers.Default)
@@ -110,11 +116,22 @@ class SimpleMusicPlayer(private val exoPlayer: ExoPlayer) : ForwardingPlayer(exo
     }
 
     private fun seekToPreviousCue(): Boolean {
-        val currentItem = currentMediaItem ?: return false
-        val track = currentItem.toTrack() ?: return false
+        if (seekToPreviousCueInternal() == SeekToPreviousCueResult.NoCueList) {
+            val positionMillis = currentPosition
+            if (positionMillis >= 3000) {
+                seekTo(0)
+                return true
+            }
+        }
+        return false
+    }
+
+    private fun seekToPreviousCueInternal(): SeekToPreviousCueResult {
+        val currentItem = currentMediaItem ?: return SeekToPreviousCueResult.Oops
+        val track = currentItem.toTrack() ?: return SeekToPreviousCueResult.Oops
         val currentSec = currentPosition / 1000
-        val cues = CueListCache.peekCueList(track.fileStableId)?.filter { it.enabled } ?: return false
-        if (cues.isEmpty()) return false
+        val cues = CueListCache.peekCueList(track.fileStableId)?.filter { it.enabled } ?: return SeekToPreviousCueResult.NoCueList
+        if (cues.isEmpty()) return SeekToPreviousCueResult.NoCueList
 
         val activeCueIndex = cues.indexOfLast { it.timestamp <= currentSec }
         return if (activeCueIndex >= 0) {
@@ -126,12 +143,12 @@ class SimpleMusicPlayer(private val exoPlayer: ExoPlayer) : ForwardingPlayer(exo
 
             return if (targetIndex >= 0) {
                 seekTo(cues[targetIndex].timestamp * 1000L)
-                true
+                SeekToPreviousCueResult.Handled
             } else {
-                false
+                SeekToPreviousCueResult.NotHandled
             }
         } else {
-            false
+            SeekToPreviousCueResult.NotHandled
         }
     }
 
