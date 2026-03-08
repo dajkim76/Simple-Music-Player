@@ -1,3 +1,19 @@
+# Youtube Timestamp Player
+
+### Description
+
+The YouTube timestamp feature allows you to automatically create song list by copying and pasting timestamp text from YouTube comments.
+
+### Downloading in OPUS format with YTDLnis works best.
+
+https://ytdlnis.org/
+
+### Demo Video:
+
+[![Demo Video](https://img.youtube.com/vi/X_yMfMboIP4/0.jpg)](https://www.youtube.com/watch?v=X_yMfMboIP4)
+
+
+
 # Simple Music Player
 <img alt="Logo" src="graphics/icon.png" width="120" />
 
