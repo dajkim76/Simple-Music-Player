@@ -7,6 +7,10 @@ import com.simplemobiletools.commons.helpers.isQPlus
 import com.simplemobiletools.commons.helpers.isTiramisuPlus
 
 const val ALL_TRACKS_PLAYLIST_ID = 1
+const val RECENTLY_ADDED_TRACKS_PLAYLIST_ID = 2
+const val MOST_PLAYED_TRACKS_PLAYLIST_ID = 3
+const val RECENTLY_PLAYED_TRACKS_PLAYLIST_ID = 4
+const val FAVORITE_TRACKS_PLAYLIST_ID = 5
 const val EQUALIZER_PRESET_CUSTOM = -1
 
 const val ARTIST = "artist"

@@ -4,6 +4,7 @@ import androidx.room.*
 import com.simplemobiletools.commons.helpers.AlphanumericComparator
 import com.simplemobiletools.commons.helpers.SORT_DESCENDING
 import com.simplemobiletools.musicplayer.extensions.sortSafely
+import com.simplemobiletools.musicplayer.helpers.FAVORITE_TRACKS_PLAYLIST_ID
 import com.simplemobiletools.musicplayer.helpers.PLAYER_SORT_BY_TITLE
 
 @Entity(tableName = "playlists", indices = [(Index(value = ["id"], unique = true))])
@@ -17,13 +18,28 @@ data class Playlist(
 
     companion object {
         fun getComparator(sorting: Int) = Comparator<Playlist> { first, second ->
-            var result = when {
-                sorting and PLAYER_SORT_BY_TITLE != 0 -> AlphanumericComparator().compare(first.title.lowercase(), second.title.lowercase())
-                else -> first.trackCount.compareTo(second.trackCount)
-            }
+            // 1. id가 5 이하인지 여부를 먼저 확인
+            val firstIsSpecial = first.id <= FAVORITE_TRACKS_PLAYLIST_ID
+            val secondIsSpecial = second.id <= FAVORITE_TRACKS_PLAYLIST_ID
 
-            if (sorting and SORT_DESCENDING != 0) {
-                result *= -1
+            val result = when {
+                // 둘 다 5 이하인 경우: id 순서대로 정렬
+                firstIsSpecial && secondIsSpecial -> first.id.compareTo(second.id)
+
+                // 한쪽만 5 이하인 경우: 5 이하인 쪽이 앞으로 오게 함
+                firstIsSpecial -> -1
+                secondIsSpecial -> 1
+
+                // 둘 다 5보다 큰 경우: 기존 정렬 로직 수행
+                sorting and PLAYER_SORT_BY_TITLE != 0 -> {
+                    val r = AlphanumericComparator().compare(first.title.lowercase(), second.title.lowercase())
+                    if (sorting and SORT_DESCENDING != 0) r * -1 else r
+                }
+
+                else -> {
+                    val r = first.trackCount.compareTo(second.trackCount)
+                    if (sorting and SORT_DESCENDING != 0) r * -1 else r
+                }
             }
 
             return@Comparator result

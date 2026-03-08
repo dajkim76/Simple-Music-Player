@@ -16,4 +16,8 @@
     <string name="youtube_timestamp_player">Youtube Timestamp Player</string>
     <string name="demo_video">Demo Video</string>
     <string name="show_playback_activity_when_play_track">When you play a track, it takes you to the playback screen for that track.</string>
+    <string name="recently_added">Recently Added</string>
+    <string name="most_played">Most Played</string>
+    <string name="recently_played">Recently Played</string>
+    <string name="favorite">Favorite</string>
 </resources>

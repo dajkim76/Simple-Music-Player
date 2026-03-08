@@ -40,7 +40,10 @@ data class Track(
     @ColumnInfo(name = "order_in_playlist") var orderInPlaylist: Int,
     @ColumnInfo(name = "file_length") var fileLength: Long,
     @ColumnInfo(name = "file_last_modified") var fileLastModified: Long,
-    @ColumnInfo(name = "flags") var flags: Int = 0
+    @ColumnInfo(name = "updated_timestamp") var updatedTimestamp: Long = 0,
+    @ColumnInfo(name = "play_count") var playCount: Int = 0,
+    @ColumnInfo(name = "last_position") var lastPosition: Int = 0,
+    @ColumnInfo(name = "flags") var flags: Int = 0,
 ) : Serializable, ListItem() {
 
     val fileStableId: Long by lazy(LazyThreadSafetyMode.NONE) {
