@@ -55,28 +55,42 @@ abstract class SimpleControllerActivity : SimpleActivity(), Player.Listener {
 
     fun prepareAndPlay(tracks: List<Track>, showPlayback: Boolean, startIndex: Int = 0, startPositionMs: Long = 0) {
         executeBackgroundThread {
-            audioHelper.updatePlayback(tracks[startIndex])
-        }
-        withPlayer {
-            if (showPlayback) {
-                startActivity(
-                    Intent(this@SimpleControllerActivity, TrackActivity::class.java)
-                )
-            }
+            val track = tracks[startIndex]
+            var lastPosition = audioHelper.updateRecentPlayedTrack(track)
 
-            val currentItems = currentMediaItems
-            val isTracksSameWithCurrentItems = currentItems.size == tracks.size &&
-                currentItems.zip(tracks).all { (current, track) -> current.isSameMedia(track) }
+            withPlayer {
+                if (isPlaying) {
+                    val playingMediaStoreId = currentMediaItem?.mediaId?.toLong() ?: 0
+                    if (playingMediaStoreId != track.mediaStoreId) {
+                        val playingLastPosition = currentPosition
+                        executeBackgroundThread {
+                            audioHelper.updateRecentPlayedTrackLastPosition(playingMediaStoreId, playingLastPosition)
+                        }
+                    } else {
+                        lastPosition = 0
+                    }
+                }
 
-            prepareUsingTracks(
-                tracks = tracks,
-                startIndex = startIndex,
-                startPositionMs = startPositionMs,
-                play = true,
-                isTracksSameWithCurrentItems = isTracksSameWithCurrentItems
-            ) { success ->
-                if (success) {
-                    updatePlaybackInfo(this)
+                if (showPlayback) {
+                    startActivity(
+                        Intent(this@SimpleControllerActivity, TrackActivity::class.java)
+                    )
+                }
+
+                val currentItems = currentMediaItems
+                val isTracksSameWithCurrentItems = currentItems.size == tracks.size &&
+                    currentItems.zip(tracks).all { (current, track) -> current.isSameMedia(track) }
+
+                prepareUsingTracks(
+                    tracks = tracks,
+                    startIndex = startIndex,
+                    startPositionMs = lastPosition,
+                    play = true,
+                    isTracksSameWithCurrentItems = isTracksSameWithCurrentItems
+                ) { success ->
+                    if (success) {
+                        updatePlaybackInfo(this)
+                    }
                 }
             }
         }

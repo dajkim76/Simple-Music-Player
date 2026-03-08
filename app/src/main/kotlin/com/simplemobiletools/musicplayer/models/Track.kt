@@ -42,7 +42,7 @@ data class Track(
     @ColumnInfo(name = "file_last_modified") var fileLastModified: Long,
     @ColumnInfo(name = "updated_timestamp") var updatedTimestamp: Long = 0,
     @ColumnInfo(name = "play_count") var playCount: Int = 0,
-    @ColumnInfo(name = "last_position") var lastPosition: Int = 0,
+    @ColumnInfo(name = "last_position") var lastPosition: Long = 0,
     @ColumnInfo(name = "flags") var flags: Int = 0,
 ) : Serializable, ListItem() {
 

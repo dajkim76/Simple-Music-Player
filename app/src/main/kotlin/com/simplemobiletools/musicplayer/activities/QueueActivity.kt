@@ -21,6 +21,7 @@ import com.simplemobiletools.musicplayer.dialogs.NewPlaylistDialog
 import com.simplemobiletools.musicplayer.extensions.*
 import com.simplemobiletools.musicplayer.helpers.RoomHelper
 import com.simplemobiletools.musicplayer.models.Track
+import com.simplemobiletools.musicplayer.objects.executeBackgroundThread
 
 class QueueActivity : SimpleControllerActivity() {
     private var searchMenuItem: MenuItem? = null
@@ -134,11 +135,28 @@ class QueueActivity : SimpleControllerActivity() {
                     currentTrack = currentMediaItem?.toTrack(),
                     recyclerView = binding.queueList
                 ) {
-                    withPlayer {
-                        val startIndex = currentMediaItems.indexOfTrack(it as Track)
-                        seekTo(startIndex, 0)
-                        if (!isReallyPlaying) {
-                            play()
+                    executeBackgroundThread {
+                        val track = it as Track
+                        var lastPosition = audioHelper.updateRecentPlayedTrack(track)
+
+                        withPlayer {
+                            if (isPlaying) {
+                                val playingMediaStoreId = currentMediaItem?.mediaId?.toLong() ?: 0
+                                if (playingMediaStoreId != track.mediaStoreId) {
+                                    val playingLastPosition = currentPosition
+                                    executeBackgroundThread {
+                                        audioHelper.updateRecentPlayedTrackLastPosition(playingMediaStoreId, playingLastPosition)
+                                    }
+                                } else {
+                                    lastPosition = 0
+                                }
+                            }
+
+                            val startIndex = currentMediaItems.indexOfTrack(track)
+                            seekTo(startIndex, lastPosition)
+                            if (!isReallyPlaying) {
+                                play()
+                            }
                         }
                     }
                 }

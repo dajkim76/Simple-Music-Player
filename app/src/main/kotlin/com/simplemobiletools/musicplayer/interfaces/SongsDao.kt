@@ -58,4 +58,7 @@ interface SongsDao {
 
     @Query("UPDATE tracks SET updated_timestamp = :updatedTimeStamp, play_count = :playCount WHERE id = :id")
     fun updatePlayback(id: Long, updatedTimeStamp: Long, playCount: Int): Int
+
+    @Query("UPDATE tracks SET last_position = :lastPosition WHERE id = :id")
+    fun updateLastPosition(id: Long, lastPosition: Long)
 }

@@ -160,6 +160,7 @@ internal class MediaItemProvider(private val context: Context) {
             }
 
             audioHelper.resetQueue(queueItems, trackId, startPosition)
+            audioHelper.updateRecentPlayedTrackLastPosition(mediaStoreId = trackId, lastPosition = startPosition)
         }
     }
 
