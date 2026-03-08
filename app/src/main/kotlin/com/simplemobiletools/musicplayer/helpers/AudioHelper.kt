@@ -7,6 +7,7 @@ import com.simplemobiletools.commons.helpers.ensureBackgroundThread
 import com.simplemobiletools.musicplayer.extensions.*
 import com.simplemobiletools.musicplayer.inlines.indexOfFirstOrNull
 import com.simplemobiletools.musicplayer.models.*
+import org.greenrobot.eventbus.EventBus
 import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Duration.Companion.seconds
 
@@ -218,7 +219,7 @@ class AudioHelper(private val context: Context) {
 
     fun updatePlayback(track: Track) {
         val playListId = RECENTLY_PLAYED_TRACKS_PLAYLIST_ID
-        context.tracksDAO.getPlayback(playListId, track.mediaStoreId)?.let {
+        context.tracksDAO.getPlaylistTrack(playListId, track.mediaStoreId)?.let {
             it.updatedTimestamp = System.currentTimeMillis()
             it.playCount += 1
             context.tracksDAO.updatePlayback(it.id, it.updatedTimestamp, it.playCount)
@@ -226,6 +227,25 @@ class AudioHelper(private val context: Context) {
             val newTrack =
                 track.copy(id = 0 /*Prevent Replace existing track*/, playListId = playListId, playCount = 1, updatedTimestamp = System.currentTimeMillis())
             context.tracksDAO.insert(newTrack)
+        }
+    }
+
+    fun isFavoriteTrack(track: Track): Boolean {
+        return context.tracksDAO.getPlaylistTrack(FAVORITE_TRACKS_PLAYLIST_ID, track.mediaStoreId) != null
+    }
+
+    fun toggleFavorite(track: Track): Boolean {
+        val playListId = FAVORITE_TRACKS_PLAYLIST_ID
+        return context.tracksDAO.getPlaylistTrack(playListId, track.mediaStoreId)?.let {
+            context.tracksDAO.delete(it)
+            EventBus.getDefault().post(Events.PlaylistsUpdated())
+            false
+        } ?: run {
+            val newTrack =
+                track.copy(id = 0 /*Prevent Replace existing track*/, playListId = playListId, updatedTimestamp = System.currentTimeMillis())
+            context.tracksDAO.insert(newTrack)
+            EventBus.getDefault().post(Events.PlaylistsUpdated())
+            true
         }
     }
 

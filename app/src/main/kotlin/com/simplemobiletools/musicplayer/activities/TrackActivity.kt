@@ -102,6 +102,7 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
                 when (menuItem.itemId) {
                     R.id.edit_cues -> showEditCuesDialog()
                     R.id.show_meta_data -> showMetaDataDialog()
+                    R.id.favorite -> toggleFavorite()
                     else -> return@setOnMenuItemClickListener false
                 }
                 return@setOnMenuItemClickListener true
@@ -172,6 +173,7 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
 
         setupTopArt(track)
         setupCues(track)
+        updateFavorite(track)
         binding.apply {
             activityTrackTitle.text = track.title
             updateCueTitle(track.mediaStoreId, -1)
@@ -947,6 +949,27 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
         } else {
             // 시간이 없을 경우 "mm:ss"
             String.format("%02d:%02d", minutes, seconds)
+        }
+    }
+
+    private fun updateFavorite(track: Track) {
+        executeBackgroundThread {
+            val isFavorite = audioHelper.isFavoriteTrack(track)
+            runOnUiThread {
+                binding.activityTrackToolbar.menu.findItem(R.id.favorite).icon =
+                    if (isFavorite) resources.getDrawable(R.drawable.ic_favorite) else resources.getDrawable(R.drawable.ic_not_favorite)
+            }
+        }
+    }
+
+    private fun toggleFavorite() {
+        val track = currentTrack ?: return
+        executeBackgroundThread {
+            val isFavorite = audioHelper.toggleFavorite(track)
+            runOnUiThread {
+                binding.activityTrackToolbar.menu.findItem(R.id.favorite).icon =
+                    if (isFavorite) resources.getDrawable(R.drawable.ic_favorite) else resources.getDrawable(R.drawable.ic_not_favorite)
+            }
         }
     }
 }

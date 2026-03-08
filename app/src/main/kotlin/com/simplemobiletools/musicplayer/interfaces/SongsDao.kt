@@ -1,9 +1,6 @@
 package com.simplemobiletools.musicplayer.interfaces
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import com.simplemobiletools.musicplayer.models.Track
 
 @Dao
@@ -13,6 +10,9 @@ interface SongsDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(tracks: List<Track>)
+
+    @Delete
+    fun delete(track: Track)
 
     @Query("SELECT * FROM tracks")
     fun getAll(): List<Track>
@@ -54,7 +54,7 @@ interface SongsDao {
     fun updateOrderInPlaylist(index: Int, id: Long)
 
     @Query("SELECT * FROM tracks WHERE playlist_id = :playListId AND media_store_id = :mediaStoreId")
-    fun getPlayback(playListId: Int, mediaStoreId: Long): Track?
+    fun getPlaylistTrack(playListId: Int, mediaStoreId: Long): Track?
 
     @Query("UPDATE tracks SET updated_timestamp = :updatedTimeStamp, play_count = :playCount WHERE id = :id")
     fun updatePlayback(id: Long, updatedTimeStamp: Long, playCount: Int): Int
