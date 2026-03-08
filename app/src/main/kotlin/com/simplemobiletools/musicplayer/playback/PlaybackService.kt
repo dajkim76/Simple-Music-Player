@@ -150,7 +150,13 @@ class PlaybackService : MediaLibraryService(), MediaSessionService.Listener {
         }
     }
 
-    internal fun withPlayer(callback: SimpleMusicPlayer.() -> Unit) = playerHandler.post { callback(player) }
+    internal fun withPlayer(callback: SimpleMusicPlayer.() -> Unit) {
+        if (playerThread == Thread.currentThread()) {
+            callback(player)
+        } else {
+            playerHandler.post { callback(player) }
+        }
+    }
 
     private fun showNoPermissionNotification() {
         Handler(Looper.getMainLooper()).postDelayed(delayInMillis = 100L) {
