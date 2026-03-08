@@ -98,11 +98,19 @@ class TracksActivity : SimpleMusicActivity() {
     private fun refreshMenuItems() {
         binding.tracksToolbar.menu.apply {
             findItem(R.id.search).isVisible = sourceType != TYPE_ALBUM
-            findItem(R.id.sort).isVisible = sourceType != TYPE_ALBUM
+            findItem(R.id.sort).isVisible = sourceType != TYPE_ALBUM && playlistSortable()
             findItem(R.id.add_file_to_playlist).isVisible = sourceType == TYPE_PLAYLIST
             findItem(R.id.add_folder_to_playlist).isVisible = sourceType == TYPE_PLAYLIST
             findItem(R.id.export_playlist).isVisible = sourceType == TYPE_PLAYLIST && isOreoPlus()
         }
+    }
+
+    private fun playlistSortable(): Boolean {
+        if (sourceType == TYPE_PLAYLIST) {
+            val id = playlist?.id ?: return true
+            return id == ALL_TRACKS_PLAYLIST_ID || id > SMART_PLAYLIST_ID_MAX
+        }
+        return true
     }
 
     private fun setupOptionsMenu() {

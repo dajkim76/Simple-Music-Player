@@ -209,7 +209,7 @@ class AudioHelper(private val context: Context) {
             tracks.sortByDescending { it.dateAdded }
         } else if (playlistId == MOST_PLAYED_TRACKS_PLAYLIST_ID) {
             tracks.sortByDescending { it.playCount }
-        } else if (playlistId == RECENTLY_PLAYED_TRACKS_PLAYLIST_ID) {
+        } else if (playlistId == RECENTLY_PLAYED_TRACKS_PLAYLIST_ID || playlistId == FAVORITE_TRACKS_PLAYLIST_ID) {
             tracks.sortByDescending { it.updatedTimestamp }
         } else {
             tracks.sortSafely(config.getProperPlaylistSorting(playlistId))
