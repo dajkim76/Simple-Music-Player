@@ -15,10 +15,11 @@
     <string name="adjust_timestamp">Regola timestamp</string>
     <string name="youtube_timestamp_player">Lettore timestamp di Youtube</string>
     <string name="demo_video">Video dimostrativo</string>
-    <string name="show_playback_activity_when_play_track">Avvia l\'attività di riproduzione quando viene riprodotta una traccia</string>
-    <string name="recently_added">Aggiunti di recente</string>
-    <string name="most_played">Più riprodotti</string>
-    <string name="recently_played">Riprodotti di recente</string>
-    <string name="favorite">Preferiti</string>
+    <string name="show_playback_activity_when_play_track">Quando riproduci una traccia, ti porta alla schermata di riproduzione per quella traccia.</string>
+    <string name="recently_added_tracks">Tracce aggiunte di recente</string>
+    <string name="most_played_tracks">Tracce più riprodotte</string>
+    <string name="recently_played_tracks">Tracce riprodotte di recente</string>
+    <string name="favorite_tracks">Tracce preferite</string>
     <string name="auto">Auto</string>
+    <string name="keep_track_last_position">Quando l\'utente riproduce una traccia, questa inizia dall\'ultima posizione di riproduzione.</string>
 </resources>

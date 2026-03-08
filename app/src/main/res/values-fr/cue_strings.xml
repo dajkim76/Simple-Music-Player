@@ -15,10 +15,11 @@
     <string name="adjust_timestamp">Ajuster l\'horodatage</string>
     <string name="youtube_timestamp_player">Lecteur d\'horodatage Youtube</string>
     <string name="demo_video">Vidéo de démonstration</string>
-    <string name="show_playback_activity_when_play_track">Démarrer l\'activité de lecture lors de la lecture d\'une piste</string>
-    <string name="recently_added">Ajouté récemment</string>
-    <string name="most_played">Le plus écouté</string>
-    <string name="recently_played">Joué récemment</string>
-    <string name="favorite">Favoris</string>
+    <string name="show_playback_activity_when_play_track">Lorsque vous lisez une piste, cela vous amène à l\'écran de lecture de cette piste.</string>
+    <string name="recently_added_tracks">Pistes ajoutées récemment</string>
+    <string name="most_played_tracks">Pistes les plus écoutées</string>
+    <string name="recently_played_tracks">Pistes lues récemment</string>
+    <string name="favorite_tracks">Pistes favorites</string>
     <string name="auto">Auto</string>
+    <string name="keep_track_last_position">Lorsque l\'utilisateur lit une piste, celle-ci commence à partir de la dernière position de lecture.</string>
 </resources>

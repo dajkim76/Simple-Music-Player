@@ -15,10 +15,11 @@
     <string name="adjust_timestamp">Juster tidsstempel</string>
     <string name="youtube_timestamp_player">Youtube-tidsstempelspiller</string>
     <string name="demo_video">Demovideo</string>
-    <string name="show_playback_activity_when_play_track">Start avspillingsaktivitet når du spiller av spor</string>
-    <string name="recently_added">Nylig lagt til</string>
-    <string name="most_played">Mest spilt</string>
-    <string name="recently_played">Nylig spilt</string>
-    <string name="favorite">Favoritt</string>
+    <string name="show_playback_activity_when_play_track">Når du spiller av et spor, tar den deg til avspillingsskjermen for det sporet.</string>
+    <string name="recently_added_tracks">Nylig lagt til spor</string>
+    <string name="most_played_tracks">Mest spilte spor</string>
+    <string name="recently_played_tracks">Nylig spilte spor</string>
+    <string name="favorite_tracks">Favorittspor</string>
     <string name="auto">Auto</string>
+    <string name="keep_track_last_position">Når brukeren spiller av et spor, starter det fra den siste avspillingsposisjonen.</string>
 </resources>

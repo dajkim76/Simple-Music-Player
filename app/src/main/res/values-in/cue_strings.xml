@@ -15,10 +15,11 @@
     <string name="adjust_timestamp">Sesuaikan stempel waktu</string>
     <string name="youtube_timestamp_player">Pemutar Stempel Waktu Youtube</string>
     <string name="demo_video">Video Demo</string>
-    <string name="show_playback_activity_when_play_track">Mulai aktivitas pemutaran saat memutar trek</string>
-    <string name="recently_added">Baru saja ditambahkan</string>
-    <string name="most_played">Paling sering diputar</string>
-    <string name="recently_played">Baru saja diputar</string>
-    <string name="favorite">Favorit</string>
+    <string name="show_playback_activity_when_play_track">Saat Anda memutar trek, itu akan membawa Anda ke layar pemutaran untuk trek tersebut.</string>
+    <string name="recently_added_tracks">Trek yang baru ditambahkan</string>
+    <string name="most_played_tracks">Trek yang paling sering diputar</string>
+    <string name="recently_played_tracks">Trek yang baru diputar</string>
+    <string name="favorite_tracks">Trek favorit</string>
     <string name="auto">Otomatis</string>
+    <string name="keep_track_last_position">Saat pengguna memutar trek, pemutaran dimulai dari posisi pemutaran terakhir.</string>
 </resources>

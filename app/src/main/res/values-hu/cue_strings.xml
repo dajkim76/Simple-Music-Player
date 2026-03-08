@@ -15,10 +15,11 @@
     <string name="adjust_timestamp">Időbélyeg beállítása</string>
     <string name="youtube_timestamp_player">Youtube időbélyeg-lejátszó</string>
     <string name="demo_video">Demo videó</string>
-    <string name="show_playback_activity_when_play_track">Indítsa el a lejátszási tevékenységet műsorszám lejátszásakor</string>
-    <string name="recently_added">Nemrég hozzáadott</string>
-    <string name="most_played">Legtöbbet játszott</string>
-    <string name="recently_played">Nemrég játszott</string>
-    <string name="favorite">Kedvenc</string>
+    <string name="show_playback_activity_when_play_track">Ha lejátssza egy számot, az az adott szám lejátszási képernyőjére viszi.</string>
+    <string name="recently_added_tracks">Nemrég hozzáadott számok</string>
+    <string name="most_played_tracks">Legtöbbet játszott számok</string>
+    <string name="recently_played_tracks">Nemrég játszott számok</string>
+    <string name="favorite_tracks">Kedvenc számok</string>
     <string name="auto">Automatikus</string>
+    <string name="keep_track_last_position">Amikor a felhasználó lejátszik egy számot, az az utolsó lejátszási pozíciótól indul.</string>
 </resources>

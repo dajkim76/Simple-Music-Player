@@ -15,10 +15,11 @@
     <string name="adjust_timestamp">Podesite vremensku oznaku</string>
     <string name="youtube_timestamp_player">Reproduktor vremenske oznake na YouTubeu</string>
     <string name="demo_video">Demo video</string>
-    <string name="show_playback_activity_when_play_track">Pokreni aktivnost reprodukcije pri reprodukciji zapisa</string>
-    <string name="recently_added">Nedavno dodano</string>
-    <string name="most_played">Najviše slušano</string>
-    <string name="recently_played">Nedavno slušano</string>
-    <string name="favorite">Favoriti</string>
+    <string name="show_playback_activity_when_play_track">Kada reproducirate zapis, vodi vas na zaslon za reprodukciju za taj zapis.</string>
+    <string name="recently_added_tracks">Nedavno dodane pjesme</string>
+    <string name="most_played_tracks">Najviše slušane pjesme</string>
+    <string name="recently_played_tracks">Nedavno slušane pjesme</string>
+    <string name="favorite_tracks">Omiljene pjesme</string>
     <string name="auto">Auto</string>
+    <string name="keep_track_last_position">Kada korisnik reproducira zapis, on započinje od posljednje pozicije reprodukcije.</string>
 </resources>

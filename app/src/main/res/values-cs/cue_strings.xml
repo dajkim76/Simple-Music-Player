@@ -15,10 +15,11 @@
     <string name="adjust_timestamp">Upravit časové razítko</string>
     <string name="youtube_timestamp_player">Přehrávač časových razítek na YouTube</string>
     <string name="demo_video">Demo video</string>
-    <string name="show_playback_activity_when_play_track">Spustit aktivitu přehrávání při přehrávání skladby</string>
-    <string name="recently_added">Nedávno přidané</string>
-    <string name="most_played">Nejhranější</string>
-    <string name="recently_played">Nedávno přehrané</string>
-    <string name="favorite">Oblíbené</string>
+    <string name="show_playback_activity_when_play_track">Když přehrajete skladbu, přesměruje vás na obrazovku přehrávání této skladby.</string>
+    <string name="recently_added_tracks">Nedávno přidané skladby</string>
+    <string name="most_played_tracks">Nejhranější skladby</string>
+    <string name="recently_played_tracks">Nedávno přehrané skladby</string>
+    <string name="favorite_tracks">Oblíbené skladby</string>
     <string name="auto">Auto</string>
+    <string name="keep_track_last_position">Když uživatel přehraje skladbu, začne od poslední pozice přehrávání.</string>
 </resources>

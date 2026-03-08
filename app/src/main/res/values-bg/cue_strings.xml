@@ -15,10 +15,11 @@
     <string name="adjust_timestamp">Коригирайте клеймото</string>
     <string name="youtube_timestamp_player">Плейър за времеви клейма на Youtube</string>
     <string name="demo_video">Демо видео</string>
-    <string name="show_playback_activity_when_play_track">Стартиране на възпроизвеждането при пускане на песен</string>
-    <string name="recently_added">Наскоро добавени</string>
-    <string name="most_played">Най-пускани</string>
-    <string name="recently_played">Наскоро пускани</string>
-    <string name="favorite">Любими</string>
+    <string name="show_playback_activity_when_play_track">Когато пуснете песен, това ви отвежда до екрана за възпроизвеждане на тази песен.</string>
+    <string name="recently_added_tracks">Наскоро добавени песни</string>
+    <string name="most_played_tracks">Най-пускани песни</string>
+    <string name="recently_played_tracks">Наскоро пускани песни</string>
+    <string name="favorite_tracks">Любими песни</string>
     <string name="auto">Автоматично</string>
+    <string name="keep_track_last_position">Когато потребителят пусне песен, тя започва от последната позиция на възпроизвеждане.</string>
 </resources>

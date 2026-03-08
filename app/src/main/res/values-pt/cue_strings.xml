@@ -15,10 +15,11 @@
     <string name="adjust_timestamp">Ajustar o carimbo de data/hora</string>
     <string name="youtube_timestamp_player">Reprodutor de carimbo de data/hora do Youtube</string>
     <string name="demo_video">Vídeo de demonstração</string>
-    <string name="show_playback_activity_when_play_track">Iniciar atividade de reprodução ao reproduzir faixa</string>
-    <string name="recently_added">Adicionadas recentemente</string>
-    <string name="most_played">Mais tocadas</string>
-    <string name="recently_played">Tocadas recentemente</string>
-    <string name="favorite">Favoritas</string>
+    <string name="show_playback_activity_when_play_track">Quando você reproduz uma faixa, isso leva você para a tela de reprodução dessa faixa.</string>
+    <string name="recently_added_tracks">Faixas adicionadas recentemente</string>
+    <string name="most_played_tracks">Faixas mais tocadas</string>
+    <string name="recently_played_tracks">Faixas tocadas recentemente</string>
+    <string name="favorite_tracks">Faixas favoritas</string>
     <string name="auto">Automático</string>
+    <string name="keep_track_last_position">Quando o usuário reproduz uma faixa, ela começa a partir da última posição de reprodução.</string>
 </resources>

@@ -15,10 +15,11 @@
     <string name="adjust_timestamp">התאם את חותמת הזמן</string>
     <string name="youtube_timestamp_player">נגן חותמות זמן של יוטיוב</string>
     <string name="demo_video">סרטון הדגמה</string>
-    <string name="show_playback_activity_when_play_track">התחל פעילות השמעה בעת השמעת רצועה</string>
-    <string name="recently_added">נוסף לאחרונה</string>
-    <string name="most_played">הכי מושמע</string>
-    <string name="recently_played">הושמע לאחרונה</string>
-    <string name="favorite">מועדפים</string>
+    <string name="show_playback_activity_when_play_track">כאשר אתה מנגן רצועה, זה לוקח אותך למסך ההשמעה של רצועה זו.</string>
+    <string name="recently_added_tracks">רצועות שנוספו לאחרונה</string>
+    <string name="most_played_tracks">הרצועות המושמעות ביותר</string>
+    <string name="recently_played_tracks">רצועות שהושמעו לאחרונה</string>
+    <string name="favorite_tracks">רצועות מועדפות</string>
     <string name="auto">אוטומטי</string>
+    <string name="keep_track_last_position">כאשר המשתמש מנגן רצועה, היא מתחילה ממיקום ההשמעה האחרון.</string>
 </resources>

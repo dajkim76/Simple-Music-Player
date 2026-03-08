@@ -15,10 +15,11 @@
     <string name="adjust_timestamp">タイムスタンプの調整</string>
     <string name="youtube_timestamp_player">YouTubeタイムスタンププレーヤー</string>
     <string name="demo_video">デモビデオ</string>
-    <string name="show_playback_activity_when_play_track">トラック再生時に再生アクティビティを開始する</string>
-    <string name="recently_added">最近追加された項目</string>
-    <string name="most_played">よく再生される項目</string>
-    <string name="recently_played">最近再生した項目</string>
-    <string name="favorite">お気に入り</string>
+    <string name="show_playback_activity_when_play_track">トラックを再生すると、そのトラックの再生画面に移動します。</string>
+    <string name="recently_added_tracks">最近追加されたトラック</string>
+    <string name="most_played_tracks">よく再生されるトラック</string>
+    <string name="recently_played_tracks">最近再生したトラック</string>
+    <string name="favorite_tracks">お気に入りのトラック</string>
     <string name="auto">自動</string>
+    <string name="keep_track_last_position">ユーザーがトラックを再生すると、最後の再生位置から開始されます。</string>
 </resources>

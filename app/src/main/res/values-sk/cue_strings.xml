@@ -15,10 +15,11 @@
     <string name="adjust_timestamp">Upravte časovú pečiatku</string>
     <string name="youtube_timestamp_player">Prehrávač časových pečiatok na YouTube</string>
     <string name="demo_video">Ukážkové video</string>
-    <string name="show_playback_activity_when_play_track">Spustiť aktivitu prehrávania pri prehrávaní skladby</string>
-    <string name="recently_added">Nedávno pridané</string>
-    <string name="most_played">Najhranejšie</string>
-    <string name="recently_played">Nedávno prehrávané</string>
-    <string name="favorite">Obľúbené</string>
+    <string name="show_playback_activity_when_play_track">Keď prehráte skladbu, presmeruje vás na obrazovku prehrávania tejto skladby.</string>
+    <string name="recently_added_tracks">Nedávno pridané skladby</string>
+    <string name="most_played_tracks">Najhranejšie skladby</string>
+    <string name="recently_played_tracks">Nedávno prehrávané skladby</string>
+    <string name="favorite_tracks">Obľúbené skladby</string>
     <string name="auto">Auto</string>
+    <string name="keep_track_last_position">Keď používateľ prehrá skladbu, začne od poslednej pozície prehrávania.</string>
 </resources>

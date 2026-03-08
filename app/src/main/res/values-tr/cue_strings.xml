@@ -15,10 +15,11 @@
     <string name="adjust_timestamp">Zaman damgasını ayarla</string>
     <string name="youtube_timestamp_player">Youtube Zaman Damgası Oynatıcısı</string>
     <string name="demo_video">Demo Videosu</string>
-    <string name="show_playback_activity_when_play_track">Parça çalınırken oynatma etkinliğini başlat</string>
-    <string name="recently_added">Son eklenenler</string>
-    <string name="most_played">En çok çalınanlar</string>
-    <string name="recently_played">Son çalınanlar</string>
-    <string name="favorite">Favori</string>
+    <string name="show_playback_activity_when_play_track">Bir parça çaldığınızda sizi o parçanın çalma ekranına götürür.</string>
+    <string name="recently_added_tracks">Son eklenen parçalar</string>
+    <string name="most_played_tracks">En çok çalınan parçalar</string>
+    <string name="recently_played_tracks">Son çalınan parçalar</string>
+    <string name="favorite_tracks">Favori parçalar</string>
     <string name="auto">Otomatik</string>
+    <string name="keep_track_last_position">Kullanıcı bir parçayı çaldığında, en son çalma konumundan başlar.</string>
 </resources>

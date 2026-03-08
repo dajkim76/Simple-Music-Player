@@ -15,10 +15,11 @@
     <string name="adjust_timestamp">ปรับการประทับเวลา</string>
     <string name="youtube_timestamp_player">เครื่องเล่นประทับเวลาของ Youtube</string>
     <string name="demo_video">วิดีโอสาธิต</string>
-    <string name="show_playback_activity_when_play_track">เริ่มกิจกรรมการเล่นเมื่อเล่นแทร็ก</string>
-    <string name="recently_added">เพิ่มล่าสุด</string>
-    <string name="most_played">เล่นมากที่สุด</string>
-    <string name="recently_played">เล่นล่าสุด</string>
-    <string name="favorite">รายการโปรด</string>
+    <string name="show_playback_activity_when_play_track">เมื่อคุณเล่นแทร็ก มันจะนำคุณไปยังหน้าจอการเล่นสำหรับแทร็กนั้น</string>
+    <string name="recently_added_tracks">แทร็กที่เพิ่มล่าสุด</string>
+    <string name="most_played_tracks">แทร็กที่เล่นมากที่สุด</string>
+    <string name="recently_played_tracks">แทร็กที่เล่นล่าสุด</string>
+    <string name="favorite_tracks">แทร็กโปรด</string>
     <string name="auto">อัตโนมัติ</string>
+    <string name="keep_track_last_position">เมื่อผู้ใช้เล่นแทร็ก จะเริ่มจากตำแหน่งการเล่นล่าสุด</string>
 </resources>

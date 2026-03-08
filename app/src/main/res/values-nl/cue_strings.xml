@@ -15,10 +15,11 @@
     <string name="adjust_timestamp">Pas tijdstempel aan</string>
     <string name="youtube_timestamp_player">Youtube-tijdstempelspeler</string>
     <string name="demo_video">Demovideo</string>
-    <string name="show_playback_activity_when_play_track">Start afspeelactiviteit bij afspelen van track</string>
-    <string name="recently_added">Recent toegevoegd</string>
-    <string name="most_played">Vaakst afgespeeld</string>
-    <string name="recently_played">Recent afgespeeld</string>
-    <string name="favorite">Favoriet</string>
+    <string name="show_playback_activity_when_play_track">Wanneer je een track afspeelt, ga je naar het afspeelscherm voor die track.</string>
+    <string name="recently_added_tracks">Recent toegevoegde tracks</string>
+    <string name="most_played_tracks">Vaakst afgespeelde tracks</string>
+    <string name="recently_played_tracks">Recent afgespeelde tracks</string>
+    <string name="favorite_tracks">Favoriete tracks</string>
     <string name="auto">Automatisch</string>
+    <string name="keep_track_last_position">Wanneer de gebruiker een track afspeelt, begint deze vanaf de laatste afspeelpositie.</string>
 </resources>

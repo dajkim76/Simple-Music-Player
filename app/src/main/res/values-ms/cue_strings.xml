@@ -15,10 +15,11 @@
     <string name="adjust_timestamp">Laraskan cap masa</string>
     <string name="youtube_timestamp_player">Pemain Cop Masa Youtube</string>
     <string name="demo_video">Video Demo</string>
-    <string name="show_playback_activity_when_play_track">Mulakan aktiviti main balik apabila memainkan trek</string>
-    <string name="recently_added">Baru ditambah</string>
-    <string name="most_played">Paling banyak dimainkan</string>
-    <string name="recently_played">Baru dimainkan</string>
-    <string name="favorite">Kegemaran</string>
+    <string name="show_playback_activity_when_play_track">Apabila anda memainkan trek, ia membawa anda ke skrin main balik untuk trek tersebut.</string>
+    <string name="recently_added_tracks">Trek baru ditambah</string>
+    <string name="most_played_tracks">Trek paling banyak dimainkan</string>
+    <string name="recently_played_tracks">Trek baru dimainkan</string>
+    <string name="favorite_tracks">Trek kegemaran</string>
     <string name="auto">Auto</string>
+    <string name="keep_track_last_position">Apabila pengguna memainkan trek, ia bermula dari kedudukan main balik terakhir.</string>
 </resources>

@@ -15,10 +15,11 @@
     <string name="adjust_timestamp">Alĝustigu tempomarkon</string>
     <string name="youtube_timestamp_player">Jutuba Tempomarko Ludanto</string>
     <string name="demo_video">Demo-Video</string>
-    <string name="show_playback_activity_when_play_track">Komencu reproduktan agadon kiam ludi trakon</string>
-    <string name="recently_added">Lastatempe aldonita</string>
-    <string name="most_played">Plej luditaj</string>
-    <string name="recently_played">Lastatempe luditaj</string>
-    <string name="favorite">Plej ŝatataj</string>
+    <string name="show_playback_activity_when_play_track">Kiam vi ludas trakon, ĝi kondukas vin al la reprodukta ekrano por tiu trako.</string>
+    <string name="recently_added_tracks">Lastatempe aldonitaj trakoj</string>
+    <string name="most_played_tracks">Plej luditaj trakoj</string>
+    <string name="recently_played_tracks">Lastatempe luditaj trakoj</string>
+    <string name="favorite_tracks">Plej ŝatataj trakoj</string>
     <string name="auto">Aŭtomate</string>
+    <string name="keep_track_last_position">Kiam la uzanto ludas trakon, ĝi komenciĝas de la lasta reprodukta pozicio.</string>
 </resources>

@@ -15,10 +15,11 @@
     <string name="adjust_timestamp">Koreguokite laiko žymą</string>
     <string name="youtube_timestamp_player">Youtube laiko žymų grotuvas</string>
     <string name="demo_video">Demonstracinis vaizdo įrašas</string>
-    <string name="show_playback_activity_when_play_track">Pradėkite atkūrimo veiklą kai grojamas takelis</string>
-    <string name="recently_added">Neseniai pridėta</string>
-    <string name="most_played">Dažniausiai grojama</string>
-    <string name="recently_played">Neseniai grota</string>
-    <string name="favorite">Mėgstamiausia</string>
+    <string name="show_playback_activity_when_play_track">Kai paleidžiate takelį, būsite nukreipti į to takelio atkūrimo ekraną.</string>
+    <string name="recently_added_tracks">Neseniai pridėti takeliai</string>
+    <string name="most_played_tracks">Dažniausiai grojami takeliai</string>
+    <string name="recently_played_tracks">Neseniai groti takeliai</string>
+    <string name="favorite_tracks">Mėgstamiausi takeliai</string>
     <string name="auto">Auto</string>
+    <string name="keep_track_last_position">Kai vartotojas paleidžia takelį, jis prasideda nuo paskutinės atkūrimo pozicijos.</string>
 </resources>

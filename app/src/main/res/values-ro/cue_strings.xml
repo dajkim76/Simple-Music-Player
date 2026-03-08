@@ -15,10 +15,11 @@
     <string name="adjust_timestamp">Reglați marcajul de timp</string>
     <string name="youtube_timestamp_player">Player Youtube cu marcaj de timp</string>
     <string name="demo_video">Video demonstrativ</string>
-    <string name="show_playback_activity_when_play_track">Porniți activitatea de redare la redarea piesei</string>
-    <string name="recently_added">Adăugate recent</string>
-    <string name="most_played">Cele mai redate</string>
-    <string name="recently_played">Redate recent</string>
-    <string name="favorite">Favorite</string>
+    <string name="show_playback_activity_when_play_track">Când redați o piesă, aceasta vă duce la ecranul de redare pentru acea piesă.</string>
+    <string name="recently_added_tracks">Piese adăugate recent</string>
+    <string name="most_played_tracks">Cele mai redate piese</string>
+    <string name="recently_played_tracks">Piese redate recent</string>
+    <string name="favorite_tracks">Piese favorite</string>
     <string name="auto">Auto</string>
+    <string name="keep_track_last_position">Când utilizatorul redă o piesă, aceasta începe de la ultima poziție de redare.</string>
 </resources>

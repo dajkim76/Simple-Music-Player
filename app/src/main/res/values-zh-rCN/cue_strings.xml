@@ -15,10 +15,11 @@
     <string name="adjust_timestamp">调整时间戳</string>
     <string name="youtube_timestamp_player">Youtube 时间戳播放器</string>
     <string name="demo_video">演示视频</string>
-    <string name="show_playback_activity_when_play_track">播放曲目时启动播放活动</string>
-    <string name="recently_added">最近添加</string>
-    <string name="most_played">播放最多</string>
-    <string name="recently_played">最近播放</string>
-    <string name="favorite">收藏</string>
+    <string name="show_playback_activity_when_play_track">当您播放曲目时，它会将您带到该曲目的播放屏幕。</string>
+    <string name="recently_added_tracks">最近添加的曲目</string>
+    <string name="most_played_tracks">播放最多的曲目</string>
+    <string name="recently_played_tracks">最近播放的曲目</string>
+    <string name="favorite_tracks">收藏的曲目</string>
     <string name="auto">自动</string>
+    <string name="keep_track_last_position">当用户播放曲目时，它会从最后的播放位置开始。</string>
 </resources>

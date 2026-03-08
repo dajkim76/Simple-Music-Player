@@ -15,10 +15,11 @@
     <string name="adjust_timestamp">تنظیم مهر زمانی</string>
     <string name="youtube_timestamp_player">پخش کننده مهر زمانی یوتیوب</string>
     <string name="demo_video">ویدئوی نمایشی</string>
-    <string name="show_playback_activity_when_play_track">هنگام پخش آهنگ، فعالیت پخش را شروع کنید</string>
-    <string name="recently_added">اخیراً اضافه شده</string>
-    <string name="most_played">بیشترین پخش</string>
-    <string name="recently_played">اخیراً پخش شده</string>
-    <string name="favorite">مورد علاقه</string>
+    <string name="show_playback_activity_when_play_track">هنگامی که آهنگی را پخش می کنید، شما را به صفحه پخش آن آهنگ می برد.</string>
+    <string name="recently_added_tracks">آهنگ‌های اخیراً اضافه شده</string>
+    <string name="most_played_tracks">آهنگ‌های بیشترین پخش</string>
+    <string name="recently_played_tracks">آهنگ‌های اخیراً پخش شده</string>
+    <string name="favorite_tracks">آهنگ‌های مورد علاقه</string>
     <string name="auto">خودکار</string>
+    <string name="keep_track_last_position">هنگامی که کاربر آهنگی را پخش می کند، از آخرین موقعیت پخش شروع می شود.</string>
 </resources>

@@ -15,10 +15,11 @@
     <string name="adjust_timestamp">Säädä aikaleimaa</string>
     <string name="youtube_timestamp_player">Youtuben aikaleimasoitin</string>
     <string name="demo_video">Demovideo</string>
-    <string name="show_playback_activity_when_play_track">Aloita toistotoiminto, kun toistat raitaa</string>
-    <string name="recently_added">Äskettäin lisätty</string>
-    <string name="most_played">Eniten toistetut</string>
-    <string name="recently_played">Äskettäin toistetut</string>
-    <string name="favorite">Suosikki</string>
+    <string name="show_playback_activity_when_play_track">Kun toistat kappaleen, se vie sinut kyseisen kappaleen toistonäyttöön.</string>
+    <string name="recently_added_tracks">Äskettäin lisätyt kappaleet</string>
+    <string name="most_played_tracks">Eniten toistetut kappaleet</string>
+    <string name="recently_played_tracks">Äskettäin toistetut kappaleet</string>
+    <string name="favorite_tracks">Suosikkikappaleet</string>
     <string name="auto">Auto</string>
+    <string name="keep_track_last_position">Kun käyttäjä toistaa kappaleen, se alkaa viimeisimmästä toistokohdasta.</string>
 </resources>

@@ -15,10 +15,11 @@
     <string name="adjust_timestamp">Zeitstempel anpassen</string>
     <string name="youtube_timestamp_player">Youtube-Zeitstempel-Player</string>
     <string name="demo_video">Demovideo</string>
-    <string name="show_playback_activity_when_play_track">Wiedergabeaktivität beim Abspielen des Titels starten</string>
-    <string name="recently_added">Kürzlich hinzugefügt</string>
-    <string name="most_played">Meistgespielt</string>
-    <string name="recently_played">Zuletzt gespielt</string>
-    <string name="favorite">Favoriten</string>
+    <string name="show_playback_activity_when_play_track">Wenn Sie einen Titel abspielen, gelangen Sie zum Wiedergabebildschirm für diesen Titel.</string>
+    <string name="recently_added_tracks">Kürzlich hinzugefügte Titel</string>
+    <string name="most_played_tracks">Meistgespielte Titel</string>
+    <string name="recently_played_tracks">Zuletzt gespielte Titel</string>
+    <string name="favorite_tracks">Lieblingstitel</string>
     <string name="auto">Auto</string>
+    <string name="keep_track_last_position">Wenn der Benutzer einen Titel abspielt, beginnt dieser an der letzten Wiedergabeposition.</string>
 </resources>

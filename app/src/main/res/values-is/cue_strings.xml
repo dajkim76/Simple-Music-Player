@@ -15,10 +15,11 @@
     <string name="adjust_timestamp">Stilla tímastimpil</string>
     <string name="youtube_timestamp_player">Youtube Timestamp Player</string>
     <string name="demo_video">Sýnimyndband</string>
-    <string name="show_playback_activity_when_play_track">Hefja spilun þegar lag er spilað</string>
-    <string name="recently_added">Nýlega bætt við</string>
-    <string name="most_played">Mest spilað</string>
-    <string name="recently_played">Nýlega spilað</string>
-    <string name="favorite">Uppáhalds</string>
+    <string name="show_playback_activity_when_play_track">Þegar þú spilar lag fer það með þig á spilunarskjáinn fyrir það lag.</string>
+    <string name="recently_added_tracks">Nýlega viðbætt lög</string>
+    <string name="most_played_tracks">Mest spiluðu lög</string>
+    <string name="recently_played_tracks">Nýlega spiluð lög</string>
+    <string name="favorite_tracks">Uppáhalds lög</string>
     <string name="auto">Sjálfvirkt</string>
+    <string name="keep_track_last_position">Þegar notandinn spilar lag, byrjar það frá síðustu spilunarstöðu.</string>
 </resources>

@@ -15,10 +15,11 @@
     <string name="adjust_timestamp">Налаштуйте мітку часу</string>
     <string name="youtube_timestamp_player">Програвач із позначкою часу Youtube</string>
     <string name="demo_video">Демо відео</string>
-    <string name="show_playback_activity_when_play_track">Розпочинати відтворення під час відтворення треку</string>
-    <string name="recently_added">Нещодавно додані</string>
-    <string name="most_played">Найчастіше відтворювані</string>
-    <string name="recently_played">Нещодавно відтворені</string>
-    <string name="favorite">Улюблені</string>
+    <string name="show_playback_activity_when_play_track">Коли ви відтворюєте трек, ви переходите на екран відтворення цього треку.</string>
+    <string name="recently_added_tracks">Нещодавно додані треки</string>
+    <string name="most_played_tracks">Найчастіше відтворювані треки</string>
+    <string name="recently_played_tracks">Нещодавно відтворені треки</string>
+    <string name="favorite_tracks">Улюблені треки</string>
     <string name="auto">Авто</string>
+    <string name="keep_track_last_position">Коли користувач відтворює трек, він починається з останньої позиції відтворення.</string>
 </resources>

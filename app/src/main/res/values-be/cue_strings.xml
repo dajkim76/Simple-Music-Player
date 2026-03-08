@@ -15,10 +15,11 @@
     <string name="adjust_timestamp">Адрэгуляваць пазнаку часу</string>
     <string name="youtube_timestamp_player">Плэер пазнак часу Youtube</string>
     <string name="demo_video">Дэма відэа</string>
-    <string name="show_playback_activity_when_play_track">Пачаць прайграванне пры прайграванні трэка</string>
-    <string name="recently_added">Нядаўна дададзеныя</string>
-    <string name="most_played">Самыя папулярныя</string>
-    <string name="recently_played">Нядаўна прайграваныя</string>
-    <string name="favorite">Улюбёнае</string>
+    <string name="show_playback_activity_when_play_track">Калі вы прайграеце трэк, ён пераходзіць на экран прайгравання гэтага трэка.</string>
+    <string name="recently_added_tracks">Нядаўна дададзеныя трэкі</string>
+    <string name="most_played_tracks">Самыя папулярныя трэкі</string>
+    <string name="recently_played_tracks">Нядаўна прайграваныя трэкі</string>
+    <string name="favorite_tracks">Улюбёныя трэкі</string>
     <string name="auto">Аўтаматычна</string>
+    <string name="keep_track_last_position">Калі карыстальнік прайграе трэк, ён пачынаецца з апошняй пазіцыі прайгравання.</string>
 </resources>

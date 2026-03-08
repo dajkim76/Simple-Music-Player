@@ -15,10 +15,11 @@
     <string name="adjust_timestamp">Prilagodite časovni žig</string>
     <string name="youtube_timestamp_player">Predvajalnik časovnih žigov na YouTubu</string>
     <string name="demo_video">Demo video</string>
-    <string name="show_playback_activity_when_play_track">Zaženite dejavnost predvajanja pri predvajanju skladbe</string>
-    <string name="recently_added">Nedavno dodano</string>
-    <string name="most_played">Največkrat predvajano</string>
-    <string name="recently_played">Nedavno predvajano</string>
-    <string name="favorite">Priljubljene</string>
+    <string name="show_playback_activity_when_play_track">Ko predvajate skladbo, vas odpelje na zaslon za predvajanje za to skladbo.</string>
+    <string name="recently_added_tracks">Nedavno dodane skladbe</string>
+    <string name="most_played_tracks">Največkrat predvajane skladbe</string>
+    <string name="recently_played_tracks">Nedavno predvajane skladbe</string>
+    <string name="favorite_tracks">Priljubljene skladbe</string>
     <string name="auto">Samodejno</string>
+    <string name="keep_track_last_position">Ko uporabnik predvaja skladbo, se ta začne od zadnjega položaja predvajanja.</string>
 </resources>

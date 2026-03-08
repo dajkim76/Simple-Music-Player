@@ -15,10 +15,11 @@
     <string name="adjust_timestamp">Zaman damğasını tənzimləyin</string>
     <string name="youtube_timestamp_player">Youtube Zaman Damğası Pleyeri</string>
     <string name="demo_video">Demo Video</string>
-    <string name="show_playback_activity_when_play_track">Trek oynadılarkən oxutma fəaliyyətini başladın</string>
-    <string name="recently_added">Bu yaxınlarda əlavə edilib</string>
-    <string name="most_played">Ən çox oynanan</string>
-    <string name="recently_played">Bu yaxınlarda oynanan</string>
-    <string name="favorite">Sevimli</string>
+    <string name="show_playback_activity_when_play_track">Bir treki oynatdığınızda, o sizi həmin trekin oxutma ekranına aparır.</string>
+    <string name="recently_added_tracks">Bu yaxınlarda əlavə edilmiş treklər</string>
+    <string name="most_played_tracks">Ən çox oynanılan treklər</string>
+    <string name="recently_played_tracks">Bu yaxınlarda oynanılan treklər</string>
+    <string name="favorite_tracks">Sevimli treklər</string>
     <string name="auto">Avtomatik</string>
+    <string name="keep_track_last_position">İstifadəçi bir treki oynatdıqda, o, sonuncu oxutma mövqeyindən başlayır.</string>
 </resources>

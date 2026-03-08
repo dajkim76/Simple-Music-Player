@@ -15,10 +15,11 @@
     <string name="adjust_timestamp">Axusta a marca de tempo</string>
     <string name="youtube_timestamp_player">Reprodutor de marca de tempo de Youtube</string>
     <string name="demo_video">Vídeo de demostración</string>
-    <string name="show_playback_activity_when_play_track">Iniciar a actividade de reprodución cando se reproduce a pista</string>
-    <string name="recently_added">Engadidos recentemente</string>
-    <string name="most_played">Máis reproducidos</string>
-    <string name="recently_played">Reproducidos recentemente</string>
-    <string name="favorite">Favorito</string>
+    <string name="show_playback_activity_when_play_track">Cando reproduces unha pista, lévate á pantalla de reprodución desa pista.</string>
+    <string name="recently_added_tracks">Pistas engadidas recentemente</string>
+    <string name="most_played_tracks">Pistas máis reproducidas</string>
+    <string name="recently_played_tracks">Pistas reproducidas recentemente</string>
+    <string name="favorite_tracks">Pistas favoritas</string>
     <string name="auto">Automático</string>
+    <string name="keep_track_last_position">Cando o usuario reproduce unha pista, comeza desde a última posición de reprodución.</string>
 </resources>

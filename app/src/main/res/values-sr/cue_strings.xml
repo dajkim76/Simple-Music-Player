@@ -15,10 +15,11 @@
     <string name="adjust_timestamp">Подесите временску ознаку</string>
     <string name="youtube_timestamp_player">Иоутубе Тиместамп Плаиер</string>
     <string name="demo_video">Демо видео</string>
-    <string name="show_playback_activity_when_play_track">Покрени активност репродукције при репродукцији нумере</string>
-    <string name="recently_added">Недавно додато</string>
-    <string name="most_played">Највише репродуковано</string>
-    <string name="recently_played">Недавно репродуковано</string>
-    <string name="favorite">Омиљено</string>
+    <string name="show_playback_activity_when_play_track">Када репродукујете нумеру, то вас води на екран за репродукцију за ту нумеру.</string>
+    <string name="recently_added_tracks">Недавно додате нумере</string>
+    <string name="most_played_tracks">Највише репродуковане нумере</string>
+    <string name="recently_played_tracks">Недавно репродуковане нумере</string>
+    <string name="favorite_tracks">Омиљене нумере</string>
     <string name="auto">Ауто</string>
+    <string name="keep_track_last_position">Када корисник репродукује нумеру, она почиње од последње позиције репродукције.</string>
 </resources>
