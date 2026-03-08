@@ -16,4 +16,9 @@
     <string name="youtube_timestamp_player">Youtube időbélyeg-lejátszó</string>
     <string name="demo_video">Demo videó</string>
     <string name="show_playback_activity_when_play_track">Indítsa el a lejátszási tevékenységet műsorszám lejátszásakor</string>
+    <string name="recently_added">Nemrég hozzáadott</string>
+    <string name="most_played">Legtöbbet játszott</string>
+    <string name="recently_played">Nemrég játszott</string>
+    <string name="favorite">Kedvenc</string>
+    <string name="auto">Automatikus</string>
 </resources>

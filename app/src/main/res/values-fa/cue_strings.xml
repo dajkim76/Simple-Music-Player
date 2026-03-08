@@ -16,4 +16,9 @@
     <string name="youtube_timestamp_player">پخش کننده مهر زمانی یوتیوب</string>
     <string name="demo_video">ویدئوی نمایشی</string>
     <string name="show_playback_activity_when_play_track">هنگام پخش آهنگ، فعالیت پخش را شروع کنید</string>
+    <string name="recently_added">اخیراً اضافه شده</string>
+    <string name="most_played">بیشترین پخش</string>
+    <string name="recently_played">اخیراً پخش شده</string>
+    <string name="favorite">مورد علاقه</string>
+    <string name="auto">خودکار</string>
 </resources>

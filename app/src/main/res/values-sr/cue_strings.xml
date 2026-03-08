@@ -16,4 +16,9 @@
     <string name="youtube_timestamp_player">Иоутубе Тиместамп Плаиер</string>
     <string name="demo_video">Демо видео</string>
     <string name="show_playback_activity_when_play_track">Покрени активност репродукције при репродукцији нумере</string>
+    <string name="recently_added">Недавно додато</string>
+    <string name="most_played">Највише репродуковано</string>
+    <string name="recently_played">Недавно репродуковано</string>
+    <string name="favorite">Омиљено</string>
+    <string name="auto">Ауто</string>
 </resources>

@@ -16,4 +16,9 @@
     <string name="youtube_timestamp_player">Player Youtube cu marcaj de timp</string>
     <string name="demo_video">Video demonstrativ</string>
     <string name="show_playback_activity_when_play_track">Porniți activitatea de redare la redarea piesei</string>
+    <string name="recently_added">Adăugate recent</string>
+    <string name="most_played">Cele mai redate</string>
+    <string name="recently_played">Redate recent</string>
+    <string name="favorite">Favorite</string>
+    <string name="auto">Auto</string>
 </resources>

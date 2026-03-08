@@ -16,4 +16,9 @@
     <string name="youtube_timestamp_player">Pemutar Stempel Waktu Youtube</string>
     <string name="demo_video">Video Demo</string>
     <string name="show_playback_activity_when_play_track">Mulai aktivitas pemutaran saat memutar trek</string>
+    <string name="recently_added">Baru saja ditambahkan</string>
+    <string name="most_played">Paling sering diputar</string>
+    <string name="recently_played">Baru saja diputar</string>
+    <string name="favorite">Favorit</string>
+    <string name="auto">Otomatis</string>
 </resources>

@@ -16,4 +16,9 @@
     <string name="youtube_timestamp_player">Youtube Zaman Damgası Oynatıcısı</string>
     <string name="demo_video">Demo Videosu</string>
     <string name="show_playback_activity_when_play_track">Parça çalınırken oynatma etkinliğini başlat</string>
+    <string name="recently_added">Son eklenenler</string>
+    <string name="most_played">En çok çalınanlar</string>
+    <string name="recently_played">Son çalınanlar</string>
+    <string name="favorite">Favori</string>
+    <string name="auto">Otomatik</string>
 </resources>

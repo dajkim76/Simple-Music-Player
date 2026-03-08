@@ -16,4 +16,9 @@
     <string name="youtube_timestamp_player">مشغل الطابع الزمني لـ Youtube</string>
     <string name="demo_video">فيديو توضيحي</string>
     <string name="show_playback_activity_when_play_track">بدء نشاط التشغيل عند تشغيل المقطع</string>
+    <string name="recently_added">تمت إضافتها مؤخرًا</string>
+    <string name="most_played">الأكثر تشغيلاً</string>
+    <string name="recently_played">تم تشغيلها مؤخرًا</string>
+    <string name="favorite">المفضلة</string>
+    <string name="auto">تلقائي</string>
 </resources>

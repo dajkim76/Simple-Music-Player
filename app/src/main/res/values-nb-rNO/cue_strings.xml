@@ -16,4 +16,9 @@
     <string name="youtube_timestamp_player">Youtube-tidsstempelspiller</string>
     <string name="demo_video">Demovideo</string>
     <string name="show_playback_activity_when_play_track">Start avspillingsaktivitet når du spiller av spor</string>
+    <string name="recently_added">Nylig lagt til</string>
+    <string name="most_played">Mest spilt</string>
+    <string name="recently_played">Nylig spilt</string>
+    <string name="favorite">Favoritt</string>
+    <string name="auto">Auto</string>
 </resources>

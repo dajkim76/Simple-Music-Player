@@ -16,4 +16,9 @@
     <string name="youtube_timestamp_player">Reprodutor de carimbo de data/hora do Youtube</string>
     <string name="demo_video">Vídeo de demonstração</string>
     <string name="show_playback_activity_when_play_track">Iniciar atividade de reprodução ao reproduzir faixa</string>
+    <string name="recently_added">Adicionadas recentemente</string>
+    <string name="most_played">Mais tocadas</string>
+    <string name="recently_played">Tocadas recentemente</string>
+    <string name="favorite">Favoritas</string>
+    <string name="auto">Automático</string>
 </resources>

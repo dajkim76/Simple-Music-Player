@@ -16,4 +16,9 @@
     <string name="youtube_timestamp_player">Predvajalnik časovnih žigov na YouTubu</string>
     <string name="demo_video">Demo video</string>
     <string name="show_playback_activity_when_play_track">Zaženite dejavnost predvajanja pri predvajanju skladbe</string>
+    <string name="recently_added">Nedavno dodano</string>
+    <string name="most_played">Največkrat predvajano</string>
+    <string name="recently_played">Nedavno predvajano</string>
+    <string name="favorite">Priljubljene</string>
+    <string name="auto">Samodejno</string>
 </resources>

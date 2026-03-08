@@ -16,4 +16,9 @@
     <string name="youtube_timestamp_player">Youtube\'i ajatempli mängija</string>
     <string name="demo_video">Demovideo</string>
     <string name="show_playback_activity_when_play_track">Käivitage taasesitustegevus loo esitamisel</string>
+    <string name="recently_added">Hiljuti lisatud</string>
+    <string name="most_played">Enim mängitud</string>
+    <string name="recently_played">Hiljuti mängitud</string>
+    <string name="favorite">Lemmikud</string>
+    <string name="auto">Automaatne</string>
 </resources>

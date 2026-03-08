@@ -16,4 +16,9 @@
     <string name="youtube_timestamp_player">Youtube laiko žymų grotuvas</string>
     <string name="demo_video">Demonstracinis vaizdo įrašas</string>
     <string name="show_playback_activity_when_play_track">Pradėkite atkūrimo veiklą kai grojamas takelis</string>
+    <string name="recently_added">Neseniai pridėta</string>
+    <string name="most_played">Dažniausiai grojama</string>
+    <string name="recently_played">Neseniai grota</string>
+    <string name="favorite">Mėgstamiausia</string>
+    <string name="auto">Auto</string>
 </resources>

@@ -16,4 +16,9 @@
     <string name="youtube_timestamp_player">Youtuben aikaleimasoitin</string>
     <string name="demo_video">Demovideo</string>
     <string name="show_playback_activity_when_play_track">Aloita toistotoiminto, kun toistat raitaa</string>
+    <string name="recently_added">Äskettäin lisätty</string>
+    <string name="most_played">Eniten toistetut</string>
+    <string name="recently_played">Äskettäin toistetut</string>
+    <string name="favorite">Suosikki</string>
+    <string name="auto">Auto</string>
 </resources>

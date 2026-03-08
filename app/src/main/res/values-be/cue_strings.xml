@@ -16,4 +16,9 @@
     <string name="youtube_timestamp_player">Плэер пазнак часу Youtube</string>
     <string name="demo_video">Дэма відэа</string>
     <string name="show_playback_activity_when_play_track">Пачаць прайграванне пры прайграванні трэка</string>
+    <string name="recently_added">Нядаўна дададзеныя</string>
+    <string name="most_played">Самыя папулярныя</string>
+    <string name="recently_played">Нядаўна прайграваныя</string>
+    <string name="favorite">Улюбёнае</string>
+    <string name="auto">Аўтаматычна</string>
 </resources>

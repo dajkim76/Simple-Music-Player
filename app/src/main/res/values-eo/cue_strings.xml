@@ -16,4 +16,9 @@
     <string name="youtube_timestamp_player">Jutuba Tempomarko Ludanto</string>
     <string name="demo_video">Demo-Video</string>
     <string name="show_playback_activity_when_play_track">Komencu reproduktan agadon kiam ludi trakon</string>
+    <string name="recently_added">Lastatempe aldonita</string>
+    <string name="most_played">Plej luditaj</string>
+    <string name="recently_played">Lastatempe luditaj</string>
+    <string name="favorite">Plej ŝatataj</string>
+    <string name="auto">Aŭtomate</string>
 </resources>

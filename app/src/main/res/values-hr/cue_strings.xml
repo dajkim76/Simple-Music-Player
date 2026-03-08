@@ -16,4 +16,9 @@
     <string name="youtube_timestamp_player">Reproduktor vremenske oznake na YouTubeu</string>
     <string name="demo_video">Demo video</string>
     <string name="show_playback_activity_when_play_track">Pokreni aktivnost reprodukcije pri reprodukciji zapisa</string>
+    <string name="recently_added">Nedavno dodano</string>
+    <string name="most_played">Najviše slušano</string>
+    <string name="recently_played">Nedavno slušano</string>
+    <string name="favorite">Favoriti</string>
+    <string name="auto">Auto</string>
 </resources>

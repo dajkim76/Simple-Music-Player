@@ -16,4 +16,9 @@
     <string name="youtube_timestamp_player">Reproductor de marca de tiempo de Youtube</string>
     <string name="demo_video">Vídeo de demostración</string>
     <string name="show_playback_activity_when_play_track">Iniciar actividad de reproducción al reproducir pista</string>
+    <string name="recently_added">Añadidos recientemente</string>
+    <string name="most_played">Más reproducidos</string>
+    <string name="recently_played">Reproducidos recientemente</string>
+    <string name="favorite">Favoritos</string>
+    <string name="auto">Automático</string>
 </resources>

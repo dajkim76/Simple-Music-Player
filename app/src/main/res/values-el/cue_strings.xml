@@ -16,4 +16,9 @@
     <string name="youtube_timestamp_player">Youtube Timestamp Player</string>
     <string name="demo_video">Επίδειξη βίντεο</string>
     <string name="show_playback_activity_when_play_track">Έναρξη δραστηριότητας αναπαραγωγής κατά την αναπαραγωγή κομματιού</string>
+    <string name="recently_added">Προστέθηκαν πρόσφατα</string>
+    <string name="most_played">Πιο δημοφιλή</string>
+    <string name="recently_played">Παίχτηκαν πρόσφατα</string>
+    <string name="favorite">Αγαπημένα</string>
+    <string name="auto">Αυτόματο</string>
 </resources>

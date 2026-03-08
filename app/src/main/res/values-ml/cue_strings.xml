@@ -16,4 +16,9 @@
     <string name="youtube_timestamp_player">Youtube ടൈംസ്റ്റാമ്പ് പ്ലെയർ</string>
     <string name="demo_video">ഡെമോ വീഡിയോ</string>
     <string name="show_playback_activity_when_play_track">ട്രാക്ക് പ്ലേ ചെയ്യുമ്പോൾ പ്ലേബാക്ക് ആക്റ്റിവിറ്റി ആരംഭിക്കുക</string>
+    <string name="recently_added">അടുത്തിടെ ചേർത്തവ</string>
+    <string name="most_played">ഏറ്റവും കൂടുതൽ പ്ലേ ചെയ്തവ</string>
+    <string name="recently_played">അടുത്തിടെ പ്ലേ ചെയ്തവ</string>
+    <string name="favorite">പ്രിയപ്പെട്ടവ</string>
+    <string name="auto">ഓട്ടോ</string>
 </resources>

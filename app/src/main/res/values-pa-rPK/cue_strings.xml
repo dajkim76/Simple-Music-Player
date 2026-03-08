@@ -16,4 +16,9 @@
     <string name="youtube_timestamp_player">ਯੂਟਿਊਬ ਟਾਈਮਸਟੈਂਪ ਪਲੇਅਰ</string>
     <string name="demo_video">ਡੈਮੋ ਵੀਡੀਓ</string>
     <string name="show_playback_activity_when_play_track">ਟਰੈਕ ਚਲਾਉਣ \'ਤੇ ਪਲੇਬੈਕ ਗਤੀਵਿਧੀ ਸ਼ੁਰੂ ਕਰੋ</string>
+    <string name="recently_added">ਹਾਲ ਹੀ ਵਿੱਚ ਸ਼ਾਮਲ ਕੀਤੇ</string>
+    <string name="most_played">ਸਭ ਤੋਂ ਵੱਧ ਚਲਾਏ ਗਏ</string>
+    <string name="recently_played">ਹਾਲ ਹੀ ਵਿੱਚ ਚਲਾਏ ਗਏ</string>
+    <string name="favorite">ਮਨਪਸੰਦ</string>
+    <string name="auto">ਆਟੋ</string>
 </resources>

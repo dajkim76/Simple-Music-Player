@@ -16,4 +16,9 @@
     <string name="youtube_timestamp_player">Youtube-Zeitstempel-Player</string>
     <string name="demo_video">Demovideo</string>
     <string name="show_playback_activity_when_play_track">Wiedergabeaktivität beim Abspielen des Titels starten</string>
+    <string name="recently_added">Kürzlich hinzugefügt</string>
+    <string name="most_played">Meistgespielt</string>
+    <string name="recently_played">Zuletzt gespielt</string>
+    <string name="favorite">Favoriten</string>
+    <string name="auto">Auto</string>
 </resources>

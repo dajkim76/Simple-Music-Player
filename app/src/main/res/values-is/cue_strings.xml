@@ -16,4 +16,9 @@
     <string name="youtube_timestamp_player">Youtube Timestamp Player</string>
     <string name="demo_video">Sýnimyndband</string>
     <string name="show_playback_activity_when_play_track">Hefja spilun þegar lag er spilað</string>
+    <string name="recently_added">Nýlega bætt við</string>
+    <string name="most_played">Mest spilað</string>
+    <string name="recently_played">Nýlega spilað</string>
+    <string name="favorite">Uppáhalds</string>
+    <string name="auto">Sjálfvirkt</string>
 </resources>

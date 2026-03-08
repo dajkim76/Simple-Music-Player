@@ -16,4 +16,9 @@
     <string name="youtube_timestamp_player">Youtube Timestamp Player</string>
     <string name="demo_video">Demo bideoa</string>
     <string name="show_playback_activity_when_play_track">Hasi erreprodukzio-jarduera pista erreproduzitzean</string>
+    <string name="recently_added">Duela gutxi gehituta</string>
+    <string name="most_played">Gehien erreproduzituak</string>
+    <string name="recently_played">Duela gutxi erreproduzituak</string>
+    <string name="favorite">Gogokoak</string>
+    <string name="auto">Auto</string>
 </resources>

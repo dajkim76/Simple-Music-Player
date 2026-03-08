@@ -16,4 +16,9 @@
     <string name="youtube_timestamp_player">เครื่องเล่นประทับเวลาของ Youtube</string>
     <string name="demo_video">วิดีโอสาธิต</string>
     <string name="show_playback_activity_when_play_track">เริ่มกิจกรรมการเล่นเมื่อเล่นแทร็ก</string>
+    <string name="recently_added">เพิ่มล่าสุด</string>
+    <string name="most_played">เล่นมากที่สุด</string>
+    <string name="recently_played">เล่นล่าสุด</string>
+    <string name="favorite">รายการโปรด</string>
+    <string name="auto">อัตโนมัติ</string>
 </resources>

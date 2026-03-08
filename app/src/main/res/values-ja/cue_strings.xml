@@ -16,4 +16,9 @@
     <string name="youtube_timestamp_player">YouTubeタイムスタンププレーヤー</string>
     <string name="demo_video">デモビデオ</string>
     <string name="show_playback_activity_when_play_track">トラック再生時に再生アクティビティを開始する</string>
+    <string name="recently_added">最近追加された項目</string>
+    <string name="most_played">よく再生される項目</string>
+    <string name="recently_played">最近再生した項目</string>
+    <string name="favorite">お気に入り</string>
+    <string name="auto">自動</string>
 </resources>

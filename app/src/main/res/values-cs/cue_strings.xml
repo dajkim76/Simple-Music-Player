@@ -16,4 +16,9 @@
     <string name="youtube_timestamp_player">Přehrávač časových razítek na YouTube</string>
     <string name="demo_video">Demo video</string>
     <string name="show_playback_activity_when_play_track">Spustit aktivitu přehrávání při přehrávání skladby</string>
+    <string name="recently_added">Nedávno přidané</string>
+    <string name="most_played">Nejhranější</string>
+    <string name="recently_played">Nedávno přehrané</string>
+    <string name="favorite">Oblíbené</string>
+    <string name="auto">Auto</string>
 </resources>

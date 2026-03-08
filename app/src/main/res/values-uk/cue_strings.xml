@@ -16,4 +16,9 @@
     <string name="youtube_timestamp_player">Програвач із позначкою часу Youtube</string>
     <string name="demo_video">Демо відео</string>
     <string name="show_playback_activity_when_play_track">Розпочинати відтворення під час відтворення треку</string>
+    <string name="recently_added">Нещодавно додані</string>
+    <string name="most_played">Найчастіше відтворювані</string>
+    <string name="recently_played">Нещодавно відтворені</string>
+    <string name="favorite">Улюблені</string>
+    <string name="auto">Авто</string>
 </resources>

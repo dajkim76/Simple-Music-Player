@@ -16,4 +16,9 @@
     <string name="youtube_timestamp_player">Youtube Timestamp-afspiller</string>
     <string name="demo_video">Demo video</string>
     <string name="show_playback_activity_when_play_track">Start afspilningsaktivitet, når sporet afspilles</string>
+    <string name="recently_added">Nyligt tilføjet</string>
+    <string name="most_played">Mest afspillede</string>
+    <string name="recently_played">Nyligt afspillede</string>
+    <string name="favorite">Foretrukne</string>
+    <string name="auto">Auto</string>
 </resources>

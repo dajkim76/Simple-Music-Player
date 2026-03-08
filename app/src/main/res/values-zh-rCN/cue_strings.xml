@@ -16,4 +16,9 @@
     <string name="youtube_timestamp_player">Youtube 时间戳播放器</string>
     <string name="demo_video">演示视频</string>
     <string name="show_playback_activity_when_play_track">播放曲目时启动播放活动</string>
+    <string name="recently_added">最近添加</string>
+    <string name="most_played">播放最多</string>
+    <string name="recently_played">最近播放</string>
+    <string name="favorite">收藏</string>
+    <string name="auto">自动</string>
 </resources>

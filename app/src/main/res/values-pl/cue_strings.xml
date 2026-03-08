@@ -16,4 +16,9 @@
     <string name="youtube_timestamp_player">Odtwarzacz ze znacznikiem czasu na YouTube</string>
     <string name="demo_video">Wideo demonstracyjne</string>
     <string name="show_playback_activity_when_play_track">Uruchom aktywność odtwarzania po odtworzeniu utworu</string>
+    <string name="recently_added">Ostatnio dodane</string>
+    <string name="most_played">Najczęściej odtwarzane</string>
+    <string name="recently_played">Ostatnio odtwarzane</string>
+    <string name="favorite">Ulubione</string>
+    <string name="auto">Auto</string>
 </resources>

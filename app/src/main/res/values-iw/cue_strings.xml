@@ -16,4 +16,9 @@
     <string name="youtube_timestamp_player">נגן חותמות זמן של יוטיוב</string>
     <string name="demo_video">סרטון הדגמה</string>
     <string name="show_playback_activity_when_play_track">התחל פעילות השמעה בעת השמעת רצועה</string>
+    <string name="recently_added">נוסף לאחרונה</string>
+    <string name="most_played">הכי מושמע</string>
+    <string name="recently_played">הושמע לאחרונה</string>
+    <string name="favorite">מועדפים</string>
+    <string name="auto">אוטומטי</string>
 </resources>
