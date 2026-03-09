@@ -8,7 +8,6 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
-import com.simplemobiletools.commons.extensions.getFilenameFromPath
 import com.simplemobiletools.commons.extensions.getFormattedDuration
 import com.simplemobiletools.commons.helpers.AlphanumericComparator
 import com.simplemobiletools.commons.helpers.SORT_DESCENDING
@@ -18,7 +17,7 @@ import com.simplemobiletools.musicplayer.helpers.*
 import java.io.File
 import java.io.Serializable
 
-@Entity(tableName = "tracks", indices = [Index(value = ["media_store_id", "playlist_id"], unique = true)])
+@Entity(tableName = "tracks", indices = [Index(value = ["media_store_id", "playlist_id"], unique = true), Index(value = ["playlist_id"])])
 data class Track(
     @PrimaryKey(autoGenerate = true) var id: Long,
     @ColumnInfo(name = "media_store_id") var mediaStoreId: Long,
