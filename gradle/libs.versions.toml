@@ -5,9 +5,9 @@ desugar_jdk_libs = "2.0.3"
 # higher versions of jaudiotagger not compatible with <= API 25 devices
 # https://bitbucket.org/ijabz/jaudiotagger/issues/149/some-nio-classes-are-unavailable-while
 jaudiotagger = "2.2.5"
-kotlin = "1.9.24"
+kotlin = "2.1.0"
 #KSP
-ksp = "1.9.24-1.0.20"
+ksp = "2.1.0-1.0.29"
 #AndroidX
 androidx-constraintlayout = "2.1.4"
 androidx-swiperefreshlayout = "1.1.0"
@@ -41,7 +41,7 @@ app-version-appId = "com.simplemobiletools.musicplayer"
 app-version-versionCode = "119"
 app-version-versionName = "5.18.3"
 uiText = "1.10.3"
-firebase-bom = "32.8.0"
+firebase-bom = "34.5.0"
 google-services = "4.4.1"
 firebase-crashlytics-gradle = "2.9.9"
 [libraries]
@@ -97,3 +97,4 @@ kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 google-services = { id = "com.google.gms.google-services", version.ref = "google-services" }
 firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebase-crashlytics-gradle" }
+compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
