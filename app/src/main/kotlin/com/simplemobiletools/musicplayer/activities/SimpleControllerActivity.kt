@@ -11,6 +11,7 @@ import com.simplemobiletools.commons.extensions.toast
 import com.simplemobiletools.commons.helpers.ensureBackgroundThread
 import com.simplemobiletools.commons.helpers.isRPlus
 import com.simplemobiletools.musicplayer.extensions.*
+import com.simplemobiletools.musicplayer.helpers.CueListCache
 import com.simplemobiletools.musicplayer.helpers.EXTRA_NEXT_MEDIA_ID
 import com.simplemobiletools.musicplayer.helpers.SimpleMediaController
 import com.simplemobiletools.musicplayer.models.Events
@@ -21,6 +22,7 @@ import com.simplemobiletools.musicplayer.playback.CustomCommands
 import com.simplemobiletools.musicplayer.playback.PlaybackService.Companion.updatePlaybackInfo
 import org.greenrobot.eventbus.EventBus
 import java.io.File
+import kotlin.time.Duration.Companion.milliseconds
 
 /**
  * Base class for activities that want to control the [Player].
@@ -107,6 +109,20 @@ abstract class SimpleControllerActivity : SimpleActivity(), Player.Listener {
     }
 
     fun togglePlayback() = withPlayer { togglePlayback() }
+
+    fun seekToNext() {
+        withPlayer {
+            val currentSec = currentPosition.milliseconds.inWholeSeconds.toInt()
+            val fileStableId = currentMediaItem?.toTrack()?.fileStableId ?: 0
+            val cues = CueListCache.getCueList(this@SimpleControllerActivity, fileStableId)
+            val nextEnabledCue = cues.firstOrNull { it.enabled && it.timestamp > currentSec }
+            if (nextEnabledCue != null) {
+                seekTo(nextEnabledCue.timestamp * 1000L)
+            } else {
+                forceSeekToNext()
+            }
+        }
+    }
 
     fun addTracksToQueue(tracks: List<Track>, callback: () -> Unit) {
         withPlayer {

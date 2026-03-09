@@ -44,8 +44,7 @@
         android:layout_height="match_parent"
         android:layout_alignTop="@+id/current_track_image"
         android:layout_alignBottom="@+id/current_track_image"
-        android:layout_alignParentEnd="true"
-        android:layout_marginEnd="@dimen/normal_margin"
+        android:layout_toStartOf="@+id/next_track_image"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:paddingStart="@dimen/smaller_margin"
         android:paddingEnd="@dimen/smaller_margin"
@@ -53,5 +52,18 @@
         app:lottie_autoPlay="false"
         app:lottie_loop="false"
         app:lottie_rawRes="@raw/playpause" />
+
+    <ImageView
+        android:id="@+id/next_track_image"
+        android:layout_width="36dp"
+        android:layout_height="@dimen/song_image_size"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="@dimen/normal_margin"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:src="@drawable/ic_next_vector"
+        android:paddingStart="@dimen/smaller_margin"
+        android:paddingEnd="@dimen/smaller_margin"
+        android:layout_marginTop="@dimen/normal_margin"
+        android:layout_marginBottom="@dimen/normal_margin" />
 
 </com.simplemobiletools.musicplayer.views.CurrentTrackBar>

@@ -20,15 +20,19 @@ import com.simplemobiletools.musicplayer.extensions.*
 class CurrentTrackBar(context: Context, attributeSet: AttributeSet) : RelativeLayout(context, attributeSet) {
     private val binding by viewBinding(ViewCurrentTrackBarBinding::bind)
 
-    fun initialize(togglePlayback: () -> Unit) {
+    fun initialize(togglePlayback: () -> Unit, seekToNext: () -> Unit) {
         binding.currentTrackPlayPause.setOnClickListener {
             togglePlayback()
+        }
+        binding.nextTrackImage.setOnClickListener {
+            seekToNext()
         }
     }
 
     fun updateColors() {
         background = ColorDrawable(context.getProperBackgroundColor())
         binding.currentTrackLabel.setTextColor(context.getProperTextColor())
+        binding.nextTrackImage.applyColorFilter(context.getProperTextColor())
     }
 
     fun updateCurrentTrack(mediaItem: MediaItem?) {
