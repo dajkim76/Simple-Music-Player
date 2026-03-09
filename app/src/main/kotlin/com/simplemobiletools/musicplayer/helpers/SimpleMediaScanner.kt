@@ -190,9 +190,14 @@ class SimpleMediaScanner(private val context: Application) {
             val playlist = Playlist(ALL_TRACKS_PLAYLIST_ID, allTracksLabel)
             context.audioHelper.insertPlaylist(playlist)
             context.audioHelper.insertPlaylist(Playlist(RECENTLY_ADDED_TRACKS_PLAYLIST_ID, context.getString(R.string.recently_added_tracks)))
-            context.audioHelper.insertPlaylist(Playlist(MOST_PLAYED_TRACKS_PLAYLIST_ID, context.getString(R.string.most_played_tracks)))
-            context.audioHelper.insertPlaylist(Playlist(RECENTLY_PLAYED_TRACKS_PLAYLIST_ID, context.getString(R.string.recently_played_tracks)))
-            context.audioHelper.insertPlaylist(Playlist(FAVORITE_TRACKS_PLAYLIST_ID, context.getString(R.string.favorite_tracks)))
+            context.audioHelper.insertPlaylist(Playlist(MOST_PLAYED_TRACKS_PLAYLIST_ID, "\uD83D\uDD25 " + context.getString(R.string.most_played_tracks)))
+            context.audioHelper.insertPlaylist(
+                Playlist(
+                    RECENTLY_PLAYED_TRACKS_PLAYLIST_ID,
+                    "\u25B6\uFE0F " + context.getString(R.string.recently_played_tracks)
+                )
+            )
+            context.audioHelper.insertPlaylist(Playlist(FAVORITE_TRACKS_PLAYLIST_ID, "\u2764 " + context.getString(R.string.favorite_tracks)))
             config.wasAllTracksPlaylistCreated = true
         }
 
