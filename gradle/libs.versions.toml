@@ -42,8 +42,8 @@ app-version-versionCode = "119"
 app-version-versionName = "5.18.3"
 uiText = "1.10.3"
 firebase-bom = "34.5.0"
-google-services = "4.4.1"
-firebase-crashlytics-gradle = "2.9.9"
+google-services = "4.4.4"
+firebase-crashlytics-gradle = "3.0.6"
 [libraries]
 #AndroidX
 androidx-constraintlayout = { module = "androidx.constraintlayout:constraintlayout", version.ref = "androidx-constraintlayout" }

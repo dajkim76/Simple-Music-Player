@@ -5,6 +5,7 @@ import android.content.ContentUris
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Color
+import android.graphics.Outline
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
@@ -20,10 +21,7 @@ import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
 import android.util.Log
 import android.util.Size
-import android.view.GestureDetector
-import android.view.LayoutInflater
-import android.view.MotionEvent
-import android.view.View
+import android.view.*
 import android.widget.SeekBar
 import android.widget.TextView
 import android.widget.Toast
@@ -290,14 +288,25 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
         binding.nextTrackLabel.text = "${getString(R.string.next_track)} ${track.title}$artist"
 
         getTrackFileArt(track) { coverArt ->
+            val cornerRadius = resources.getDimension(com.simplemobiletools.commons.R.dimen.rounded_corner_radius_small).toInt()
+            val wantedSize = resources.getDimension(R.dimen.song_image_size).toInt()
+
             // reduce thread overhead
             if (coverArt is Bitmap) {
+                if (binding.nextTrackImage.outlineProvider === ViewOutlineProvider.BACKGROUND) {
+                    binding.nextTrackImage.apply {
+                        clipToOutline = true
+                        outlineProvider = object : ViewOutlineProvider() {
+                            override fun getOutline(view: View, outline: Outline) {
+                                outline.setRoundRect(0, 0, view.width, view.height, cornerRadius.toFloat())
+                            }
+                        }
+                    }
+                }
+
                 binding.nextTrackImage.setImageBitmap(coverArt)
                 return@getTrackFileArt
             }
-
-            val cornerRadius = resources.getDimension(com.simplemobiletools.commons.R.dimen.rounded_corner_radius_small).toInt()
-            val wantedSize = resources.getDimension(R.dimen.song_image_size).toInt()
 
             // change cover image manually only once loaded successfully to avoid blinking at fails and placeholders
             loadGlideResource(

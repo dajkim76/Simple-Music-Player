@@ -1,8 +1,12 @@
 package com.simplemobiletools.musicplayer.adapters
 
 import android.annotation.SuppressLint
+import android.graphics.Bitmap
+import android.graphics.Outline
 import android.graphics.drawable.Drawable
 import android.view.Menu
+import android.view.View
+import android.view.ViewOutlineProvider
 import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
@@ -148,6 +152,23 @@ abstract class BaseMusicAdapter<Type>(
     }
 
     fun loadImage(imageView: ImageView, resource: Any?, placeholder: Drawable) {
+        if (resource is Bitmap) {
+            // If it 's a bitmap, it' s faster to not go through Glide .
+            if (imageView.outlineProvider === ViewOutlineProvider.BACKGROUND) {
+                imageView.apply {
+                    clipToOutline = true
+                    outlineProvider = object : ViewOutlineProvider() {
+                        override fun getOutline(view: View, outline: Outline) {
+                            outline.setRoundRect(0, 0, view.width, view.height, cornerRadius.toFloat())
+                        }
+                    }
+                }
+            }
+
+            imageView.setImageBitmap(resource)
+            return
+        }
+
         val options = RequestOptions()
             .error(placeholder)
             .transform(CenterCrop(), RoundedCorners(cornerRadius))

@@ -3,9 +3,13 @@ package com.simplemobiletools.musicplayer.views
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.Outline
 import android.graphics.drawable.ColorDrawable
 import android.provider.MediaStore
 import android.util.AttributeSet
+import android.view.View
+import android.view.ViewOutlineProvider
 import android.widget.RelativeLayout
 import androidx.media3.common.MediaItem
 import com.bumptech.glide.Glide
@@ -59,11 +63,27 @@ class CurrentTrackBar(context: Context, attributeSet: AttributeSet) : RelativeLa
             .transform(CenterCrop(), RoundedCorners(cornerRadius))
 
         context.getTrackFileArt(track) { coverArt ->
+            if (coverArt is Bitmap) {
+                if (binding.currentTrackImage.outlineProvider === ViewOutlineProvider.BACKGROUND) {
+                    binding.currentTrackImage.apply {
+                        clipToOutline = true
+                        outlineProvider = object : ViewOutlineProvider() {
+                            override fun getOutline(view: View, outline: Outline) {
+                                outline.setRoundRect(0, 0, view.width, view.height, cornerRadius.toFloat())
+                            }
+                        }
+                    }
+                }
+
+                binding.currentTrackImage.setImageBitmap(coverArt)
+                return@getTrackFileArt
+            }
+
             (context as? Activity)?.ensureActivityNotDestroyed {
                 Glide.with(this)
                     .load(coverArt)
                     .apply(options)
-                    .into(findViewById(R.id.current_track_image))
+                    .into(binding.currentTrackImage)
             }
         }
     }
