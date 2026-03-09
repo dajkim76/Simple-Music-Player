@@ -268,8 +268,8 @@ class AudioHelper(private val context: Context) {
     }
 
     fun updateTrackCue(track: Track, cuesJson: String) {
-        val cueEntity = CueEntity(track.fileStableId, track.path, track.fileLength, track.fileLastModified, cuesJson)
-        if (context.cueDAO.update(cueEntity) == 0) {
+        if (context.cueDAO.updateCue(track.fileStableId, cuesJson) == 0) {
+            val cueEntity = CueEntity(track.fileStableId, track.path, track.fileLength, track.fileLastModified, cuesJson)
             context.cueDAO.insert(cueEntity)
         }
     }
