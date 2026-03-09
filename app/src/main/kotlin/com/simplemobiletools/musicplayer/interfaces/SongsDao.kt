@@ -1,6 +1,9 @@
 package com.simplemobiletools.musicplayer.interfaces
 
 import androidx.room.*
+import com.simplemobiletools.musicplayer.helpers.ALL_TRACKS_PLAYLIST_ID
+import com.simplemobiletools.musicplayer.helpers.FAVORITE_TRACKS_PLAYLIST_ID
+import com.simplemobiletools.musicplayer.helpers.RECENTLY_PLAYED_TRACKS_PLAYLIST_ID
 import com.simplemobiletools.musicplayer.models.Track
 
 @Dao
@@ -19,6 +22,18 @@ interface SongsDao {
 
     @Query("SELECT * FROM tracks WHERE playlist_id = :playlistId")
     fun getTracksFromPlaylist(playlistId: Int): List<Track>
+
+    @Query("SELECT * FROM tracks WHERE playlist_id = $ALL_TRACKS_PLAYLIST_ID ORDER BY date_added DESC")
+    fun getTracksFromPlaylistRecentlyAdded(): List<Track>
+
+    @Query("SELECT * FROM tracks WHERE playlist_id = $RECENTLY_PLAYED_TRACKS_PLAYLIST_ID ORDER BY play_count DESC")
+    fun getTracksFromPlaylistMostPlayed(): List<Track>
+
+    @Query("SELECT * FROM tracks WHERE playlist_id = $RECENTLY_PLAYED_TRACKS_PLAYLIST_ID ORDER BY updated_timestamp DESC")
+    fun getTracksFromPlaylistRecentlyPlayed(): List<Track>
+
+    @Query("SELECT * FROM tracks WHERE playlist_id = $FAVORITE_TRACKS_PLAYLIST_ID ORDER BY updated_timestamp DESC")
+    fun getTracksFromPlaylistFavorite(): List<Track>
 
     @Query("SELECT * FROM tracks WHERE artist_id = :artistId")
     fun getTracksFromArtist(artistId: Long): List<Track>

@@ -199,19 +199,17 @@ class AudioHelper(private val context: Context) {
 
     fun getPlaylistTracks(playlistId: Int): ArrayList<Track> {
         val tracks = if (playlistId == RECENTLY_ADDED_TRACKS_PLAYLIST_ID)
-            context.tracksDAO.getTracksFromPlaylist(ALL_TRACKS_PLAYLIST_ID).applyProperFilenames(config.showFilename)
+            context.tracksDAO.getTracksFromPlaylistRecentlyAdded().applyProperFilenames(config.showFilename)
         else if (playlistId == MOST_PLAYED_TRACKS_PLAYLIST_ID)
-            context.tracksDAO.getTracksFromPlaylist(RECENTLY_PLAYED_TRACKS_PLAYLIST_ID).applyProperFilenames(config.showFilename)
+            context.tracksDAO.getTracksFromPlaylistMostPlayed().applyProperFilenames(config.showFilename)
+        else if (playlistId == RECENTLY_PLAYED_TRACKS_PLAYLIST_ID)
+            context.tracksDAO.getTracksFromPlaylistRecentlyPlayed().applyProperFilenames(config.showFilename)
+        else if (playlistId == FAVORITE_TRACKS_PLAYLIST_ID)
+            context.tracksDAO.getTracksFromPlaylistFavorite().applyProperFilenames(config.showFilename)
         else
             context.tracksDAO.getTracksFromPlaylist(playlistId).applyProperFilenames(config.showFilename)
 
-        if (playlistId == RECENTLY_ADDED_TRACKS_PLAYLIST_ID) {
-            tracks.sortByDescending { it.dateAdded }
-        } else if (playlistId == MOST_PLAYED_TRACKS_PLAYLIST_ID) {
-            tracks.sortByDescending { it.playCount }
-        } else if (playlistId == RECENTLY_PLAYED_TRACKS_PLAYLIST_ID || playlistId == FAVORITE_TRACKS_PLAYLIST_ID) {
-            tracks.sortByDescending { it.updatedTimestamp }
-        } else {
+        if (playlistId == ALL_TRACKS_PLAYLIST_ID || playlistId > SMART_PLAYLIST_ID_MAX) {
             tracks.sortSafely(config.getProperPlaylistSorting(playlistId))
         }
         return tracks
