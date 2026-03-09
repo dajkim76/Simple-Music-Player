@@ -105,10 +105,12 @@ data class Track(
     fun getProperTitle(showFilename: Int): String {
         return when (showFilename) {
             SHOW_FILENAME_NEVER -> title
-            SHOW_FILENAME_IF_UNAVAILABLE -> if (title == MediaStore.UNKNOWN_STRING) path.getFilenameFromPath() else title
-            else -> path.getFilenameFromPath()
+            SHOW_FILENAME_IF_UNAVAILABLE -> if (title == MediaStore.UNKNOWN_STRING) path.getFilenameWithoutExtFromPath() else title
+            else -> path.getFilenameWithoutExtFromPath()
         }
     }
+
+    private fun String.getFilenameWithoutExtFromPath() = substring(lastIndexOf("/") + 1).substringBeforeLast('.')
 
     fun getUri(): Uri = if (mediaStoreId == 0L || flags and FLAG_MANUAL_CACHE != 0) {
         Uri.fromFile(File(path))
