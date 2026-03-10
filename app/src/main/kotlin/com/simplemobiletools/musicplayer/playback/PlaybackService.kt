@@ -73,6 +73,9 @@ class PlaybackService : MediaLibraryService(), MediaSessionService.Listener {
         clearListener()
         stopSleepTimer()
         SimpleEqualizer.release()
+        currentMediaItem = null
+        nextMediaItem = null
+        isPlaying = false
     }
 
     fun stopService() {

@@ -42,10 +42,10 @@ class CurrentTrackBar(context: Context, attributeSet: AttributeSet) : RelativeLa
     fun updateCurrentTrack(mediaItem: MediaItem?) {
         val track = mediaItem?.toTrack()
         if (track == null) {
-            fadeOut()
+            beGone()
             return
         } else {
-            fadeIn()
+            beVisible()
         }
 
         val artist = if (track.artist.trim().isNotEmpty() && track.artist != MediaStore.UNKNOWN_STRING) {

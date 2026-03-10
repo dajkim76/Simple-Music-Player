@@ -7,6 +7,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Handler
 import android.os.HandlerThread
+import android.os.SystemClock
 import androidx.media3.common.AudioAttributes
 import androidx.media3.common.C
 import androidx.media3.common.util.UnstableApi
@@ -14,7 +15,6 @@ import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.session.MediaLibraryService
 import com.simplemobiletools.musicplayer.activities.SplashActivity
 import com.simplemobiletools.musicplayer.extensions.broadcastUpdateWidgetState
-import com.simplemobiletools.musicplayer.extensions.config
 import com.simplemobiletools.musicplayer.extensions.currentMediaItems
 import com.simplemobiletools.musicplayer.extensions.setRepeatMode
 import com.simplemobiletools.musicplayer.helpers.SEEK_INTERVAL_MS
@@ -86,17 +86,27 @@ private fun Context.getSessionActivityIntent(): PendingIntent {
     )
 }
 
+private val SAVE_RECENT_ITEMS_TOKEN = Any()
+
 internal fun PlaybackService.updatePlaybackState() {
     withPlayer {
         updatePlaybackInfo(player)
         broadcastUpdateWidgetState(lastCueTitle)
-        val currentMediaItem = currentMediaItem
-        if (currentMediaItem != null) {
-            mediaItemProvider.saveRecentItemsWithStartPosition(
-                mediaItems = currentMediaItems,
-                current = currentMediaItem,
-                startPosition = currentPosition
-            )
-        }
+
+        //There are cases where events occur more than 4 times within 1 second. Delaying the storage of QueueItems reduces unnecessary DB operations.
+        playerHandler.removeCallbacksAndMessages(SAVE_RECENT_ITEMS_TOKEN)
+        playerHandler.postAtTime({
+            val currentMediaItem = currentMediaItem
+            if (currentMediaItem != null) {
+                val currentItems = currentMediaItems
+                val position = currentPosition
+
+                mediaItemProvider.saveRecentItemsWithStartPosition(
+                    mediaItems = currentItems,
+                    current = currentMediaItem,
+                    startPosition = position
+                )
+            }
+        }, SAVE_RECENT_ITEMS_TOKEN, SystemClock.uptimeMillis() + 1000)
     }
 }

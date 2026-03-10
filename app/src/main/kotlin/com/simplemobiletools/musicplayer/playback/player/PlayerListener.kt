@@ -13,9 +13,6 @@ import com.simplemobiletools.musicplayer.playback.PlaybackService
 
 @UnstableApi
 internal fun PlaybackService.getPlayerListener() = object : Player.Listener {
-    private val updatePlaybackSateRunnable = Runnable {
-        updatePlaybackState()
-    }
 
     override fun onPlayerError(error: PlaybackException) = toast(com.simplemobiletools.commons.R.string.unknown_error_occurred, Toast.LENGTH_LONG)
 
@@ -31,9 +28,7 @@ internal fun PlaybackService.getPlayerListener() = object : Player.Listener {
                 Player.EVENT_PLAYLIST_METADATA_CHANGED
             )
         ) {
-            //There are cases where events occur more than 4 times within 1 second. Delaying the storage of QueueItems reduces unnecessary DB operations.
-            playerHandler.removeCallbacks(updatePlaybackSateRunnable)
-            playerHandler.postDelayed(updatePlaybackSateRunnable, 1000)
+            updatePlaybackState()
 
             if (events.contains(Player.EVENT_IS_PLAYING_CHANGED)) {
                 scheduleProgressUpdate()
