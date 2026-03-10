@@ -175,10 +175,8 @@ inline fun Player.maybePreparePlayer(context: Context, crossinline callback: (su
     if (!prepareInProgress.get() && currentMediaItem == null) {
         prepareInProgress.set(true)
         ensureBackgroundThread {
-            var prepared = false
-            context.audioHelper.getQueuedTracksLazily { tracks, startIndex, startPositionMs ->
-                if (!prepared) {
-                    prepared = true
+            context.audioHelper.getQueuedTracksLazily { tracks, startIndex, startPositionMs, isFirstPhase ->
+                if (isFirstPhase) {
                     prepareUsingTracks(tracks = tracks, startIndex = startIndex, startPositionMs = startPositionMs) {
                         callback(it)
                         if (!it) {
@@ -187,7 +185,6 @@ inline fun Player.maybePreparePlayer(context: Context, crossinline callback: (su
                     }
                 } else {
                     if (tracks.size <= 1) {
-                        // Resetting the flag is necessary to restore queue tracks in a service that has been restarted after the service has been terminated.
                         prepareInProgress.set(false)
                         return@getQueuedTracksLazily
                     }
@@ -220,7 +217,6 @@ fun Player.addRemainingMediaItems(mediaItems: List<MediaItem>, currentIndex: Int
             addMediaItems(insertIndex, itemsAtEnd)
         }
 
-        // Resetting the flag is necessary to restore queue tracks in a service that has been restarted after the service has been terminated.
         prepareInProgress.set(false)
     }
 }

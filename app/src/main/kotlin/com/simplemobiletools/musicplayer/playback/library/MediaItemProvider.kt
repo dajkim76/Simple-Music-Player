@@ -124,12 +124,12 @@ internal class MediaItemProvider(private val context: Context) {
 
     fun getDefaultQueue() = getChildren(SMP_TRACKS_ROOT_ID)
 
-    fun getRecentItemsLazily(callback: (itemsWithStartPosition: MediaItemsWithStartPosition) -> Unit) {
+    fun getRecentItemsLazily(callback: (itemsWithStartPosition: MediaItemsWithStartPosition, isFirstPhase: Boolean) -> Unit) {
         if (state == STATE_INITIALIZED) {
-            callback(getRecentItemsWithStartPosition())
+            callback(getRecentItemsWithStartPosition(), true)
         } else {
-            audioHelper.getQueuedTracksLazily { tracks, startIndex, startPositionMs ->
-                callback(MediaItemsWithStartPosition(tracks.toMediaItems(), startIndex, startPositionMs))
+            audioHelper.getQueuedTracksLazily { tracks, startIndex, startPositionMs, isFirstPhase ->
+                callback(MediaItemsWithStartPosition(tracks.toMediaItems(), startIndex, startPositionMs), isFirstPhase)
             }
         }
     }

@@ -319,7 +319,7 @@ class AudioHelper(private val context: Context) {
     /**
      * Executes [callback] with current track as quickly as possible and then proceeds to load the complete queue with all tracks.
      */
-    fun getQueuedTracksLazily(callback: (tracks: List<Track>, startIndex: Int, startPositionMs: Long) -> Unit) {
+    fun getQueuedTracksLazily(callback: (tracks: List<Track>, startIndex: Int, startPositionMs: Long, isFirstPhase: Boolean) -> Unit) {
         ensureBackgroundThread {
             var queueItems = context.queueDAO.getAll()
             if (queueItems.isEmpty()) {
@@ -329,24 +329,24 @@ class AudioHelper(private val context: Context) {
 
             val currentItem = context.queueDAO.getCurrent()
             if (currentItem == null) {
-                callback(emptyList(), 0, 0)
+                callback(emptyList(), 0, 0, true)
                 return@ensureBackgroundThread
             }
 
             val currentTrack = getTrack(currentItem.trackId)
             if (currentTrack == null) {
-                callback(emptyList(), 0, 0)
+                callback(emptyList(), 0, 0, true)
                 return@ensureBackgroundThread
             }
 
             // immediately return the current track.
             val startPositionMs = currentItem.lastPosition.seconds.inWholeMilliseconds
-            callback(listOf(currentTrack), 0, startPositionMs)
+            callback(listOf(currentTrack), 0, startPositionMs, true)
 
             // return the rest of the queued tracks.
             val queuedTracks = getQueuedTracks(queueItems)
             val currentIndex = queuedTracks.indexOfFirstOrNull { it.mediaStoreId == currentTrack.mediaStoreId } ?: 0
-            callback(queuedTracks, currentIndex, startPositionMs)
+            callback(queuedTracks, currentIndex, startPositionMs, false)
         }
     }
 
