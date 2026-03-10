@@ -72,6 +72,10 @@ class AudioHelper(private val context: Context) {
         }
     }
 
+    fun deletePlaylistTracks(tracks: List<Track>): Int {
+        return context.tracksDAO.deletePlaylistTracks(tracks)
+    }
+
     fun insertArtists(artists: List<Artist>) {
         context.artistDAO.insertAll(artists)
     }

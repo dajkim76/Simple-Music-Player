@@ -33,8 +33,8 @@ class ExcludedFoldersActivity : SimpleActivity(), RefreshRecyclerViewListener {
                         val excludedFolders = config.excludedFolders.toMutableList() as ArrayList<String>
                         if (!excludedFolders.contains(folderPath)) {
                             excludedFolders.add(folderPath)
-                            updateFolders()
                             config.addExcludedFolder(folderPath)
+                            updateFolders()
                         }
                     }
                     true

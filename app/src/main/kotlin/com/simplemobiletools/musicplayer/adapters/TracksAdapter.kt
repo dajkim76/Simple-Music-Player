@@ -25,6 +25,7 @@ import com.simplemobiletools.musicplayer.extensions.getTrackFileArt
 import com.simplemobiletools.musicplayer.extensions.swap
 import com.simplemobiletools.musicplayer.helpers.ALL_TRACKS_PLAYLIST_ID
 import com.simplemobiletools.musicplayer.helpers.PLAYER_SORT_BY_CUSTOM
+import com.simplemobiletools.musicplayer.helpers.SMART_PLAYLIST_ID_MAX
 import com.simplemobiletools.musicplayer.inlines.indexOfFirstOrNull
 import com.simplemobiletools.musicplayer.models.Events
 import com.simplemobiletools.musicplayer.models.Playlist
@@ -72,7 +73,7 @@ class TracksAdapter(
 
     override fun prepareActionMode(menu: Menu) {
         menu.apply {
-            findItem(R.id.cab_remove_from_playlist).isVisible = isPlaylistContent()
+            findItem(R.id.cab_remove_from_playlist).isVisible = isPlaylistUnlistable()
             findItem(R.id.cab_rename).isVisible = shouldShowRename()
             findItem(R.id.cab_play_next).isVisible = shouldShowPlayNext()
         }
@@ -119,7 +120,7 @@ class TracksAdapter(
                 }
             }
 
-            context.audioHelper.deleteTracks(selectedTracks)
+            context.audioHelper.deletePlaylistTracks(selectedTracks)
             // this is to make sure these tracks aren't automatically re-added to the 'All tracks' playlist on rescan
             val removedTrackIds = selectedTracks.filter { it.playListId == ALL_TRACKS_PLAYLIST_ID }.map { it.mediaStoreId.toString() }
             if (removedTrackIds.isNotEmpty()) {
@@ -187,7 +188,7 @@ class TracksAdapter(
             } else {
                 ("${track.artist} • ${track.album}").highlightTextPart(textToHighlight, properPrimaryColor)
             }
-            trackDragHandle.beVisibleIf(isPlaylistContent() && selectedKeys.isNotEmpty())
+            trackDragHandle.beVisibleIf(isPlayListCustomSortable() && selectedKeys.isNotEmpty())
             trackDragHandle.applyColorFilter(textColor)
             trackDragHandle.setOnTouchListener { _, event ->
                 if (event.action == MotionEvent.ACTION_DOWN) {
@@ -254,6 +255,18 @@ class TracksAdapter(
     }
 
     private fun isPlaylistContent() = sourceType == TYPE_PLAYLIST
+
+    private fun isPlayListCustomSortable(): Boolean {
+        if (!isPlaylistContent()) return false
+        val playlistId = playlist?.id ?: 0
+        return playlistId > SMART_PLAYLIST_ID_MAX
+    }
+
+    private fun isPlaylistUnlistable(): Boolean {
+        if (!isPlaylistContent()) return false
+        val playlistId = playlist?.id ?: 0
+        return playlistId >= SMART_PLAYLIST_ID_MAX // Include Favorite list
+    }
 
     companion object {
         const val TYPE_PLAYLIST = 1

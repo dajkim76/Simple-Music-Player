@@ -56,6 +56,9 @@ interface SongsDao {
     @Query("DELETE FROM tracks WHERE media_store_id = :mediaStoreId")
     fun removeTrack(mediaStoreId: Long)
 
+    @Delete
+    fun deletePlaylistTracks(list: List<Track>): Int
+
     @Query("DELETE FROM tracks WHERE playlist_id = :playlistId")
     fun removePlaylistSongs(playlistId: Int)
 
