@@ -1,15 +1,12 @@
 package com.simplemobiletools.musicplayer.playback
 
-import android.bluetooth.BluetoothDevice
-import android.content.BroadcastReceiver
-import android.content.Context
-import android.content.Intent
-import android.content.IntentFilter
 import android.os.Handler
 import android.os.HandlerThread
 import android.os.Looper
 import androidx.annotation.OptIn
 import androidx.core.os.postDelayed
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.ProcessLifecycleOwner
 import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
 import androidx.media3.common.util.UnstableApi
@@ -40,16 +37,8 @@ class PlaybackService : MediaLibraryService(), MediaSessionService.Listener {
     internal var currentRoot = ""
     internal var lastCueTitle: String? = null
 
-    private var progressUpdateHandler = Handler(Looper.getMainLooper())
-    private val bluetoothReceiver = object : BroadcastReceiver() {
-        override fun onReceive(context: Context, intent: Intent) {
-            if (intent.action == BluetoothDevice.ACTION_ACL_CONNECTED && config.autoplayOnBluetoothConnect) {
-                withPlayer {
-                    play()
-                }
-            }
-        }
-    }
+    private val progressUpdateHandler = Handler(Looper.getMainLooper())
+    private lateinit var audioRouteMonitor: AudioRouteMonitor
 
     override fun onCreate() {
         super.onCreate()
@@ -57,10 +46,24 @@ class PlaybackService : MediaLibraryService(), MediaSessionService.Listener {
         setListener(this)
         initializeSessionAndPlayer(handleAudioFocus = true, handleAudioBecomingNoisy = true, skipSilence = config.gaplessPlayback)
         initializeLibrary()
-
-        val filter = IntentFilter(BluetoothDevice.ACTION_ACL_CONNECTED)
-        registerReceiver(bluetoothReceiver, filter)
+        // init audio route monitor
+        audioRouteMonitor = AudioRouteMonitor(this) { route ->
+            if (route == AudioRouteMonitor.Route.BECOMING_NOISY) {
+                withPlayer { if (isPlaying) pause() }
+            } else if (config.autoplayOnBluetoothConnect) {
+                val isAppForeground = isAppForeground() // prevent autoplay on app background (ForegroundServiceStartNotAllowedException)
+                if (isAppForeground && (route == AudioRouteMonitor.Route.BLUETOOTH || route == AudioRouteMonitor.Route.WIRED_HEADSET)) {
+                    withPlayer { play() }
+                }
+            }
+        }
+        audioRouteMonitor.start()
         scheduleProgressUpdate()
+    }
+
+    private fun isAppForeground(): Boolean {
+        return ProcessLifecycleOwner.get()
+            .lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED)
     }
 
     override fun onGetSession(controllerInfo: MediaSession.ControllerInfo) = mediaSession
@@ -68,7 +71,7 @@ class PlaybackService : MediaLibraryService(), MediaSessionService.Listener {
     override fun onDestroy() {
         super.onDestroy()
         progressUpdateHandler.removeCallbacksAndMessages(null)
-        unregisterReceiver(bluetoothReceiver)
+        audioRouteMonitor.stop()
         releaseMediaSession()
         clearListener()
         stopSleepTimer()
