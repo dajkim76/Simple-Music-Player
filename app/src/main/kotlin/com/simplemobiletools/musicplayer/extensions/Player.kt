@@ -150,12 +150,13 @@ fun Player.prepareUsingTracks(
         return
     }
 
+    val mediaItems = if (isTracksSameWithCurrentItems) null else tracks.toMediaItemsFast()
+
     runOnPlayerThread {
         if (isTracksSameWithCurrentItems) {
             seekTo(startIndex, startPositionMs)
         } else {
-            val mediaItems = tracks.toMediaItemsFast()
-            setMediaItems(mediaItems, startIndex, startPositionMs)
+            setMediaItems(mediaItems!!, startIndex, startPositionMs)
         }
         playWhenReady = play
         prepare()
@@ -177,15 +178,17 @@ inline fun Player.maybePreparePlayer(context: Context, crossinline callback: (su
             var prepared = false
             context.audioHelper.getQueuedTracksLazily { tracks, startIndex, startPositionMs ->
                 if (!prepared) {
+                    prepared = true
                     prepareUsingTracks(tracks = tracks, startIndex = startIndex, startPositionMs = startPositionMs) {
                         callback(it)
-                        prepared = it
-
-                        // Resetting the flag is necessary to restore queue tracks in a service that has been restarted after the service has been terminated.
-                        prepareInProgress.set(false)
+                        if (!it) {
+                            prepareInProgress.set(false)
+                        }
                     }
                 } else {
-                    if (tracks.size == 1) {
+                    if (tracks.size <= 1) {
+                        // Resetting the flag is necessary to restore queue tracks in a service that has been restarted after the service has been terminated.
+                        prepareInProgress.set(false)
                         return@getQueuedTracksLazily
                     }
 
@@ -204,9 +207,20 @@ inline fun Player.maybePreparePlayer(context: Context, crossinline callback: (su
  */
 fun Player.addRemainingMediaItems(mediaItems: List<MediaItem>, currentIndex: Int) {
     val itemsAtStart = mediaItems.take(currentIndex)
-    val itemsAtEnd = mediaItems.takeLast(mediaItems.lastIndex - currentIndex)
+    val itemsAtEnd = if (currentIndex < mediaItems.size - 1) mediaItems.drop(currentIndex + 1) else emptyList()
+
     runOnPlayerThread {
-        addMediaItems(0, itemsAtStart)
-        addMediaItems(currentIndex + 1, itemsAtEnd)
+        if (itemsAtStart.isNotEmpty()) {
+            addMediaItems(0, itemsAtStart)
+        }
+        if (itemsAtEnd.isNotEmpty()) {
+            // If we added itemsAtStart, the original item at 0 moved to itemsAtStart.size.
+            // So we add itemsAtEnd after it.
+            val insertIndex = if (itemsAtStart.isNotEmpty()) itemsAtStart.size + 1 else 1
+            addMediaItems(insertIndex, itemsAtEnd)
+        }
+
+        // Resetting the flag is necessary to restore queue tracks in a service that has been restarted after the service has been terminated.
+        prepareInProgress.set(false)
     }
 }

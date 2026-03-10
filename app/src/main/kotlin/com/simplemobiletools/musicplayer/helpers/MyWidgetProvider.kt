@@ -16,10 +16,8 @@ import com.simplemobiletools.commons.extensions.getColoredBitmap
 import com.simplemobiletools.commons.extensions.getLaunchIntent
 import com.simplemobiletools.musicplayer.R
 import com.simplemobiletools.musicplayer.activities.MainActivity
-import com.simplemobiletools.musicplayer.activities.SplashActivity
 import com.simplemobiletools.musicplayer.extensions.config
 import com.simplemobiletools.musicplayer.extensions.maybePreparePlayer
-import com.simplemobiletools.musicplayer.extensions.togglePlayback
 import com.simplemobiletools.musicplayer.playback.PlaybackService
 
 class MyWidgetProvider : AppWidgetProvider() {
@@ -55,14 +53,21 @@ class MyWidgetProvider : AppWidgetProvider() {
     private fun handlePlayerControls(context: Context, action: String) {
         maybePreparePlayer(context) { player, _ ->
             if (player.currentMediaItem == null) {
-                val intent = context.getLaunchIntent() ?: Intent(context, SplashActivity::class.java)
+                val intent = context.getLaunchIntent() ?: Intent(context, MainActivity::class.java)
                 intent.addFlags(FLAG_ACTIVITY_NEW_TASK)
                 context.startActivity(intent)
             } else {
                 when (action) {
                     NEXT -> player.seekToNextMediaItem()
                     PREVIOUS -> player.seekToPreviousMediaItem()
-                    PLAYPAUSE -> player.togglePlayback()
+                    PLAYPAUSE -> {
+                        if (!player.isPlaying) {
+                            player.playWhenReady = true
+                            player.prepare()
+                        } else {
+                            player.stop()
+                        }
+                    }
                 }
             }
         }
