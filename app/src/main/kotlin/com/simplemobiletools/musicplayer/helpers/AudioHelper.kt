@@ -213,7 +213,7 @@ class AudioHelper(private val context: Context) {
         else
             context.tracksDAO.getTracksFromPlaylist(playlistId).applyProperFilenames(config.showFilename)
 
-        if (playlistId == ALL_TRACKS_PLAYLIST_ID || playlistId > SMART_PLAYLIST_ID_MAX) {
+        if (playlistId == ALL_TRACKS_PLAYLIST_ID || playlistId >= SMART_PLAYLIST_ID_MAX) { // Favorite playlist sortable
             tracks.sortSafely(config.getProperPlaylistSorting(playlistId))
         }
         return tracks

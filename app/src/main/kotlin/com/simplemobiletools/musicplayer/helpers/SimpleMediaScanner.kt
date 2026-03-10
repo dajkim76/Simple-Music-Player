@@ -10,6 +10,7 @@ import android.os.Looper
 import android.provider.MediaStore
 import android.provider.MediaStore.Audio
 import com.simplemobiletools.commons.extensions.*
+import com.simplemobiletools.commons.helpers.SORT_DESCENDING
 import com.simplemobiletools.commons.helpers.ensureBackgroundThread
 import com.simplemobiletools.commons.helpers.isQPlus
 import com.simplemobiletools.commons.helpers.isRPlus
@@ -199,6 +200,7 @@ class SimpleMediaScanner(private val context: Application) {
             )
             context.audioHelper.insertPlaylist(Playlist(FAVORITE_TRACKS_PLAYLIST_ID, "\u2764 " + context.getString(R.string.favorite_tracks)))
             config.wasAllTracksPlaylistCreated = true
+            config.saveCustomPlaylistSorting(FAVORITE_TRACKS_PLAYLIST_ID, PLAYER_SORT_UPDATED_TIME or SORT_DESCENDING)
         }
 
         // avoid re-adding tracks that have been explicitly removed from 'All tracks' playlist

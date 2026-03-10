@@ -108,7 +108,7 @@ class TracksActivity : SimpleMusicActivity() {
     private fun playlistSortable(): Boolean {
         if (sourceType == TYPE_PLAYLIST) {
             val id = playlist?.id ?: return true
-            return id == ALL_TRACKS_PLAYLIST_ID || id > SMART_PLAYLIST_ID_MAX
+            return id == ALL_TRACKS_PLAYLIST_ID || id >= SMART_PLAYLIST_ID_MAX // Favorite list sortable
         }
         return true
     }

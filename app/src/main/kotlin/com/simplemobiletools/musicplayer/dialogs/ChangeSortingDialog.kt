@@ -100,10 +100,15 @@ class ChangeSortingDialog(val activity: Activity, val location: Int, val playlis
                 radioItems.add(RadioItem(1, activity.getString(com.simplemobiletools.commons.R.string.artist), PLAYER_SORT_BY_ARTIST_TITLE))
                 radioItems.add(RadioItem(2, activity.getString(com.simplemobiletools.commons.R.string.duration), PLAYER_SORT_BY_DURATION))
                 radioItems.add(RadioItem(3, activity.getString(R.string.track_number), PLAYER_SORT_BY_TRACK_ID))
-                radioItems.add(RadioItem(4, activity.getString(com.simplemobiletools.commons.R.string.date_added), PLAYER_SORT_BY_DATE_ADDED))
+
+                // if it is a favorites playlist, it is processed as an addition to the favorites list.
+                val isPlaylistFavorite = playlist?.id == FAVORITE_TRACKS_PLAYLIST_ID
+                val dateAddedValue = if (isPlaylistFavorite) PLAYER_SORT_UPDATED_TIME else PLAYER_SORT_BY_DATE_ADDED
+                radioItems.add(RadioItem(4, activity.getString(com.simplemobiletools.commons.R.string.date_added), dateAddedValue))
+                radioItems.add(RadioItem(5, activity.getString(com.simplemobiletools.commons.R.string.last_modified), PLAYER_SORT_BY_LAST_MODIFIED))
 
                 if (playlist != null) {
-                    radioItems.add(RadioItem(4, activity.getString(com.simplemobiletools.commons.R.string.custom), PLAYER_SORT_BY_CUSTOM))
+                    radioItems.add(RadioItem(6, activity.getString(com.simplemobiletools.commons.R.string.custom), PLAYER_SORT_BY_CUSTOM))
                 }
             }
         }
