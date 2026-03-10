@@ -115,9 +115,8 @@ class PlaybackService : MediaLibraryService(), MediaSessionService.Listener {
                 if (config.keepTrackLastPosition) {
                     // 마지막 1초를 남겨두고 last position을 0으로..
                     if (player.currentPosition >= player.duration - 1000) {
-                        currentMediaItem?.let {
-                            val mediaStoreId = it.mediaId.toLong()
-                            audioHelper.updateRecentPlayedTrackLastPosition(mediaStoreId, 0)
+                        currentMediaItem?.let { mediaItem ->
+                            audioHelper.updateRecentPlayedTrackLastPosition(mediaItem, 0)
                         }
                     }
                 }

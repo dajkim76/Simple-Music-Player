@@ -26,10 +26,10 @@ interface SongsDao {
     @Query("SELECT * FROM tracks WHERE playlist_id = $ALL_TRACKS_PLAYLIST_ID ORDER BY date_added DESC")
     fun getTracksFromPlaylistRecentlyAdded(): List<Track>
 
-    @Query("SELECT * FROM tracks WHERE playlist_id = $RECENTLY_PLAYED_TRACKS_PLAYLIST_ID ORDER BY play_count DESC")
+    @Query("SELECT * FROM tracks WHERE playlist_id = $RECENTLY_PLAYED_TRACKS_PLAYLIST_ID AND play_count > 0 ORDER BY play_count DESC")
     fun getTracksFromPlaylistMostPlayed(): List<Track>
 
-    @Query("SELECT * FROM tracks WHERE playlist_id = $RECENTLY_PLAYED_TRACKS_PLAYLIST_ID ORDER BY updated_timestamp DESC")
+    @Query("SELECT * FROM tracks WHERE playlist_id = $RECENTLY_PLAYED_TRACKS_PLAYLIST_ID AND updated_timestamp > 0 ORDER BY updated_timestamp DESC")
     fun getTracksFromPlaylistRecentlyPlayed(): List<Track>
 
     @Query("SELECT * FROM tracks WHERE playlist_id = $FAVORITE_TRACKS_PLAYLIST_ID ORDER BY updated_timestamp DESC")

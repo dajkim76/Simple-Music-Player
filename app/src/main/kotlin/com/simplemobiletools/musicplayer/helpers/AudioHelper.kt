@@ -1,6 +1,7 @@
 package com.simplemobiletools.musicplayer.helpers
 
 import android.content.Context
+import androidx.media3.common.MediaItem
 import com.simplemobiletools.commons.extensions.addBit
 import com.simplemobiletools.commons.extensions.getParentPath
 import com.simplemobiletools.commons.helpers.ensureBackgroundThread
@@ -234,9 +235,17 @@ class AudioHelper(private val context: Context) {
         }
     }
 
-    fun updateRecentPlayedTrackLastPosition(mediaStoreId: Long, lastPosition: Long) {
-        context.tracksDAO.getPlaylistTrack(RECENTLY_PLAYED_TRACKS_PLAYLIST_ID, mediaStoreId)?.takeIf { it.lastPosition != lastPosition }?.let {
+    fun updateRecentPlayedTrackLastPosition(mediaItem: MediaItem, lastPosition: Long) {
+        val playListId = RECENTLY_PLAYED_TRACKS_PLAYLIST_ID
+        val mediaStoreId = mediaItem.mediaId.toLong()
+        context.tracksDAO.getPlaylistTrack(playListId, mediaStoreId)?.takeIf { it.lastPosition != lastPosition }?.let {
             context.tracksDAO.updateLastPosition(it.id, lastPosition)
+        } ?: run {
+            // insert new entry for lastPosition
+            if (lastPosition > 0) {
+                val newTrack = mediaItem.toTrack()?.copy(id = 0, playListId = playListId, lastPosition = lastPosition) ?: return
+                context.tracksDAO.insert(newTrack)
+            }
         }
     }
 

@@ -143,12 +143,12 @@ class QueueActivity : SimpleControllerActivity() {
 
                         withPlayer {
                             if (isPlaying) {
-                                val playingMediaStoreId = currentMediaItem?.mediaId?.toLong() ?: 0
-                                if (playingMediaStoreId != track.mediaStoreId) {
+                                val currentItem = currentMediaItem
+                                if (currentItem != null && currentItem.mediaId.toLong() != track.mediaStoreId) {
                                     val playingLastPosition = currentPosition
                                     if (keepTrackLastPosition) {
                                         executeBackgroundThread {
-                                            audioHelper.updateRecentPlayedTrackLastPosition(playingMediaStoreId, playingLastPosition)
+                                            audioHelper.updateRecentPlayedTrackLastPosition(currentItem, playingLastPosition)
                                         }
                                     }
                                 } else {
