@@ -99,8 +99,8 @@ class TracksActivity : SimpleMusicActivity() {
         binding.tracksToolbar.menu.apply {
             findItem(R.id.search).isVisible = sourceType != TYPE_ALBUM
             findItem(R.id.sort).isVisible = sourceType != TYPE_ALBUM && playlistSortable()
-            findItem(R.id.add_file_to_playlist).isVisible = sourceType == TYPE_PLAYLIST
-            findItem(R.id.add_folder_to_playlist).isVisible = sourceType == TYPE_PLAYLIST
+            findItem(R.id.add_file_to_playlist).isVisible = addFilesToPlaylistEnabled()
+            findItem(R.id.add_folder_to_playlist).isVisible = addFilesToPlaylistEnabled()
             findItem(R.id.export_playlist).isVisible = sourceType == TYPE_PLAYLIST && isOreoPlus()
         }
     }
@@ -111,6 +111,14 @@ class TracksActivity : SimpleMusicActivity() {
             return id == ALL_TRACKS_PLAYLIST_ID || id >= SMART_PLAYLIST_ID_MAX // Favorite list sortable
         }
         return true
+    }
+
+    private fun addFilesToPlaylistEnabled(): Boolean {
+        if (sourceType == TYPE_PLAYLIST) {
+            val id = playlist?.id ?: 0
+            return id == ALL_TRACKS_PLAYLIST_ID || id > SMART_PLAYLIST_ID_MAX
+        }
+        return false
     }
 
     private fun setupOptionsMenu() {
