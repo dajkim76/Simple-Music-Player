@@ -32,7 +32,7 @@ class CueAdapter(
     private val properTextColor = activity.getProperTextColor()
     private val primaryColor = activity.getProperPrimaryColor()
     private val repeatIcon = activity.getDrawable(R.drawable.ic_repeat_one_song_vector).also { drawable ->
-        val size = (18 * activity.resources.displayMetrics.density).toInt()
+        val size = (20 * activity.resources.displayMetrics.density).toInt()
         drawable?.setBounds(0, 0, size, size)
     }
 

@@ -849,7 +849,7 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
                 if (BuildConfig.DEBUG) {
                     sb.append("($type)")
                 } else {
-                    sb.append("(${type[0]})")
+                    //sb.append("(${type[0]})")
                 }
                 sb.append(key).append("=").append(value).append("\n\n")
                 val links = extractYoutubeLinks(value)
