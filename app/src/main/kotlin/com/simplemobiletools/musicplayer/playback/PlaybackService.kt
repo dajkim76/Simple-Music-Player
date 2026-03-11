@@ -39,6 +39,7 @@ class PlaybackService : MediaLibraryService(), MediaSessionService.Listener {
 
     private val progressUpdateHandler = Handler(Looper.getMainLooper())
     private lateinit var audioRouteMonitor: AudioRouteMonitor
+    private var repeatCueData: Pair<Long, Int>? = null // fileStableId, cueIndex
 
     override fun onCreate() {
         super.onCreate()
@@ -146,7 +147,31 @@ class PlaybackService : MediaLibraryService(), MediaSessionService.Listener {
         val activeCueIndex = cues.indexOfLast { it.timestamp <= currentSec }
         if (activeCueIndex != -1) {
             val currentCue = cues[activeCueIndex]
-            if (!currentCue.enabled) {
+            if (currentCue.isRepeat && currentCue.enabled) {
+                if (repeatCueData == null) {
+                    repeatCueData = Pair(track.fileStableId, activeCueIndex)
+                }
+            }
+
+            repeatCueData?.let { pair ->
+                if (pair.first == track.fileStableId) {
+                    if (pair.second < cues.size) {
+                        val repeatCue = cues[pair.second]
+                        if (!repeatCue.isRepeat || !repeatCue.enabled) {
+                            repeatCueData = null
+                        }
+                    } else {
+                        repeatCueData = null
+                    }
+                } else {
+                    repeatCueData = null
+                }
+            }
+
+            if (!currentCue.isRepeat && repeatCueData != null && repeatCueData!!.first == track.fileStableId && repeatCueData!!.second < cues.size) {
+                val repeatCue = cues[repeatCueData!!.second]
+                player.seekTo(repeatCue.timestamp * 1000L)
+            } else if (!currentCue.enabled) {
                 val nextEnabledCue = cues.subList(activeCueIndex + 1, cues.size).firstOrNull { it.enabled }
                 if (nextEnabledCue != null) {
                     player.seekTo(nextEnabledCue.timestamp * 1000L)

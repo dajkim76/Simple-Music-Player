@@ -7,5 +7,6 @@ data class Cue(
     @SerializedName("title") var title: String,
     @SerializedName("enabled") var enabled: Boolean = true,
     @SerializedName("favorite") var favorite: Boolean = false,
-    @Transient var duration: Int = 0
+    @Transient var duration: Int = 0,
+    @Transient var isRepeat: Boolean = false
 )

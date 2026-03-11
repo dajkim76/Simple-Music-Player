@@ -31,6 +31,10 @@ class CueAdapter(
     private var currentCueIndex: Int = -1
     private val properTextColor = activity.getProperTextColor()
     private val primaryColor = activity.getProperPrimaryColor()
+    private val repeatIcon = activity.getDrawable(R.drawable.ic_repeat_one_song_vector).also { drawable ->
+        val size = (18 * activity.resources.displayMetrics.density).toInt()
+        drawable?.setBounds(0, 0, size, size)
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = ItemCueBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -113,11 +117,18 @@ class CueAdapter(
                 cueTimestamp.setTextColor(if (cue.favorite && cue.enabled) Color.RED else textColor)
                 cueTitle.setTextColor(textColor)
                 cueDuration.setTextColor(textColor)
-                cueDuration.text = cue.duration.getFormattedDuration()
+                cueDuration.text = if (cue.isRepeat) "" else cue.duration.getFormattedDuration()
+                cueDuration.setCompoundDrawables(null, null, if (cue.isRepeat) repeatIcon else null, null)
                 cueDuration.isVisible = cue.duration > 0 && !isNoCueTitle
 
                 root.setOnClickListener {
                     if (!isNoCueTitle && cue.enabled) {
+                        cues.forEachIndexed { index, item ->
+                            if (item !== cue && item.isRepeat) {
+                                item.isRepeat = false
+                                notifyItemChanged(index)
+                            }
+                        }
                         itemClick(cue)
                     }
                 }
@@ -137,11 +148,12 @@ class CueAdapter(
             popup.menu.add(0, 0, 0, skipLabel)
             popup.menu.add(0, 1, 0, activity.getString(R.string.favorites_toggle))
             popup.menu.add(0, 2, 0, activity.getString(R.string.adjust_timestamp))
+            popup.menu.add(0, 3, 0, activity.getString(if (cue.isRepeat) R.string.repeat_off else R.string.repeat_song))
             popup.setOnMenuItemClickListener { item ->
                 when (item.itemId) {
                     0 -> {
                         val newCues = cues.toMutableList()
-                        newCues[position] = cue.copy(enabled = !cue.enabled, duration = cue.duration, favorite = cue.favorite)
+                        newCues[position] = cue.copy(enabled = !cue.enabled, duration = cue.duration, favorite = cue.favorite, isRepeat = cue.isRepeat)
                         cues = newCues
                         notifyItemChanged(position)
                         itemUpdated(track, newCues)
@@ -149,7 +161,8 @@ class CueAdapter(
 
                     1 -> {
                         val newCues = cues.toMutableList()
-                        newCues[position] = cue.copy(enabled = cue.enabled || !cue.favorite, duration = cue.duration, favorite = !cue.favorite)
+                        newCues[position] =
+                            cue.copy(enabled = cue.enabled || !cue.favorite, duration = cue.duration, favorite = !cue.favorite, isRepeat = cue.isRepeat)
                         cues = newCues
                         notifyItemChanged(position)
                         itemUpdated(track, newCues)
@@ -175,7 +188,8 @@ class CueAdapter(
                                         title = newTitle,
                                         enabled = cue.enabled || cue.favorite,
                                         duration = cue.duration,
-                                        favorite = cue.favorite
+                                        favorite = cue.favorite,
+                                        isRepeat = cue.isRepeat
                                     )
                                 newCues.sortedBy { it.timestamp }
                                 cues = newCues
@@ -184,6 +198,17 @@ class CueAdapter(
                                 itemUpdated(track, newCues) // Update cache, db
                             }
                             .show()
+                    }
+
+                    3 -> {
+                        cues.forEachIndexed { index, item ->
+                            if (index != position && item.isRepeat) {
+                                item.isRepeat = false
+                                notifyItemChanged(index)
+                            }
+                        }
+                        cue.isRepeat = !cue.isRepeat
+                        notifyItemChanged(position)
                     }
                 }
                 true
