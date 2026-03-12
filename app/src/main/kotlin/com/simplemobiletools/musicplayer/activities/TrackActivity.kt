@@ -446,11 +446,11 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
             }
 
             private fun onSwipeLeft() {
-                binding.activityTrackPrevious.performClick()
+                binding.activityTrackNext.performClick()
             }
 
             private fun onSwipeRight() {
-                binding.activityTrackNext.performClick()
+                binding.activityTrackPrevious.performClick()
             }
         }
 
