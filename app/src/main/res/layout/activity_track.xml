@@ -26,14 +26,13 @@
             app:layout_constraintBottom_toBottomOf="@+id/activity_track_image"
             app:layout_constraintEnd_toEndOf="@+id/activity_track_image"
             app:layout_constraintStart_toStartOf="@+id/activity_track_image"
-            app:layout_constraintTop_toTopOf="@+id/activity_track_image">
+            app:layout_constraintTop_toBottomOf="@+id/activity_track_appbar">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/activity_track_cues_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
-                android:paddingTop="100dp"
                 android:overScrollMode="never" />
         </RelativeLayout>
 
