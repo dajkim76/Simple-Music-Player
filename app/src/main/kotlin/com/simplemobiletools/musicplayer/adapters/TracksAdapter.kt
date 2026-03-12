@@ -23,9 +23,7 @@ import com.simplemobiletools.musicplayer.extensions.audioHelper
 import com.simplemobiletools.musicplayer.extensions.config
 import com.simplemobiletools.musicplayer.extensions.getTrackFileArt
 import com.simplemobiletools.musicplayer.extensions.swap
-import com.simplemobiletools.musicplayer.helpers.ALL_TRACKS_PLAYLIST_ID
-import com.simplemobiletools.musicplayer.helpers.PLAYER_SORT_BY_CUSTOM
-import com.simplemobiletools.musicplayer.helpers.SMART_PLAYLIST_ID_MAX
+import com.simplemobiletools.musicplayer.helpers.*
 import com.simplemobiletools.musicplayer.inlines.indexOfFirstOrNull
 import com.simplemobiletools.musicplayer.models.Events
 import com.simplemobiletools.musicplayer.models.Playlist
@@ -120,7 +118,14 @@ class TracksAdapter(
                 }
             }
 
-            context.audioHelper.deletePlaylistTracks(selectedTracks)
+            val playlistId = playlist?.id ?: 0
+            if (playlistId == MOST_PLAYED_TRACKS_PLAYLIST_ID) {
+                context.audioHelper.removeMostPlayedListTracks(selectedTracks)
+            } else if (playlistId == RECENTLY_PLAYED_TRACKS_PLAYLIST_ID) {
+                context.audioHelper.removeRecentlyAddedPlaylistTracks(selectedTracks)
+            } else {
+                context.audioHelper.deletePlaylistTracks(selectedTracks)
+            }
             // this is to make sure these tracks aren't automatically re-added to the 'All tracks' playlist on rescan
             val removedTrackIds = selectedTracks.filter { it.playListId == ALL_TRACKS_PLAYLIST_ID }.map { it.mediaStoreId.toString() }
             if (removedTrackIds.isNotEmpty()) {
@@ -265,7 +270,9 @@ class TracksAdapter(
     private fun isPlaylistUnlistable(): Boolean {
         if (!isPlaylistContent()) return false
         val playlistId = playlist?.id ?: 0
-        return playlistId >= SMART_PLAYLIST_ID_MAX // Include Favorite list
+        return playlistId == MOST_PLAYED_TRACKS_PLAYLIST_ID ||
+            playlistId == RECENTLY_PLAYED_TRACKS_PLAYLIST_ID ||
+            playlistId >= SMART_PLAYLIST_ID_MAX // Include Favorite list
     }
 
     companion object {

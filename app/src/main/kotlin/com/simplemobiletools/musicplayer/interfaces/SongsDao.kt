@@ -35,6 +35,12 @@ interface SongsDao {
     @Query("SELECT * FROM tracks WHERE playlist_id = $FAVORITE_TRACKS_PLAYLIST_ID ORDER BY updated_timestamp DESC")
     fun getTracksFromPlaylistFavorite(): List<Track>
 
+    @Query("UPDATE tracks SET play_count = 0 WHERE id = :id")
+    fun resetPlayCount(id: Long): Int
+
+    @Query("UPDATE tracks SET updated_timestamp = 0 WHERE id = :id")
+    fun resetUpdatedTime(id: Long): Int
+
     @Query("SELECT * FROM tracks WHERE artist_id = :artistId")
     fun getTracksFromArtist(artistId: Long): List<Track>
 

@@ -77,6 +77,16 @@ class AudioHelper(private val context: Context) {
         return context.tracksDAO.deletePlaylistTracks(tracks)
     }
 
+    fun removeMostPlayedListTracks(tracks: List<Track>) {
+        val dao = context.tracksDAO
+        tracks.forEach { dao.resetPlayCount(it.id) }
+    }
+
+    fun removeRecentlyAddedPlaylistTracks(tracks: List<Track>) {
+        val dao = context.tracksDAO
+        tracks.forEach { dao.resetUpdatedTime(it.id) }
+    }
+
     fun insertArtists(artists: List<Artist>) {
         context.artistDAO.insertAll(artists)
     }
