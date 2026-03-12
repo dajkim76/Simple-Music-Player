@@ -13,14 +13,10 @@
         android:layout_height="wrap_content"
         tools:ignore="HardcodedText">
 
-        <ImageView
+        <ImageSwitcher
             android:id="@+id/activity_track_image"
             android:layout_width="match_parent"
             android:layout_height="@dimen/top_art_height"
-            android:adjustViewBounds="true"
-            android:contentDescription="@string/album"
-            android:src="@drawable/ic_headset"
-            android:scaleType="centerCrop"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

@@ -22,9 +22,7 @@ import android.text.style.ClickableSpan
 import android.util.Log
 import android.util.Size
 import android.view.*
-import android.widget.SeekBar
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
@@ -32,6 +30,7 @@ import androidx.core.os.postDelayed
 import androidx.core.view.GestureDetectorCompat
 import androidx.core.view.isVisible
 import androidx.media3.common.MediaItem
+import androidx.media3.common.Player
 import androidx.media3.common.util.Util
 import androidx.media3.container.MdtaMetadataEntry
 import androidx.media3.exoplayer.MetadataRetriever
@@ -75,6 +74,9 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
     private var cueAdapter: CueAdapter? = null
     private lateinit var nextTrackPlaceholder: Drawable
 
+    private var isNextTrack = false
+    private var isPrevTrack = false
+
     private val handler = Handler(Looper.getMainLooper())
     private val updateIntervalMillis = 500L
 
@@ -85,6 +87,7 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         nextTrackPlaceholder = resources.getColoredDrawableWithColor(R.drawable.ic_headset_small, getProperTextColor())
+        setupImageSwitcher()
         setupButtons()
         setupFlingListener()
 
@@ -160,7 +163,7 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
             }
         }
         // avoid activity memory leak (Reset singleton bitmap, cueList cache)
-        binding.activityTrackImage.setImageBitmap(null)
+        binding.activityTrackImage.setImageDrawable(null)
         binding.activityTrackNext.setImageBitmap(null)
         cueAdapter?.onDestroy()
     }
@@ -205,9 +208,23 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
         }
     }
 
+    private fun setupImageSwitcher() {
+        binding.activityTrackImage.setFactory {
+            ImageView(this).apply {
+                scaleType = ImageView.ScaleType.CENTER_CROP
+                layoutParams = FrameLayout.LayoutParams(
+                    FrameLayout.LayoutParams.MATCH_PARENT,
+                    FrameLayout.LayoutParams.MATCH_PARENT
+                )
+            }
+        }
+    }
+
     private fun setupButtons() = binding.apply {
         activityTrackToggleShuffle.setOnClickListener { withPlayer { toggleShuffle() } }
         activityTrackPrevious.setOnClickListener {
+            isPrevTrack = true
+            isNextTrack = false
             val adapter = cueAdapter
             if (adapter != null && !adapter.isNoCueTitle && adapter.cues.isNotEmpty()) {
                 withPlayer {
@@ -234,6 +251,7 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
                         forceSeekToPrevious()
                     } else {
                         seekTo(0)
+                        isPrevTrack = false
                     }
                 }
             }
@@ -242,6 +260,8 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
         activityTrackPlayPause.setOnClickListener { togglePlayback() }
         activityTrackSeekForward.setOnClickListener { withPlayer { seekForward() } }
         activityTrackNext.setOnClickListener {
+            isNextTrack = true
+            isPrevTrack = false
             val adapter = cueAdapter
             if (adapter != null && !adapter.isNoCueTitle && adapter.cues.isNotEmpty()) {
                 withPlayer {
@@ -328,10 +348,21 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
     }
 
     private fun setupTopArt(track: Track) {
+        if (isNextTrack) {
+            binding.activityTrackImage.setInAnimation(this, R.anim.slide_in_right)
+            binding.activityTrackImage.setOutAnimation(this, R.anim.slide_out_left)
+        } else if (isPrevTrack) {
+            binding.activityTrackImage.setInAnimation(this, R.anim.slide_in_left)
+            binding.activityTrackImage.setOutAnimation(this, R.anim.slide_out_right)
+        } else {
+            binding.activityTrackImage.inAnimation = null
+            binding.activityTrackImage.outAnimation = null
+        }
+
         getTrackFileArt(track) { coverArt ->
             // reduce thread overhead
             if (coverArt is Bitmap) {
-                binding.activityTrackImage.setImageBitmap(coverArt)
+                binding.activityTrackImage.setImageDrawable(BitmapDrawable(resources, coverArt))
                 return@getTrackFileArt
             }
 
@@ -546,8 +577,14 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
         if (mediaItem == null) {
             finish()
         } else {
+            if (reason == Player.MEDIA_ITEM_TRANSITION_REASON_AUTO) {
+                isNextTrack = true
+                isPrevTrack = false
+            }
             binding.activityTrackProgressbar.progress = 0
             updateTrackInfo()
+            isNextTrack = false
+            isPrevTrack = false
         }
     }
 
