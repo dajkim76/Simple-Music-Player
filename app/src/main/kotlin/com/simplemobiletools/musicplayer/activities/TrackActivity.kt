@@ -308,6 +308,7 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
         binding.nextTrackLabel.text = "${getString(R.string.next_track)} ${track.title}$artist"
 
         getTrackFileArt(track) { coverArt ->
+            if (isFinishing || isDestroyed) return@getTrackFileArt
             val cornerRadius = resources.getDimension(com.simplemobiletools.commons.R.dimen.rounded_corner_radius_small).toInt()
             val wantedSize = resources.getDimension(R.dimen.song_image_size).toInt()
 
@@ -360,6 +361,7 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
         }
 
         getTrackFileArt(track) { coverArt ->
+            if (isFinishing || isDestroyed) return@getTrackFileArt
             // reduce thread overhead
             if (coverArt is Bitmap) {
                 binding.activityTrackImage.setImageDrawable(BitmapDrawable(resources, coverArt))
