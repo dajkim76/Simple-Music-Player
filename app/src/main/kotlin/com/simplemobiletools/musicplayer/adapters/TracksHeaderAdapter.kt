@@ -135,6 +135,7 @@ class TracksHeaderAdapter(activity: SimpleActivity, items: ArrayList<ListItem>, 
             trackDuration.text = track.duration.getFormattedDuration()
             trackId.text = track.trackId.toString()
             context.getTrackFileArt(track) { coverArt ->
+                if (activity.isFinishing || activity.isDestroyed) return@getTrackFileArt
                 loadImage(trackImage, coverArt, placeholder)
             }
             trackId.beVisible()

@@ -165,6 +165,7 @@ class AlbumsTracksAdapter(
             trackDuration.setTextColor(textColor)
 
             context.getTrackFileArt(track) { coverArt ->
+                if (activity.isFinishing || activity.isDestroyed) return@getTrackFileArt
                 loadImage(trackImage, coverArt, placeholder)
             }
         }

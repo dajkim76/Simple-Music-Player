@@ -170,6 +170,7 @@ class QueueAdapter(activity: SimpleActivity, items: ArrayList<Track>, var curren
             }
 
             context.getTrackFileArt(track) { coverArt ->
+                if (activity.isFinishing || activity.isDestroyed) return@getTrackFileArt
                 loadImage(trackQueueImage, coverArt, placeholderBig)
             }
         }

@@ -208,6 +208,7 @@ class TracksAdapter(
 
             trackDuration.text = track.duration.getFormattedDuration()
             activity.getTrackFileArt(track) { coverArt ->
+                if (activity.isFinishing || activity.isDestroyed) return@getTrackFileArt
                 loadImage(trackImage, coverArt, placeholderBig)
             }
 

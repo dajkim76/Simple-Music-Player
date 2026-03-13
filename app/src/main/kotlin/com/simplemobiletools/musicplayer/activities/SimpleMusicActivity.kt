@@ -23,7 +23,7 @@ abstract class SimpleMusicActivity : SimpleControllerActivity(), Player.Listener
 
     fun setupCurrentTrackBar(trackBar: CurrentTrackBar) {
         trackBarView = trackBar
-        trackBarView?.initialize(togglePlayback = ::togglePlayback, ::seekToNext)
+        trackBarView?.initialize(this, togglePlayback = ::togglePlayback, ::seekToNext)
         trackBarView?.setOnClickListener {
             hideKeyboard()
             handleNotificationPermission { granted ->
