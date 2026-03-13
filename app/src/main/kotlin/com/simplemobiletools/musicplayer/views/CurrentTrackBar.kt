@@ -23,7 +23,7 @@ import com.simplemobiletools.musicplayer.extensions.*
 
 class CurrentTrackBar(context: Context, attributeSet: AttributeSet) : RelativeLayout(context, attributeSet) {
     private val binding by viewBinding(ViewCurrentTrackBarBinding::bind)
-    private var activity: Activity? = null
+    private lateinit var activity: Activity
 
     fun initialize(activity: Activity, togglePlayback: () -> Unit, seekToNext: () -> Unit) {
         this.activity = activity
@@ -65,7 +65,7 @@ class CurrentTrackBar(context: Context, attributeSet: AttributeSet) : RelativeLa
             .transform(CenterCrop(), RoundedCorners(cornerRadius))
 
         context.getTrackFileArt(track) { coverArt ->
-            if (activity?.isFinishing == true || activity?.isDestroyed == true) return@getTrackFileArt
+            if (activity.isFinishing || activity.isDestroyed) return@getTrackFileArt
             if (coverArt is Bitmap) {
                 if (binding.currentTrackImage.outlineProvider === ViewOutlineProvider.BACKGROUND) {
                     binding.currentTrackImage.apply {

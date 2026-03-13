@@ -164,6 +164,7 @@ class TracksHeaderAdapter(activity: SimpleActivity, items: ArrayList<ListItem>, 
                 val album = context.audioHelper.getAlbum(header.id)
                 if (album != null) {
                     context.getAlbumCoverArt(album) { coverArt ->
+                        if (activity.isFinishing || activity.isDestroyed) return@getAlbumCoverArt
                         loadImage(albumImage, coverArt, placeholderBig)
                     }
                 } else {

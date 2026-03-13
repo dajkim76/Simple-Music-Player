@@ -93,6 +93,7 @@ class ArtistsAdapter(activity: BaseSimpleActivity, items: ArrayList<Artist>, rec
             artistAlbumsTracks.setTextColor(textColor)
 
             context.getArtistCoverArt(artist) { coverArt ->
+                if (activity.isFinishing || activity.isDestroyed) return@getArtistCoverArt
                 loadImage(artistImage, coverArt, placeholder)
             }
         }

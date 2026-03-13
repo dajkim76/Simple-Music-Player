@@ -145,6 +145,7 @@ class AlbumsTracksAdapter(
             albumTracks.setTextColor(textColor)
 
             context.getAlbumCoverArt(album) { coverArt ->
+                if (activity.isFinishing || activity.isDestroyed) return@getAlbumCoverArt
                 loadImage(albumImage, coverArt, placeholderBig)
             }
         }

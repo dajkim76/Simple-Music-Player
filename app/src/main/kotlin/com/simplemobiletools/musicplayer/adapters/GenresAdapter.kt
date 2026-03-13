@@ -94,6 +94,7 @@ class GenresAdapter(activity: BaseSimpleActivity, items: ArrayList<Genre>, recyc
             genreTracks.setTextColor(textColor)
 
             activity.getGenreCoverArt(genre) { coverArt ->
+                if (activity.isFinishing || activity.isDestroyed) return@getGenreCoverArt
                 loadImage(genreImage, coverArt, placeholderBig)
             }
         }
