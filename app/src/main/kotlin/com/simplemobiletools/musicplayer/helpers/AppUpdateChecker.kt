@@ -7,7 +7,6 @@ import android.net.Uri
 import androidx.appcompat.app.AlertDialog
 import com.google.firebase.Firebase
 import com.google.firebase.remoteconfig.remoteConfig
-import com.google.firebase.remoteconfig.remoteConfigSettings
 import com.simplemobiletools.commons.extensions.toast
 import com.simplemobiletools.musicplayer.BuildConfig
 import com.simplemobiletools.musicplayer.R
@@ -27,7 +26,7 @@ class AppUpdateChecker private constructor(private val context: Activity) {
         val current = BuildConfig.VERSION_CODE
 
         if (current < force) {
-            showUpdateDialog(false)
+            showUpdateDialog(isCancelable = false)
             return
         }
 
@@ -38,7 +37,7 @@ class AppUpdateChecker private constructor(private val context: Activity) {
             val now = System.currentTimeMillis()
 
             if (now - lastAlert > interval) {
-                showUpdateDialog(true)
+                showUpdateDialog(isCancelable = true)
                 prefs.edit()
                     .putLong(PREF_LAST_ALERT, now)
                     .apply()
@@ -46,18 +45,18 @@ class AppUpdateChecker private constructor(private val context: Activity) {
         }
     }
 
-    fun showUpdateDialog(isCancellable: Boolean) {
+    fun showUpdateDialog(isCancelable: Boolean) {
         val builder = AlertDialog.Builder(context)
             .setMessage(R.string.update_message)
             .setPositiveButton(R.string.update) { _, _ ->
                 openReleasePage()
-                if (!isCancellable) {
+                if (!isCancelable) {
                     context.finishAffinity()
                 }
             }
-            .setCancelable(isCancellable)
+            .setCancelable(isCancelable)
 
-        if (isCancellable) {
+        if (isCancelable) {
             builder.setNegativeButton(context.getString(com.simplemobiletools.commons.R.string.cancel), null)
         }
         builder.show()
@@ -79,17 +78,11 @@ class AppUpdateChecker private constructor(private val context: Activity) {
         private const val PREF_LAST_ALERT = "last_update_alert"
 
         fun check(activity: Activity) {
-            AppUpdateChecker(activity).check()
-
-            if (BuildConfig.DEBUG) {
-                // Debug mode: immediately, Release mode: 12 hours,
-                val settings = remoteConfigSettings {
-                    minimumFetchIntervalInSeconds = 0
-                }
-                Firebase.remoteConfig.setConfigSettingsAsync(settings)
+            try {
+                AppUpdateChecker(activity).check()
+            } catch (_: Exception) {
+                // ignore
             }
-
-            Firebase.remoteConfig.fetchAndActivate()
         }
     }
 }
