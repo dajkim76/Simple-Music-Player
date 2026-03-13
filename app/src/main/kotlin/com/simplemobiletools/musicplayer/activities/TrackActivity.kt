@@ -223,8 +223,6 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
     private fun setupButtons() = binding.apply {
         activityTrackToggleShuffle.setOnClickListener { withPlayer { toggleShuffle() } }
         activityTrackPrevious.setOnClickListener {
-            isPrevTrack = true
-            isNextTrack = false
             val adapter = cueAdapter
             if (adapter != null && !adapter.isNoCueTitle && adapter.cues.isNotEmpty()) {
                 withPlayer {
@@ -241,6 +239,8 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
                     if (targetIndex >= 0) {
                         seekTo(cues[targetIndex].timestamp * 1000L)
                     } else {
+                        isPrevTrack = true
+                        isNextTrack = false
                         forceSeekToPrevious()
                     }
                 }
@@ -248,6 +248,8 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
                 withPlayer {
                     val positionMillis = currentPosition
                     if (positionMillis < 3000) {
+                        isPrevTrack = true
+                        isNextTrack = false
                         forceSeekToPrevious()
                     } else {
                         seekTo(0)
@@ -260,8 +262,6 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
         activityTrackPlayPause.setOnClickListener { togglePlayback() }
         activityTrackSeekForward.setOnClickListener { withPlayer { seekForward() } }
         activityTrackNext.setOnClickListener {
-            isNextTrack = true
-            isPrevTrack = false
             val adapter = cueAdapter
             if (adapter != null && !adapter.isNoCueTitle && adapter.cues.isNotEmpty()) {
                 withPlayer {
@@ -270,11 +270,17 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
                     if (nextEnabledCue != null) {
                         seekTo(nextEnabledCue.timestamp * 1000L)
                     } else {
+                        isNextTrack = true
+                        isPrevTrack = false
                         forceSeekToNext()
                     }
                 }
             } else {
-                withPlayer { forceSeekToNext() }
+                withPlayer {
+                    isNextTrack = true
+                    isPrevTrack = false
+                    forceSeekToNext()
+                }
             }
         }
         activityTrackProgressCurrent.setOnClickListener { seekBack() }
@@ -585,8 +591,6 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
             }
             binding.activityTrackProgressbar.progress = 0
             updateTrackInfo()
-            isNextTrack = false
-            isPrevTrack = false
         }
     }
 
@@ -594,6 +598,8 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
         withPlayer {
             setupTrackInfo(currentMediaItem)
             setupNextTrackInfo(nextMediaItem)
+            isNextTrack = false
+            isPrevTrack = false
         }
     }
 
