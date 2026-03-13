@@ -10,6 +10,7 @@ import com.simplemobiletools.musicplayer.extensions.*
 import com.simplemobiletools.musicplayer.helpers.CueListCache
 import com.simplemobiletools.musicplayer.inlines.indexOfFirstOrNull
 import kotlinx.coroutines.*
+import java.util.concurrent.CopyOnWriteArraySet
 
 private const val DEFAULT_SHUFFLE_ORDER_SEED = 42L
 
@@ -21,11 +22,40 @@ class SimpleMusicPlayer(private val exoPlayer: ExoPlayer) : ForwardingPlayer(exo
         Handled,
         NotHandled
     }
-    
+
+    var currentCueTitle: String? = null
+    private val myListeners = CopyOnWriteArraySet<Player.Listener>()
+
     private var seekToNextCount = 0
     private var seekToPreviousCount = 0
     private val scope = CoroutineScope(Dispatchers.Default)
     private var seekJob: Job? = null
+
+    override fun addListener(listener: Player.Listener) {
+        super.addListener(listener)
+        myListeners.add(listener)
+    }
+
+    override fun removeListener(listener: Player.Listener) {
+        super.removeListener(listener)
+        myListeners.remove(listener)
+    }
+
+    override fun getMediaMetadata(): androidx.media3.common.MediaMetadata {
+        val metadata = super.getMediaMetadata()
+        return if (currentCueTitle != null) {
+            metadata.buildUpon().setTitle(currentCueTitle).build()
+        } else {
+            metadata
+        }
+    }
+
+    fun invalidateMediaMetadata() {
+        val currentMetadata = mediaMetadata
+        myListeners.forEach {
+            it.onMediaMetadataChanged(currentMetadata)
+        }
+    }
 
     /**
      * The default implementation only advertises the seek to next and previous item in the case

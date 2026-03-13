@@ -180,6 +180,10 @@ class PlaybackService : MediaLibraryService(), MediaSessionService.Listener {
                 if (lastCueTitle != currentCue.title) {
                     lastCueTitle = currentCue.title
                     broadcastUpdateWidgetState(currentCue.title)
+                    withPlayer {
+                        currentCueTitle = currentCue.title
+                        invalidateMediaMetadata()
+                    }
                 }
             }
         }
