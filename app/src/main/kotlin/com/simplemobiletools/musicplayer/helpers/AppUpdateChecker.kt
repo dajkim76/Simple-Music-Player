@@ -10,6 +10,7 @@ import com.google.firebase.remoteconfig.remoteConfig
 import com.google.firebase.remoteconfig.remoteConfigSettings
 import com.simplemobiletools.commons.extensions.toast
 import com.simplemobiletools.musicplayer.BuildConfig
+import com.simplemobiletools.musicplayer.R
 import com.simplemobiletools.musicplayer.activities.RELEASE_URL
 import java.util.concurrent.TimeUnit
 
@@ -47,8 +48,8 @@ class AppUpdateChecker private constructor(private val context: Activity) {
 
     fun showUpdateDialog(isCancellable: Boolean) {
         val builder = AlertDialog.Builder(context)
-            .setMessage("A new version has been released.\n\nWould you like to update?")
-            .setPositiveButton("Update") { _, _ ->
+            .setMessage(R.string.update_message)
+            .setPositiveButton(R.string.update) { _, _ ->
                 openReleasePage()
                 if (!isCancellable) {
                     context.finishAffinity()
@@ -57,7 +58,7 @@ class AppUpdateChecker private constructor(private val context: Activity) {
             .setCancelable(isCancellable)
 
         if (isCancellable) {
-            builder.setNegativeButton("Cancel", null)
+            builder.setNegativeButton(context.getString(com.simplemobiletools.commons.R.string.cancel), null)
         }
         builder.show()
     }

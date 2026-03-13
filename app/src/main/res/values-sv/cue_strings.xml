@@ -22,4 +22,6 @@
     <string name="favorite_tracks">Favoritspår</string>
     <string name="auto">Auto</string>
     <string name="keep_track_last_position">När användaren spelar ett spår startar det från den senaste uppspelningspositionen.</string>
+    <string name="update_message">En ny version har släppts.\n\nVill du uppdatera?</string>
+    <string name="update">Uppdatera</string>
 </resources>

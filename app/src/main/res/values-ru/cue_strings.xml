@@ -22,4 +22,6 @@
     <string name="favorite_tracks">Любимые треки</string>
     <string name="auto">Авто</string>
     <string name="keep_track_last_position">Когда пользователь воспроизводит трек, он начинается с последней позиции воспроизведения.</string>
+    <string name="update_message">Выпущена новая версия.\n\nХотите обновить?</string>
+    <string name="update">Обновить</string>
 </resources>

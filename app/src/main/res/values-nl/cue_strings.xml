@@ -22,4 +22,6 @@
     <string name="favorite_tracks">Favoriete tracks</string>
     <string name="auto">Automatisch</string>
     <string name="keep_track_last_position">Wanneer de gebruiker een track afspeelt, begint deze vanaf de laatste afspeelpositie.</string>
+    <string name="update_message">Er is een nieuwe versie uitgebracht.\n\nWilt u bijwerken?</string>
+    <string name="update">Bijwerken</string>
 </resources>

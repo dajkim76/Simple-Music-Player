@@ -22,4 +22,6 @@
     <string name="favorite_tracks">Tracce preferite</string>
     <string name="auto">Auto</string>
     <string name="keep_track_last_position">Quando l\'utente riproduce una traccia, questa inizia dall\'ultima posizione di riproduzione.</string>
+    <string name="update_message">È stata rilasciata una nuova versione.\n\nVuoi aggiornare?</string>
+    <string name="update">Aggiorna</string>
 </resources>

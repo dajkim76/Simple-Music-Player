@@ -22,4 +22,6 @@
     <string name="favorite_tracks">പ്രിയപ്പെട്ട ട്രാക്കുകൾ</string>
     <string name="auto">ഓട്ടോ</string>
     <string name="keep_track_last_position">ഉപയോക്താവ് ഒരു ട്രാക്ക് പ്ലേ ചെയ്യുമ്പോൾ, അത് അവസാന പ്ലേബാക്ക് സ്ഥാനത്ത് നിന്ന് ആരംഭിക്കുന്നു.</string>
+    <string name="update_message">ഒരു പുതിയ പതിപ്പ് പുറത്തിറങ്ങി.\n\nനിങ്ങൾക്ക് പുതുക്കണോ?</string>
+    <string name="update">പുതുക്കുക</string>
 </resources>

@@ -22,4 +22,6 @@
     <string name="favorite_tracks">Lieblingstitel</string>
     <string name="auto">Auto</string>
     <string name="keep_track_last_position">Wenn der Benutzer einen Titel abspielt, beginnt dieser an der letzten Wiedergabeposition.</string>
+    <string name="update_message">Eine neue Version wurde veröffentlicht.\n\nMöchten Sie aktualisieren?</string>
+    <string name="update">Aktualisieren</string>
 </resources>

@@ -22,4 +22,6 @@
     <string name="favorite_tracks">Obľúbené skladby</string>
     <string name="auto">Auto</string>
     <string name="keep_track_last_position">Keď používateľ prehrá skladbu, začne od poslednej pozície prehrávania.</string>
+    <string name="update_message">Bola vydaná nová verzia.\n\nChcete aktualizovať?</string>
+    <string name="update">Aktualizovať</string>
 </resources>

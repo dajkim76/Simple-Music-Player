@@ -22,4 +22,6 @@
     <string name="favorite_tracks">Favori parçalar</string>
     <string name="auto">Otomatik</string>
     <string name="keep_track_last_position">Kullanıcı bir parçayı çaldığında, en son çalma konumundan başlar.</string>
+    <string name="update_message">Yeni bir sürüm yayınlandı.\n\nGüncellemek ister misiniz?</string>
+    <string name="update">Güncelle</string>
 </resources>

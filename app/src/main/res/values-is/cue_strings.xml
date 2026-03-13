@@ -22,4 +22,6 @@
     <string name="favorite_tracks">Uppáhalds lög</string>
     <string name="auto">Sjálfvirkt</string>
     <string name="keep_track_last_position">Þegar notandinn spilar lag, byrjar það frá síðustu spilunarstöðu.</string>
+    <string name="update_message">Ný útgáfa hefur verið gefin út.\n\nViltu uppfæra?</string>
+    <string name="update">Uppfæra</string>
 </resources>

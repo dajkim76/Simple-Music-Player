@@ -22,4 +22,6 @@
     <string name="favorite_tracks">آهنگ‌های مورد علاقه</string>
     <string name="auto">خودکار</string>
     <string name="keep_track_last_position">هنگامی که کاربر آهنگی را پخش می کند، از آخرین موقعیت پخش شروع می شود.</string>
+    <string name="update_message">نسخه جدیدی منتشر شده است.\n\nآیا مایل به بروزرسانی هستید؟</string>
+    <string name="update">بروزرسانی</string>
 </resources>

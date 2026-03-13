@@ -22,4 +22,6 @@
     <string name="favorite_tracks">Омиљене нумере</string>
     <string name="auto">Ауто</string>
     <string name="keep_track_last_position">Када корисник репродукује нумеру, она почиње од последње позиције репродукције.</string>
+    <string name="update_message">Објављена је нова верзија.\n\nЖелите ли да ажурирате?</string>
+    <string name="update">Ажурирај</string>
 </resources>

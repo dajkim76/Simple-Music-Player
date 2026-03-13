@@ -22,4 +22,6 @@
     <string name="favorite_tracks">Lemmiklood</string>
     <string name="auto">Automaatne</string>
     <string name="keep_track_last_position">Kui kasutaja mängib lugu, algab see viimasest taasesituskohast.</string>
+    <string name="update_message">Uus versioon on välja antud.\n\nKas soovite värskendada?</string>
+    <string name="update">Värskenda</string>
 </resources>

@@ -22,4 +22,6 @@
     <string name="favorite_tracks">Priljubljene skladbe</string>
     <string name="auto">Samodejno</string>
     <string name="keep_track_last_position">Ko uporabnik predvaja skladbo, se ta začne od zadnjega položaja predvajanja.</string>
+    <string name="update_message">Izdana je bila nova različica.\n\nAli jo želite posodobiti?</string>
+    <string name="update">Posodobi</string>
 </resources>

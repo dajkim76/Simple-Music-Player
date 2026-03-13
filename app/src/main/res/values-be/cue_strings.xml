@@ -22,4 +22,6 @@
     <string name="favorite_tracks">Улюбёныя трэкі</string>
     <string name="auto">Аўтаматычна</string>
     <string name="keep_track_last_position">Калі карыстальнік прайграе трэк, ён пачынаецца з апошняй пазіцыі прайгравання.</string>
+    <string name="update_message">Выпушчана новая версія.\n\nЖадаеце абнавіць?</string>
+    <string name="update">Аднавіць</string>
 </resources>

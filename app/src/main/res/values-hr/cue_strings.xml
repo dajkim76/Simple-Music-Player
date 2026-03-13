@@ -22,4 +22,6 @@
     <string name="favorite_tracks">Omiljene pjesme</string>
     <string name="auto">Auto</string>
     <string name="keep_track_last_position">Kada korisnik reproducira zapis, on započinje od posljednje pozicije reprodukcije.</string>
+    <string name="update_message">Objavljena je nova verzija.\n\nŽelite li ažurirati?</string>
+    <string name="update">Ažuriraj</string>
 </resources>

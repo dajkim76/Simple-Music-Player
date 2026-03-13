@@ -22,4 +22,6 @@
     <string name="favorite_tracks">المقاطع المفضلة</string>
     <string name="auto">تلقائي</string>
     <string name="keep_track_last_position">عندما يقوم المستخدم بتشغيل مسار، فإنه يبدأ من آخر موضع تشغيل.</string>
+    <string name="update_message">تم إصدار نسخة جديدة.\n\nهل ترغب في التحديث؟</string>
+    <string name="update">تحديث</string>
 </resources>

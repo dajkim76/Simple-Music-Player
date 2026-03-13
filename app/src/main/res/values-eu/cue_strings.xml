@@ -22,4 +22,6 @@
     <string name="favorite_tracks">Pista gogokoenak</string>
     <string name="auto">Auto</string>
     <string name="keep_track_last_position">Erabiltzaileak pista bat erreproduzitzen duenean, azken erreprodukzio-posiziotik hasten da.</string>
+    <string name="update_message">Bertsio berri bat kaleratu da.\n\nEguneratu nahi duzu?</string>
+    <string name="update">Eguneratu</string>
 </resources>

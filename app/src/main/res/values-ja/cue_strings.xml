@@ -22,4 +22,6 @@
     <string name="favorite_tracks">お気に入りのトラック</string>
     <string name="auto">自動</string>
     <string name="keep_track_last_position">ユーザーがトラックを再生すると、最後の再生位置から開始されます。</string>
+    <string name="update_message">新しいバージョンがリリースされました。\n\nアップデートしますか？</string>
+    <string name="update">アップデート</string>
 </resources>

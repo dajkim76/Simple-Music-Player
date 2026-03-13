@@ -22,4 +22,6 @@
     <string name="favorite_tracks">Любими песни</string>
     <string name="auto">Автоматично</string>
     <string name="keep_track_last_position">Когато потребителят пусне песен, тя започва от последната позиция на възпроизвеждане.</string>
+    <string name="update_message">Издадена е нова версия.\n\nЖелаете ли да актуализирате?</string>
+    <string name="update">Актуализиране</string>
 </resources>

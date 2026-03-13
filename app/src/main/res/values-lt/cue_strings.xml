@@ -22,4 +22,6 @@
     <string name="favorite_tracks">Mėgstamiausi takeliai</string>
     <string name="auto">Auto</string>
     <string name="keep_track_last_position">Kai vartotojas paleidžia takelį, jis prasideda nuo paskutinės atkūrimo pozicijos.</string>
+    <string name="update_message">Išleista nauja versija.\n\nAr norite atnaujinti?</string>
+    <string name="update">Atnaujinti</string>
 </resources>

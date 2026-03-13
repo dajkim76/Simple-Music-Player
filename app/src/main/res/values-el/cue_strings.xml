@@ -22,4 +22,6 @@
     <string name="favorite_tracks">Αγαπημένα κομμάτια</string>
     <string name="auto">Αυτόματο</string>
     <string name="keep_track_last_position">Όταν ο χρήστης αναπαράγει ένα κομμάτι, ξεκινά από την τελευταία θέση αναπαραγωγής.</string>
+    <string name="update_message">Μια νέα έκδοση έχει κυκλοφορήσει.\n\nΘέλετε να κάνετε ενημέρωση;</string>
+    <string name="update">Ενημέρωση</string>
 </resources>

@@ -22,4 +22,6 @@
     <string name="favorite_tracks">Faixas favoritas</string>
     <string name="auto">Automático</string>
     <string name="keep_track_last_position">Quando o usuário reproduz uma faixa, ela começa a partir da última posição de reprodução.</string>
+    <string name="update_message">Uma nova versão foi lançada.\n\nDeseja atualizar?</string>
+    <string name="update">Atualizar</string>
 </resources>

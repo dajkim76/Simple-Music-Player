@@ -22,4 +22,6 @@
     <string name="favorite_tracks">Trek favorit</string>
     <string name="auto">Otomatis</string>
     <string name="keep_track_last_position">Saat pengguna memutar trek, pemutaran dimulai dari posisi pemutaran terakhir.</string>
+    <string name="update_message">Versi baru telah dirilis.\n\nApakah Anda ingin memperbarui?</string>
+    <string name="update">Perbarui</string>
 </resources>
