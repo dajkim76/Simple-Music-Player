@@ -79,6 +79,7 @@ androidx-compose-ui-text = { group = "androidx.compose.ui", name = "ui-text", ve
 firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebase-bom" }
 firebase-crashlytics = { group = "com.google.firebase", name = "firebase-crashlytics" }
 firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics" }
+firebase-config = { group = "com.google.firebase", name = "firebase-config" }
 [bundles]
 room = [
     "androidx-room-ktx",

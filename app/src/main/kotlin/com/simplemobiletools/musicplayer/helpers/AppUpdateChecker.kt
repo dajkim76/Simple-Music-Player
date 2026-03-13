@@ -1,0 +1,94 @@
+package com.simplemobiletools.musicplayer.helpers
+
+import android.app.Activity
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
+import androidx.appcompat.app.AlertDialog
+import com.google.firebase.Firebase
+import com.google.firebase.remoteconfig.remoteConfig
+import com.google.firebase.remoteconfig.remoteConfigSettings
+import com.simplemobiletools.commons.extensions.toast
+import com.simplemobiletools.musicplayer.BuildConfig
+import com.simplemobiletools.musicplayer.activities.RELEASE_URL
+import java.util.concurrent.TimeUnit
+
+class AppUpdateChecker private constructor(private val context: Activity) {
+    private fun check() {
+        val remoteConfig = Firebase.remoteConfig
+        val intervalDays = remoteConfig.getLong("update_alert_interval_days")
+        if (intervalDays <= 0L) { // default
+            return
+        }
+
+        val latest = remoteConfig.getLong("latest_version_code").toInt()
+        val force = remoteConfig.getLong("force_update_version").toInt()
+        val current = BuildConfig.VERSION_CODE
+
+        if (current < force) {
+            showUpdateDialog(false)
+            return
+        }
+
+        if (current < latest) {
+            val prefs = context.getSharedPreferences("app_settings", Context.MODE_PRIVATE)
+            val lastAlert = prefs.getLong(PREF_LAST_ALERT, 0)
+            val interval = if (BuildConfig.DEBUG) TimeUnit.MINUTES.toMillis(1) else TimeUnit.DAYS.toMillis(intervalDays)
+            val now = System.currentTimeMillis()
+
+            if (now - lastAlert > interval) {
+                showUpdateDialog(true)
+                prefs.edit()
+                    .putLong(PREF_LAST_ALERT, now)
+                    .apply()
+            }
+        }
+    }
+
+    fun showUpdateDialog(isCancellable: Boolean) {
+        val builder = AlertDialog.Builder(context)
+            .setMessage("A new version has been released.\n\nWould you like to update?")
+            .setPositiveButton("Update") { _, _ ->
+                openReleasePage()
+                if (!isCancellable) {
+                    context.finishAffinity()
+                }
+            }
+            .setCancelable(isCancellable)
+
+        if (isCancellable) {
+            builder.setNegativeButton("Cancel", null)
+        }
+        builder.show()
+    }
+
+    private fun openReleasePage() {
+        try {
+            //val uri = Uri.parse("market://details?id=${context.packageName}")
+            val uri = Uri.parse(RELEASE_URL)
+            val intent = Intent(Intent.ACTION_VIEW, uri)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            context.startActivity(intent)
+        } catch (ex: Exception) {
+            context.toast(ex.message ?: "Unknown error")
+        }
+    }
+
+    companion object {
+        private const val PREF_LAST_ALERT = "last_update_alert"
+
+        fun check(activity: Activity) {
+            AppUpdateChecker(activity).check()
+
+            if (BuildConfig.DEBUG) {
+                // Debug mode: immediately, Release mode: 12 hours,
+                val settings = remoteConfigSettings {
+                    minimumFetchIntervalInSeconds = 0
+                }
+                Firebase.remoteConfig.setConfigSettingsAsync(settings)
+            }
+
+            Firebase.remoteConfig.fetchAndActivate()
+        }
+    }
+}

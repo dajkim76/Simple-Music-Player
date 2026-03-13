@@ -70,6 +70,7 @@ class MainActivity : SimpleMusicActivity() {
         volumeControlStream = AudioManager.STREAM_MUSIC
         checkWhatsNewDialog()
         checkAppOnSDCard()
+        AppUpdateChecker.check(this)
     }
 
     override fun onResume() {
