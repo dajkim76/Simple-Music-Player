@@ -24,6 +24,7 @@ import android.util.Size
 import android.view.*
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.widget.AppCompatEditText
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.os.postDelayed
@@ -699,7 +700,7 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
                 }, { track, updatedCues ->
                     CueListCache.updateCacheByCueList(track.fileStableId, updatedCues)
                     CueListCache.saveCueListAsync(this@TrackActivity, track, Gson().toJson(updatedCues))
-                })
+                }, { track -> onClickNewCue(track) })
                 binding.activityTrackCuesList.apply {
                     layoutManager = LinearLayoutManager(this@TrackActivity)
                     adapter = cueAdapter
@@ -720,6 +721,31 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
         } else {
             cueAdapter?.refreshList(cues, track)
             binding.activityTrackCuesList.beGone()
+        }
+    }
+
+    private fun onClickNewCue(track: Track) {
+        withPlayer {
+            val seconds = currentPosition.milliseconds.inWholeSeconds.toInt()
+            runOnUiThread {
+                val edit = AppCompatEditText(this@TrackActivity)
+                AlertDialog.Builder(this@TrackActivity)
+                    .setTitle(R.string.new_timestamp)
+                    .setMessage(seconds.getFormattedDuration())
+                    .setView(edit)
+                    .setNegativeButton(com.simplemobiletools.commons.R.string.cancel, null)
+                    .setPositiveButton(com.simplemobiletools.commons.R.string.ok) { _, _ ->
+                        val title = edit.text.toString().takeIf { it.isNotBlank() } ?: "Untitled"
+                        val cue = Cue(seconds, title)
+                        val cueList = cueAdapter?.cues?.toMutableList() ?: return@setPositiveButton
+                        cueList.add(cue)
+                        cueList.sortBy { it.timestamp }
+                        updateCueList(track, cueList)
+                        CueListCache.updateCacheByCueList(track.fileStableId, cueList)
+                        CueListCache.saveCueListAsync(this@TrackActivity, track, Gson().toJson(cueList))
+                    }
+                    .show()
+            }
         }
     }
 

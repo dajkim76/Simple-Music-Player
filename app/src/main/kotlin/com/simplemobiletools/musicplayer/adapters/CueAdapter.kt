@@ -22,7 +22,8 @@ import com.simplemobiletools.musicplayer.models.Track
 class CueAdapter(
     private val activity: SimpleActivity,
     private val itemClick: (Cue) -> Unit,
-    private val itemUpdated: (track: Track, updatedCues: List<Cue>) -> Unit
+    private val itemUpdated: (track: Track, updatedCues: List<Cue>) -> Unit,
+    private val newItemClick: (track: Track) -> Unit,
 ) : RecyclerView.Adapter<CueAdapter.ViewHolder>() {
 
     var cues: List<Cue> = emptyList()
@@ -148,7 +149,8 @@ class CueAdapter(
             popup.menu.add(0, 0, 0, skipLabel)
             popup.menu.add(0, 1, 0, activity.getString(R.string.favorites_toggle))
             popup.menu.add(0, 2, 0, activity.getString(R.string.adjust_timestamp))
-            popup.menu.add(0, 3, 0, activity.getString(if (cue.isRepeat) R.string.repeat_off else R.string.repeat_song))
+            popup.menu.add(0, 3, 0, activity.getString(R.string.new_timestamp))
+            popup.menu.add(0, 4, 0, activity.getString(if (cue.isRepeat) R.string.repeat_off else R.string.repeat_song))
             popup.setOnMenuItemClickListener { item ->
                 when (item.itemId) {
                     0 -> {
@@ -191,7 +193,7 @@ class CueAdapter(
                                         favorite = cue.favorite,
                                         isRepeat = cue.isRepeat
                                     )
-                                newCues.sortedBy { it.timestamp }
+                                newCues.sortBy { it.timestamp }
                                 cues = newCues
                                 makeDuration()
                                 notifyDataSetChanged() // after sortedBy
@@ -201,6 +203,10 @@ class CueAdapter(
                     }
 
                     3 -> {
+                        newItemClick(track)
+                    }
+
+                    4 -> {
                         cues.forEachIndexed { index, item ->
                             if (index != position && item.isRepeat) {
                                 item.isRepeat = false

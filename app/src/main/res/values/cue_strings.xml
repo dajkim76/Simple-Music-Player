@@ -24,4 +24,5 @@
     <string name="keep_track_last_position">When the user plays a track, it starts from the last playback position.</string>
     <string name="update_message">A new version has been released.\n\nWould you like to update?</string>
     <string name="update">Update</string>
+    <string name="new_timestamp">New timestamp</string>
 </resources>
