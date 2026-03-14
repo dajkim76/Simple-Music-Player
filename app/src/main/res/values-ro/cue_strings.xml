@@ -24,4 +24,5 @@
     <string name="keep_track_last_position">Când utilizatorul redă o piesă, aceasta începe de la ultima poziție de redare.</string>
     <string name="update_message">O nouă versiune a fost lansată.\n\nDoriți să actualizați?</string>
     <string name="update">Actualizare</string>
+    <string name="new_timestamp">Marcaj de timp nou</string>
 </resources>

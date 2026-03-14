@@ -24,4 +24,5 @@
     <string name="keep_track_last_position">Amikor a felhasználó lejátszik egy számot, az az utolsó lejátszási pozíciótól indul.</string>
     <string name="update_message">Új verzió jelent meg.\n\nSzeretné frissíteni?</string>
     <string name="update">Frissítés</string>
+    <string name="new_timestamp">Új időbélyeg</string>
 </resources>

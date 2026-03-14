@@ -24,4 +24,5 @@
     <string name="keep_track_last_position">Kun käyttäjä toistaa kappaleen, se alkaa viimeisimmästä toistokohdasta.</string>
     <string name="update_message">Uusi versio on julkaistu.\n\nHaluatko päivittää?</string>
     <string name="update">Päivitä</string>
+    <string name="new_timestamp">Uusi aikaleima</string>
 </resources>

@@ -24,4 +24,5 @@
     <string name="keep_track_last_position">Kullanıcı bir parçayı çaldığında, en son çalma konumundan başlar.</string>
     <string name="update_message">Yeni bir sürüm yayınlandı.\n\nGüncellemek ister misiniz?</string>
     <string name="update">Güncelle</string>
+    <string name="new_timestamp">Yeni zaman damgası</string>
 </resources>

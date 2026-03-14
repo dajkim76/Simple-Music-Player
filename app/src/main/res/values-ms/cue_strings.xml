@@ -24,4 +24,5 @@
     <string name="keep_track_last_position">Apabila pengguna memainkan trek, ia bermula dari kedudukan main balik terakhir.</string>
     <string name="update_message">Versi baharu telah dikeluarkan.\n\nAdakah anda mahu mengemas kini?</string>
     <string name="update">Kemas kini</string>
+    <string name="new_timestamp">Setem masa baru</string>
 </resources>

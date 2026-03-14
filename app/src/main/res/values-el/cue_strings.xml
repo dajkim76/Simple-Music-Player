@@ -24,4 +24,5 @@
     <string name="keep_track_last_position">Όταν ο χρήστης αναπαράγει ένα κομμάτι, ξεκινά από την τελευταία θέση αναπαραγωγής.</string>
     <string name="update_message">Μια νέα έκδοση έχει κυκλοφορήσει.\n\nΘέλετε να κάνετε ενημέρωση;</string>
     <string name="update">Ενημέρωση</string>
+    <string name="new_timestamp">Νέα χρονική σήμανση</string>
 </resources>

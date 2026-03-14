@@ -24,4 +24,5 @@
     <string name="keep_track_last_position">Kiam la uzanto ludas trakon, ĝi komenciĝas de la lasta reprodukta pozicio.</string>
     <string name="update_message">Nova versio estas publikigita.\n\nĈu vi volas ĝisdatigi?</string>
     <string name="update">Ĝisdatigi</string>
+    <string name="new_timestamp">Nova horo-marko</string>
 </resources>

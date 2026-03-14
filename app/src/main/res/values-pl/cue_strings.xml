@@ -24,4 +24,5 @@
     <string name="keep_track_last_position">Gdy użytkownik odtwarza utwór, rozpoczyna się on od ostatniej pozycji odtwarzania.</string>
     <string name="update_message">Wydano nową wersję.\n\nCzy chcesz zaktualizować?</string>
     <string name="update">Aktualizuj</string>
+    <string name="new_timestamp">Nowy znacznik czasu</string>
 </resources>

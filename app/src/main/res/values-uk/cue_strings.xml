@@ -24,4 +24,5 @@
     <string name="keep_track_last_position">Коли користувач відтворює трек, він починається з останньої позиції відтворення.</string>
     <string name="update_message">Випущено нову версію.\n\nБажаєте оновити?</string>
     <string name="update">Оновити</string>
+    <string name="new_timestamp">Нова мітка часу</string>
 </resources>

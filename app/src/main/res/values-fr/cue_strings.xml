@@ -24,4 +24,5 @@
     <string name="keep_track_last_position">Lorsque l\'utilisateur lit une piste, celle-ci commence à partir de la dernière position de lecture.</string>
     <string name="update_message">Une nouvelle version a été publiée.\n\nSouhaitez-vous mettre à jour ?</string>
     <string name="update">Mettre à jour</string>
+    <string name="new_timestamp">Nouvel horodatage</string>
 </resources>

@@ -24,4 +24,5 @@
     <string name="keep_track_last_position">유저가 트랙을 재생시킬때 마지막 재생 위치에서 시작합니다.</string>
     <string name="update_message">새로운 버전이 출시되었습니다.\n\n업데이트하시겠습니까?</string>
     <string name="update">업데이트</string>
+    <string name="new_timestamp">새 타임스탬프</string>
 </resources>

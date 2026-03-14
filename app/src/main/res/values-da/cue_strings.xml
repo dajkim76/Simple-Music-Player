@@ -24,4 +24,5 @@
     <string name="keep_track_last_position">Når brugeren afspiller et spor, starter det fra den sidste afspilningsposition.</string>
     <string name="update_message">En ny version er blevet udgivet.\n\nVil du opdatere?</string>
     <string name="update">Opdater</string>
+    <string name="new_timestamp">Nyt tidsstempel</string>
 </resources>

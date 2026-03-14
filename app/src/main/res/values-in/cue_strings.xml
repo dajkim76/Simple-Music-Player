@@ -24,4 +24,5 @@
     <string name="keep_track_last_position">Saat pengguna memutar trek, pemutaran dimulai dari posisi pemutaran terakhir.</string>
     <string name="update_message">Versi baru telah dirilis.\n\nApakah Anda ingin memperbarui?</string>
     <string name="update">Perbarui</string>
+    <string name="new_timestamp">Stempel waktu baru</string>
 </resources>

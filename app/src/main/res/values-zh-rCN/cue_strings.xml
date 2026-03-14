@@ -24,4 +24,5 @@
     <string name="keep_track_last_position">当用户播放曲目时，它会从最后的播放位置开始。</string>
     <string name="update_message">新版本已发布。\n\n是否更新？</string>
     <string name="update">更新</string>
+    <string name="new_timestamp">新时间戳</string>
 </resources>

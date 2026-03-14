@@ -24,4 +24,5 @@
     <string name="keep_track_last_position">Когато потребителят пусне песен, тя започва от последната позиция на възпроизвеждане.</string>
     <string name="update_message">Издадена е нова версия.\n\nЖелаете ли да актуализирате?</string>
     <string name="update">Актуализиране</string>
+    <string name="new_timestamp">Нов времеви печат</string>
 </resources>

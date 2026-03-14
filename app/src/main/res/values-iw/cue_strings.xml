@@ -24,4 +24,5 @@
     <string name="keep_track_last_position">כאשר המשתמש מנגן רצועה, היא מתחילה ממיקום ההשמעה האחרון.</string>
     <string name="update_message">גרסה חדשה שוחררה.\n\nהאם ברצונך לעדכן?</string>
     <string name="update">עדכון</string>
+    <string name="new_timestamp">חותמת זמן חדשה</string>
 </resources>

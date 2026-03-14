@@ -24,4 +24,5 @@
     <string name="keep_track_last_position">Erabiltzaileak pista bat erreproduzitzen duenean, azken erreprodukzio-posiziotik hasten da.</string>
     <string name="update_message">Bertsio berri bat kaleratu da.\n\nEguneratu nahi duzu?</string>
     <string name="update">Eguneratu</string>
+    <string name="new_timestamp">Denbora-zigilu berria</string>
 </resources>

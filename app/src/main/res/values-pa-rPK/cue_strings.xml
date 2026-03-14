@@ -24,4 +24,5 @@
     <string name="keep_track_last_position">ਜਦੋਂ ਉਪਭੋਗਤਾ ਕੋਈ ਟਰੈਕ ਚਲਾਉਂਦਾ ਹੈ, ਤਾਂ ਇਹ ਆਖਰੀ ਪਲੇਬੈਕ ਸਥਿਤੀ ਤੋਂ ਸ਼ੁਰੂ ਹੁੰਦਾ ਹੈ।</string>
     <string name="update_message">ਇੱਕ ਨਵਾਂ ਸੰਸਕਰਣ ਜਾਰੀ ਕੀਤਾ ਗਿਆ ਹੈ।\n\nਕੀ ਤੁਸੀਂ ਅੱਪਡੇਟ ਕਰਨਾ ਚਾਹੁੰਦੇ ਹੋ?</string>
     <string name="update">ਅੱਪਡੇਟ</string>
+    <string name="new_timestamp">ਨਵਾਂ ਟਾਈਮਸਟੈਂਪ</string>
 </resources>

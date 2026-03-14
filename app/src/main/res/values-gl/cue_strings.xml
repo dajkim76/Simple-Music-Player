@@ -24,4 +24,5 @@
     <string name="keep_track_last_position">Cando o usuario reproduce unha pista, comeza desde a última posición de reprodución.</string>
     <string name="update_message">Lanzouse unha nova versión.\n\nQueres actualizar?</string>
     <string name="update">Actualizar</string>
+    <string name="new_timestamp">Nova marca de tempo</string>
 </resources>
