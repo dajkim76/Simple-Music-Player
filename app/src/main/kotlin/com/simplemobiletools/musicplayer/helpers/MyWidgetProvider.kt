@@ -17,6 +17,8 @@ import com.simplemobiletools.commons.extensions.getLaunchIntent
 import com.simplemobiletools.musicplayer.R
 import com.simplemobiletools.musicplayer.activities.MainActivity
 import com.simplemobiletools.musicplayer.extensions.config
+import com.simplemobiletools.musicplayer.extensions.forceSeekToNext
+import com.simplemobiletools.musicplayer.extensions.forceSeekToPrevious
 import com.simplemobiletools.musicplayer.extensions.maybePreparePlayer
 import com.simplemobiletools.musicplayer.playback.PlaybackService
 
@@ -58,14 +60,28 @@ class MyWidgetProvider : AppWidgetProvider() {
                 context.startActivity(intent)
             } else {
                 when (action) {
-                    NEXT -> player.seekToNextMediaItem()
-                    PREVIOUS -> player.seekToPreviousMediaItem()
+                    NEXT -> {
+                        player.forceSeekToNext()
+                        if (!player.isPlaying) {
+                            player.playWhenReady = true
+                            player.prepare()
+                        }
+                    }
+
+                    PREVIOUS -> {
+                        player.forceSeekToPrevious()
+                        if (!player.isPlaying) {
+                            player.playWhenReady = true
+                            player.prepare()
+                        }
+                    }
+
                     PLAYPAUSE -> {
                         if (!player.isPlaying) {
                             player.playWhenReady = true
                             player.prepare()
                         } else {
-                            player.stop()
+                            player.pause()
                         }
                     }
                 }
