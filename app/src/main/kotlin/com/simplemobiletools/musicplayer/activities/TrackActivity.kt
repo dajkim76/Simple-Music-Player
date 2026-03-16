@@ -217,6 +217,7 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
                     FrameLayout.LayoutParams.MATCH_PARENT,
                     FrameLayout.LayoutParams.MATCH_PARENT
                 )
+                adjustViewBounds = false
             }
         }
     }
@@ -367,6 +368,14 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
             binding.activityTrackImage.outAnimation = null
         }
 
+        var wantedHeight = resources.getCoverArtHeight()
+        wantedHeight = min(wantedHeight, realScreenSize.y / 2)
+        val wantedWidth = realScreenSize.x
+
+        if (binding.activityTrackImage.height != wantedHeight) {
+            binding.activityTrackImage.layoutParams.height = wantedHeight
+        }
+
         getTrackFileArt(track) { coverArt ->
             if (isFinishing || isDestroyed) return@getTrackFileArt
             // reduce thread overhead
@@ -374,10 +383,6 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
                 binding.activityTrackImage.setImageDrawable(BitmapDrawable(resources, coverArt))
                 return@getTrackFileArt
             }
-
-            var wantedHeight = resources.getCoverArtHeight()
-            wantedHeight = min(wantedHeight, realScreenSize.y / 2)
-            val wantedWidth = realScreenSize.x
 
             // change cover image manually only once loaded successfully to avoid blinking at fails and placeholders
             loadGlideResource(
@@ -394,11 +399,6 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
                     }
                 },
                 onResourceReady = {
-                    val coverHeight = it.intrinsicHeight
-                    if (coverHeight > 0 && binding.activityTrackImage.height != coverHeight) {
-                        binding.activityTrackImage.layoutParams.height = coverHeight
-                    }
-
                     runOnUiThread {
                         binding.activityTrackImage.setImageDrawable(it)
                     }
