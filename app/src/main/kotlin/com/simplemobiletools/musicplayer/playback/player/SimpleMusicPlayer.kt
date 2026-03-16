@@ -185,7 +185,7 @@ class SimpleMusicPlayer(private val exoPlayer: ExoPlayer) : ForwardingPlayer(exo
         }
     }
 
-    fun getAudioSessionId(): Int {
+    override fun getAudioSessionId(): Int {
         return exoPlayer.audioSessionId
     }
 

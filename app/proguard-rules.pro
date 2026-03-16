@@ -26,3 +26,7 @@
 # RtlViewPager (referenced from Simple-Commons)
 -dontwarn com.duolingo.open.rtlviewpager.**
 
+# Jaudiotagger
+-keep public class org.jaudiotagger.** { public protected *; }
+-keepnames class org.jaudiotagger.**
+-dontwarn org.jaudiotagger.**
