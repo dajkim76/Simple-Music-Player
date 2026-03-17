@@ -735,7 +735,7 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
                     .setView(edit)
                     .setNegativeButton(com.simplemobiletools.commons.R.string.cancel, null)
                     .setPositiveButton(com.simplemobiletools.commons.R.string.ok) { _, _ ->
-                        val title = edit.text.toString().takeIf { it.isNotBlank() } ?: "Untitled"
+                        val title = edit.text.toString().replace("\n", "").trim().takeIf { it.isNotBlank() } ?: "Untitled"
                         val cue = Cue(seconds, title)
                         val cueList = cueAdapter?.cues?.toMutableList() ?: return@setPositiveButton
                         cueList.add(cue)

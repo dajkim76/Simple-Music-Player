@@ -181,7 +181,7 @@ class CueAdapter(
                             .setNegativeButton(com.simplemobiletools.commons.R.string.cancel, null)
                             .setPositiveButton(com.simplemobiletools.commons.R.string.ok) { _, _ ->
                                 val seconds = binding.editText.text.toString().toIntOrNull() ?: 0
-                                val newTitle = binding.title.text.toString().replace("\n", "").trim()
+                                val newTitle = binding.title.text.toString().replace("\n", "").trim().takeIf { it.isNotBlank() } ?: "Untitled"
                                 if (seconds == 0 && cue.title == newTitle) return@setPositiveButton
                                 val newCues = cues.toMutableList()
                                 newCues[position] =
