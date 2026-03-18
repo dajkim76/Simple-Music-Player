@@ -108,7 +108,8 @@ class MyAboutActivity : ComponentActivity() {
                         onPrivacyPolicyClick = ::onPrivacyPolicyClick,
                         onLicenseClick = ::onLicenseClick,
                         version = fullVersion,
-                        onVersionClick = ::onVersionClick
+                        onVersionClick = ::onVersionClick,
+                        onAppIconClick = ::onAppIconClick,
                     )
                 }
             }
@@ -345,6 +346,10 @@ class MyAboutActivity : ComponentActivity() {
     private fun onVersionClick() {
         launchViewIntent(RELEASE_URL)
     }
+
+    private fun onAppIconClick() {
+        launchViewIntent("https://www.flaticon.com/authors/freepik")
+    }
 }
 
 private val startingTitlePadding = Modifier.padding(start = 60.dp)
@@ -412,6 +417,7 @@ internal fun OtherSection(
     onLicenseClick: () -> Unit,
     version: String,
     onVersionClick: () -> Unit,
+    onAppIconClick: () -> Unit,
 ) {
     SettingsGroup(title = {
         SettingsTitleTextComponent(text = stringResource(id = R.string.other), modifier = startingTitlePadding)
@@ -441,6 +447,11 @@ internal fun OtherSection(
             click = onLicenseClick,
             text = stringResource(id = R.string.third_party_licences),
             icon = R.drawable.ic_article_vector
+        )
+        TwoLinerTextItem(
+            click = onAppIconClick,
+            text = "Trendy icons created by Freepik - Flaticon",
+            icon = R.drawable.ic_info_vector
         )
         TwoLinerTextItem(
             click = onVersionClick,
@@ -587,7 +598,8 @@ private fun AboutScreenPreview() {
                 onPrivacyPolicyClick = {},
                 onLicenseClick = {},
                 version = "5.0.4",
-                onVersionClick = {}
+                onVersionClick = {},
+                onAppIconClick = {},
             )
         }
     }
