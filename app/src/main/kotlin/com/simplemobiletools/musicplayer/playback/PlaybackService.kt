@@ -1,5 +1,6 @@
 package com.simplemobiletools.musicplayer.playback
 
+import android.content.Intent
 import android.os.Handler
 import android.os.HandlerThread
 import android.os.Looper
@@ -199,6 +200,15 @@ class PlaybackService : MediaLibraryService(), MediaSessionService.Listener {
                         invalidateMediaMetadata()
                     }
                 }
+            }
+        }
+    }
+
+    override fun onTaskRemoved(rootIntent: Intent?) {
+        // Player is accessed on the wrong thread. Current thread from super.onTaskRemoved
+        withPlayer {
+            if (!isPlaying) {
+                stopSelf()
             }
         }
     }
