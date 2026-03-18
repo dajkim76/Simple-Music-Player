@@ -401,3 +401,11 @@ fun Context.getPlaybackSetting(repeatMode: @Player.RepeatMode Int): PlaybackSett
         else -> config.playbackSetting
     }
 }
+
+fun Context.getFriendlyFolder(path: String): String {
+    return when (val parentPath = path.getParentPath()) {
+        internalStoragePath -> getString(com.simplemobiletools.commons.R.string.internal)
+        sdCardPath -> getString(com.simplemobiletools.commons.R.string.sd_card)
+        else -> parentPath.getFilenameFromPath()
+    }
+}

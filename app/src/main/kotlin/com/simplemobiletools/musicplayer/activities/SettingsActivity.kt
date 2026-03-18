@@ -6,7 +6,6 @@ import com.simplemobiletools.commons.dialogs.RadioGroupDialog
 import com.simplemobiletools.commons.extensions.*
 import com.simplemobiletools.commons.helpers.IS_CUSTOMIZING_COLORS
 import com.simplemobiletools.commons.helpers.NavigationIcon
-import com.simplemobiletools.commons.helpers.isQPlus
 import com.simplemobiletools.commons.helpers.isTiramisuPlus
 import com.simplemobiletools.commons.models.RadioItem
 import com.simplemobiletools.musicplayer.R
@@ -147,7 +146,6 @@ class SettingsActivity : SimpleControllerActivity() {
     }
 
     private fun setupManageExcludedFolders() {
-        binding.settingsManageExcludedFoldersHolder.beVisibleIf(isQPlus())
         binding.settingsManageExcludedFoldersHolder.setOnClickListener {
             startActivity(Intent(this, ExcludedFoldersActivity::class.java))
         }

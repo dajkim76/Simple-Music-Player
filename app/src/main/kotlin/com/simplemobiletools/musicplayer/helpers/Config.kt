@@ -116,7 +116,7 @@ class Config(context: Context) : BaseConfig(context) {
             .apply()
 
     var showTabs: Int
-        get() = prefs.getInt(SHOW_TABS, allTabsMask)
+        get() = prefs.getInt(SHOW_TABS, ALL_TABS_MASK)
         set(showTabs) = prefs.edit().putInt(SHOW_TABS, showTabs).apply()
 
     var excludedFolders: MutableSet<String>

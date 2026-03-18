@@ -17,6 +17,7 @@ import com.simplemobiletools.commons.helpers.isRPlus
 import com.simplemobiletools.musicplayer.R
 import com.simplemobiletools.musicplayer.extensions.audioHelper
 import com.simplemobiletools.musicplayer.extensions.config
+import com.simplemobiletools.musicplayer.extensions.getFriendlyFolder
 import com.simplemobiletools.musicplayer.models.*
 import java.io.File
 import java.io.FileInputStream
@@ -248,7 +249,7 @@ class SimpleMediaScanner(private val context: Application) {
             val folderName = if (isQPlus()) {
                 cursor.getStringValue(Audio.Media.BUCKET_DISPLAY_NAME) ?: MediaStore.UNKNOWN_STRING
             } else {
-                ""
+                context.getFriendlyFolder(path).ifEmpty { MediaStore.UNKNOWN_STRING }
             }
 
             val album = cursor.getStringValue(Audio.Media.ALBUM) ?: folderName

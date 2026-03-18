@@ -1,11 +1,9 @@
 package com.simplemobiletools.musicplayer.dialogs
 
 import com.simplemobiletools.commons.activities.BaseSimpleActivity
-import com.simplemobiletools.commons.extensions.beGone
 import com.simplemobiletools.commons.extensions.getAlertDialogBuilder
 import com.simplemobiletools.commons.extensions.setupDialogStuff
 import com.simplemobiletools.commons.extensions.viewBinding
-import com.simplemobiletools.commons.helpers.isQPlus
 import com.simplemobiletools.commons.views.MyAppCompatCheckbox
 import com.simplemobiletools.musicplayer.databinding.DialogManageVisibleTabsBinding
 import com.simplemobiletools.musicplayer.extensions.config
@@ -23,11 +21,6 @@ class ManageVisibleTabsDialog(val activity: BaseSimpleActivity, val callback: (r
             put(TAB_ALBUMS, binding.manageVisibleTabsAlbums)
             put(TAB_TRACKS, binding.manageVisibleTabsTracks)
             put(TAB_GENRES, binding.manageVisibleTabsGenres)
-        }
-
-        if (!isQPlus()) {
-            tabs.remove(TAB_FOLDERS)
-            binding.manageVisibleTabsFolders.beGone()
         }
 
         val showTabs = activity.config.showTabs
@@ -52,7 +45,7 @@ class ManageVisibleTabsDialog(val activity: BaseSimpleActivity, val callback: (r
         }
 
         if (result == 0) {
-            result = allTabsMask
+            result = ALL_TABS_MASK
         }
 
         callback(result)
