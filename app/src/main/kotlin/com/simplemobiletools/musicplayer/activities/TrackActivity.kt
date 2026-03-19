@@ -24,11 +24,11 @@ import android.util.Size
 import android.view.*
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.widget.AppCompatEditText
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.os.postDelayed
 import androidx.core.view.GestureDetectorCompat
+import androidx.core.view.children
 import androidx.core.view.isVisible
 import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
@@ -51,6 +51,7 @@ import com.simplemobiletools.musicplayer.BuildConfig
 import com.simplemobiletools.musicplayer.R
 import com.simplemobiletools.musicplayer.adapters.CueAdapter
 import com.simplemobiletools.musicplayer.databinding.ActivityTrackBinding
+import com.simplemobiletools.musicplayer.databinding.AdjustCueTimestampBinding
 import com.simplemobiletools.musicplayer.databinding.InputCueTextBinding
 import com.simplemobiletools.musicplayer.extensions.*
 import com.simplemobiletools.musicplayer.fragments.PlaybackSpeedFragment
@@ -726,17 +727,20 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
 
     private fun onClickNewCue(track: Track) {
         withPlayer {
-            val seconds = currentPosition.milliseconds.inWholeSeconds.toInt()
+            val currentTimestamp = currentPosition.milliseconds.inWholeSeconds.toInt()
             runOnUiThread {
-                val edit = AppCompatEditText(this@TrackActivity)
+                val binding = AdjustCueTimestampBinding.inflate(LayoutInflater.from(this@TrackActivity))
+                binding.buttons.children.forEach { it.setOnClickListener { binding.seconds.setText((it as? TextView)?.text) } }
+                binding.timestamp.text = currentTimestamp.getFormattedDuration()
                 AlertDialog.Builder(this@TrackActivity)
                     .setTitle(R.string.new_timestamp)
-                    .setMessage(seconds.getFormattedDuration())
-                    .setView(edit)
+                    .setView(binding.root)
                     .setNegativeButton(com.simplemobiletools.commons.R.string.cancel, null)
                     .setPositiveButton(com.simplemobiletools.commons.R.string.ok) { _, _ ->
-                        val title = edit.text.toString().replace("\n", "").trim().takeIf { it.isNotBlank() } ?: "Untitled"
-                        val cue = Cue(seconds, title)
+                        val seconds = binding.seconds.text.toString().toIntOrNull() ?: 0
+                        val timestamp = (currentTimestamp + seconds).takeIf { it >= 0 } ?: 0
+                        val title = binding.title.text.toString().replace("\n", "").trim().takeIf { it.isNotBlank() } ?: "Untitled"
+                        val cue = Cue(timestamp, title)
                         val cueList = cueAdapter?.cues?.toMutableList() ?: return@setPositiveButton
                         cueList.add(cue)
                         cueList.sortBy { it.timestamp }

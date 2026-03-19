@@ -175,13 +175,14 @@ class CueAdapter(
                         val cue = cues[position]
                         val binding = AdjustCueTimestampBinding.inflate(LayoutInflater.from(activity))
                         binding.title.setText(cue.title)
-                        binding.buttons.children.forEach { it.setOnClickListener { binding.editText.setText((it as? TextView)?.text) } }
+                        binding.buttons.children.forEach { it.setOnClickListener { binding.seconds.setText((it as? TextView)?.text) } }
+                        binding.timestamp.text = cue.timestamp.getFormattedDuration()
                         AlertDialog.Builder(activity)
                             .setTitle(R.string.adjust_timestamp)
                             .setView(binding.root)
                             .setNegativeButton(com.simplemobiletools.commons.R.string.cancel, null)
                             .setPositiveButton(com.simplemobiletools.commons.R.string.ok) { _, _ ->
-                                val seconds = binding.editText.text.toString().toIntOrNull() ?: 0
+                                val seconds = binding.seconds.text.toString().toIntOrNull() ?: 0
                                 val newTitle = binding.title.text.toString().replace("\n", "").trim().takeIf { it.isNotBlank() } ?: "Untitled"
                                 if (seconds == 0 && cue.title == newTitle) return@setPositiveButton
                                 val newCues = cues.toMutableList()
