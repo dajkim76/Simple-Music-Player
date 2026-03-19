@@ -5,16 +5,17 @@ import com.simplemobiletools.commons.helpers.AlphanumericComparator
 import com.simplemobiletools.commons.helpers.SORT_DESCENDING
 import com.simplemobiletools.musicplayer.extensions.sortSafely
 import com.simplemobiletools.musicplayer.helpers.PLAYER_SORT_BY_TITLE
+import com.simplemobiletools.musicplayer.helpers.PLAYER_SORT_UPDATED_TIME
 import com.simplemobiletools.musicplayer.helpers.SMART_PLAYLIST_ID_MAX
 
 @Entity(tableName = "playlists", indices = [(Index(value = ["id"], unique = true))])
 data class Playlist(
     @PrimaryKey(autoGenerate = true) var id: Int,
     @ColumnInfo(name = "title") var title: String,
-
+    @ColumnInfo(name = "updated_time") var updatedTime: Long = System.currentTimeMillis(),
     @Ignore var trackCount: Int = 0
 ) {
-    constructor() : this(0, "", 0)
+    constructor() : this(0, "", System.currentTimeMillis(), 0)
 
     companion object {
         fun getComparator(sorting: Int) = Comparator<Playlist> { first, second ->
@@ -33,6 +34,11 @@ data class Playlist(
                 // 둘 다 5보다 큰 경우: 기존 정렬 로직 수행
                 sorting and PLAYER_SORT_BY_TITLE != 0 -> {
                     val r = AlphanumericComparator().compare(first.title.lowercase(), second.title.lowercase())
+                    if (sorting and SORT_DESCENDING != 0) r * -1 else r
+                }
+
+                sorting and PLAYER_SORT_UPDATED_TIME != 0 -> {
+                    val r = first.updatedTime.compareTo(second.updatedTime)
                     if (sorting and SORT_DESCENDING != 0) r * -1 else r
                 }
 
