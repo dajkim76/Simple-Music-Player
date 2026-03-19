@@ -41,6 +41,8 @@ import com.simplemobiletools.commons.models.FAQItem
 
 private const val MY_EMAIL = "kimdaejeong@gmail.com"
 const val DEMO_VIDEO_URL = "https://www.youtube.com/watch?v=X_yMfMboIP4"
+private const val GITHUB_URL = "https://github.com/dajkim76/Simple-Music-Player"
+private const val APP_ICON_URL = "https://www.flaticon.com/authors/freepik"
 const val RELEASE_URL = "https://github.com/dajkim76/Simple-Music-Player/releases"
 
 class MyAboutActivity : ComponentActivity() {
@@ -110,6 +112,7 @@ class MyAboutActivity : ComponentActivity() {
                         version = fullVersion,
                         onVersionClick = ::onVersionClick,
                         onAppIconClick = ::onAppIconClick,
+                        onGithubClick = ::onGithubClick,
                     )
                 }
             }
@@ -226,13 +229,7 @@ class MyAboutActivity : ComponentActivity() {
         val newline = "\n"
         val separator = "------------------------------"
         val body = "$appVersion$newline$deviceOS$newline$separator$newline$newline"
-
-        val address = if (packageName.startsWith("com.simplemobiletools")) {
-            MY_EMAIL
-        } else {
-            getString(R.string.my_fake_email)
-        }
-
+        val address = MY_EMAIL
         val selectorIntent = Intent(ACTION_SENDTO)
             .setData("mailto:$address".toUri())
         val emailIntent = Intent(ACTION_SEND).apply {
@@ -311,7 +308,7 @@ class MyAboutActivity : ComponentActivity() {
     }
 
     private fun onGithubClick() {
-        launchViewIntent("https://github.com/SimpleMobileTools")
+        launchViewIntent(GITHUB_URL)
     }
 
     private fun onRedditClick() {
@@ -348,7 +345,7 @@ class MyAboutActivity : ComponentActivity() {
     }
 
     private fun onAppIconClick() {
-        launchViewIntent("https://www.flaticon.com/authors/freepik")
+        launchViewIntent(APP_ICON_URL)
     }
 }
 
@@ -367,7 +364,7 @@ internal fun AboutScreen(
         helpUsSection()
         socialSection()
         otherSection()
-        SettingsListItem(text = stringResource(id = R.string.about_footer))
+        //SettingsListItem(text = stringResource(id = R.string.about_footer))
     }
 }
 
@@ -418,6 +415,7 @@ internal fun OtherSection(
     version: String,
     onVersionClick: () -> Unit,
     onAppIconClick: () -> Unit,
+    onGithubClick: () -> Unit
 ) {
     SettingsGroup(title = {
         SettingsTitleTextComponent(text = stringResource(id = R.string.other), modifier = startingTitlePadding)
@@ -447,6 +445,11 @@ internal fun OtherSection(
             click = onLicenseClick,
             text = stringResource(id = R.string.third_party_licences),
             icon = R.drawable.ic_article_vector
+        )
+        TwoLinerTextItem(
+            click = onGithubClick,
+            text = "GitHub",
+            icon = R.drawable.ic_github_vector
         )
         TwoLinerTextItem(
             click = onAppIconClick,
@@ -600,6 +603,7 @@ private fun AboutScreenPreview() {
                 version = "5.0.4",
                 onVersionClick = {},
                 onAppIconClick = {},
+                onGithubClick = {},
             )
         }
     }

@@ -1,5 +1,6 @@
 package com.simplemobiletools.musicplayer.extensions
 
+import android.app.Activity
 import android.app.Application
 import android.content.ContentUris
 import android.content.Context
@@ -35,6 +36,12 @@ import com.simplemobiletools.musicplayer.models.Track
 import com.simplemobiletools.musicplayer.objects.executeBackgroundThread
 import com.simplemobiletools.musicplayer.objects.executeMainThread
 import java.io.File
+
+fun Activity.myAppLaunched(appId: String) {
+    baseConfig.internalStoragePath = getInternalStoragePath()
+    updateSDCardPath()
+    baseConfig.appId = appId
+}
 
 val Context.config: Config get() = Config.newInstance(applicationContext)
 

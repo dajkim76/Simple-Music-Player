@@ -50,7 +50,7 @@ class MainActivity : SimpleMusicActivity() {
         isMaterialActivity = true
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-        appLaunched(BuildConfig.APPLICATION_ID)
+        myAppLaunched(BuildConfig.APPLICATION_ID)
         setupOptionsMenu()
         refreshMenuItems()
         updateMaterialActivityViews(binding.mainCoordinator, binding.mainHolder, useTransparentNavigation = false, useTopSearchMenu = true)
@@ -68,7 +68,6 @@ class MainActivity : SimpleMusicActivity() {
         }
 
         volumeControlStream = AudioManager.STREAM_MUSIC
-        checkWhatsNewDialog()
         checkAppOnSDCard()
         AppUpdateChecker.check(this)
     }

@@ -56,13 +56,11 @@ android {
 
     buildTypes {
         debug {
-            applicationIdSuffix = ".mdiwebma"
             if (keystorePropertiesFile.exists()) {
                 signingConfig = signingConfigs.getByName("release")
             }
         }
         release {
-            applicationIdSuffix = ".mdiwebma"
             isMinifyEnabled = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
@@ -78,7 +76,9 @@ android {
     productFlavors {
         register("core")
         register("fdroid")
-        register("prepaid")
+        register("prepaid") {
+            applicationId = "com.mdiwebma.musicplayer"
+        }
     }
 
     sourceSets {
@@ -113,9 +113,7 @@ android {
 }
 
 dependencies {
-    implementation(libs.simple.mobile.tools.commons) {
-        exclude(group = "com.github.duolingo", module = "rtl-viewpager")
-    }
+    implementation(libs.simple.mobile.tools.commons)
     implementation(libs.eventbus)
     implementation(libs.androidx.media)
     implementation(libs.androidx.swiperefreshlayout)
