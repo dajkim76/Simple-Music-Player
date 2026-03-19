@@ -25,18 +25,32 @@
         android:layout_marginEnd="@dimen/normal_margin"
         android:layout_marginBottom="@dimen/normal_margin" />
 
-    <com.simplemobiletools.musicplayer.views.MarqueeTextView
-        android:id="@+id/current_track_label"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/current_track_image"
-        android:layout_alignBottom="@+id/current_track_image"
+        android:layout_height="64dp"
+        android:layout_alignParentTop="true"
         android:layout_toStartOf="@+id/current_track_play_pause"
         android:layout_toEndOf="@+id/current_track_image"
         android:gravity="center_vertical"
-        android:paddingEnd="@dimen/activity_margin"
-        android:textSize="@dimen/bigger_text_size"
-        tools:text="My Track" />
+        android:orientation="vertical">
+
+        <com.simplemobiletools.musicplayer.views.MarqueeTextView
+            android:id="@+id/current_track_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingEnd="@dimen/medium_margin"
+            android:textSize="@dimen/bigger_text_size"
+            tools:text="My Track" />
+
+        <com.simplemobiletools.musicplayer.views.MarqueeTextView
+            android:id="@+id/cue_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingEnd="@dimen/medium_margin"
+            android:textSize="@dimen/smaller_text_size"
+            tools:text="My Track"
+            android:visibility="gone" />
+    </LinearLayout>
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/current_track_play_pause"

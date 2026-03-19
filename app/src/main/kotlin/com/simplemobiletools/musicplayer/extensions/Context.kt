@@ -66,6 +66,8 @@ fun Context.broadcastUpdateWidgetState(cueTitle: String?) {
         putExtra(EXTRA_CUE_TITLE, cueTitle)
         sendBroadcast(this)
     }
+
+    EventBus2.cueTitleFlow.value = cueTitle
 }
 
 fun Context.getMediaStoreIdFromPath(path: String): Long {

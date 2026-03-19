@@ -11,6 +11,7 @@ import android.util.AttributeSet
 import android.view.View
 import android.view.ViewOutlineProvider
 import android.widget.RelativeLayout
+import androidx.core.view.isVisible
 import androidx.media3.common.MediaItem
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
@@ -38,6 +39,7 @@ class CurrentTrackBar(context: Context, attributeSet: AttributeSet) : RelativeLa
     fun updateColors() {
         background = ColorDrawable(context.getProperBackgroundColor())
         binding.currentTrackLabel.setTextColor(context.getProperTextColor())
+        binding.cueTitle.setTextColor(context.getProperPrimaryColor())
         binding.nextTrackImage.applyColorFilter(context.getProperTextColor())
     }
 
@@ -93,5 +95,10 @@ class CurrentTrackBar(context: Context, attributeSet: AttributeSet) : RelativeLa
 
     fun updateTrackState(isPlaying: Boolean) {
         binding.currentTrackPlayPause.updatePlayPauseIcon(isPlaying, context.getProperTextColor())
+    }
+
+    fun updateCueTitle(cueTitle: String?) {
+        binding.cueTitle.isVisible = !cueTitle.isNullOrEmpty()
+        binding.cueTitle.text = cueTitle
     }
 }

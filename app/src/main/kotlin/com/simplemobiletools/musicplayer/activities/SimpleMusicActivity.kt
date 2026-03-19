@@ -2,13 +2,18 @@ package com.simplemobiletools.musicplayer.activities
 
 import android.content.Intent
 import androidx.annotation.CallSuper
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
 import com.simplemobiletools.commons.dialogs.PermissionRequiredDialog
 import com.simplemobiletools.commons.extensions.hideKeyboard
 import com.simplemobiletools.commons.extensions.openNotificationSettings
 import com.simplemobiletools.musicplayer.extensions.isReallyPlaying
+import com.simplemobiletools.musicplayer.helpers.EventBus2
 import com.simplemobiletools.musicplayer.views.CurrentTrackBar
+import kotlinx.coroutines.launch
 
 /**
  * Base class for activities that want to control the player and display a [CurrentTrackBar] at the bottom.
@@ -33,6 +38,14 @@ abstract class SimpleMusicActivity : SimpleControllerActivity(), Player.Listener
                     }
                 } else {
                     PermissionRequiredDialog(this, com.simplemobiletools.commons.R.string.allow_notifications_music_player, { openNotificationSettings() })
+                }
+            }
+        }
+        // collect cue title
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                EventBus2.cueTitleFlow.collect {
+                    trackBarView?.updateCueTitle(it)
                 }
             }
         }
