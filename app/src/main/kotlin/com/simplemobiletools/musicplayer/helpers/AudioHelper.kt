@@ -233,13 +233,13 @@ class AudioHelper(private val context: Context) {
     fun updateRecentPlayedTrack(track: Track): Long {
         val playListId = RECENTLY_PLAYED_TRACKS_PLAYLIST_ID
         return context.tracksDAO.getPlaylistTrack(playListId, track.mediaStoreId)?.let {
-            it.updatedTimestamp = System.currentTimeMillis()
+            it.updatedTime = System.currentTimeMillis()
             it.playCount += 1
-            context.tracksDAO.updatePlayback(it.id, it.updatedTimestamp, it.playCount)
+            context.tracksDAO.updatePlayback(it.id, it.updatedTime, it.playCount)
             it.lastPosition
         } ?: run {
             val newTrack =
-                track.copy(id = 0 /*Prevent Replace existing track*/, playListId = playListId, playCount = 1, updatedTimestamp = System.currentTimeMillis())
+                track.copy(id = 0 /*Insert new track*/, playListId = playListId, playCount = 1, updatedTime = System.currentTimeMillis())
             context.tracksDAO.insert(newTrack)
             0
         }
@@ -271,7 +271,7 @@ class AudioHelper(private val context: Context) {
             false
         } ?: run {
             val newTrack =
-                track.copy(id = 0 /*Prevent Replace existing track*/, playListId = playListId, updatedTimestamp = System.currentTimeMillis())
+                track.copy(id = 0 /*Insert new track*/, playListId = playListId, updatedTime = System.currentTimeMillis())
             context.tracksDAO.insert(newTrack)
             EventBus.getDefault().post(Events.PlaylistsUpdated())
             true

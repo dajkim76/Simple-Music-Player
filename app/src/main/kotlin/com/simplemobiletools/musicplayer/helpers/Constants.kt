@@ -118,7 +118,7 @@ const val PLAYER_SORT_BY_DATE_ADDED = 256
 const val PLAYER_SORT_BY_LAST_MODIFIED = 512
 
 // const val SORT_DESCENDING = 1024 (defined in com.simplemobiletools.commons.helpers.SORT_DESCENDING)
-const val PLAYER_SORT_UPDATED_TIME = 2048
+const val PLAYER_SORT_BY_UPDATED_TIME = 2048
 
 const val PLAYLIST_SORTING = "playlist_sorting"
 const val PLAYLIST_TRACKS_SORTING = "playlist_tracks_sorting"

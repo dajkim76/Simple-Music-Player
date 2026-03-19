@@ -201,7 +201,7 @@ class SimpleMediaScanner(private val context: Application) {
             )
             context.audioHelper.insertPlaylist(Playlist(FAVORITE_TRACKS_PLAYLIST_ID, "\u2764 " + context.getString(R.string.favorite_tracks)))
             config.wasAllTracksPlaylistCreated = true
-            config.saveCustomPlaylistSorting(FAVORITE_TRACKS_PLAYLIST_ID, PLAYER_SORT_UPDATED_TIME or SORT_DESCENDING)
+            config.saveCustomPlaylistSorting(FAVORITE_TRACKS_PLAYLIST_ID, PLAYER_SORT_BY_UPDATED_TIME or SORT_DESCENDING)
         }
 
         // avoid re-adding tracks that have been explicitly removed from 'All tracks' playlist

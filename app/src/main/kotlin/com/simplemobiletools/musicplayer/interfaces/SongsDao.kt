@@ -29,16 +29,16 @@ interface SongsDao {
     @Query("SELECT * FROM tracks WHERE playlist_id = $RECENTLY_PLAYED_TRACKS_PLAYLIST_ID AND play_count > 0 ORDER BY play_count DESC")
     fun getTracksFromPlaylistMostPlayed(): List<Track>
 
-    @Query("SELECT * FROM tracks WHERE playlist_id = $RECENTLY_PLAYED_TRACKS_PLAYLIST_ID AND updated_timestamp > 0 ORDER BY updated_timestamp DESC")
+    @Query("SELECT * FROM tracks WHERE playlist_id = $RECENTLY_PLAYED_TRACKS_PLAYLIST_ID AND updated_time > 0 ORDER BY updated_time DESC")
     fun getTracksFromPlaylistRecentlyPlayed(): List<Track>
 
-    @Query("SELECT * FROM tracks WHERE playlist_id = $FAVORITE_TRACKS_PLAYLIST_ID ORDER BY updated_timestamp DESC")
+    @Query("SELECT * FROM tracks WHERE playlist_id = $FAVORITE_TRACKS_PLAYLIST_ID ORDER BY updated_time DESC")
     fun getTracksFromPlaylistFavorite(): List<Track>
 
     @Query("UPDATE tracks SET play_count = 0 WHERE id = :id")
     fun resetPlayCount(id: Long): Int
 
-    @Query("UPDATE tracks SET updated_timestamp = 0 WHERE id = :id")
+    @Query("UPDATE tracks SET updated_time = 0 WHERE id = :id")
     fun resetUpdatedTime(id: Long): Int
 
     @Query("SELECT * FROM tracks WHERE artist_id = :artistId")
@@ -80,8 +80,8 @@ interface SongsDao {
     @Query("SELECT * FROM tracks WHERE playlist_id = :playListId AND media_store_id = :mediaStoreId")
     fun getPlaylistTrack(playListId: Int, mediaStoreId: Long): Track?
 
-    @Query("UPDATE tracks SET updated_timestamp = :updatedTimeStamp, play_count = :playCount WHERE id = :id")
-    fun updatePlayback(id: Long, updatedTimeStamp: Long, playCount: Int): Int
+    @Query("UPDATE tracks SET updated_time = :updatedTime, play_count = :playCount WHERE id = :id")
+    fun updatePlayback(id: Long, updatedTime: Long, playCount: Int): Int
 
     @Query("UPDATE tracks SET last_position = :lastPosition WHERE id = :id")
     fun updateLastPosition(id: Long, lastPosition: Long)

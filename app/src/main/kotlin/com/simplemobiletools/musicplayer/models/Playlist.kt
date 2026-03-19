@@ -5,7 +5,7 @@ import com.simplemobiletools.commons.helpers.AlphanumericComparator
 import com.simplemobiletools.commons.helpers.SORT_DESCENDING
 import com.simplemobiletools.musicplayer.extensions.sortSafely
 import com.simplemobiletools.musicplayer.helpers.PLAYER_SORT_BY_TITLE
-import com.simplemobiletools.musicplayer.helpers.PLAYER_SORT_UPDATED_TIME
+import com.simplemobiletools.musicplayer.helpers.PLAYER_SORT_BY_UPDATED_TIME
 import com.simplemobiletools.musicplayer.helpers.SMART_PLAYLIST_ID_MAX
 
 @Entity(tableName = "playlists", indices = [(Index(value = ["id"], unique = true))])
@@ -37,7 +37,7 @@ data class Playlist(
                     if (sorting and SORT_DESCENDING != 0) r * -1 else r
                 }
 
-                sorting and PLAYER_SORT_UPDATED_TIME != 0 -> {
+                sorting and PLAYER_SORT_BY_UPDATED_TIME != 0 -> {
                     val r = first.updatedTime.compareTo(second.updatedTime)
                     if (sorting and SORT_DESCENDING != 0) r * -1 else r
                 }

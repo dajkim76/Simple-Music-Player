@@ -39,7 +39,7 @@ data class Track(
     @ColumnInfo(name = "order_in_playlist") var orderInPlaylist: Int,
     @ColumnInfo(name = "file_length") var fileLength: Long,
     @ColumnInfo(name = "file_last_modified") var fileLastModified: Long,
-    @ColumnInfo(name = "updated_timestamp") var updatedTimestamp: Long = 0,
+    @ColumnInfo(name = "updated_time") var updatedTime: Long = 0,
     @ColumnInfo(name = "play_count") var playCount: Int = 0,
     @ColumnInfo(name = "last_position") var lastPosition: Long = 0,
     @ColumnInfo(name = "flags") var flags: Int = 0,
@@ -84,7 +84,7 @@ data class Track(
 
                 sorting and PLAYER_SORT_BY_TRACK_ID != 0 -> first.trackId.compareTo(second.trackId)
                 sorting and PLAYER_SORT_BY_DATE_ADDED != 0 -> first.dateAdded.compareTo(second.dateAdded)
-                sorting and PLAYER_SORT_UPDATED_TIME != 0 -> first.updatedTimestamp.compareTo(second.updatedTimestamp)
+                sorting and PLAYER_SORT_BY_UPDATED_TIME != 0 -> first.updatedTime.compareTo(second.updatedTime)
                 sorting and PLAYER_SORT_BY_LAST_MODIFIED != 0 -> first.fileLastModified.compareTo(second.fileLastModified)
                 sorting and PLAYER_SORT_BY_CUSTOM != 0 -> first.orderInPlaylist.compareTo(second.orderInPlaylist)
                 else -> first.duration.compareTo(second.duration)

@@ -68,7 +68,7 @@ class ChangeSortingDialog(val activity: Activity, val location: Int, val playlis
                 radioItems.add(RadioItem(0, activity.getString(com.simplemobiletools.commons.R.string.title), PLAYER_SORT_BY_TITLE))
                 radioItems.add(RadioItem(1, activity.getString(R.string.track_count), PLAYER_SORT_BY_TRACK_COUNT))
                 if (location == TAB_PLAYLISTS) {
-                    radioItems.add(RadioItem(2, activity.getString(com.simplemobiletools.commons.R.string.date_added), PLAYER_SORT_UPDATED_TIME))
+                    radioItems.add(RadioItem(2, activity.getString(com.simplemobiletools.commons.R.string.date_added), PLAYER_SORT_BY_UPDATED_TIME))
                 }
             }
 
@@ -106,7 +106,7 @@ class ChangeSortingDialog(val activity: Activity, val location: Int, val playlis
 
                 // if it is a favorites playlist, it is processed as an addition to the favorites list.
                 val isPlaylistFavorite = playlist?.id == FAVORITE_TRACKS_PLAYLIST_ID
-                val dateAddedValue = if (isPlaylistFavorite) PLAYER_SORT_UPDATED_TIME else PLAYER_SORT_BY_DATE_ADDED
+                val dateAddedValue = if (isPlaylistFavorite) PLAYER_SORT_BY_UPDATED_TIME else PLAYER_SORT_BY_DATE_ADDED
                 radioItems.add(RadioItem(4, activity.getString(com.simplemobiletools.commons.R.string.date_added), dateAddedValue))
                 radioItems.add(RadioItem(5, activity.getString(com.simplemobiletools.commons.R.string.last_modified), PLAYER_SORT_BY_LAST_MODIFIED))
 
