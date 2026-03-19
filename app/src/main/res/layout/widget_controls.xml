@@ -8,8 +8,8 @@
 
     <ImageView
         android:id="@+id/previous_btn"
-        android:layout_width="@dimen/normal_icon_size"
-        android:layout_height="@dimen/normal_icon_size"
+        android:layout_width="@dimen/widget_control_size"
+        android:layout_height="@dimen/widget_control_size"
         android:layout_weight="1"
         android:background="?android:attr/selectableItemBackgroundBorderless"
         android:paddingTop="@dimen/medium_margin"
@@ -18,8 +18,8 @@
 
     <ImageView
         android:id="@+id/play_pause_btn"
-        android:layout_width="@dimen/normal_icon_size"
-        android:layout_height="@dimen/normal_icon_size"
+        android:layout_width="@dimen/widget_control_size"
+        android:layout_height="@dimen/widget_control_size"
         android:layout_weight="1"
         android:background="?android:attr/selectableItemBackgroundBorderless"
         android:paddingTop="@dimen/medium_margin"
@@ -28,8 +28,8 @@
 
     <ImageView
         android:id="@+id/next_btn"
-        android:layout_width="@dimen/normal_icon_size"
-        android:layout_height="@dimen/normal_icon_size"
+        android:layout_width="@dimen/widget_control_size"
+        android:layout_height="@dimen/widget_control_size"
         android:layout_weight="1"
         android:background="?android:attr/selectableItemBackgroundBorderless"
         android:paddingTop="@dimen/medium_margin"
