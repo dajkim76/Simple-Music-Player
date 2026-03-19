@@ -54,16 +54,16 @@ class CueAdapter(
         this.track = track
         this.currentCueIndex = -1
         notifyDataSetChanged()
+        makeDuration()
+    }
+
+    private fun makeDuration() {
         if (cues.size == 1) {
             val cue = cues.first()
             isNoCueTitle = cue.title == "<NO_CUE>" && cue.timestamp == 0 && !cue.enabled
         } else {
             isNoCueTitle = false
         }
-        makeDuration()
-    }
-
-    private fun makeDuration() {
         cues.forEachIndexed { index, cue ->
             val nextCueTimeStamp = if (index < cues.size - 1) {
                 val nextCue = cues[index + 1]
@@ -123,7 +123,7 @@ class CueAdapter(
                 cueDuration.isVisible = cue.duration > 0 && !isNoCueTitle
 
                 root.setOnClickListener {
-                    if (!isNoCueTitle && cue.enabled) {
+                    if (cue.enabled) {
                         cues.forEachIndexed { index, item ->
                             if (item !== cue && item.isRepeat) {
                                 item.isRepeat = false
@@ -135,9 +135,7 @@ class CueAdapter(
                 }
 
                 root.setOnLongClickListener {
-                    if (!isNoCueTitle) {
-                        showPopupMenu(cue, adapterPosition)
-                    }
+                    showPopupMenu(cue, adapterPosition)
                     true
                 }
             }
@@ -150,13 +148,15 @@ class CueAdapter(
             popup.menu.add(0, 1, 0, activity.getString(R.string.favorites_toggle))
             popup.menu.add(0, 2, 0, activity.getString(R.string.adjust_timestamp))
             popup.menu.add(0, 3, 0, activity.getString(R.string.new_timestamp))
-            popup.menu.add(0, 4, 0, activity.getString(if (cue.isRepeat) R.string.repeat_off else R.string.repeat_song))
+            popup.menu.add(0, 4, 0, activity.getString(com.simplemobiletools.commons.R.string.delete))
+            popup.menu.add(0, 5, 0, activity.getString(if (cue.isRepeat) R.string.repeat_off else R.string.repeat_song))
             popup.setOnMenuItemClickListener { item ->
                 when (item.itemId) {
                     0 -> {
                         val newCues = cues.toMutableList()
                         newCues[position] = cue.copy(enabled = !cue.enabled, duration = cue.duration, favorite = cue.favorite, isRepeat = cue.isRepeat)
                         cues = newCues
+                        makeDuration()
                         notifyItemChanged(position)
                         itemUpdated(track, newCues)
                     }
@@ -166,6 +166,7 @@ class CueAdapter(
                         newCues[position] =
                             cue.copy(enabled = cue.enabled || !cue.favorite, duration = cue.duration, favorite = !cue.favorite, isRepeat = cue.isRepeat)
                         cues = newCues
+                        makeDuration()
                         notifyItemChanged(position)
                         itemUpdated(track, newCues)
                     }
@@ -207,6 +208,15 @@ class CueAdapter(
                     }
 
                     4 -> {
+                        val newCues = cues.toMutableList()
+                        newCues.removeAt(position)
+                        cues = newCues
+                        makeDuration()
+                        notifyDataSetChanged()
+                        itemUpdated(track, newCues) // Update cache, db
+                    }
+
+                    5 -> {
                         cues.forEachIndexed { index, item ->
                             if (index != position && item.isRepeat) {
                                 item.isRepeat = false
