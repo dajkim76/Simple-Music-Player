@@ -13,6 +13,11 @@ https://ytdlnis.org/
 [![Demo Video](https://img.youtube.com/vi/X_yMfMboIP4/0.jpg)](https://www.youtube.com/watch?v=X_yMfMboIP4)
 
 
+### Install from Playstore
+
+https://play.google.com/store/apps/details?id=com.mdiwebma.musicplayer
+
+
 
 # Simple Music Player
 <img alt="Logo" src="graphics/icon.png" width="120" />

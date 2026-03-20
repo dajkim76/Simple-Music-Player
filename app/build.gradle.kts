@@ -13,7 +13,7 @@ plugins {
 }
 
 base {
-    archivesName.set("music-player")
+    archivesName.set("music-player-v${libs.versions.app.version.versionCode.get()}")
 }
 
 val keystorePropertiesFile: File = rootProject.file("keystore.properties")
@@ -101,14 +101,6 @@ android {
     lint {
         checkReleaseBuilds = false
         abortOnError = false
-    }
-
-    applicationVariants.all {
-        outputs.all {
-            val output = this as com.android.build.gradle.internal.api.BaseVariantOutputImpl
-            val fileName = "music-player-v${versionCode}-${name}.apk"
-            output.outputFileName = fileName
-        }
     }
 }
 

@@ -43,7 +43,8 @@ private const val MY_EMAIL = "kimdaejeong@gmail.com"
 const val DEMO_VIDEO_URL = "https://www.youtube.com/watch?v=X_yMfMboIP4"
 private const val GITHUB_URL = "https://github.com/dajkim76/Simple-Music-Player"
 private const val APP_ICON_URL = "https://www.flaticon.com/authors/freepik"
-const val RELEASE_URL = "https://github.com/dajkim76/Simple-Music-Player/releases"
+const val RELEASE_URL = "https://play.google.com/store/apps/details?id=com.mdiwebma.musicplayer"
+const val MARKET_URL = "market://details?id=com.mdiwebma.musicplayer"
 
 class MyAboutActivity : ComponentActivity() {
     private val appName get() = intent.getStringExtra(APP_NAME) ?: ""
@@ -132,7 +133,8 @@ class MyAboutActivity : ComponentActivity() {
         if (baseConfig.appId.removeSuffix(".debug").endsWith(".pro")) {
             version += " ${getString(R.string.pro)}"
         }
-        val fullVersion = remember { String.format(getString(R.string.version_placeholder, version)) }
+        val title = getString(R.string.rate_us) + "\n"
+        val fullVersion = remember { title + String.format(getString(R.string.version_placeholder, version)) }
         return Pair(showWebsite, fullVersion)
     }
 
@@ -341,7 +343,7 @@ class MyAboutActivity : ComponentActivity() {
     }
 
     private fun onVersionClick() {
-        launchViewIntent(RELEASE_URL)
+        launchViewIntent(MARKET_URL)
     }
 
     private fun onAppIconClick() {

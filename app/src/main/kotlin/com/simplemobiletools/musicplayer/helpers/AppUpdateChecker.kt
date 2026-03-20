@@ -10,7 +10,7 @@ import com.google.firebase.remoteconfig.remoteConfig
 import com.simplemobiletools.commons.extensions.toast
 import com.simplemobiletools.musicplayer.BuildConfig
 import com.simplemobiletools.musicplayer.R
-import com.simplemobiletools.musicplayer.activities.RELEASE_URL
+import com.simplemobiletools.musicplayer.activities.MARKET_URL
 import java.util.concurrent.TimeUnit
 
 class AppUpdateChecker private constructor(private val context: Activity) {
@@ -64,8 +64,7 @@ class AppUpdateChecker private constructor(private val context: Activity) {
 
     private fun openReleasePage() {
         try {
-            //val uri = Uri.parse("market://details?id=${context.packageName}")
-            val uri = Uri.parse(RELEASE_URL)
+            val uri = Uri.parse(MARKET_URL)
             val intent = Intent(Intent.ACTION_VIEW, uri)
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             context.startActivity(intent)
