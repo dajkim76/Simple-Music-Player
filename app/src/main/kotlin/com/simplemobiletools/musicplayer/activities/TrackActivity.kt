@@ -469,6 +469,18 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
             gestureDetector.onTouchEvent(event)
             true
         }
+        binding.activityTrackTitle.setOnTouchListener { _, event ->
+            gestureDetector.onTouchEvent(event)
+            true
+        }
+        binding.activityCueTitle.setOnTouchListener { _, event ->
+            gestureDetector.onTouchEvent(event)
+            true
+        }
+        binding.activityTrackArtist.setOnTouchListener { _, event ->
+            gestureDetector.onTouchEvent(event)
+            true
+        }
     }
 
     private fun toggleShuffle() {
