@@ -1,1 +1,1 @@
-./gradlew  assemblePrepaidRelease bundlePrepaidRelease
+./gradlew clean assemblePrepaidRelease bundlePrepaidRelease
