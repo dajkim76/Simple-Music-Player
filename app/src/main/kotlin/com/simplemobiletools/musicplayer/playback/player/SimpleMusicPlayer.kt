@@ -2,12 +2,15 @@ package com.simplemobiletools.musicplayer.playback.player
 
 import androidx.media3.common.ForwardingPlayer
 import androidx.media3.common.MediaItem
+import androidx.media3.common.MediaMetadata
 import androidx.media3.common.Player
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.exoplayer.source.ShuffleOrder.DefaultShuffleOrder
 import com.simplemobiletools.musicplayer.extensions.*
 import com.simplemobiletools.musicplayer.helpers.CueListCache
+import com.simplemobiletools.musicplayer.helpers.EXTRA_MEDIA_STORE_ID
+import com.simplemobiletools.musicplayer.helpers.TrackFileArtCache
 import com.simplemobiletools.musicplayer.inlines.indexOfFirstOrNull
 import kotlinx.coroutines.*
 import java.util.concurrent.CopyOnWriteArraySet
@@ -41,12 +44,26 @@ class SimpleMusicPlayer(private val exoPlayer: ExoPlayer) : ForwardingPlayer(exo
         myListeners.remove(listener)
     }
 
-    override fun getMediaMetadata(): androidx.media3.common.MediaMetadata {
+    override fun getMediaMetadata(): MediaMetadata {
         val metadata = super.getMediaMetadata()
+        val artworkData = metadata.extras?.getLong(EXTRA_MEDIA_STORE_ID)?.let { mediaStoreId ->
+            TrackFileArtCache.peekInstance()?.getArtworkData(mediaStoreId)
+        }
+
         return if (currentCueTitle != null) {
-            metadata.buildUpon().setTitle(currentCueTitle).build()
+            val builder = metadata.buildUpon()
+            artworkData?.let {
+                builder.setArtworkData(it, MediaMetadata.PICTURE_TYPE_FRONT_COVER)
+                builder.setArtworkUri(null)
+            }
+            builder.setTitle(currentCueTitle).build()
         } else {
-            metadata
+            artworkData?.let {
+                val builder = metadata.buildUpon()
+                builder.setArtworkData(it, MediaMetadata.PICTURE_TYPE_FRONT_COVER)
+                builder.setArtworkUri(null)
+                builder.build()
+            } ?: metadata
         }
     }
 
