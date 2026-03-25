@@ -72,8 +72,8 @@ abstract class SimpleControllerActivity : SimpleActivity(), Player.Listener {
                                 audioHelper.updateRecentPlayedTrackLastPosition(currentItem, playingLastPosition)
                             }
                         }
-                    } else {
-                        lastPosition = 0
+                    } else if (currentItem != null && currentItem.mediaId.toLong() == track.mediaStoreId) {
+                        lastPosition = currentPosition
                     }
                 }
 
