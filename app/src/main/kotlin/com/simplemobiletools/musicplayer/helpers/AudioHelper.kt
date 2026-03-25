@@ -247,7 +247,7 @@ class AudioHelper(private val context: Context) {
 
     fun updateRecentPlayedTrackLastPosition(mediaItem: MediaItem, lastPosition: Long) {
         val playListId = RECENTLY_PLAYED_TRACKS_PLAYLIST_ID
-        val mediaStoreId = mediaItem.mediaId.toLong()
+        val mediaStoreId = mediaItem.getMediaStoreId()
         context.tracksDAO.getPlaylistTrack(playListId, mediaStoreId)?.takeIf { it.lastPosition != lastPosition }?.let {
             context.tracksDAO.updateLastPosition(it.id, lastPosition)
         } ?: run {

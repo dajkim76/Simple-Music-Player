@@ -65,14 +65,14 @@ abstract class SimpleControllerActivity : SimpleActivity(), Player.Listener {
             withPlayer {
                 if (isPlaying) {
                     val currentItem = currentMediaItem
-                    if (currentItem != null && currentItem.mediaId.toLong() != track.mediaStoreId) {
+                    if (currentItem != null && currentItem.getMediaStoreId() != track.mediaStoreId) {
                         if (keepTrackLastPosition) {
                             val playingLastPosition = currentPosition
                             executeBackgroundThread {
                                 audioHelper.updateRecentPlayedTrackLastPosition(currentItem, playingLastPosition)
                             }
                         }
-                    } else if (currentItem != null && currentItem.mediaId.toLong() == track.mediaStoreId) {
+                    } else if (currentItem != null && currentItem.getMediaStoreId() == track.mediaStoreId) {
                         lastPosition = currentPosition
                     }
                 }

@@ -174,3 +174,11 @@ private fun createTrackFromBundle(bundle: Bundle): Track {
         flags = bundle.getInt(EXTRA_FLAGS)
     )
 }
+
+fun MediaItem.getMediaStoreId(): Long {
+    return try {
+        mediaId.toLong()
+    } catch (_: Exception) {
+        0L
+    }
+}
