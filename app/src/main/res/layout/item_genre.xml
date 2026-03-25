@@ -11,7 +11,7 @@
         android:id="@+id/genre_holder"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/normal_margin">
+        android:padding="@dimen/medium_margin">
 
         <ImageView
             android:id="@+id/genre_image"

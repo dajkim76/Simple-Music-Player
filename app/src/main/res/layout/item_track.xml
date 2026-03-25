@@ -7,9 +7,9 @@
     android:layout_marginBottom="@dimen/tiny_margin"
     android:orientation="horizontal"
     android:paddingStart="@dimen/normal_margin"
-    android:paddingTop="@dimen/activity_margin"
+    android:paddingTop="@dimen/medium_margin"
     android:paddingEnd="@dimen/medium_margin"
-    android:paddingBottom="@dimen/activity_margin">
+    android:paddingBottom="@dimen/medium_margin">
 
     <ImageView
         android:id="@+id/track_image"
