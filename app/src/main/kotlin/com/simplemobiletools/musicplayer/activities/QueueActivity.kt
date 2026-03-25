@@ -152,7 +152,7 @@ class QueueActivity : SimpleControllerActivity() {
                                         }
                                     }
                                 } else if (currentItem != null && currentItem.getMediaStoreId() == track.mediaStoreId) {
-                                    lastPosition = currentPosition
+                                    lastPosition = if (keepTrackLastPosition) currentPosition else 0
                                 }
                             }
 

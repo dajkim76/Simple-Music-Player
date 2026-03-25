@@ -154,7 +154,7 @@ class Config(context: Context) : BaseConfig(context) {
 
     // When the user plays a track, it starts from the last playback position.
     var keepTrackLastPosition: Boolean
-        get() = prefs.getBoolean(KEEP_TRACK_LAST_POSITION, false)
+        get() = prefs.getBoolean(KEEP_TRACK_LAST_POSITION, true)
         set(keepTrackLastPosition) = prefs.edit().putBoolean(KEEP_TRACK_LAST_POSITION, keepTrackLastPosition).apply()
 }
 
