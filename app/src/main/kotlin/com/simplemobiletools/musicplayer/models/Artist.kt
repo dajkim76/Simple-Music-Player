@@ -17,11 +17,20 @@ data class Artist(
     @ColumnInfo(name = "title") val title: String,
     @ColumnInfo(name = "album_cnt") var albumCnt: Int,
     @ColumnInfo(name = "track_cnt") var trackCnt: Int,
-    @ColumnInfo(name = "album_art") var albumArt: String
+    @ColumnInfo(name = "album_art") var albumArt: String,
+    @ColumnInfo(name = "favorite_time", defaultValue = "0") var favoriteTime: Long = 0,
 ) {
     companion object {
         fun getComparator(sorting: Int) = Comparator<Artist> { first, second ->
+            val firstIsSpecial = first.favoriteTime > 0
+            val secondIsSpecial = second.favoriteTime > 0
+
             var result = when {
+                firstIsSpecial && secondIsSpecial -> second.favoriteTime.compareTo(first.favoriteTime)
+
+                firstIsSpecial -> -1
+                secondIsSpecial -> 1
+
                 sorting and PLAYER_SORT_BY_TITLE != 0 -> {
                     when {
                         first.title == MediaStore.UNKNOWN_STRING && second.title != MediaStore.UNKNOWN_STRING -> 1
@@ -34,7 +43,7 @@ data class Artist(
                 else -> first.trackCnt.compareTo(second.trackCnt)
             }
 
-            if (sorting and SORT_DESCENDING != 0) {
+            if (!firstIsSpecial && !secondIsSpecial && sorting and SORT_DESCENDING != 0) {
                 result *= -1
             }
 

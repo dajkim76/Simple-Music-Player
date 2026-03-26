@@ -1,9 +1,6 @@
 package com.simplemobiletools.musicplayer.interfaces
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import com.simplemobiletools.musicplayer.models.Artist
 
 @Dao
@@ -11,8 +8,23 @@ interface ArtistsDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(artist: Artist): Long
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAll(artists: List<Artist>)
+    @Query("UPDATE artists SET title = :title, album_cnt = :albumCnt, track_cnt = :trackCnt, album_art = :albumArt WHERE id = :id")
+    fun update(id: Long, title: String, albumCnt: Int, trackCnt: Int, albumArt: String): Int
+
+    @Transaction
+    open fun insertAll(artists: List<Artist>) {
+        artists.forEach {
+            if (update(it.id, it.title, it.albumCnt, it.trackCnt, it.albumArt) == 0) {
+                insert(it)
+            }
+        }
+    }
+
+    @Query("UPDATE artists SET favorite_time = :favoriteTime WHERE id = :id")
+    fun updateFavorite(id: Long, favoriteTime: Long)
+
+    @Query("SELECT * FROM artists WHERE id = :id")
+    fun select(id: Long): Artist?
 
     @Query("SELECT * FROM artists")
     fun getAll(): List<Artist>

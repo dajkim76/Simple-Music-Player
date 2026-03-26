@@ -16,14 +16,12 @@ import com.simplemobiletools.musicplayer.activities.TracksActivity
 import com.simplemobiletools.musicplayer.adapters.AlbumsAdapter
 import com.simplemobiletools.musicplayer.databinding.FragmentAlbumsBinding
 import com.simplemobiletools.musicplayer.dialogs.ChangeSortingDialog
-import com.simplemobiletools.musicplayer.extensions.audioHelper
-import com.simplemobiletools.musicplayer.extensions.config
-import com.simplemobiletools.musicplayer.extensions.mediaScanner
-import com.simplemobiletools.musicplayer.extensions.viewBinding
+import com.simplemobiletools.musicplayer.extensions.*
 import com.simplemobiletools.musicplayer.helpers.ALBUM
 import com.simplemobiletools.musicplayer.helpers.TAB_ALBUMS
 import com.simplemobiletools.musicplayer.models.Album
 import com.simplemobiletools.musicplayer.models.sortSafely
+import com.simplemobiletools.musicplayer.objects.executeBackgroundThread
 
 // Artists -> Albums -> Tracks
 class AlbumsFragment(context: Context, attributeSet: AttributeSet) : MyViewPagerFragment(context, attributeSet) {
@@ -53,7 +51,7 @@ class AlbumsFragment(context: Context, attributeSet: AttributeSet) : MyViewPager
 
             val adapter = binding.albumsList.adapter
             if (adapter == null) {
-                AlbumsAdapter(activity, albums, binding.albumsList) {
+                AlbumsAdapter(activity, albums, binding.albumsList, ::toggleFavorite) {
                     activity.hideKeyboard()
                     Intent(activity, TracksActivity::class.java).apply {
                         putExtra(ALBUM, Gson().toJson(it))
@@ -71,6 +69,25 @@ class AlbumsFragment(context: Context, attributeSet: AttributeSet) : MyViewPager
                 if (oldItems.sortedBy { it.id }.hashCode() != albums.sortedBy { it.id }.hashCode()) {
                     adapter.updateItems(albums)
                 }
+            }
+        }
+    }
+
+    private fun toggleFavorite(selectedAlbums: List<Album>) {
+        selectedAlbums.forEach {
+            it.favoriteTime = if (it.favoriteTime == 0L) System.currentTimeMillis() else 0L
+            albums.find { album -> album.id == it.id }?.favoriteTime = it.favoriteTime
+        }
+
+        albums.sortSafely(context.config.albumSorting)
+        (binding.albumsList.adapter as AlbumsAdapter).updateItems(albums, forceUpdate = true)
+
+        // update db
+        val favoriteData = selectedAlbums.map { it.id to it.favoriteTime }
+        val albumsDao = context.albumsDAO
+        executeBackgroundThread {
+            favoriteData.forEach { (id, favoriteTime) ->
+                albumsDao.updateFavorite(id, favoriteTime)
             }
         }
     }

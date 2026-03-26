@@ -49,5 +49,14 @@
             app:layout_constraintTop_toBottomOf="@+id/artist_title"
             tools:text="1 albums, 5 tracks" />
 
+        <ImageView
+            android:id="@+id/favorite"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:src="@drawable/ic_favorite"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="@+id/artist_image"
+            app:layout_constraintTop_toTopOf="@+id/artist_image" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

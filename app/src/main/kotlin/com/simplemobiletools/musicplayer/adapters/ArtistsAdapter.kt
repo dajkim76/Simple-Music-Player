@@ -3,9 +3,11 @@ package com.simplemobiletools.musicplayer.adapters
 import android.annotation.SuppressLint
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import com.qtalk.recyclerviewfastscroller.RecyclerViewFastScroller
 import com.simplemobiletools.commons.activities.BaseSimpleActivity
 import com.simplemobiletools.commons.dialogs.ConfirmationDialog
+import com.simplemobiletools.commons.extensions.applyColorFilter
 import com.simplemobiletools.commons.extensions.highlightTextPart
 import com.simplemobiletools.commons.extensions.setupViewBackground
 import com.simplemobiletools.commons.helpers.ensureBackgroundThread
@@ -19,7 +21,13 @@ import com.simplemobiletools.musicplayer.inlines.indexOfFirstOrNull
 import com.simplemobiletools.musicplayer.models.Artist
 import com.simplemobiletools.musicplayer.models.Track
 
-class ArtistsAdapter(activity: BaseSimpleActivity, items: ArrayList<Artist>, recyclerView: MyRecyclerView, itemClick: (Any) -> Unit) :
+class ArtistsAdapter(
+    activity: BaseSimpleActivity,
+    items: ArrayList<Artist>,
+    recyclerView: MyRecyclerView,
+    private val toggleFavorite: (selectedArtists: List<Artist>) -> Unit,
+    itemClick: (Any) -> Unit
+) :
     BaseMusicAdapter<Artist>(items, activity, recyclerView, itemClick), RecyclerViewFastScroller.OnPopupTextUpdate {
 
     override fun getActionMenuId() = R.menu.cab_artists
@@ -48,6 +56,7 @@ class ArtistsAdapter(activity: BaseSimpleActivity, items: ArrayList<Artist>, rec
             R.id.cab_delete -> askConfirmDelete()
             R.id.cab_share -> shareFiles()
             R.id.cab_select_all -> selectAll()
+            R.id.cab_favorites_toggle -> toggleFavorite.invoke(getSelectedItems())
         }
     }
 
@@ -85,6 +94,8 @@ class ArtistsAdapter(activity: BaseSimpleActivity, items: ArrayList<Artist>, rec
             artistFrame.isSelected = selectedKeys.contains(artist.hashCode())
             artistTitle.text = if (textToHighlight.isEmpty()) artist.title else artist.title.highlightTextPart(textToHighlight, properPrimaryColor)
             artistTitle.setTextColor(textColor)
+            favorite.applyColorFilter(properPrimaryColor)
+            favorite.isVisible = artist.favoriteTime > 0
 
             val albums = resources.getQuantityString(R.plurals.albums_plural, artist.albumCnt, artist.albumCnt)
             val tracks = resources.getQuantityString(R.plurals.tracks_plural, artist.trackCnt, artist.trackCnt)
