@@ -237,6 +237,7 @@ class SimpleMediaScanner(private val context: Application) {
         if (isRPlus()) {
             projection.add(Audio.Media.GENRE)
             projection.add(Audio.Media.GENRE_ID)
+            projection.add(Audio.Media.DISC_NUMBER)
         }
 
         context.queryCursor(uri, projection.toTypedArray(), showErrors = true) { cursor ->
@@ -262,12 +263,15 @@ class SimpleMediaScanner(private val context: Application) {
 
             val genre: String
             val genreId: Long
+            val discNumber: Int?
             if (isRPlus()) {
                 genre = cursor.getStringValue(Audio.Media.GENRE).orEmpty()
                 genreId = cursor.getLongValue(Audio.Media.GENRE_ID)
+                discNumber = cursor.getStringValue(Audio.Media.DISC_NUMBER)?.split("/")?.first()?.toIntOrNull()
             } else {
                 genre = ""
                 genreId = 0
+                discNumber = null
             }
             val (fileLength: Long, fileLastModified: Long) = File(path).takeIf { it.exists() }?.let {
                 it.length() to it.lastModified()
@@ -296,7 +300,8 @@ class SimpleMediaScanner(private val context: Application) {
                     dateAdded = dateAdded,
                     orderInPlaylist = 0,
                     fileLength = fileLength,
-                    fileLastModified = fileLastModified
+                    fileLastModified = fileLastModified,
+                    discNumber = discNumber,
                 )
                 tracks.add(track)
             }
@@ -476,6 +481,7 @@ class SimpleMediaScanner(private val context: Application) {
             val album = retriever.extractMetadata(METADATA_KEY_ALBUM) ?: folderName
             val trackNumber = retriever.extractMetadata(METADATA_KEY_CD_TRACK_NUMBER)
             val trackId = trackNumber?.split("/")?.first()?.toIntOrNull() ?: 0
+            val discNumber = retriever.extractMetadata(METADATA_KEY_DISC_NUMBER)?.split("/")?.first()?.toIntOrNull()
             val year = retriever.extractMetadata(METADATA_KEY_YEAR)?.toIntOrNull() ?: 0
             val dateAdded = try {
                 (File(path).lastModified() / 1000L).toInt()
@@ -513,6 +519,7 @@ class SimpleMediaScanner(private val context: Application) {
                     fileLength = fileLength,
                     fileLastModified = fileLastModified,
                     flags = FLAG_MANUAL_CACHE,
+                    discNumber = discNumber,
                 )
                 // use hashCode() as id for tracking purposes, there's a very slim chance of collision
                 track.mediaStoreId = track.hashCode().toLong()

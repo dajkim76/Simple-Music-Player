@@ -43,6 +43,7 @@ data class Track(
     @ColumnInfo(name = "play_count") var playCount: Int = 0,
     @ColumnInfo(name = "last_position") var lastPosition: Long = 0,
     @ColumnInfo(name = "flags") var flags: Int = 0,
+    @ColumnInfo(name = "disc_number") var discNumber: Int? = null,
 ) : Serializable, ListItem() {
 
     val fileStableId: Long by lazy(LazyThreadSafetyMode.NONE) {
@@ -82,7 +83,15 @@ data class Track(
                     }
                 }
 
-                sorting and PLAYER_SORT_BY_TRACK_ID != 0 -> first.trackId.compareTo(second.trackId)
+                sorting and PLAYER_SORT_BY_TRACK_ID != 0 -> {
+                    val discComparison = (first.discNumber ?: Int.MAX_VALUE).compareTo(second.discNumber ?: Int.MAX_VALUE)
+                    if (discComparison == 0) {
+                        first.trackId.compareTo(second.trackId)
+                    } else {
+                        discComparison
+                    }
+                }
+
                 sorting and PLAYER_SORT_BY_DATE_ADDED != 0 -> first.dateAdded.compareTo(second.dateAdded)
                 sorting and PLAYER_SORT_BY_UPDATED_TIME != 0 -> first.updatedTime.compareTo(second.updatedTime)
                 sorting and PLAYER_SORT_BY_LAST_MODIFIED != 0 -> first.fileLastModified.compareTo(second.fileLastModified)

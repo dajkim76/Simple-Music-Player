@@ -47,6 +47,7 @@ class RoomHelper(val context: Context) {
         if (isRPlus()) {
             projection.add(Audio.Media.GENRE)
             projection.add(Audio.Media.GENRE_ID)
+            projection.add(Audio.Media.DISC_NUMBER)
         }
 
         val pathsMap = HashSet<String>()
@@ -83,12 +84,15 @@ class RoomHelper(val context: Context) {
 
                 val genre: String
                 val genreId: Long
+                val discNumber: Int?
                 if (isRPlus()) {
                     genre = cursor.getStringValue(Audio.Media.GENRE)
                     genreId = cursor.getLongValue(Audio.Media.GENRE_ID)
+                    discNumber = cursor.getStringValue(Audio.Media.DISC_NUMBER)?.split("/")?.first()?.toIntOrNull()
                 } else {
                     genre = ""
                     genreId = 0
+                    discNumber = null
                 }
 
                 val (fileLength: Long, fileLastModified: Long) = File(path).takeIf { it.exists() }?.let {
@@ -116,7 +120,8 @@ class RoomHelper(val context: Context) {
                     dateAdded = dateAdded,
                     orderInPlaylist = 0,
                     fileLength = fileLength,
-                    fileLastModified = fileLastModified
+                    fileLastModified = fileLastModified,
+                    discNumber = discNumber,
                 )
                 song.title = song.getProperTitle(showFilename)
                 songs.add(song)
@@ -159,7 +164,8 @@ class RoomHelper(val context: Context) {
                 dateAdded = dateAdded,
                 orderInPlaylist = 0,
                 fileLength = fileLength,
-                fileLastModified = fileLastModified
+                fileLastModified = fileLastModified,
+                discNumber = null,
             )
             song.title = song.getProperTitle(showFilename)
             songs.add(song)
