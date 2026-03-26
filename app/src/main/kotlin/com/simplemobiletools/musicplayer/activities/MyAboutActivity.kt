@@ -42,7 +42,7 @@ import com.simplemobiletools.commons.models.FAQItem
 private const val MY_EMAIL = "kimdaejeong@gmail.com"
 const val DEMO_VIDEO_URL = "https://www.youtube.com/watch?v=X_yMfMboIP4"
 private const val GITHUB_URL = "https://github.com/dajkim76/Simple-Music-Player"
-private const val APP_ICON_URL = "https://www.flaticon.com/authors/freepik"
+private const val APP_ICON_URL = "https://www.flaticon.com/free-icons/music"
 const val RELEASE_URL = "https://play.google.com/store/apps/details?id=com.mdiwebma.musicplayer"
 const val MARKET_URL = "market://details?id=com.mdiwebma.musicplayer"
 
@@ -455,7 +455,7 @@ internal fun OtherSection(
         )
         TwoLinerTextItem(
             click = onAppIconClick,
-            text = "Trendy icons created by Freepik - Flaticon",
+            text = "Music icons created by Freepik - Flaticon",
             icon = R.drawable.ic_info_vector
         )
         TwoLinerTextItem(
