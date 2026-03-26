@@ -19,4 +19,19 @@
         android:title="@string/youtube_timestamp_text"
         android:icon="@drawable/ic_cue_list"
         app:showAsAction="always" />
+
+    <item
+        android:id="@+id/goto_artist_page"
+        android:title="@string/artist"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/goto_album_page"
+        android:title="@string/album"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/track_property"
+        android:title="@string/properties"
+        app:showAsAction="never" />
 </menu>

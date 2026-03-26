@@ -55,10 +55,7 @@ import com.simplemobiletools.musicplayer.databinding.AdjustCueTimestampBinding
 import com.simplemobiletools.musicplayer.databinding.InputCueTextBinding
 import com.simplemobiletools.musicplayer.extensions.*
 import com.simplemobiletools.musicplayer.fragments.PlaybackSpeedFragment
-import com.simplemobiletools.musicplayer.helpers.CueListCache
-import com.simplemobiletools.musicplayer.helpers.CueListHelper
-import com.simplemobiletools.musicplayer.helpers.PlaybackSetting
-import com.simplemobiletools.musicplayer.helpers.SEEK_INTERVAL_S
+import com.simplemobiletools.musicplayer.helpers.*
 import com.simplemobiletools.musicplayer.interfaces.PlaybackSpeedListener
 import com.simplemobiletools.musicplayer.models.Cue
 import com.simplemobiletools.musicplayer.models.Track
@@ -106,6 +103,9 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
                     R.id.edit_cues -> showEditCuesDialog()
                     R.id.show_meta_data -> showMetaDataDialog()
                     R.id.favorite -> toggleFavorite()
+                    R.id.goto_artist_page -> gotoArtistPage()
+                    R.id.goto_album_page -> gotoAlbumPage()
+                    R.id.track_property -> currentTrack?.let { showTrackProperties(listOf(it)) }
                     else -> return@setOnMenuItemClickListener false
                 }
                 return@setOnMenuItemClickListener true
@@ -1072,6 +1072,32 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
             runOnUiThread {
                 binding.activityTrackToolbar.menu.findItem(R.id.favorite).icon =
                     if (isFavorite) resources.getDrawable(R.drawable.ic_favorite) else resources.getDrawable(R.drawable.ic_not_favorite)
+            }
+        }
+    }
+
+    private fun gotoArtistPage() {
+        val track = currentTrack ?: return
+        executeBackgroundThread {
+            val artist = artistDAO.select(track.artistId) ?: return@executeBackgroundThread
+            runOnUiThread {
+                Intent(this, AlbumsActivity::class.java).apply {
+                    putExtra(ARTIST, Gson().toJson(artist))
+                    startActivity(this)
+                }
+            }
+        }
+    }
+
+    private fun gotoAlbumPage() {
+        val track = currentTrack ?: return
+        executeBackgroundThread {
+            val album = albumsDAO.select(track.albumId) ?: return@executeBackgroundThread
+            runOnUiThread {
+                Intent(this, TracksActivity::class.java).apply {
+                    putExtra(ALBUM, Gson().toJson(album))
+                    startActivity(this)
+                }
             }
         }
     }
