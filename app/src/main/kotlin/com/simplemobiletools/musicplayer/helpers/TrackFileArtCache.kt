@@ -56,7 +56,7 @@ class TrackFileArtCache private constructor(private val context: Context) {
     fun getArtworkData(key: Long): ByteArray? {
         return artworkCache.get(key) ?: get(key)?.let { bitmap ->
             val stream = ByteArrayOutputStream()
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 80, stream)
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream)
             val data = stream.toByteArray()
             artworkCache.put(key, data)
             data

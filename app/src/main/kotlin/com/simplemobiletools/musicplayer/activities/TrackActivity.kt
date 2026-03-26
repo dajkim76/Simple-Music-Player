@@ -213,7 +213,7 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
     private fun setupImageSwitcher() {
         binding.activityTrackImage.setFactory {
             ImageView(this).apply {
-                scaleType = ImageView.ScaleType.CENTER_CROP
+                scaleType = ImageView.ScaleType.FIT_CENTER
                 layoutParams = FrameLayout.LayoutParams(
                     FrameLayout.LayoutParams.MATCH_PARENT,
                     FrameLayout.LayoutParams.MATCH_PARENT
@@ -388,7 +388,7 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
             // change cover image manually only once loaded successfully to avoid blinking at fails and placeholders
             loadGlideResource(
                 model = coverArt,
-                options = RequestOptions().centerCrop(),
+                options = RequestOptions().fitCenter(),
                 size = Size(wantedWidth, wantedHeight),
                 onLoadFailed = {
                     val drawable = resources.getDrawable(R.drawable.ic_headset)
