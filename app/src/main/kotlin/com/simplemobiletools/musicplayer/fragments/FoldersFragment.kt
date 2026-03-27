@@ -18,6 +18,7 @@ import com.simplemobiletools.musicplayer.extensions.config
 import com.simplemobiletools.musicplayer.extensions.mediaScanner
 import com.simplemobiletools.musicplayer.extensions.viewBinding
 import com.simplemobiletools.musicplayer.helpers.FOLDER
+import com.simplemobiletools.musicplayer.helpers.FolderConfig
 import com.simplemobiletools.musicplayer.helpers.TAB_FOLDERS
 import com.simplemobiletools.musicplayer.models.Folder
 import com.simplemobiletools.musicplayer.models.sortSafely
@@ -50,7 +51,7 @@ class FoldersFragment(context: Context, attributeSet: AttributeSet) : MyViewPage
 
                 val adapter = binding.foldersList.adapter
                 if (adapter == null) {
-                    FoldersAdapter(activity, folders, binding.foldersList) {
+                    FoldersAdapter(activity, folders, binding.foldersList, ::toggleFavorite) {
                         activity.hideKeyboard()
                         Intent(activity, TracksActivity::class.java).apply {
                             putExtra(FOLDER, (it as Folder).title)
@@ -68,6 +69,19 @@ class FoldersFragment(context: Context, attributeSet: AttributeSet) : MyViewPage
                 }
             }
         }
+    }
+
+    private fun toggleFavorite(selectedFolders: List<Folder>) {
+        selectedFolders.forEach {
+            it.favoriteTime = if (it.favoriteTime == 0L) System.currentTimeMillis() else 0L
+            folders.find { folder -> folder.path == it.path }?.favoriteTime = it.favoriteTime
+        }
+
+        folders.sortSafely(context.config.folderSorting)
+        (binding.foldersList.adapter as FoldersAdapter).updateItems(folders, forceUpdate = true)
+
+        val favoriteData = selectedFolders.map { it.path to it.favoriteTime }
+        FolderConfig(context).setFavoriteTime(favoriteData)
     }
 
     override fun finishActMode() {

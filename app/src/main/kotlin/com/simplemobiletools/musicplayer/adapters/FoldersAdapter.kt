@@ -2,8 +2,10 @@ package com.simplemobiletools.musicplayer.adapters
 
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import com.qtalk.recyclerviewfastscroller.RecyclerViewFastScroller
 import com.simplemobiletools.commons.activities.BaseSimpleActivity
+import com.simplemobiletools.commons.extensions.applyColorFilter
 import com.simplemobiletools.commons.extensions.highlightTextPart
 import com.simplemobiletools.commons.extensions.setupViewBackground
 import com.simplemobiletools.commons.views.MyRecyclerView
@@ -17,7 +19,11 @@ import com.simplemobiletools.musicplayer.models.Track
 import org.greenrobot.eventbus.EventBus
 
 class FoldersAdapter(
-    activity: BaseSimpleActivity, items: ArrayList<Folder>, recyclerView: MyRecyclerView, itemClick: (Any) -> Unit
+    activity: BaseSimpleActivity,
+    items: ArrayList<Folder>,
+    recyclerView: MyRecyclerView,
+    private val toggleFavorite: (selectedAlbums: List<Folder>) -> Unit,
+    itemClick: (Any) -> Unit
 ) : BaseMusicAdapter<Folder>(items, activity, recyclerView, itemClick), RecyclerViewFastScroller.OnPopupTextUpdate {
 
     override fun getActionMenuId() = R.menu.cab_folders
@@ -39,6 +45,7 @@ class FoldersAdapter(
         when (id) {
             R.id.cab_exclude_folders -> excludeFolders()
             R.id.cab_share -> shareFiles()
+            R.id.cab_favorites_toggle -> toggleFavorite.invoke(getSelectedItems())
         }
     }
 
@@ -66,6 +73,8 @@ class FoldersAdapter(
             folderFrame.isSelected = selectedKeys.contains(folder.hashCode())
             folderTitle.text = if (textToHighlight.isEmpty()) folder.title else folder.title.highlightTextPart(textToHighlight, properPrimaryColor)
             folderTitle.setTextColor(textColor)
+            favorite.applyColorFilter(properPrimaryColor)
+            favorite.isVisible = folder.favoriteTime > 0
 
             val tracks = resources.getQuantityString(R.plurals.tracks_plural, folder.trackCount, folder.trackCount)
             folderTracks.text = tracks

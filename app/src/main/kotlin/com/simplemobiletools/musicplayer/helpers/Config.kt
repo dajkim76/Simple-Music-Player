@@ -1,6 +1,7 @@
 package com.simplemobiletools.musicplayer.helpers
 
 import android.content.Context
+import androidx.core.content.edit
 import com.simplemobiletools.commons.helpers.BaseConfig
 import java.util.Arrays
 
@@ -164,4 +165,22 @@ fun isInExcludeFolders(path: String, excludeFolder: Set<String>): Boolean {
 
 fun isInExcludeFolders(path: String, excludeFolder: List<String>): Boolean {
     return excludeFolder.any { path.startsWith(it) }
+}
+
+class FolderConfig(context: Context) {
+    private val pref = context.getSharedPreferences("folder_config", Context.MODE_PRIVATE)
+
+    fun getFavoriteTime(path: String) = pref.getLong(path, 0)
+
+    fun setFavoriteTime(favoriteData: List<Pair<String, Long>>) {
+        pref.edit {
+            favoriteData.forEach { (path, time) ->
+                if (time > 0) {
+                    putLong(path, time)
+                } else {
+                    remove(path)
+                }
+            }
+        }
+    }
 }

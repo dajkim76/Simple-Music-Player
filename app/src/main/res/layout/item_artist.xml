@@ -54,6 +54,8 @@
             android:layout_width="15dp"
             android:layout_height="15dp"
             android:src="@drawable/ic_favorite"
+            android:background="@drawable/ic_not_favorite"
+            android:padding="1dp"
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="@+id/artist_image"
             app:layout_constraintTop_toTopOf="@+id/artist_image" />

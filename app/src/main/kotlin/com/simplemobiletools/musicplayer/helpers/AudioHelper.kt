@@ -37,13 +37,14 @@ class AudioHelper(private val context: Context) {
         val foldersMap = tracks.groupBy { it.folderName }
         val folders = ArrayList<Folder>()
         val excludedFolders = config.excludedFolders
+        val folderConfig = FolderConfig(context)
         for ((title, folderTracks) in foldersMap) {
             val path = (folderTracks.firstOrNull()?.path?.getParentPath() ?: "").removeSuffix("/")
             if (excludedFolders.contains(path)) {
                 continue
             }
 
-            val folder = Folder(title, folderTracks.size, path)
+            val folder = Folder(title, folderTracks.size, path, folderConfig.getFavoriteTime(path))
             folders.add(folder)
         }
 
