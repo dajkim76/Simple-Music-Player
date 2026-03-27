@@ -121,6 +121,7 @@ class TracksHeaderAdapter(activity: SimpleActivity, items: ArrayList<ListItem>, 
         }
     }
 
+    @SuppressLint("SetTextI18n")
     private fun setupTrack(view: View, track: Track) {
         ItemTrackBinding.bind(view).apply {
             root.setupViewBackground(context)
@@ -135,14 +136,19 @@ class TracksHeaderAdapter(activity: SimpleActivity, items: ArrayList<ListItem>, 
             trackDuration.text = track.duration.getFormattedDuration()
             if (track.discNumber != null) {
                 trackId.text = "${track.discNumber}.${track.trackId.toString().padStart(2, '0')}"
+                trackId.beVisible()
             } else {
-                trackId.text = track.trackId.toString()
+                if (track.trackId > 0) {
+                    trackId.text = track.trackId.toString()
+                    trackId.beVisible()
+                } else {
+                    trackId.beGone()
+                }
             }
             context.getTrackFileArt(track) { coverArt ->
                 if (activity.isFinishing || activity.isDestroyed) return@getTrackFileArt
                 loadImage(trackImage, coverArt, placeholder)
             }
-            trackId.beVisible()
         }
     }
 
