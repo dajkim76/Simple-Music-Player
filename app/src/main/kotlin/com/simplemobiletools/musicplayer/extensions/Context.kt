@@ -41,6 +41,7 @@ fun Activity.myAppLaunched(appId: String) {
     baseConfig.internalStoragePath = getInternalStoragePath()
     updateSDCardPath()
     baseConfig.appId = appId
+    baseConfig.appRunCount++
 }
 
 val Context.config: Config get() = Config.newInstance(applicationContext)
