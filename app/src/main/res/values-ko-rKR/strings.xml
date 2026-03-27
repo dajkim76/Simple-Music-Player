@@ -36,7 +36,7 @@
     <string name="empty_playlist">현재 재생목록이 비어있습니다.</string>
     <string name="fetching_songs">노래를 가져오는중…</string>
     <string name="all_songs">전체 음악</string>
-    <string name="create_playlist_from_folder">폴더를 선택하여 새로운 재생목록 생성</string>
+    <string name="create_playlist_from_folder">폴더로 재생목록 생성</string>
     <string name="folder_contains_no_audio">선택된 폴더에는 오디오파일이 없습니다.</string>
     <string name="delete_current_song">현재 노래를 삭제합니다</string>
     <string name="delete_song_warning">경고: 이 작업을 수행하면 선택한 파일과 모든 재생 목록이 기기에서 삭제됩니다.</string>
@@ -45,10 +45,10 @@
     <string name="title_is_not_available">제목을 사용할 수 없는 경우</string>
     <string name="show_album_cover">메인 화면에 앨범 커버를 표시합니다</string>
     <string name="all_tracks">모든 트랙</string>
-    <string name="add_to_playlist">재생 목록에 추가합니다</string>
+    <string name="add_to_playlist">재생 목록에 추가</string>
     <string name="create_playlist_label">원하는 아티스트, 앨범 또는 트랙을 선택하고 Menu(메뉴) -&gt; 재생 목록에 추가를 사용하여 새 재생 목록을 만들 수 있습니다.</string>
-    <string name="export_playlist">재생 목록을 내보냅니다</string>
-    <string name="import_playlist">재생 목록을 가져옵니다</string>
+    <string name="export_playlist">재생 목록을 내보내기</string>
+    <string name="import_playlist">재생 목록을 가져오기</string>
     <string name="filename_without_m3u">파일 이름(.m3u 제외)</string>
     <!-- Sorting -->
     <string name="track_count">트랙 수</string>

@@ -103,6 +103,7 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
                     R.id.edit_cues -> showEditCuesDialog()
                     R.id.show_meta_data -> showMetaDataDialog()
                     R.id.favorite -> toggleFavorite()
+                    R.id.add_to_playlist -> currentTrack?.let { addTracksToPlaylist(listOf(it)) {} }
                     R.id.goto_artist_page -> gotoArtistPage()
                     R.id.goto_album_page -> gotoAlbumPage()
                     R.id.track_property -> currentTrack?.let { showTrackProperties(listOf(it)) }

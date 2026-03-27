@@ -11,6 +11,16 @@
     android:paddingEnd="@dimen/medium_margin"
     android:paddingBottom="@dimen/medium_margin">
 
+    <ImageView
+        android:id="@+id/favorite"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        android:src="@drawable/ic_favorite"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/folder_title"
+        app:layout_constraintBottom_toBottomOf="@id/folder_title" />
+
     <com.simplemobiletools.commons.views.MyTextView
         android:id="@+id/folder_title"
         android:layout_width="0dp"
@@ -21,7 +31,7 @@
         android:textSize="@dimen/medium_text_size"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/folder_tracks"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/favorite"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_chainStyle="packed"
         tools:text="Music" />
@@ -38,15 +48,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/folder_title"
         tools:text="5 Tracks" />
-
-    <ImageView
-        android:id="@+id/favorite"
-        android:layout_width="15dp"
-        android:layout_height="15dp"
-        android:src="@drawable/ic_favorite"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/folder_title"
-        app:layout_constraintBottom_toBottomOf="@id/folder_title" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
