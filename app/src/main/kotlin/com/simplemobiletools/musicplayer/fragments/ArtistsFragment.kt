@@ -78,7 +78,7 @@ class ArtistsFragment(context: Context, attributeSet: AttributeSet) : MyViewPage
             artists.find { artist -> artist.id == it.id }?.favoriteTime = it.favoriteTime
         }
 
-        artists.sortSafely(context.config.albumSorting)
+        artists.sortSafely(context.config.artistSorting)
         (binding.artistsList.adapter as ArtistsAdapter).updateItems(artists, forceUpdate = true)
 
         // update db
