@@ -21,6 +21,7 @@ import com.simplemobiletools.musicplayer.extensions.getFriendlyFolder
 import com.simplemobiletools.musicplayer.models.*
 import java.io.File
 import java.io.FileInputStream
+import java.util.concurrent.TimeUnit
 
 /**
  * This singleton class manages the process of querying [MediaStore] for new audio files, manually scanning storage for missing audio files, and removing outdated
@@ -29,6 +30,7 @@ import java.io.FileInputStream
 class SimpleMediaScanner(private val context: Application) {
 
     private val config = context.config
+    private val scanConfig = ScanConfig(context)
     private var scanning = false
     private var showProgress = false
     private var onScanComplete: ((complete: Boolean) -> Unit)? = null
@@ -51,6 +53,13 @@ class SimpleMediaScanner(private val context: Application) {
      */
     @Synchronized
     fun scan(progress: Boolean = false, callback: ((complete: Boolean) -> Unit)? = null) {
+        if (!progress) {
+            if (!needToFullScan()) {
+                // cancel full scan
+                return
+            }
+        }
+
         onScanComplete = callback
         showProgress = progress
         maybeShowScanProgress()
@@ -83,6 +92,7 @@ class SimpleMediaScanner(private val context: Application) {
                 mediaStorePaths.clear()
                 scanning = false
                 hideScanProgress()
+                scanConfig.lastFullScanTime = System.currentTimeMillis()
             }
         }
     }
@@ -697,6 +707,26 @@ class SimpleMediaScanner(private val context: Application) {
             notificationHandler = null
             context.notificationManager.cancel(SCANNER_NOTIFICATION_ID)
         }
+    }
+
+    private fun needToFullScan(): Boolean {
+        val lastFullScanTime = scanConfig.lastFullScanTime
+        if (lastFullScanTime <= 0) return true
+
+        val now = System.currentTimeMillis()
+        // 24시간 마다 full scan
+        if (now - lastFullScanTime > TimeUnit.DAYS.toMillis(1)) {
+            return true
+        }
+
+        val safeTime = lastFullScanTime / 1000 - 10 // 10초 이전이 누락없이 안전
+        val uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
+        val selection = "${MediaStore.Audio.Media.DATE_ADDED} > ? OR ${MediaStore.Audio.Media.DATE_MODIFIED} > ?"
+        val args = arrayOf(safeTime.toString(), safeTime.toString())
+        val count = context.contentResolver.query(uri, arrayOf(MediaStore.Audio.Media._ID), selection, args, null)
+            ?.use { it.count } ?: 0
+
+        return count > 0
     }
 
     companion object {

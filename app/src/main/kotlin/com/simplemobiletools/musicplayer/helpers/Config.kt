@@ -184,3 +184,11 @@ class FolderConfig(context: Context) {
         }
     }
 }
+
+class ScanConfig(context: Context) {
+    private val pref = context.getSharedPreferences("scan_config", Context.MODE_PRIVATE)
+
+    var lastFullScanTime: Long
+        get() = pref.getLong("last_full_scan_time", 0L)
+        set(time) = pref.edit().putLong("last_full_scan_time", time).apply()
+}
