@@ -648,7 +648,6 @@ class SimpleMediaScanner(private val context: Application) {
             val albumCnt = albumsByArtist.size
             val trackCnt = albumsByArtist.sumOf { it.trackCnt }
             if (trackCnt != artist.trackCnt || albumCnt != artist.albumCnt) {
-                context.audioHelper.deleteArtist(artistId)
                 val updated = artist.copy(trackCnt = trackCnt, albumCnt = albumCnt)
                 context.audioHelper.updateArtistsOrInsert(listOf(updated))
             }
