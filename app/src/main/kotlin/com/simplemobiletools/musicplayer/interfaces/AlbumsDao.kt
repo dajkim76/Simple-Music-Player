@@ -12,7 +12,7 @@ interface AlbumsDao {
     fun update(id: Long, artist: String, title: String, coverArt: String, year: Int, trackCnt: Int, artistId: Long, dateAdded: Int): Int
 
     @Transaction
-    open fun insertAll(albums: List<Album>) {
+    open fun updateAllOrInsert(albums: List<Album>) {
         albums.forEach {
             if (update(it.id, it.artist, it.title, it.coverArt, it.year, it.trackCnt, it.artistId, it.dateAdded) == 0) {
                 insert(it)

@@ -179,8 +179,8 @@ class SimpleMediaScanner(private val context: Application) {
     private fun updateAllDatabases() {
         context.audioHelper.apply {
             insertTracks(newTracks)
-            insertAlbums(newAlbums)
-            insertArtists(newArtists)
+            updateAlbumsOrInsert(newAlbums)
+            updateArtistsOrInsert(newArtists)
             insertGenres(newGenres)
         }
         updateAllTracksPlaylist()
@@ -650,7 +650,7 @@ class SimpleMediaScanner(private val context: Application) {
             if (trackCnt != artist.trackCnt || albumCnt != artist.albumCnt) {
                 context.audioHelper.deleteArtist(artistId)
                 val updated = artist.copy(trackCnt = trackCnt, albumCnt = albumCnt)
-                context.audioHelper.insertArtists(listOf(updated))
+                context.audioHelper.updateArtistsOrInsert(listOf(updated))
             }
         }
 

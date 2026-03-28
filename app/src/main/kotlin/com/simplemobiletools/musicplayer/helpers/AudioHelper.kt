@@ -88,8 +88,8 @@ class AudioHelper(private val context: Context) {
         tracks.forEach { dao.resetUpdatedTime(it.id) }
     }
 
-    fun insertArtists(artists: List<Artist>) {
-        context.artistDAO.insertAll(artists)
+    fun updateArtistsOrInsert(artists: List<Artist>) {
+        context.artistDAO.updateAllOrInsert(artists)
     }
 
     fun getAllArtists(): ArrayList<Artist> {
@@ -127,8 +127,8 @@ class AudioHelper(private val context: Context) {
         }
     }
 
-    fun insertAlbums(albums: List<Album>) {
-        context.albumsDAO.insertAll(albums)
+    fun updateAlbumsOrInsert(albums: List<Album>) {
+        context.albumsDAO.updateAllOrInsert(albums)
     }
 
     fun getAlbum(albumId: Long): Album? {
