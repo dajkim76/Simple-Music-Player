@@ -47,4 +47,6 @@ object SimpleEqualizer {
             instance.release()
         }
     }
+
+    fun isInstanceInitialized(): Boolean = ::instance.isInitialized
 }

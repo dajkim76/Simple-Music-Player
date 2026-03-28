@@ -35,6 +35,10 @@ class EqualizerActivity : SimpleActivity() {
 
         updateMaterialActivityViews(binding.equalizerCoordinator, binding.equalizerHolder, useTransparentNavigation = true, useTopSearchMenu = false)
         setupMaterialScrollListener(binding.equalizerNestedScrollview, binding.equalizerToolbar)
+        if (!SimpleEqualizer.isInstanceInitialized()) {
+            toast(com.simplemobiletools.commons.R.string.unknown_error_occurred)
+            return
+        }
         initMediaPlayer()
     }
 

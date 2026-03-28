@@ -34,6 +34,11 @@ class AlbumsActivity : SimpleMusicActivity() {
 
         val artistType = object : TypeToken<Artist>() {}.type
         val artist = Gson().fromJson<Artist>(intent.getStringExtra(ARTIST), artistType)
+        if (artist == null) {
+            toast(com.simplemobiletools.commons.R.string.unknown_error_occurred)
+            finish()
+            return
+        }
         binding.albumsToolbar.title = artist.title
 
         ensureBackgroundThread {
