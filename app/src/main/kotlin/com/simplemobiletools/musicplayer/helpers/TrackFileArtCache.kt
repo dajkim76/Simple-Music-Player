@@ -81,3 +81,14 @@ class TrackFileArtCache private constructor(private val context: Context) {
         fun peekInstance(): TrackFileArtCache? = instance
     }
 }
+
+
+object GlideLoadFailChecker {
+    private val failedSet = mutableSetOf<String>()
+
+    fun isFailed(key: String): Boolean = failedSet.contains(key)
+
+    fun markFailed(key: String) {
+        failedSet.add(key)
+    }
+}
