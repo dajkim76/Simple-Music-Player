@@ -25,7 +25,7 @@ media = "1.7.1"
 media3 = "1.9.2"
 room = "2.5.2"
 #Simple Mobile Tools
-simple-commons = "421c63d560"
+simple-commons = "c437e72b11"
 #Gradle
 gradlePlugins-agp = "8.6.0"
 #build
