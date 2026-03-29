@@ -5,7 +5,11 @@ plugins {
     alias(libs.plugins.google.services).apply(false)
     alias(libs.plugins.firebase.crashlytics).apply(false)
     alias(libs.plugins.compose.compiler).apply(false)
+    alias(libs.plugins.parcelize).apply(false)
+    alias(libs.plugins.library).apply(false)
+    alias(libs.plugins.kotlinSerialization).apply(false)
 }
+
 
 tasks.register<Delete>("clean") {
     delete(rootProject.layout.buildDirectory)

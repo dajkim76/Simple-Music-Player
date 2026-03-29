@@ -1,0 +1,3 @@
+[submodule "Simple-Commons"]
+	path = Simple-Commons
+	url = git@github.com:dajkim76/Simple-Commons.git

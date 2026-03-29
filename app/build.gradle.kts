@@ -4,13 +4,15 @@ import java.io.FileInputStream
 
 plugins {
     alias(libs.plugins.android)
-    alias(libs.plugins.kotlinAndroid)
     alias(libs.plugins.ksp)
     alias(libs.plugins.google.services)
     alias(libs.plugins.firebase.crashlytics)
     alias(libs.plugins.compose.compiler)
     base
 }
+
+
+
 
 base {
     archivesName.set("music-player-v${libs.versions.app.version.versionCode.get()}")
@@ -92,8 +94,11 @@ android {
         isCoreLibraryDesugaringEnabled = true
     }
 
-    tasks.withType<KotlinCompile> {
-        kotlinOptions.jvmTarget = project.libs.versions.app.build.kotlinJVMTarget.get()
+    tasks.withType<KotlinCompile>().configureEach {
+        compilerOptions {
+            jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.fromTarget(project.libs.versions.app.build.kotlinJVMTarget.get()))
+            freeCompilerArgs.addAll("-Xcontext-parameters")
+        }
     }
 
     namespace = libs.versions.app.version.appId.get()
@@ -105,8 +110,9 @@ android {
 }
 
 dependencies {
-    implementation(libs.simple.mobile.tools.commons)
+    implementation(project(":Simple-Commons:commons"))
     implementation(libs.eventbus)
+
     implementation(libs.androidx.media)
     implementation(libs.androidx.swiperefreshlayout)
     implementation(libs.androidx.constraintlayout)

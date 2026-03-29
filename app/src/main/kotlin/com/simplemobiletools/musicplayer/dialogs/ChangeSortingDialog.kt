@@ -23,7 +23,7 @@ class ChangeSortingDialog(val activity: Activity, val location: Int, val playlis
 
     init {
         binding.apply {
-            useForThisPlaylistDivider.beVisibleIf(playlist != null || path != null)
+            useForThisPlaylistDivider.root.beVisibleIf(playlist != null || path != null)
             sortingDialogUseForThisOnly.beVisibleIf(playlist != null || path != null)
 
             if (playlist != null) {
