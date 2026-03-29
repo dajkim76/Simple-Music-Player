@@ -23,6 +23,7 @@ import android.util.Log
 import android.util.Size
 import android.view.*
 import android.widget.*
+import androidx.annotation.OptIn
 import androidx.appcompat.app.AlertDialog
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
@@ -32,6 +33,7 @@ import androidx.core.view.children
 import androidx.core.view.isVisible
 import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
+import androidx.media3.common.util.UnstableApi
 import androidx.media3.common.util.Util
 import androidx.media3.container.MdtaMetadataEntry
 import androidx.media3.exoplayer.MetadataRetriever
@@ -825,6 +827,7 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
         textView.highlightColor = Color.TRANSPARENT
     }
 
+    @OptIn(UnstableApi::class)
     private fun showMetaDataDialog() {
         val track = currentTrack ?: return
         val mediaItem = if (track.path.isNotEmpty()) {

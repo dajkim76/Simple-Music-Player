@@ -27,7 +27,7 @@ import java.util.concurrent.TimeUnit
  * This singleton class manages the process of querying [MediaStore] for new audio files, manually scanning storage for missing audio files, and removing outdated
  * files from the local cache. It ensures that only one scan is running at a time to avoid unnecessary expenses and conflicts.
  */
-class SimpleMediaScanner(private val context: Application) {
+class SimpleMediaScanner private constructor(private val context: Application) {
 
     private val config = context.config
     private val scanConfig = ScanConfig(context)
