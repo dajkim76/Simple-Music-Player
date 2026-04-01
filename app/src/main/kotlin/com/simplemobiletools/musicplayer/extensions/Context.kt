@@ -44,7 +44,7 @@ fun Activity.myAppLaunched(appId: String) {
     baseConfig.appRunCount++
 }
 
-val Context.config: Config get() = Config.newInstance(applicationContext)
+val Context.config: Config get() = Config.getInstance(applicationContext)
 
 val Context.playlistDAO: PlaylistsDao get() = getTracksDB().PlaylistsDao()
 

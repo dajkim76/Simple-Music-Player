@@ -30,7 +30,6 @@ import java.util.concurrent.TimeUnit
 class SimpleMediaScanner private constructor(private val context: Application) {
 
     private val config = context.config
-    private val scanConfig = ScanConfig(context)
     private var scanning = false
     private var showProgress = false
     private var onScanComplete: ((complete: Boolean) -> Unit)? = null
@@ -92,7 +91,7 @@ class SimpleMediaScanner private constructor(private val context: Application) {
                 mediaStorePaths.clear()
                 scanning = false
                 hideScanProgress()
-                scanConfig.lastFullScanTime = System.currentTimeMillis()
+                config.lastFullScanTime = System.currentTimeMillis()
             }
         }
     }
@@ -710,7 +709,7 @@ class SimpleMediaScanner private constructor(private val context: Application) {
     }
 
     private fun needToFullScan(): Boolean {
-        val lastFullScanTime = scanConfig.lastFullScanTime
+        val lastFullScanTime = config.lastFullScanTime
         if (lastFullScanTime <= 0) return true
 
         val now = System.currentTimeMillis()

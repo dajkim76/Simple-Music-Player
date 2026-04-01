@@ -46,7 +46,7 @@ class PlaybackService : MediaLibraryService(), MediaSessionService.Listener {
 
     override fun onCreate() {
         super.onCreate()
-        config = Config.newInstance(applicationContext)
+        config = Config.getInstance(applicationContext)
         setListener(this)
         initializeSessionAndPlayer(handleAudioFocus = true, handleAudioBecomingNoisy = true, skipSilence = config.gaplessPlayback)
         initializeLibrary()

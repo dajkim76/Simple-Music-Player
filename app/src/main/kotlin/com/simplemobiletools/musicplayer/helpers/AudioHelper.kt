@@ -15,6 +15,7 @@ import kotlin.time.Duration.Companion.seconds
 class AudioHelper(private val context: Context) {
 
     private val config = context.config
+    private val folderConfig = FolderConfig.getInstance(context)
 
     fun insertTracks(tracks: List<Track>) {
         context.tracksDAO.insertAll(tracks)
@@ -37,14 +38,13 @@ class AudioHelper(private val context: Context) {
         val foldersMap = tracks.groupBy { it.folderName }
         val folders = ArrayList<Folder>()
         val excludedFolders = config.excludedFolders
-        val folderConfig = FolderConfig(context)
         for ((title, folderTracks) in foldersMap) {
             val path = (folderTracks.firstOrNull()?.path?.getParentPath() ?: "").removeSuffix("/")
             if (excludedFolders.contains(path)) {
                 continue
             }
 
-            val folder = Folder(title, folderTracks.size, path, folderConfig.getFavoriteTime(path))
+            val folder = Folder(title, folderTracks.size, path, folderConfig.getFolderFavoriteTime(path))
             folders.add(folder)
         }
 

@@ -1,62 +1,92 @@
 package com.simplemobiletools.musicplayer.helpers
 
+import android.annotation.SuppressLint
 import android.content.Context
-import androidx.core.content.edit
 import com.simplemobiletools.commons.helpers.BaseConfig
+import com.tencent.mmkv.MMKV
 import java.util.Arrays
 
-class Config(context: Context) : BaseConfig(context) {
+// Config is singleton by getInstance()
+class Config private constructor(context: Context) : BaseConfig(context) {
     companion object {
-        fun newInstance(context: Context) = Config(context)
+        @SuppressLint("StaticFieldLeak")
+        private var instance: Config? = null
+
+        @Synchronized
+        fun getInstance(context: Context): Config {
+            if (MMKV.getRootDir() == null) MMKV.initialize(context)
+            return instance ?: Config(context.applicationContext).also {
+                instance = it
+                it.migrate(context)
+            }
+        }
     }
 
     var isShuffleEnabled: Boolean
-        get() = prefs.getBoolean(SHUFFLE, false)
-        set(shuffle) = prefs.edit().putBoolean(SHUFFLE, shuffle).apply()
+        get() = mmkv.decodeBool(SHUFFLE, false)
+        set(shuffle) {
+            mmkv.encode(SHUFFLE, shuffle)
+        }
 
     var playbackSetting: PlaybackSetting
-        get() = PlaybackSetting.values()[prefs.getInt(PLAYBACK_SETTING, PlaybackSetting.REPEAT_OFF.ordinal)]
-        set(playbackSetting) = prefs.edit().putInt(PLAYBACK_SETTING, playbackSetting.ordinal).apply()
+        get() = PlaybackSetting.values()[mmkv.decodeInt(PLAYBACK_SETTING, PlaybackSetting.REPEAT_OFF.ordinal)]
+        set(playbackSetting) {
+            mmkv.encode(PLAYBACK_SETTING, playbackSetting.ordinal)
+        }
 
     var autoplay: Boolean
-        get() = prefs.getBoolean(AUTOPLAY, true)
-        set(autoplay) = prefs.edit().putBoolean(AUTOPLAY, autoplay).apply()
+        get() = mmkv.decodeBool(AUTOPLAY, true)
+        set(autoplay) {
+            mmkv.encode(AUTOPLAY, autoplay)
+        }
 
     var showFilename: Int
-        get() = prefs.getInt(SHOW_FILENAME, SHOW_FILENAME_IF_UNAVAILABLE)
-        set(showFilename) = prefs.edit().putInt(SHOW_FILENAME, showFilename).apply()
+        get() = mmkv.decodeInt(SHOW_FILENAME, SHOW_FILENAME_IF_UNAVAILABLE)
+        set(showFilename) {
+            mmkv.encode(SHOW_FILENAME, showFilename)
+        }
 
     var swapPrevNext: Boolean
-        get() = prefs.getBoolean(SWAP_PREV_NEXT, false)
-        set(swapPrevNext) = prefs.edit().putBoolean(SWAP_PREV_NEXT, swapPrevNext).apply()
+        get() = mmkv.decodeBool(SWAP_PREV_NEXT, false)
+        set(swapPrevNext) {
+            mmkv.encode(SWAP_PREV_NEXT, swapPrevNext)
+        }
 
     var lastSleepTimerSeconds: Int
-        get() = prefs.getInt(LAST_SLEEP_TIMER_SECONDS, 30 * 60)
-        set(lastSleepTimerSeconds) = prefs.edit().putInt(LAST_SLEEP_TIMER_SECONDS, lastSleepTimerSeconds).apply()
+        get() = mmkv.decodeInt(LAST_SLEEP_TIMER_SECONDS, 30 * 60)
+        set(lastSleepTimerSeconds) {
+            mmkv.encode(LAST_SLEEP_TIMER_SECONDS, lastSleepTimerSeconds)
+        }
 
     var sleepInTS: Long
-        get() = prefs.getLong(SLEEP_IN_TS, 0)
-        set(sleepInTS) = prefs.edit().putLong(SLEEP_IN_TS, sleepInTS).apply()
+        get() = mmkv.decodeLong(SLEEP_IN_TS, 0)
+        set(sleepInTS) {
+            mmkv.encode(SLEEP_IN_TS, sleepInTS)
+        }
 
     var playlistSorting: Int
-        get() = prefs.getInt(PLAYLIST_SORTING, PLAYER_SORT_BY_TITLE)
-        set(playlistSorting) = prefs.edit().putInt(PLAYLIST_SORTING, playlistSorting).apply()
+        get() = mmkv.decodeInt(PLAYLIST_SORTING, PLAYER_SORT_BY_TITLE)
+        set(playlistSorting) {
+            mmkv.encode(PLAYLIST_SORTING, playlistSorting)
+        }
 
     var playlistTracksSorting: Int
-        get() = prefs.getInt(PLAYLIST_TRACKS_SORTING, PLAYER_SORT_BY_TITLE)
-        set(playlistTracksSorting) = prefs.edit().putInt(PLAYLIST_TRACKS_SORTING, playlistTracksSorting).apply()
+        get() = mmkv.decodeInt(PLAYLIST_TRACKS_SORTING, PLAYER_SORT_BY_TITLE)
+        set(playlistTracksSorting) {
+            mmkv.encode(PLAYLIST_TRACKS_SORTING, playlistTracksSorting)
+        }
 
     fun saveCustomPlaylistSorting(playlistId: Int, value: Int) {
-        prefs.edit().putInt(SORT_PLAYLIST_PREFIX + playlistId, value).apply()
+        mmkv.encode(SORT_PLAYLIST_PREFIX + playlistId, value)
     }
 
-    fun getCustomPlaylistSorting(playlistId: Int) = prefs.getInt(SORT_PLAYLIST_PREFIX + playlistId, sorting)
+    fun getCustomPlaylistSorting(playlistId: Int) = mmkv.decodeInt(SORT_PLAYLIST_PREFIX + playlistId, sorting)
 
     fun removeCustomPlaylistSorting(playlistId: Int) {
-        prefs.edit().remove(SORT_PLAYLIST_PREFIX + playlistId).apply()
+        mmkv.remove(SORT_PLAYLIST_PREFIX + playlistId)
     }
 
-    fun hasCustomPlaylistSorting(playlistId: Int) = prefs.contains(SORT_PLAYLIST_PREFIX + playlistId)
+    fun hasCustomPlaylistSorting(playlistId: Int) = mmkv.contains(SORT_PLAYLIST_PREFIX + playlistId)
 
     fun getProperPlaylistSorting(playlistId: Int) = if (hasCustomPlaylistSorting(playlistId)) {
         getCustomPlaylistSorting(playlistId)
@@ -71,58 +101,82 @@ class Config(context: Context) : BaseConfig(context) {
     }
 
     var folderSorting: Int
-        get() = prefs.getInt(FOLDER_SORTING, PLAYER_SORT_BY_TITLE)
-        set(folderSorting) = prefs.edit().putInt(FOLDER_SORTING, folderSorting).apply()
+        get() = mmkv.decodeInt(FOLDER_SORTING, PLAYER_SORT_BY_TITLE)
+        set(folderSorting) {
+            mmkv.encode(FOLDER_SORTING, folderSorting)
+        }
 
     var artistSorting: Int
-        get() = prefs.getInt(ARTIST_SORTING, PLAYER_SORT_BY_TITLE)
-        set(artistSorting) = prefs.edit().putInt(ARTIST_SORTING, artistSorting).apply()
+        get() = mmkv.decodeInt(ARTIST_SORTING, PLAYER_SORT_BY_TITLE)
+        set(artistSorting) {
+            mmkv.encode(ARTIST_SORTING, artistSorting)
+        }
 
     var albumSorting: Int
-        get() = prefs.getInt(ALBUM_SORTING, PLAYER_SORT_BY_TITLE)
-        set(albumSorting) = prefs.edit().putInt(ALBUM_SORTING, albumSorting).apply()
+        get() = mmkv.decodeInt(ALBUM_SORTING, PLAYER_SORT_BY_TITLE)
+        set(albumSorting) {
+            mmkv.encode(ALBUM_SORTING, albumSorting)
+        }
 
     var trackSorting: Int
-        get() = prefs.getInt(TRACK_SORTING, PLAYER_SORT_BY_TITLE)
-        set(trackSorting) = prefs.edit().putInt(TRACK_SORTING, trackSorting).apply()
+        get() = mmkv.decodeInt(TRACK_SORTING, PLAYER_SORT_BY_TITLE)
+        set(trackSorting) {
+            mmkv.encode(TRACK_SORTING, trackSorting)
+        }
 
     var genreSorting: Int
-        get() = prefs.getInt(GENRE_SORTING, PLAYER_SORT_BY_TITLE)
-        set(genreSorting) = prefs.edit().putInt(GENRE_SORTING, genreSorting).apply()
+        get() = mmkv.decodeInt(GENRE_SORTING, PLAYER_SORT_BY_TITLE)
+        set(genreSorting) {
+            mmkv.encode(GENRE_SORTING, genreSorting)
+        }
 
     var equalizerPreset: Int
-        get() = prefs.getInt(EQUALIZER_PRESET, 0)
-        set(equalizerPreset) = prefs.edit().putInt(EQUALIZER_PRESET, equalizerPreset).apply()
+        get() = mmkv.decodeInt(EQUALIZER_PRESET, 0)
+        set(equalizerPreset) {
+            mmkv.encode(EQUALIZER_PRESET, equalizerPreset)
+        }
 
     var equalizerBands: String
-        get() = prefs.getString(EQUALIZER_BANDS, "")!!
-        set(equalizerBands) = prefs.edit().putString(EQUALIZER_BANDS, equalizerBands).apply()
+        get() = mmkv.decodeString(EQUALIZER_BANDS, "")!!
+        set(equalizerBands) {
+            mmkv.encode(EQUALIZER_BANDS, equalizerBands)
+        }
 
     var playbackSpeed: Float
-        get() = prefs.getFloat(PLAYBACK_SPEED, 1f)
-        set(playbackSpeed) = prefs.edit().putFloat(PLAYBACK_SPEED, playbackSpeed).apply()
+        get() = mmkv.decodeFloat(PLAYBACK_SPEED, 1f)
+        set(playbackSpeed) {
+            mmkv.encode(PLAYBACK_SPEED, playbackSpeed)
+        }
 
     var playbackSpeedProgress: Int
-        get() = prefs.getInt(PLAYBACK_SPEED_PROGRESS, -1)
-        set(playbackSpeedProgress) = prefs.edit().putInt(PLAYBACK_SPEED_PROGRESS, playbackSpeedProgress).apply()
+        get() = mmkv.decodeInt(PLAYBACK_SPEED_PROGRESS, -1)
+        set(playbackSpeedProgress) {
+            mmkv.encode(PLAYBACK_SPEED_PROGRESS, playbackSpeedProgress)
+        }
 
     var wasAllTracksPlaylistCreated: Boolean
-        get() = prefs.getBoolean(WAS_ALL_TRACKS_PLAYLIST_CREATED, false)
-        set(wasAllTracksPlaylistCreated) = prefs.edit().putBoolean(WAS_ALL_TRACKS_PLAYLIST_CREATED, wasAllTracksPlaylistCreated).apply()
+        get() = mmkv.decodeBool(WAS_ALL_TRACKS_PLAYLIST_CREATED, false)
+        set(wasAllTracksPlaylistCreated) {
+            mmkv.encode(WAS_ALL_TRACKS_PLAYLIST_CREATED, wasAllTracksPlaylistCreated)
+        }
 
     var tracksRemovedFromAllTracksPlaylist: MutableSet<String>
-        get() = prefs.getStringSet(TRACKS_REMOVED_FROM_ALL_TRACKS_PLAYLIST, HashSet())!!
-        set(tracksRemovedFromAllTracksPlaylist) = prefs.edit().remove(TRACKS_REMOVED_FROM_ALL_TRACKS_PLAYLIST)
-            .putStringSet(TRACKS_REMOVED_FROM_ALL_TRACKS_PLAYLIST, tracksRemovedFromAllTracksPlaylist)
-            .apply()
+        get() = mmkv.decodeStringSet(TRACKS_REMOVED_FROM_ALL_TRACKS_PLAYLIST, HashSet())!!
+        set(tracksRemovedFromAllTracksPlaylist) {
+            mmkv.putStringSet(TRACKS_REMOVED_FROM_ALL_TRACKS_PLAYLIST, tracksRemovedFromAllTracksPlaylist)
+        }
 
     var showTabs: Int
-        get() = prefs.getInt(SHOW_TABS, ALL_TABS_MASK)
-        set(showTabs) = prefs.edit().putInt(SHOW_TABS, showTabs).apply()
+        get() = mmkv.decodeInt(SHOW_TABS, ALL_TABS_MASK)
+        set(showTabs) {
+            mmkv.encode(SHOW_TABS, showTabs)
+        }
 
     var excludedFolders: MutableSet<String>
-        get() = prefs.getStringSet(EXCLUDED_FOLDERS, HashSet())!!
-        set(excludedFolders) = prefs.edit().remove(EXCLUDED_FOLDERS).putStringSet(EXCLUDED_FOLDERS, excludedFolders).apply()
+        get() = mmkv.decodeStringSet(EXCLUDED_FOLDERS, HashSet())!!
+        set(excludedFolders) {
+            mmkv.putStringSet(EXCLUDED_FOLDERS, excludedFolders)
+        }
 
     fun addExcludedFolder(path: String) {
         addExcludedFolders(HashSet(Arrays.asList(path)))
@@ -141,22 +195,36 @@ class Config(context: Context) : BaseConfig(context) {
     }
 
     var gaplessPlayback: Boolean
-        get() = prefs.getBoolean(GAPLESS_PLAYBACK, false)
-        set(gaplessPlayback) = prefs.edit().putBoolean(GAPLESS_PLAYBACK, gaplessPlayback).apply()
+        get() = mmkv.decodeBool(GAPLESS_PLAYBACK, false)
+        set(gaplessPlayback) {
+            mmkv.encode(GAPLESS_PLAYBACK, gaplessPlayback)
+        }
 
     var autoplayOnBluetoothConnect: Boolean
-        get() = prefs.getBoolean(AUTOPLAY_ON_BLUETOOTH_CONNECT, false)
-        set(autoplayOnBluetoothConnect) = prefs.edit().putBoolean(AUTOPLAY_ON_BLUETOOTH_CONNECT, autoplayOnBluetoothConnect).apply()
+        get() = mmkv.decodeBool(AUTOPLAY_ON_BLUETOOTH_CONNECT, false)
+        set(autoplayOnBluetoothConnect) {
+            mmkv.encode(AUTOPLAY_ON_BLUETOOTH_CONNECT, autoplayOnBluetoothConnect)
+        }
 
     // When you play a track, it takes you to the playback screen for that track.
     var showPlaybackActivity: Boolean
-        get() = prefs.getBoolean(SHOW_PLAYBACK_ACTIVITY, false)
-        set(showPlaybackActivity) = prefs.edit().putBoolean(SHOW_PLAYBACK_ACTIVITY, showPlaybackActivity).apply()
+        get() = mmkv.decodeBool(SHOW_PLAYBACK_ACTIVITY, false)
+        set(showPlaybackActivity) {
+            mmkv.encode(SHOW_PLAYBACK_ACTIVITY, showPlaybackActivity)
+        }
 
     // When the user plays a track, it starts from the last playback position.
     var keepTrackLastPosition: Boolean
-        get() = prefs.getBoolean(KEEP_TRACK_LAST_POSITION, true)
-        set(keepTrackLastPosition) = prefs.edit().putBoolean(KEEP_TRACK_LAST_POSITION, keepTrackLastPosition).apply()
+        get() = mmkv.decodeBool(KEEP_TRACK_LAST_POSITION, true)
+        set(keepTrackLastPosition) {
+            mmkv.encode(KEEP_TRACK_LAST_POSITION, keepTrackLastPosition)
+        }
+
+    var lastFullScanTime: Long
+        get() = mmkv.decodeLong("last_full_scan_time", 0L)
+        set(time) {
+            mmkv.encode("last_full_scan_time", time)
+        }
 }
 
 fun isInExcludeFolders(path: String, excludeFolder: Set<String>): Boolean {
@@ -167,28 +235,40 @@ fun isInExcludeFolders(path: String, excludeFolder: List<String>): Boolean {
     return excludeFolder.any { path.startsWith(it) }
 }
 
-class FolderConfig(context: Context) {
-    private val pref = context.getSharedPreferences("folder_config", Context.MODE_PRIVATE)
+class FolderConfig private constructor() {
+    private val mmkv: MMKV = MMKV.mmkvWithID("folder_config")
 
-    fun getFavoriteTime(path: String) = pref.getLong(path, 0)
+    fun getFolderFavoriteTime(path: String) = mmkv.decodeLong(path, 0)
 
-    fun setFavoriteTime(favoriteData: List<Pair<String, Long>>) {
-        pref.edit {
-            favoriteData.forEach { (path, time) ->
-                if (time > 0) {
-                    putLong(path, time)
-                } else {
-                    remove(path)
-                }
+    fun setFolderFavoriteTime(favoriteData: List<Pair<String, Long>>) {
+        favoriteData.forEach { (path, time) ->
+            if (time > 0) {
+                mmkv.encode(path, time)
+            } else {
+                mmkv.remove(path)
             }
         }
     }
-}
 
-class ScanConfig(context: Context) {
-    private val pref = context.getSharedPreferences("scan_config", Context.MODE_PRIVATE)
+    private fun migrate(context: Context) {
+        val folderConfig = context.getSharedPreferences("folder_config", Context.MODE_PRIVATE)
+        if (folderConfig.all.isNotEmpty()) {
+            mmkv.importFromSharedPreferences(folderConfig)
+            folderConfig.edit().clear().apply()
+        }
+    }
 
-    var lastFullScanTime: Long
-        get() = pref.getLong("last_full_scan_time", 0L)
-        set(time) = pref.edit().putLong("last_full_scan_time", time).apply()
+    companion object {
+        @SuppressLint("StaticFieldLeak")
+        private var instance: FolderConfig? = null
+
+        @Synchronized
+        fun getInstance(context: Context): FolderConfig {
+            if (MMKV.getRootDir() == null) MMKV.initialize(context)
+            return instance ?: FolderConfig().also {
+                instance = it
+                it.migrate(context)
+            }
+        }
+    }
 }

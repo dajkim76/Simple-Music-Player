@@ -81,7 +81,7 @@ class FoldersFragment(context: Context, attributeSet: AttributeSet) : MyViewPage
         (binding.foldersList.adapter as FoldersAdapter).updateItems(folders, forceUpdate = true)
 
         val favoriteData = selectedFolders.map { it.path to it.favoriteTime }
-        FolderConfig(context).setFavoriteTime(favoriteData)
+        FolderConfig.getInstance(context).setFolderFavoriteTime(favoriteData)
     }
 
     override fun finishActMode() {

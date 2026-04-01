@@ -61,6 +61,7 @@ glide = "5.0.5"
 glideCompose = "1.0.0-beta08"
 androidx-customview = "1.2.0"
 androidx-customview-pooling = "1.1.0"
+mmkv = "2.4.0"
 
 [libraries]
 #AndroidX
@@ -122,6 +123,7 @@ compose-view-binding = { module = "androidx.compose.ui:ui-viewbinding" }
 androidx-customView = { module = "androidx.customview:customview", version.ref = "androidx-customview" }
 androidx-customViewPooling = { module = "androidx.customview:customview-poolingcontainer", version.ref = "androidx-customview-pooling" }
 compose-uiTooling-debug = { group = "androidx.compose.ui", name = "ui-tooling" }
+mmkv = { group = "com.tencent", name = "mmkv", version.ref = "mmkv" }
 
 [bundles]
 room = [

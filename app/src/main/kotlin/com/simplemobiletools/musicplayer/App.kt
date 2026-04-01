@@ -10,6 +10,7 @@ import com.google.firebase.remoteconfig.remoteConfig
 import com.google.firebase.remoteconfig.remoteConfigSettings
 import com.simplemobiletools.commons.extensions.checkUseEnglish
 import com.simplemobiletools.musicplayer.helpers.SimpleMediaController
+import com.tencent.mmkv.MMKV
 
 class App : Application() {
     override fun onCreate() {
@@ -20,6 +21,7 @@ class App : Application() {
     }
 
     private fun initRemoteConfig() {
+        MMKV.initialize(this)
         FirebaseApp.initializeApp(this)
         // Debug mode: immediately, Release mode: 12 hours,
         if (BuildConfig.DEBUG) {
