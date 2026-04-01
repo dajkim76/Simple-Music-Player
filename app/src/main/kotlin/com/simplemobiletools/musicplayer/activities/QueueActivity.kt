@@ -1,13 +1,15 @@
 package com.simplemobiletools.musicplayer.activities
 
+import android.annotation.SuppressLint
 import android.app.SearchManager
 import android.content.Context
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
+import android.view.*
 import androidx.appcompat.widget.SearchView
+import androidx.core.view.GestureDetectorCompat
 import androidx.core.view.MenuItemCompat
 import androidx.media3.common.MediaItem
+import androidx.recyclerview.widget.RecyclerView
 import com.simplemobiletools.commons.extensions.areSystemAnimationsEnabled
 import com.simplemobiletools.commons.extensions.beGoneIf
 import com.simplemobiletools.commons.extensions.getProperPrimaryColor
@@ -39,6 +41,7 @@ class QueueActivity : SimpleControllerActivity() {
         setupMaterialScrollListener(binding.queueList, binding.queueToolbar)
 
         setupAdapter()
+        setupFlingListener()
         binding.queueFastscroller.updateColors(getProperPrimaryColor())
     }
 
@@ -191,6 +194,62 @@ class QueueActivity : SimpleControllerActivity() {
                 RoomHelper(this).insertTracksWithPlaylist(tracks)
             }
         }
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    private fun setupFlingListener() {
+        val flingListener = object : GestureDetector.SimpleOnGestureListener() {
+            override fun onDown(e: MotionEvent) = true
+
+            override fun onFling(e1: MotionEvent?, e2: MotionEvent, velocityX: Float, velocityY: Float): Boolean {
+                if (e1 == null) return false
+
+                val diffY = e2.y - e1.y
+                val diffX = e2.x - e1.x
+
+                val SWIPE_THRESHOLD = 50
+                val SWIPE_VELOCITY_THRESHOLD = 50
+
+                if (Math.abs(diffX) <= Math.abs(diffY)) {
+                    if (Math.abs(diffY) > SWIPE_THRESHOLD && Math.abs(velocityY) > SWIPE_VELOCITY_THRESHOLD) {
+                        if (diffY > 0 && !binding.queueList.canScrollVertically(-1)) {
+                            onSwipeDown()
+                            return true
+                        }
+                    }
+                }
+                return false
+            }
+
+            private fun onSwipeDown() {
+                finish()
+            }
+        }
+
+        val gestureDetector = GestureDetectorCompat(this, flingListener)
+
+        binding.queueList.addOnItemTouchListener(object : RecyclerView.OnItemTouchListener {
+            override fun onInterceptTouchEvent(rv: RecyclerView, e: MotionEvent): Boolean {
+                gestureDetector.onTouchEvent(e)
+                return false
+            }
+
+            override fun onTouchEvent(rv: RecyclerView, e: MotionEvent) {}
+
+            override fun onRequestDisallowInterceptTouchEvent(disallowIntercept: Boolean) {}
+        })
+
+        val touchListener = View.OnTouchListener { v, event ->
+            if (gestureDetector.onTouchEvent(event)) {
+                true
+            } else {
+                v.performClick()
+                false
+            }
+        }
+
+        binding.queuePlaceholder.setOnTouchListener(touchListener)
+        binding.queueCoordinator.setOnTouchListener(touchListener)
     }
 
     override fun finish() {
