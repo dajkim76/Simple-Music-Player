@@ -13,6 +13,7 @@ data class Playlist(
     @PrimaryKey(autoGenerate = true) var id: Int,
     @ColumnInfo(name = "title") var title: String,
     @ColumnInfo(name = "updated_time") var updatedTime: Long = System.currentTimeMillis(),
+    @ColumnInfo(name = "favorite_time", defaultValue = "0") var favoriteTime: Long = 0,
     @Ignore var trackCount: Int = 0
 ) {
     constructor() : this(0, "", System.currentTimeMillis(), 0)
@@ -23,6 +24,9 @@ data class Playlist(
             val firstIsSpecial = first.id <= SMART_PLAYLIST_ID_MAX
             val secondIsSpecial = second.id <= SMART_PLAYLIST_ID_MAX
 
+            val firstIsFavorite = first.favoriteTime > 0
+            val secondIsFavorite = second.favoriteTime > 0
+
             val result = when {
                 // 둘 다 5 이하인 경우: id 순서대로 정렬
                 firstIsSpecial && secondIsSpecial -> first.id.compareTo(second.id)
@@ -30,6 +34,10 @@ data class Playlist(
                 // 한쪽만 5 이하인 경우: 5 이하인 쪽이 앞으로 오게 함
                 firstIsSpecial -> -1
                 secondIsSpecial -> 1
+
+                firstIsFavorite && secondIsFavorite -> second.favoriteTime.compareTo(first.favoriteTime)
+                firstIsFavorite -> -1
+                secondIsFavorite -> 1
 
                 // 둘 다 5보다 큰 경우: 기존 정렬 로직 수행
                 sorting and PLAYER_SORT_BY_TITLE != 0 -> {

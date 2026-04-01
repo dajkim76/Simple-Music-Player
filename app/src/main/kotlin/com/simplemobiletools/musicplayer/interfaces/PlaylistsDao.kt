@@ -22,4 +22,14 @@ interface PlaylistsDao {
 
     @Update
     fun update(playlist: Playlist)
+
+    @Query("UPDATE playlists SET favorite_time = :favoriteTime WHERE id = :id")
+    fun updateFavorite(id: Long, favoriteTime: Long)
+
+    @Transaction
+    fun updateFavoriteData(favoriteData: List<Pair<Long, Long>>) {
+        favoriteData.forEach { (id, favoriteTime) ->
+            updateFavorite(id, favoriteTime)
+        }
+    }
 }

@@ -11,6 +11,15 @@
     android:paddingEnd="@dimen/activity_margin"
     android:paddingBottom="@dimen/medium_margin">
 
+    <ImageView
+        android:id="@+id/favorite"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        android:src="@drawable/ic_favorite"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/playlist_title"
+        app:layout_constraintBottom_toBottomOf="@id/playlist_title" />
+
     <com.simplemobiletools.commons.views.MyTextView
         android:id="@+id/playlist_title"
         android:layout_width="0dp"
@@ -20,7 +29,7 @@
         android:textSize="@dimen/medium_text_size"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/playlist_tracks"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/favorite"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="My Playlist" />
 

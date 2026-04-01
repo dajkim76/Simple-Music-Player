@@ -3,8 +3,10 @@ package com.simplemobiletools.musicplayer.adapters
 import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import com.qtalk.recyclerviewfastscroller.RecyclerViewFastScroller
 import com.simplemobiletools.commons.activities.BaseSimpleActivity
+import com.simplemobiletools.commons.extensions.applyColorFilter
 import com.simplemobiletools.commons.extensions.highlightTextPart
 import com.simplemobiletools.commons.extensions.setupViewBackground
 import com.simplemobiletools.commons.extensions.toast
@@ -25,7 +27,11 @@ import com.simplemobiletools.musicplayer.models.Playlist
 import org.greenrobot.eventbus.EventBus
 
 class PlaylistsAdapter(
-    activity: BaseSimpleActivity, items: ArrayList<Playlist>, recyclerView: MyRecyclerView, itemClick: (Any) -> Unit
+    activity: BaseSimpleActivity,
+    items: ArrayList<Playlist>,
+    recyclerView: MyRecyclerView,
+    private val toggleFavorite: (selectedAlbums: List<Playlist>) -> Unit,
+    itemClick: (Any) -> Unit
 ) : BaseMusicAdapter<Playlist>(items, activity, recyclerView, itemClick), RecyclerViewFastScroller.OnPopupTextUpdate {
 
     override fun getActionMenuId() = R.menu.cab_playlists
@@ -54,6 +60,7 @@ class PlaylistsAdapter(
             R.id.cab_delete -> askConfirmDelete()
             R.id.cab_rename -> showRenameDialog()
             R.id.cab_select_all -> selectAll()
+            R.id.cab_favorites_toggle -> toggleFavorite.invoke(getSelectedItems())
         }
     }
 
@@ -117,6 +124,8 @@ class PlaylistsAdapter(
                 playlistTracks.text = resources.getString(R.string.auto)
             }
             playlistTracks.setTextColor(textColor)
+            favorite.applyColorFilter(properPrimaryColor)
+            favorite.isVisible = playlist.id > SMART_PLAYLIST_ID_MAX && playlist.favoriteTime > 0
         }
     }
 

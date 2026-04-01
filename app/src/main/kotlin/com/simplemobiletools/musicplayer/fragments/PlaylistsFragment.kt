@@ -14,15 +14,14 @@ import com.simplemobiletools.musicplayer.adapters.PlaylistsAdapter
 import com.simplemobiletools.musicplayer.databinding.FragmentPlaylistsBinding
 import com.simplemobiletools.musicplayer.dialogs.ChangeSortingDialog
 import com.simplemobiletools.musicplayer.dialogs.NewPlaylistDialog
-import com.simplemobiletools.musicplayer.extensions.audioHelper
-import com.simplemobiletools.musicplayer.extensions.config
-import com.simplemobiletools.musicplayer.extensions.mediaScanner
-import com.simplemobiletools.musicplayer.extensions.viewBinding
+import com.simplemobiletools.musicplayer.extensions.*
 import com.simplemobiletools.musicplayer.helpers.PLAYLIST
+import com.simplemobiletools.musicplayer.helpers.SMART_PLAYLIST_ID_MAX
 import com.simplemobiletools.musicplayer.helpers.TAB_PLAYLISTS
 import com.simplemobiletools.musicplayer.models.Events
 import com.simplemobiletools.musicplayer.models.Playlist
 import com.simplemobiletools.musicplayer.models.sortSafely
+import com.simplemobiletools.musicplayer.objects.executeBackgroundThread
 import org.greenrobot.eventbus.EventBus
 
 class PlaylistsFragment(context: Context, attributeSet: AttributeSet) : MyViewPagerFragment(context, attributeSet) {
@@ -58,7 +57,7 @@ class PlaylistsFragment(context: Context, attributeSet: AttributeSet) : MyViewPa
 
                 val adapter = binding.playlistsList.adapter
                 if (adapter == null) {
-                    PlaylistsAdapter(activity, playlists, binding.playlistsList) {
+                    PlaylistsAdapter(activity, playlists, binding.playlistsList, ::toggleFavorite) {
                         activity.hideKeyboard()
                         Intent(activity, TracksActivity::class.java).apply {
                             putExtra(PLAYLIST, Gson().toJson(it))
@@ -75,6 +74,22 @@ class PlaylistsFragment(context: Context, attributeSet: AttributeSet) : MyViewPa
                     (adapter as PlaylistsAdapter).updateItems(playlists, forceUpdate = true)
                 }
             }
+        }
+    }
+
+    private fun toggleFavorite(selectedPlaylists: List<Playlist>) {
+        selectedPlaylists.forEach {
+            it.favoriteTime = if (it.favoriteTime == 0L) System.currentTimeMillis() else 0L
+            playlists.find { playlist -> playlist.id == it.id }?.favoriteTime = it.favoriteTime
+        }
+
+        playlists.sortSafely(context.config.playlistSorting)
+        (binding.playlistsList.adapter as PlaylistsAdapter).updateItems(playlists, forceUpdate = true)
+
+        val favoriteData = selectedPlaylists.filter { it.id > SMART_PLAYLIST_ID_MAX }.map { it.id.toLong() to it.favoriteTime }
+        if (favoriteData.isEmpty()) return
+        executeBackgroundThread {
+            context.playlistDAO.updateFavoriteData(favoriteData)
         }
     }
 
