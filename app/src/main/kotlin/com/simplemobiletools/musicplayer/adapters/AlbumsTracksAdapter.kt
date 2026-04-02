@@ -5,10 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.qtalk.recyclerviewfastscroller.RecyclerViewFastScroller
 import com.simplemobiletools.commons.dialogs.ConfirmationDialog
-import com.simplemobiletools.commons.extensions.beGone
-import com.simplemobiletools.commons.extensions.beVisible
-import com.simplemobiletools.commons.extensions.getFormattedDuration
-import com.simplemobiletools.commons.extensions.setupViewBackground
+import com.simplemobiletools.commons.extensions.*
 import com.simplemobiletools.commons.helpers.ensureBackgroundThread
 import com.simplemobiletools.commons.views.MyRecyclerView
 import com.simplemobiletools.musicplayer.R
@@ -28,13 +25,14 @@ import com.simplemobiletools.musicplayer.models.Track
 
 // we show both albums and individual tracks here
 class AlbumsTracksAdapter(
-    activity: SimpleActivity, items: ArrayList<ListItem>, recyclerView: MyRecyclerView,
+    activity: SimpleActivity, items: ArrayList<ListItem>, val lastMediaId: Long, recyclerView: MyRecyclerView,
     itemClick: (Any) -> Unit
 ) : BaseMusicAdapter<ListItem>(items, activity, recyclerView, itemClick), RecyclerViewFastScroller.OnPopupTextUpdate {
 
     private val ITEM_SECTION = 0
     private val ITEM_ALBUM = 1
     private val ITEM_TRACK = 2
+    private val foregroundDrawable = context.resources.getColoredDrawableWithColor(R.drawable.rounded_white_border, properPrimaryColor)
 
     override fun getActionMenuId() = R.menu.cab_albums_tracks
 
@@ -168,6 +166,11 @@ class AlbumsTracksAdapter(
             context.getTrackFileArt(track) { coverArt ->
                 if (activity.isFinishing || activity.isDestroyed) return@getTrackFileArt
                 loadImage(trackImage, coverArt, placeholder)
+            }
+            if (lastMediaId == track.mediaStoreId) {
+                view.foreground = foregroundDrawable
+            } else {
+                view.foreground = null
             }
         }
     }

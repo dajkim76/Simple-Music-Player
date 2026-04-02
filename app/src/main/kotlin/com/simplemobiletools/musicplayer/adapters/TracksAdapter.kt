@@ -37,11 +37,13 @@ class TracksAdapter(
     val folder: String? = null,
     val playlist: Playlist? = null,
     items: ArrayList<Track>,
+    val lastMediaId: Long,
     itemClick: (Any) -> Unit
 ) : BaseMusicAdapter<Track>(items, activity, recyclerView, itemClick), RecyclerViewFastScroller.OnPopupTextUpdate, ItemTouchHelperContract {
 
     private var touchHelper: ItemTouchHelper? = null
     private var startReorderDragListener: StartReorderDragListener
+    private val foregroundDrawable = context.resources.getColoredDrawableWithColor(R.drawable.rounded_white_border, properPrimaryColor)
 
     init {
         touchHelper = ItemTouchHelper(ItemMoveCallback(this))
@@ -212,6 +214,11 @@ class TracksAdapter(
                 loadImage(trackImage, coverArt, placeholderBig)
             }
 
+            if (lastMediaId == track.mediaStoreId) {
+                view.foreground = foregroundDrawable
+            } else {
+                view.foreground = null
+            }
             trackImage.beVisible()
             trackId.beGone()
         }

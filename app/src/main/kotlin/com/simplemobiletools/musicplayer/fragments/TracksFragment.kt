@@ -44,7 +44,13 @@ class TracksFragment(context: Context, attributeSet: AttributeSet) : MyViewPager
                 binding.tracksPlaceholder.beVisibleIf(tracks.isEmpty())
                 val adapter = binding.tracksList.adapter
                 if (adapter == null) {
-                    TracksAdapter(activity = activity, recyclerView = binding.tracksList, sourceType = TracksAdapter.TYPE_TRACKS, items = tracks) {
+                    TracksAdapter(
+                        activity = activity,
+                        recyclerView = binding.tracksList,
+                        sourceType = TracksAdapter.TYPE_TRACKS,
+                        items = tracks,
+                        lastMediaId = 0,
+                    ) {
                         activity.hideKeyboard()
                         activity.handleNotificationPermission { granted ->
                             if (granted) {

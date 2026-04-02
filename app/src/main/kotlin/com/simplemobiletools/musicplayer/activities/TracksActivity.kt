@@ -239,12 +239,13 @@ class TracksActivity : SimpleMusicActivity() {
                     listItems.addAll(tracks)
                 }
             }
+            val lastMediaId = if (tracks.size > 1) getLastMediaId() else 0
 
             runOnUiThread {
                 if (sourceType == TYPE_ALBUM) {
                     val currAdapter = binding.tracksList.adapter
                     if (currAdapter == null) {
-                        TracksHeaderAdapter(this, listItems, binding.tracksList) {
+                        TracksHeaderAdapter(this, listItems, lastMediaId, binding.tracksList) {
                             itemClicked(it as Track)
                         }.apply {
                             binding.tracksList.adapter = this
@@ -265,7 +266,8 @@ class TracksActivity : SimpleMusicActivity() {
                             sourceType = sourceType,
                             folder = folder,
                             playlist = playlist,
-                            items = tracks
+                            items = tracks,
+                            lastMediaId = lastMediaId,
                         ) {
                             itemClicked(it as Track)
                         }.apply {
@@ -357,6 +359,22 @@ class TracksActivity : SimpleMusicActivity() {
         }
     }
 
+    private fun getLastMediaId(): Long {
+        val lastMediaId = if (sourceType == TYPE_PLAYLIST) {
+            val playlistId = playlist?.id ?: 0
+            if (playlistId >= FAVORITE_TRACKS_PLAYLIST_ID) {
+                playlistDAO.getLastMediaId(playlistId) ?: 0
+            } else {
+                0
+            }
+        } else if (sourceType == TYPE_ALBUM) {
+            albumsDAO.getLastMediaId(albumId) ?: 0
+        } else if (sourceType == TYPE_FOLDER && folder != null) {
+            FolderConfig.getInstance(this).getLastMediaId(folder!!)
+        } else 0
+        return lastMediaId
+    }
+
     private fun playTracklist() {
         val tracks = when (sourceType) {
             TYPE_ALBUM -> (binding.tracksList.adapter as? TracksHeaderAdapter)?.items?.filterIsInstance<Track>()
@@ -365,14 +383,7 @@ class TracksActivity : SimpleMusicActivity() {
 
         if (tracks.isEmpty()) return
         executeBackgroundThread {
-            val lastMediaId = if (sourceType == TYPE_PLAYLIST) {
-                val playlistId = playlist?.id ?: 0
-                playlistDAO.getLastMediaId(playlistId) ?: 0
-            } else if (sourceType == TYPE_ALBUM) {
-                albumsDAO.getLastMediaId(albumId) ?: 0
-            } else if (sourceType == TYPE_FOLDER && folder != null) {
-                FolderConfig.getInstance(this).getLastMediaId(folder!!)
-            } else 0
+            val lastMediaId = getLastMediaId()
 
             runOnUiThread {
                 val track = tracks.find { track -> track.mediaStoreId == lastMediaId } ?: tracks.first()
@@ -417,7 +428,11 @@ class TracksActivity : SimpleMusicActivity() {
 
         val queueSource = when (sourceType) {
             TYPE_ALBUM -> "a:$albumId"
-            TYPE_PLAYLIST -> "p:${playlist?.id ?: 0}"
+            TYPE_PLAYLIST -> {
+                val playlistId = playlist?.id ?: 0
+                if (playlistId >= FAVORITE_TRACKS_PLAYLIST_ID) "p:$playlistId" else ""
+            }
+
             TYPE_FOLDER -> "f:${folder ?: ""}"
             else -> ""
         }

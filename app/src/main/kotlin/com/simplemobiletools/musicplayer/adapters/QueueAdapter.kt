@@ -27,6 +27,7 @@ class QueueAdapter(activity: SimpleActivity, items: ArrayList<Track>, var curren
     BaseMusicAdapter<Track>(items, activity, recyclerView, itemClick), ItemTouchHelperContract, RecyclerViewFastScroller.OnPopupTextUpdate {
 
     private var startReorderDragListener: StartReorderDragListener
+    private val foregroundDrawable = context.resources.getColoredDrawableWithColor(R.drawable.rounded_white_border, properPrimaryColor)
 
     init {
         setupDragListener(true)
@@ -157,6 +158,11 @@ class QueueAdapter(activity: SimpleActivity, items: ArrayList<Track>, var curren
                     textColor
                 }
                 it.setTextColor(color)
+            }
+            if (track.mediaStoreId == currentTrack?.mediaStoreId) {
+                view.foreground = foregroundDrawable
+            } else {
+                view.foreground = null
             }
 
             trackQueueDuration.text = track.duration.getFormattedDuration()

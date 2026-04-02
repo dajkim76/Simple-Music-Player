@@ -6,10 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.qtalk.recyclerviewfastscroller.RecyclerViewFastScroller
 import com.simplemobiletools.commons.dialogs.ConfirmationDialog
-import com.simplemobiletools.commons.extensions.beGone
-import com.simplemobiletools.commons.extensions.beVisible
-import com.simplemobiletools.commons.extensions.getFormattedDuration
-import com.simplemobiletools.commons.extensions.setupViewBackground
+import com.simplemobiletools.commons.extensions.*
 import com.simplemobiletools.commons.helpers.ensureBackgroundThread
 import com.simplemobiletools.commons.views.MyRecyclerView
 import com.simplemobiletools.musicplayer.R
@@ -25,13 +22,14 @@ import com.simplemobiletools.musicplayer.models.AlbumHeader
 import com.simplemobiletools.musicplayer.models.ListItem
 import com.simplemobiletools.musicplayer.models.Track
 
-class TracksHeaderAdapter(activity: SimpleActivity, items: ArrayList<ListItem>, recyclerView: MyRecyclerView, itemClick: (Any) -> Unit) :
+class TracksHeaderAdapter(activity: SimpleActivity, items: ArrayList<ListItem>, val lastMediaId: Long, recyclerView: MyRecyclerView, itemClick: (Any) -> Unit) :
     BaseMusicAdapter<ListItem>(items, activity, recyclerView, itemClick), RecyclerViewFastScroller.OnPopupTextUpdate {
 
     private val ITEM_HEADER = 0
     private val ITEM_TRACK = 1
 
     override val cornerRadius = resources.getDimension(com.simplemobiletools.commons.R.dimen.rounded_corner_radius_big).toInt()
+    private val foregroundDrawable = context.resources.getColoredDrawableWithColor(R.drawable.rounded_white_border, properPrimaryColor)
 
     override fun getActionMenuId() = R.menu.cab_tracks_header
 
@@ -148,6 +146,11 @@ class TracksHeaderAdapter(activity: SimpleActivity, items: ArrayList<ListItem>, 
             context.getTrackFileArt(track) { coverArt ->
                 if (activity.isFinishing || activity.isDestroyed) return@getTrackFileArt
                 loadImage(trackImage, coverArt, placeholder)
+            }
+            if (lastMediaId == track.mediaStoreId) {
+                view.foreground = foregroundDrawable
+            } else {
+                view.foreground = null
             }
         }
     }

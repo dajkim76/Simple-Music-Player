@@ -65,9 +65,10 @@ class AlbumsActivity : SimpleMusicActivity() {
             tracksSectionLabel += " • ${trackFullDuration.getFormattedDuration(true)}"
             listItems.add(AlbumSection(tracksSectionLabel))
             listItems.addAll(albumTracks)
+            val lastMediaId = if (albumTracks.size > 1) artistDAO.getLastMediaId(artistId) ?: 0 else 0
 
             runOnUiThread {
-                AlbumsTracksAdapter(this, listItems, binding.albumsList) {
+                AlbumsTracksAdapter(this, listItems, lastMediaId, binding.albumsList) {
                     hideKeyboard()
                     if (it is Album) {
                         Intent(this, TracksActivity::class.java).apply {
