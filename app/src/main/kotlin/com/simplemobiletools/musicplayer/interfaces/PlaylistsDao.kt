@@ -32,4 +32,10 @@ interface PlaylistsDao {
             updateFavorite(id, favoriteTime)
         }
     }
+
+    @Query("SELECT last_media_id FROM playlists WHERE id = :id")
+    fun getLastMediaId(id: Int): Long?
+
+    @Query("UPDATE playlists SET last_media_id = :lastMediaId WHERE id = :id")
+    fun updateLastMediaId(id: Int, lastMediaId: Long): Int
 }

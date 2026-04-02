@@ -14,6 +14,7 @@ data class Playlist(
     @ColumnInfo(name = "title") var title: String,
     @ColumnInfo(name = "updated_time") var updatedTime: Long = System.currentTimeMillis(),
     @ColumnInfo(name = "favorite_time", defaultValue = "0") var favoriteTime: Long = 0,
+    @ColumnInfo(name = "last_media_id", defaultValue = "0") var lastMediaId: Long = 0,
     @Ignore var trackCount: Int = 0
 ) {
     constructor() : this(0, "", System.currentTimeMillis(), 0)

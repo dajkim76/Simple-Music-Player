@@ -19,6 +19,7 @@ data class Artist(
     @ColumnInfo(name = "track_cnt") var trackCnt: Int,
     @ColumnInfo(name = "album_art") var albumArt: String,
     @ColumnInfo(name = "favorite_time", defaultValue = "0") var favoriteTime: Long = 0,
+    @ColumnInfo(name = "last_media_id", defaultValue = "0") var lastMediaId: Long = 0,
 ) {
     companion object {
         fun getComparator(sorting: Int) = Comparator<Artist> { first, second ->

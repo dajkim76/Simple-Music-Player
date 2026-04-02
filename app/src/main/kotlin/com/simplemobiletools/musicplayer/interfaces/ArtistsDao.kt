@@ -31,4 +31,10 @@ interface ArtistsDao {
 
     @Query("DELETE FROM artists WHERE id = :id")
     fun deleteArtist(id: Long)
+
+    @Query("SELECT last_media_id FROM artists WHERE id = :id")
+    fun getLastMediaId(id: Long): Long?
+
+    @Query("UPDATE artists SET last_media_id = :lastMediaId WHERE id = :id")
+    fun updateLastMediaId(id: Long, lastMediaId: Long): Int
 }

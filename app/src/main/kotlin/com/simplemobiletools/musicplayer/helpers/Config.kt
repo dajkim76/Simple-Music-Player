@@ -225,6 +225,8 @@ class Config private constructor(context: Context) : BaseConfig(context) {
         set(time) {
             mmkv.encode("last_full_scan_time", time)
         }
+
+    var lastQueueSource by string("last_queue_source", "")
 }
 
 fun isInExcludeFolders(path: String, excludeFolder: Set<String>): Boolean {
@@ -249,6 +251,10 @@ class FolderConfig private constructor() {
             }
         }
     }
+
+    fun getLastMediaId(folderName: String): Long = mmkv.decodeLong("f:$folderName", 0)
+
+    fun updateLastMediaId(folderName: String, lastMediaId: Long) = mmkv.encode("f:$folderName", lastMediaId)
 
     private fun migrate(context: Context) {
         val folderConfig = context.getSharedPreferences("folder_config", Context.MODE_PRIVATE)

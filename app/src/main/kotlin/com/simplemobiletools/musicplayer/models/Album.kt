@@ -23,6 +23,7 @@ data class Album(
     @ColumnInfo(name = "artist_id") var artistId: Long,
     @ColumnInfo(name = "date_added") var dateAdded: Int,
     @ColumnInfo(name = "favorite_time", defaultValue = "0") var favoriteTime: Long = 0,
+    @ColumnInfo(name = "last_media_id", defaultValue = "0") var lastMediaId: Long = 0,
 ) : ListItem() {
     companion object {
         fun getComparator(sorting: Int) = Comparator<Album> { first, second ->
