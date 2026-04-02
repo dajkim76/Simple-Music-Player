@@ -55,7 +55,7 @@ abstract class SimpleControllerActivity : SimpleActivity(), Player.Listener {
 
     fun withPlayer(callback: MediaController.() -> Unit) = controller.withController(callback)
 
-    fun prepareAndPlay(tracks: List<Track>, showPlayback: Boolean, startIndex: Int = 0, startPositionMs: Long = 0) {
+    fun prepareAndPlay(tracks: List<Track>, showPlayback: Boolean, queueSource: String, startIndex: Int = 0, startPositionMs: Long = 0) {
         val keepTrackLastPosition = config.keepTrackLastPosition
         executeBackgroundThread {
             val track = tracks[startIndex]
@@ -68,8 +68,16 @@ abstract class SimpleControllerActivity : SimpleActivity(), Player.Listener {
                     if (currentItem != null && currentItem.getMediaStoreId() != track.mediaStoreId) {
                         if (keepTrackLastPosition) {
                             val playingLastPosition = currentPosition
+                            val lastQueueSource = config.lastQueueSource
                             executeBackgroundThread {
                                 audioHelper.updateRecentPlayedTrackLastPosition(currentItem, playingLastPosition)
+                                audioHelper.updateQueueSourceLastMedia(lastQueueSource, currentItem.getMediaStoreId())
+                            }
+                        } else {
+                            // The last item in the playlist is recorded before it changes.
+                            val lastQueueSource = config.lastQueueSource
+                            executeBackgroundThread {
+                                audioHelper.updateQueueSourceLastMedia(lastQueueSource, currentItem.getMediaStoreId())
                             }
                         }
                     } else if (currentItem != null && currentItem.getMediaStoreId() == track.mediaStoreId) {
@@ -86,6 +94,9 @@ abstract class SimpleControllerActivity : SimpleActivity(), Player.Listener {
                 val currentItems = currentMediaItems
                 val isTracksSameWithCurrentItems = currentItems.size == tracks.size &&
                     currentItems.zip(tracks).all { (current, track) -> current.isSameMedia(track) }
+
+                // Shortly afterwards, the media ID of the current queueSource is updated while saving queue items.
+                config.lastQueueSource = queueSource
 
                 prepareUsingTracks(
                     tracks = tracks,

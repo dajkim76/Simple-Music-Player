@@ -30,13 +30,11 @@ import com.simplemobiletools.musicplayer.adapters.TracksHeaderAdapter
 import com.simplemobiletools.musicplayer.databinding.ActivityTracksBinding
 import com.simplemobiletools.musicplayer.dialogs.ChangeSortingDialog
 import com.simplemobiletools.musicplayer.dialogs.ExportPlaylistDialog
-import com.simplemobiletools.musicplayer.extensions.audioHelper
-import com.simplemobiletools.musicplayer.extensions.config
-import com.simplemobiletools.musicplayer.extensions.getFolderTracks
-import com.simplemobiletools.musicplayer.extensions.getMediaStoreIdFromPath
+import com.simplemobiletools.musicplayer.extensions.*
 import com.simplemobiletools.musicplayer.helpers.*
 import com.simplemobiletools.musicplayer.helpers.M3uExporter.ExportResult
 import com.simplemobiletools.musicplayer.models.*
+import com.simplemobiletools.musicplayer.objects.executeBackgroundThread
 import org.greenrobot.eventbus.EventBus
 import java.io.OutputStream
 
@@ -50,6 +48,7 @@ class TracksActivity : SimpleMusicActivity() {
     private var tracksIgnoringSearch = ArrayList<Track>()
     private var playlist: Playlist? = null
     private var folder: String? = null
+    private var albumId: Long = 0
     private var sourceType = 0
     private var lastFilePickerPath = ""
 
@@ -97,6 +96,8 @@ class TracksActivity : SimpleMusicActivity() {
 
     private fun refreshMenuItems() {
         binding.tracksToolbar.menu.apply {
+            findItem(R.id.play_tracklist).isVisible =
+                (sourceType == TYPE_PLAYLIST && (playlist?.id ?: 0) >= SMART_PLAYLIST_ID_MAX) || sourceType == TYPE_ALBUM || sourceType == TYPE_FOLDER
             findItem(R.id.search).isVisible = sourceType != TYPE_ALBUM
             findItem(R.id.sort).isVisible = sourceType != TYPE_ALBUM && playlistSortable()
             findItem(R.id.add_file_to_playlist).isVisible = addFilesToPlaylistEnabled()
@@ -128,6 +129,7 @@ class TracksActivity : SimpleMusicActivity() {
                 R.id.sort -> showSortingDialog()
                 R.id.add_file_to_playlist -> addFileToPlaylist()
                 R.id.add_folder_to_playlist -> addFolderToPlaylist()
+                R.id.play_tracklist -> playTracklist()
                 R.id.export_playlist -> tryExportPlaylist()
                 else -> return@setOnMenuItemClickListener false
             }
@@ -178,6 +180,7 @@ class TracksActivity : SimpleMusicActivity() {
         val albumType = object : TypeToken<Album>() {}.type
         val album = Gson().fromJson<Album>(intent.getStringExtra(ALBUM), albumType)
         if (album != null) {
+            albumId = album.id
             sourceType = TYPE_ALBUM
         }
 
@@ -354,6 +357,30 @@ class TracksActivity : SimpleMusicActivity() {
         }
     }
 
+    private fun playTracklist() {
+        val tracks = when (sourceType) {
+            TYPE_ALBUM -> (binding.tracksList.adapter as? TracksHeaderAdapter)?.items?.filterIsInstance<Track>()
+            else -> getTracksAdapter()?.items
+        } ?: ArrayList()
+
+        if (tracks.isEmpty()) return
+        executeBackgroundThread {
+            val lastMediaId = if (sourceType == TYPE_PLAYLIST) {
+                val playlistId = playlist?.id ?: 0
+                playlistDAO.getLastMediaId(playlistId) ?: 0
+            } else if (sourceType == TYPE_ALBUM) {
+                albumsDAO.getLastMediaId(albumId) ?: 0
+            } else if (sourceType == TYPE_FOLDER && folder != null) {
+                FolderConfig.getInstance(this).getLastMediaId(folder!!)
+            } else 0
+
+            runOnUiThread {
+                val track = tracks.find { track -> track.mediaStoreId == lastMediaId } ?: tracks.first()
+                itemClicked(track)
+            }
+        }
+    }
+
     private fun onSearchOpened() {
         tracksIgnoringSearch = getTracksAdapter()?.items ?: return
     }
@@ -388,10 +415,17 @@ class TracksActivity : SimpleMusicActivity() {
             else -> getTracksAdapter()?.items
         } ?: ArrayList()
 
+        val queueSource = when (sourceType) {
+            TYPE_ALBUM -> "a:$albumId"
+            TYPE_PLAYLIST -> "p:${playlist?.id ?: 0}"
+            TYPE_FOLDER -> "f:${folder ?: ""}"
+            else -> ""
+        }
+
         handleNotificationPermission { granted ->
             if (granted) {
-                val startIndex = tracks.indexOf(track)
-                prepareAndPlay(tracks, showPlayback = config.showPlaybackActivity, startIndex)
+                val startIndex = tracks.indexOf(track).takeIf { index -> index >= 0 } ?: 0
+                prepareAndPlay(tracks, showPlayback = config.showPlaybackActivity, queueSource, startIndex)
             } else {
                 PermissionRequiredDialog(this, com.simplemobiletools.commons.R.string.allow_notifications_music_player, { openNotificationSettings() })
             }

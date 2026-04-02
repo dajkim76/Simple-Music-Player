@@ -164,6 +164,7 @@ internal class MediaItemProvider(private val context: Context) {
             if (keepTrackLastPosition) {
                 audioHelper.updateRecentPlayedTrackLastPosition(mediaItem = current, lastPosition = startPosition)
             }
+            audioHelper.updateQueueSourceLastMedia(context.config.lastQueueSource, trackId)
         }
     }
 

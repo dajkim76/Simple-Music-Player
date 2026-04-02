@@ -260,6 +260,31 @@ class AudioHelper(private val context: Context) {
         }
     }
 
+    fun updateQueueSourceLastMedia(lastQueueSource: String, lastMediaId: Long) {
+        if (lastQueueSource.isEmpty()) return
+        when {
+            lastQueueSource.startsWith("p:") -> {
+                val playlistId = lastQueueSource.substring(2).toInt()
+                context.playlistDAO.updateLastMediaId(playlistId, lastMediaId)
+            }
+
+            lastQueueSource.startsWith("a:") -> {
+                val albumId = lastQueueSource.substring(2).toLong()
+                context.albumsDAO.updateLastMediaId(albumId, lastMediaId)
+            }
+
+            lastQueueSource.startsWith("t:") -> {
+                val artistId = lastQueueSource.substring(2).toLong()
+                context.artistDAO.updateLastMediaId(artistId, lastMediaId)
+            }
+
+            lastQueueSource.startsWith("f:") -> {
+                val folderName = lastQueueSource.substring(2)
+                FolderConfig.getInstance(context).updateLastMediaId(folderName, lastMediaId)
+            }
+        }
+    }
+
     fun isFavoriteTrack(track: Track): Boolean {
         return context.tracksDAO.getPlaylistTrack(FAVORITE_TRACKS_PLAYLIST_ID, track.mediaStoreId) != null
     }

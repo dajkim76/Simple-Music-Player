@@ -11,11 +11,13 @@ import com.simplemobiletools.commons.helpers.ensureBackgroundThread
 import com.simplemobiletools.musicplayer.R
 import com.simplemobiletools.musicplayer.adapters.AlbumsTracksAdapter
 import com.simplemobiletools.musicplayer.databinding.ActivityAlbumsBinding
+import com.simplemobiletools.musicplayer.extensions.artistDAO
 import com.simplemobiletools.musicplayer.extensions.audioHelper
 import com.simplemobiletools.musicplayer.extensions.config
 import com.simplemobiletools.musicplayer.helpers.ALBUM
 import com.simplemobiletools.musicplayer.helpers.ARTIST
 import com.simplemobiletools.musicplayer.models.*
+import com.simplemobiletools.musicplayer.objects.executeBackgroundThread
 
 // Artists -> Albums -> Tracks
 class AlbumsActivity : SimpleMusicActivity() {
@@ -39,7 +41,15 @@ class AlbumsActivity : SimpleMusicActivity() {
             finish()
             return
         }
+        val artistId = artist.id
         binding.albumsToolbar.title = artist.title
+        binding.albumsToolbar.inflateMenu(R.menu.menu_album)
+        binding.albumsToolbar.setOnMenuItemClickListener { menuItem ->
+            if (menuItem.itemId == R.id.play_tracklist) {
+                playTracklist(artistId)
+            }
+            true
+        }
 
         ensureBackgroundThread {
             val albums = audioHelper.getArtistAlbums(artist.id)
@@ -68,7 +78,7 @@ class AlbumsActivity : SimpleMusicActivity() {
                         handleNotificationPermission { granted ->
                             if (granted) {
                                 val startIndex = albumTracks.indexOf(it as Track)
-                                prepareAndPlay(albumTracks, showPlayback = config.showPlaybackActivity, startIndex)
+                                prepareAndPlay(albumTracks, showPlayback = config.showPlaybackActivity, "t:$artistId", startIndex)
                             } else {
                                 PermissionRequiredDialog(
                                     this,
@@ -94,5 +104,16 @@ class AlbumsActivity : SimpleMusicActivity() {
     override fun onResume() {
         super.onResume()
         setupToolbar(binding.albumsToolbar, NavigationIcon.Arrow)
+    }
+
+    private fun playTracklist(artistId: Long) {
+        val albumTracks = (binding.albumsList.adapter as? AlbumsTracksAdapter)?.items?.filterIsInstance<Track>() ?: return
+        if (albumTracks.isEmpty()) return
+
+        executeBackgroundThread {
+            val lastMediaId = artistDAO.getLastMediaId(artistId) ?: 0
+            val startIndex = albumTracks.indexOfFirst { track -> track.mediaStoreId == lastMediaId }.takeIf { it >= 0 } ?: 0
+            prepareAndPlay(albumTracks, showPlayback = config.showPlaybackActivity, "t:$artistId", startIndex)
+        }
     }
 }
