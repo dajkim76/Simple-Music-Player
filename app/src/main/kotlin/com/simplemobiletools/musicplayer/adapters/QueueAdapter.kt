@@ -159,7 +159,7 @@ class QueueAdapter(activity: SimpleActivity, items: ArrayList<Track>, var curren
                 }
                 it.setTextColor(color)
             }
-            if (track.mediaStoreId == currentTrack?.mediaStoreId) {
+            if (actMode == null && track.mediaStoreId == currentTrack?.mediaStoreId) {
                 view.foreground = foregroundDrawable
             } else {
                 view.foreground = null

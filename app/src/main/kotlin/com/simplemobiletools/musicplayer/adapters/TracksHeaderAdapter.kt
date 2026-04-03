@@ -84,6 +84,10 @@ class TracksHeaderAdapter(activity: SimpleActivity, items: ArrayList<ListItem>, 
             R.id.cab_play_next -> playNextInQueue()
         }
     }
+    
+    override fun onActionModeCreated() = notifyDataChanged()
+
+    override fun onActionModeDestroyed() = notifyDataChanged()
 
     override fun getSelectableItemCount() = items.size - 1
 
@@ -147,7 +151,7 @@ class TracksHeaderAdapter(activity: SimpleActivity, items: ArrayList<ListItem>, 
                 if (activity.isFinishing || activity.isDestroyed) return@getTrackFileArt
                 loadImage(trackImage, coverArt, placeholder)
             }
-            if (lastMediaId == track.mediaStoreId) {
+            if (actMode == null && lastMediaId == track.mediaStoreId) {
                 view.foreground = foregroundDrawable
             } else {
                 view.foreground = null

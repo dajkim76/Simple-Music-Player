@@ -97,17 +97,9 @@ class TracksAdapter(
         }
     }
 
-    override fun onActionModeCreated() {
-        if (isPlaylistContent()) {
-            notifyItemRangeChanged(0, itemCount)
-        }
-    }
+    override fun onActionModeCreated() = notifyDataChanged()
 
-    override fun onActionModeDestroyed() {
-        if (isPlaylistContent()) {
-            notifyItemRangeChanged(0, itemCount)
-        }
-    }
+    override fun onActionModeDestroyed() = notifyDataChanged()
 
     private fun removeFromPlaylist() {
         ensureBackgroundThread {
@@ -214,7 +206,7 @@ class TracksAdapter(
                 loadImage(trackImage, coverArt, placeholderBig)
             }
 
-            if (lastMediaId == track.mediaStoreId) {
+            if (actMode == null && lastMediaId == track.mediaStoreId) {
                 view.foreground = foregroundDrawable
             } else {
                 view.foreground = null

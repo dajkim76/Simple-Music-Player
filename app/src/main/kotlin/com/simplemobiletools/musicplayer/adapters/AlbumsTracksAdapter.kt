@@ -91,6 +91,10 @@ class AlbumsTracksAdapter(
         }
     }
 
+    override fun onActionModeCreated() = notifyDataChanged()
+
+    override fun onActionModeDestroyed() = notifyDataChanged()
+
     override fun getSelectableItemCount() = items.filter { it !is AlbumSection }.size
 
     override fun getIsItemSelectable(position: Int) = items[position] !is AlbumSection
@@ -167,7 +171,7 @@ class AlbumsTracksAdapter(
                 if (activity.isFinishing || activity.isDestroyed) return@getTrackFileArt
                 loadImage(trackImage, coverArt, placeholder)
             }
-            if (lastMediaId == track.mediaStoreId) {
+            if (actMode == null && lastMediaId == track.mediaStoreId) {
                 view.foreground = foregroundDrawable
             } else {
                 view.foreground = null
