@@ -6,10 +6,7 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
-import com.simplemobiletools.commons.extensions.getAlertDialogBuilder
-import com.simplemobiletools.commons.extensions.getProperPrimaryColor
-import com.simplemobiletools.commons.extensions.setupDialogStuff
-import com.simplemobiletools.commons.extensions.viewBinding
+import com.simplemobiletools.commons.extensions.*
 import com.simplemobiletools.commons.helpers.ensureBackgroundThread
 import com.simplemobiletools.musicplayer.R
 import com.simplemobiletools.musicplayer.activities.TrackActivity
@@ -26,6 +23,8 @@ import com.simplemobiletools.musicplayer.models.sortSafely
 class SelectTracklistDialog(val activity: Activity, val callback: (tracklistType: Int, id: Long, data: String) -> Unit) {
     private var dialog: AlertDialog? = null
     private val binding by activity.viewBinding(DialogSelectTracklistBinding::inflate)
+    private val foregroundDrawable = activity.resources.getColoredDrawableWithColor(R.drawable.rounded_white_border, activity.getProperPrimaryColor())
+    private val lastQueueSource = activity.config.lastQueueSource
 
     init {
         ensureBackgroundThread {
@@ -42,23 +41,23 @@ class SelectTracklistDialog(val activity: Activity, val callback: (tracklistType
     private fun initDialog(playlists: ArrayList<Playlist>, albumList: List<Album>, artistList: List<Artist>, folderNameList: List<String>) {
         playlists.sortSafely(activity.config.playlistSorting)
         addItemTitleView(R.string.playlists)
-        playlists.forEach { playlist -> addItemView(playlist.title, TRACKLIST_PLAYLIST, playlist.id.toLong(), "") }
+        playlists.forEach { playlist -> addItemView("p:", playlist.title, TRACKLIST_PLAYLIST, playlist.id.toLong(), "") }
 
         if (albumList.isNotEmpty()) {
             addItemTitleView(R.string.albums)
-            albumList.forEach { album -> addItemView(album.title + " • " + album.artist, TRACKLIST_ALBUM, album.id, "") }
+            albumList.forEach { album -> addItemView("a:", album.title + " • " + album.artist, TRACKLIST_ALBUM, album.id, "") }
         }
 
         if (folderNameList.isNotEmpty()) {
             addItemTitleView(R.string.folders)
             folderNameList.forEach { folderName ->
-                addItemView(folderName, TRACKLIST_FOLDER, 0, folderName)
+                addItemView("f:", folderName, TRACKLIST_FOLDER, 0, folderName)
             }
         }
 
         if (artistList.isNotEmpty()) {
             addItemTitleView(R.string.artists)
-            artistList.forEach { artist -> addItemView(artist.title, TRACKLIST_ARTIST, artist.id, "") }
+            artistList.forEach { artist -> addItemView("t:", artist.title, TRACKLIST_ARTIST, artist.id, "") }
         }
 
         activity.getAlertDialogBuilder().apply {
@@ -80,15 +79,21 @@ class SelectTracklistDialog(val activity: Activity, val callback: (tracklistType
         }
     }
 
-    private fun addItemView(title: String, type: Int, id: Long, data: String) {
+    private fun addItemView(prefix: String, title: String, type: Int, id: Long, data: String) {
         ItemSelectTracklistBinding.inflate(activity.layoutInflater).apply {
             selectTracklistItemRadioButton.apply {
                 text = title
-
+                setTextColor(activity.getProperTextColor())
                 setOnClickListener {
                     callback(type, id, data)
                     dialog?.dismiss()
                 }
+            }
+
+            // last selected track list
+            val suffix = data.ifEmpty { id.toString() }
+            if ("$prefix$suffix" == lastQueueSource) {
+                this.root.foreground = foregroundDrawable
             }
 
             binding.dialogSelectPlaylistLinear.addView(

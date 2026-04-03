@@ -4,9 +4,7 @@
     android:id="@+id/select_tracklist_item_holder"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingTop="@dimen/medium_margin"
-    android:paddingBottom="@dimen/medium_margin"
-    android:paddingEnd="@dimen/normal_margin">
+    android:padding="@dimen/medium_margin">
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/select_tracklist_item_radio_button"
