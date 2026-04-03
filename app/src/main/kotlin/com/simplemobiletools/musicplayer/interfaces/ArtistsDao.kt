@@ -29,6 +29,9 @@ interface ArtistsDao {
     @Query("SELECT * FROM artists")
     fun getAll(): List<Artist>
 
+    @Query("SELECT * FROM artists WHERE favorite_time > 0 ORDER BY favorite_time DESC")
+    fun getFavoriteArtistList(): List<Artist>
+
     @Query("DELETE FROM artists WHERE id = :id")
     fun deleteArtist(id: Long)
 

@@ -240,26 +240,43 @@ fun isInExcludeFolders(path: String, excludeFolder: List<String>): Boolean {
 class FolderConfig private constructor() {
     private val mmkv: MMKV = MMKV.mmkvWithID("folder_config")
 
-    fun getFolderFavoriteTime(path: String) = mmkv.decodeLong(path, 0)
+    fun getFolderFavoriteTime(folderName: String) = mmkv.decodeLong("f:$folderName", 0) // f means `Favorite
 
     fun setFolderFavoriteTime(favoriteData: List<Pair<String, Long>>) {
-        favoriteData.forEach { (path, time) ->
+        favoriteData.forEach { (folderName, time) ->
+            val key = "f:$folderName"
             if (time > 0) {
-                mmkv.encode(path, time)
+                mmkv.encode(key, time)
             } else {
-                mmkv.remove(path)
+                mmkv.remove(key)
             }
         }
     }
 
-    fun getLastMediaId(folderName: String): Long = mmkv.decodeLong("f:$folderName", 0)
+    fun getFolderFavoriteList(): List<String> {
+        val result = mmkv.allKeys()?.mapNotNull { key ->
+            if (key.startsWith("f:"))
+                key.substring(2) to mmkv.decodeLong(key, 0) // FolderName to FavoriteTime
+            else
+                null
+        }?.sortedByDescending { it.second }?.map { it.first }
+        return result ?: emptyList()
+    }
 
-    fun updateLastMediaId(folderName: String, lastMediaId: Long) = mmkv.encode("f:$folderName", lastMediaId)
+    fun getLastMediaId(folderName: String): Long = mmkv.decodeLong("m:$folderName", 0)  // m means 'Media'
+
+    fun updateLastMediaId(folderName: String, lastMediaId: Long) = mmkv.encode("m:$folderName", lastMediaId)
 
     private fun migrate(context: Context) {
         val folderConfig = context.getSharedPreferences("folder_config", Context.MODE_PRIVATE)
         if (folderConfig.all.isNotEmpty()) {
-            mmkv.importFromSharedPreferences(folderConfig)
+            folderConfig.all.map { (key, _) ->
+                val favoriteTime = folderConfig.getLong(key, 0)
+                if (favoriteTime > 0) {
+                    val folderName = key.substringAfterLast('/')
+                    mmkv.encode("f:$folderName", favoriteTime)
+                }
+            }
             folderConfig.edit().clear().apply()
         }
     }

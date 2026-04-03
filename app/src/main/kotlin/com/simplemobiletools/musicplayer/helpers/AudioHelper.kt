@@ -44,7 +44,7 @@ class AudioHelper(private val context: Context) {
                 continue
             }
 
-            val folder = Folder(title, folderTracks.size, path, folderConfig.getFolderFavoriteTime(path))
+            val folder = Folder(title, folderTracks.size, path, folderConfig.getFolderFavoriteTime(title))
             folders.add(folder)
         }
 

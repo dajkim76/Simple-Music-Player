@@ -1,0 +1,144 @@
+package com.simplemobiletools.musicplayer.dialogs
+
+import android.app.Activity
+import android.util.TypedValue
+import android.view.ViewGroup
+import android.widget.LinearLayout
+import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
+import com.simplemobiletools.commons.extensions.getAlertDialogBuilder
+import com.simplemobiletools.commons.extensions.getProperPrimaryColor
+import com.simplemobiletools.commons.extensions.setupDialogStuff
+import com.simplemobiletools.commons.extensions.viewBinding
+import com.simplemobiletools.commons.helpers.ensureBackgroundThread
+import com.simplemobiletools.musicplayer.R
+import com.simplemobiletools.musicplayer.activities.TrackActivity
+import com.simplemobiletools.musicplayer.databinding.DialogSelectTracklistBinding
+import com.simplemobiletools.musicplayer.databinding.ItemSelectTracklistBinding
+import com.simplemobiletools.musicplayer.extensions.*
+import com.simplemobiletools.musicplayer.helpers.FAVORITE_TRACKS_PLAYLIST_ID
+import com.simplemobiletools.musicplayer.helpers.FolderConfig
+import com.simplemobiletools.musicplayer.models.Album
+import com.simplemobiletools.musicplayer.models.Artist
+import com.simplemobiletools.musicplayer.models.Playlist
+import com.simplemobiletools.musicplayer.models.sortSafely
+
+class SelectTracklistDialog(val activity: Activity, val callback: (tracklistType: Int, id: Long, data: String) -> Unit) {
+    private var dialog: AlertDialog? = null
+    private val binding by activity.viewBinding(DialogSelectTracklistBinding::inflate)
+
+    init {
+        ensureBackgroundThread {
+            val playlists = activity.audioHelper.getAllPlaylists().filter { it.id >= FAVORITE_TRACKS_PLAYLIST_ID }
+            val albumList = activity.albumsDAO.getFavoriteAlbumList()
+            val artistList = activity.artistDAO.getFavoriteArtistList()
+            val folderNameList = FolderConfig.getInstance(activity).getFolderFavoriteList()
+            activity.runOnUiThread {
+                initDialog(ArrayList(playlists), albumList, artistList, folderNameList)
+            }
+        }
+    }
+
+    private fun initDialog(playlists: ArrayList<Playlist>, albumList: List<Album>, artistList: List<Artist>, folderNameList: List<String>) {
+        playlists.sortSafely(activity.config.playlistSorting)
+        addItemTitleView(R.string.playlists)
+        playlists.forEach { playlist -> addItemView(playlist.title, TRACKLIST_PLAYLIST, playlist.id.toLong(), "") }
+
+        if (albumList.isNotEmpty()) {
+            addItemTitleView(R.string.albums)
+            albumList.forEach { album -> addItemView(album.title + " • " + album.artist, TRACKLIST_ALBUM, album.id, "") }
+        }
+
+        if (folderNameList.isNotEmpty()) {
+            addItemTitleView(R.string.folders)
+            folderNameList.forEach { folderName ->
+                addItemView(folderName, TRACKLIST_FOLDER, 0, folderName)
+            }
+        }
+
+        if (artistList.isNotEmpty()) {
+            addItemTitleView(R.string.artists)
+            artistList.forEach { artist -> addItemView(artist.title, TRACKLIST_ARTIST, artist.id, "") }
+        }
+
+        activity.getAlertDialogBuilder().apply {
+            activity.setupDialogStuff(binding.root, this) { alertDialog ->
+                dialog = alertDialog
+            }
+        }
+    }
+
+    private fun addItemTitleView(resId: Int) {
+        TextView(activity).apply {
+            text = activity.getString(resId)
+            setTextSize(TypedValue.COMPLEX_UNIT_SP, 12f)
+            setTextColor(activity.getProperPrimaryColor())
+            binding.dialogSelectPlaylistLinear.addView(
+                this,
+                LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+            )
+        }
+    }
+
+    private fun addItemView(title: String, type: Int, id: Long, data: String) {
+        ItemSelectTracklistBinding.inflate(activity.layoutInflater).apply {
+            selectTracklistItemRadioButton.apply {
+                text = title
+
+                setOnClickListener {
+                    callback(type, id, data)
+                    dialog?.dismiss()
+                }
+            }
+
+            binding.dialogSelectPlaylistLinear.addView(
+                this.root,
+                LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+            )
+        }
+    }
+
+    companion object {
+        const val TRACKLIST_PLAYLIST = 0
+        const val TRACKLIST_ALBUM = 1
+        const val TRACKLIST_ARTIST = 2
+        const val TRACKLIST_FOLDER = 3
+
+        fun TrackActivity.onSelectTracklist(tracklistType: Int, id: Long, data: String) {
+            if (tracklistType == TRACKLIST_PLAYLIST) {
+                val playlistTracks = audioHelper.getPlaylistTracks(id.toInt())
+                if (playlistTracks.isEmpty()) return
+                val lastMediaId = playlistDAO.getLastMediaId(id.toInt()) ?: 0
+                val startIndex = playlistTracks.indexOfFirst { track -> track.mediaStoreId == lastMediaId }.takeIf { it >= 0 } ?: 0
+                val queueSource = "p:$id"
+
+                prepareAndPlay(playlistTracks, config.showPlaybackActivity, queueSource, startIndex)
+            } else if (tracklistType == TRACKLIST_ALBUM) {
+                val playlistTracks = audioHelper.getAlbumTracks(id)
+                if (playlistTracks.isEmpty()) return
+                val lastMediaId = albumsDAO.getLastMediaId(id) ?: 0
+                val startIndex = playlistTracks.indexOfFirst { track -> track.mediaStoreId == lastMediaId }.takeIf { it >= 0 } ?: 0
+                val queueSource = "a:$id"
+
+                prepareAndPlay(playlistTracks, config.showPlaybackActivity, queueSource, startIndex)
+            } else if (tracklistType == TRACKLIST_ARTIST) {
+                val albums = audioHelper.getArtistAlbums(id)
+                val playlistTracks = audioHelper.getAlbumTracks(albums)
+                if (playlistTracks.isEmpty()) return
+                val lastMediaId = artistDAO.getLastMediaId(id) ?: 0
+                val startIndex = playlistTracks.indexOfFirst { track -> track.mediaStoreId == lastMediaId }.takeIf { it >= 0 } ?: 0
+                val queueSource = "t:$id"
+
+                prepareAndPlay(playlistTracks, config.showPlaybackActivity, queueSource, startIndex)
+            } else if (tracklistType == TRACKLIST_FOLDER) {
+                val playlistTracks = audioHelper.getFolderTracks(data)
+                if (playlistTracks.isEmpty()) return
+                val lastMediaId = FolderConfig.getInstance(this).getLastMediaId(data)
+                val startIndex = playlistTracks.indexOfFirst { track -> track.mediaStoreId == lastMediaId }.takeIf { it >= 0 } ?: 0
+                val queueSource = "f:$data"
+
+                prepareAndPlay(playlistTracks, config.showPlaybackActivity, queueSource, startIndex)
+            }
+        }
+    }
+}

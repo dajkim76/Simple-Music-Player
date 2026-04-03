@@ -55,6 +55,8 @@ import com.simplemobiletools.musicplayer.adapters.CueAdapter
 import com.simplemobiletools.musicplayer.databinding.ActivityTrackBinding
 import com.simplemobiletools.musicplayer.databinding.AdjustCueTimestampBinding
 import com.simplemobiletools.musicplayer.databinding.InputCueTextBinding
+import com.simplemobiletools.musicplayer.dialogs.SelectTracklistDialog
+import com.simplemobiletools.musicplayer.dialogs.SelectTracklistDialog.Companion.onSelectTracklist
 import com.simplemobiletools.musicplayer.extensions.*
 import com.simplemobiletools.musicplayer.fragments.PlaybackSpeedFragment
 import com.simplemobiletools.musicplayer.helpers.*
@@ -105,6 +107,7 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
                     R.id.edit_cues -> showEditCuesDialog()
                     R.id.show_meta_data -> showMetaDataDialog()
                     R.id.favorite -> toggleFavorite()
+                    R.id.play_tracklist -> playTracklist()
                     R.id.add_to_playlist -> currentTrack?.let { addTracksToPlaylist(listOf(it)) {} }
                     R.id.goto_artist_page -> gotoArtistPage()
                     R.id.goto_album_page -> gotoAlbumPage()
@@ -1102,6 +1105,14 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
                     putExtra(ALBUM, Gson().toJson(album))
                     startActivity(this)
                 }
+            }
+        }
+    }
+
+    private fun playTracklist() {
+        SelectTracklistDialog(this) { tracklistType, id, data ->
+            executeBackgroundThread {
+                onSelectTracklist(tracklistType, id, data)
             }
         }
     }

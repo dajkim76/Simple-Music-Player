@@ -74,13 +74,13 @@ class FoldersFragment(context: Context, attributeSet: AttributeSet) : MyViewPage
     private fun toggleFavorite(selectedFolders: List<Folder>) {
         selectedFolders.forEach {
             it.favoriteTime = if (it.favoriteTime == 0L) System.currentTimeMillis() else 0L
-            folders.find { folder -> folder.path == it.path }?.favoriteTime = it.favoriteTime
+            folders.find { folder -> folder.title == it.title }?.favoriteTime = it.favoriteTime
         }
 
         folders.sortSafely(context.config.folderSorting)
         (binding.foldersList.adapter as FoldersAdapter).updateItems(folders, forceUpdate = true)
 
-        val favoriteData = selectedFolders.map { it.path to it.favoriteTime }
+        val favoriteData = selectedFolders.map { it.title to it.favoriteTime }
         FolderConfig.getInstance(context).setFolderFavoriteTime(favoriteData)
     }
 

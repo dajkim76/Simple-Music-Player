@@ -29,6 +29,9 @@ interface AlbumsDao {
     @Query("SELECT * FROM albums")
     fun getAll(): List<Album>
 
+    @Query("SELECT * FROM albums WHERE favorite_time > 0 ORDER BY favorite_time DESC")
+    fun getFavoriteAlbumList(): List<Album>
+
     @Query("SELECT * FROM albums WHERE id = :id")
     fun getAlbumWithId(id: Long): Album?
 
