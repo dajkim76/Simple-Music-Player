@@ -11,6 +11,7 @@ import com.simplemobiletools.musicplayer.extensions.sortSafely
 import com.simplemobiletools.musicplayer.helpers.PLAYER_SORT_BY_ARTIST_TITLE
 import com.simplemobiletools.musicplayer.helpers.PLAYER_SORT_BY_DATE_ADDED
 import com.simplemobiletools.musicplayer.helpers.PLAYER_SORT_BY_TITLE
+import com.simplemobiletools.musicplayer.helpers.PLAYER_SORT_BY_TRACK_COUNT
 
 @Entity(tableName = "albums", indices = [(Index(value = ["id"], unique = true))])
 data class Album(
@@ -53,6 +54,7 @@ data class Album(
                 }
 
                 sorting and PLAYER_SORT_BY_DATE_ADDED != 0 -> first.dateAdded.compareTo(second.dateAdded)
+                sorting and PLAYER_SORT_BY_TRACK_COUNT != 0 -> first.trackCnt.compareTo(second.trackCnt)
                 else -> first.year.compareTo(second.year)
             }
 

@@ -83,6 +83,7 @@ class ChangeSortingDialog(val activity: Activity, val location: Int, val playlis
                 radioItems.add(RadioItem(1, activity.getString(R.string.artist_name), PLAYER_SORT_BY_ARTIST_TITLE))
                 radioItems.add(RadioItem(2, activity.getString(R.string.year), PLAYER_SORT_BY_YEAR))
                 radioItems.add(RadioItem(4, activity.getString(com.simplemobiletools.commons.R.string.date_added), PLAYER_SORT_BY_DATE_ADDED))
+                radioItems.add(RadioItem(5, activity.getString(R.string.track_count), PLAYER_SORT_BY_TRACK_COUNT))
             }
 
             TAB_TRACKS -> {
