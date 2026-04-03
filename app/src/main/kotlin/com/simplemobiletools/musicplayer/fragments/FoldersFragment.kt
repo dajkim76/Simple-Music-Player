@@ -72,8 +72,9 @@ class FoldersFragment(context: Context, attributeSet: AttributeSet) : MyViewPage
     }
 
     private fun toggleFavorite(selectedFolders: List<Folder>) {
+        var currentTimeMillis = System.currentTimeMillis()
         selectedFolders.forEach {
-            it.favoriteTime = if (it.favoriteTime == 0L) System.currentTimeMillis() else 0L
+            it.favoriteTime = if (it.favoriteTime == 0L) currentTimeMillis-- else 0L
             folders.find { folder -> folder.title == it.title }?.favoriteTime = it.favoriteTime
         }
 

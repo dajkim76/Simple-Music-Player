@@ -74,8 +74,9 @@ class AlbumsFragment(context: Context, attributeSet: AttributeSet) : MyViewPager
     }
 
     private fun toggleFavorite(selectedAlbums: List<Album>) {
+        var currentTimeMillis = System.currentTimeMillis()
         selectedAlbums.forEach {
-            it.favoriteTime = if (it.favoriteTime == 0L) System.currentTimeMillis() else 0L
+            it.favoriteTime = if (it.favoriteTime == 0L) currentTimeMillis-- else 0L
             albums.find { album -> album.id == it.id }?.favoriteTime = it.favoriteTime
         }
 

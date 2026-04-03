@@ -78,8 +78,9 @@ class PlaylistsFragment(context: Context, attributeSet: AttributeSet) : MyViewPa
     }
 
     private fun toggleFavorite(selectedPlaylists: List<Playlist>) {
+        var currentTimeMillis = System.currentTimeMillis()
         selectedPlaylists.forEach {
-            it.favoriteTime = if (it.favoriteTime == 0L) System.currentTimeMillis() else 0L
+            it.favoriteTime = if (it.favoriteTime == 0L) currentTimeMillis-- else 0L
             playlists.find { playlist -> playlist.id == it.id }?.favoriteTime = it.favoriteTime
         }
 

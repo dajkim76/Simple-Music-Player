@@ -73,8 +73,9 @@ class ArtistsFragment(context: Context, attributeSet: AttributeSet) : MyViewPage
     }
 
     private fun toggleFavorite(selectedArtists: List<Artist>) {
+        var currentTimeMillis = System.currentTimeMillis()
         selectedArtists.forEach {
-            it.favoriteTime = if (it.favoriteTime == 0L) System.currentTimeMillis() else 0L
+            it.favoriteTime = if (it.favoriteTime == 0L) currentTimeMillis-- else 0L
             artists.find { artist -> artist.id == it.id }?.favoriteTime = it.favoriteTime
         }
 
