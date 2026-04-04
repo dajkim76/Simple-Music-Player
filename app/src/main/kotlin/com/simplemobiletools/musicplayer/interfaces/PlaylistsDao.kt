@@ -26,6 +26,9 @@ interface PlaylistsDao {
     @Query("UPDATE playlists SET favorite_time = :favoriteTime WHERE id = :id")
     fun updateFavorite(id: Long, favoriteTime: Long)
 
+    @Query("SELECT * FROM playlists WHERE id = :id")
+    fun select(id: Int): Playlist?
+
     @Transaction
     fun updateFavoriteData(favoriteData: List<Pair<Long, Long>>) {
         favoriteData.forEach { (id, favoriteTime) ->

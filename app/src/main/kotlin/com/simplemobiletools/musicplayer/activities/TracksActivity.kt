@@ -98,6 +98,8 @@ class TracksActivity : SimpleMusicActivity() {
         binding.tracksToolbar.menu.apply {
             findItem(R.id.play_tracklist).isVisible =
                 (sourceType == TYPE_PLAYLIST && (playlist?.id ?: 0) >= SMART_PLAYLIST_ID_MAX) || sourceType == TYPE_ALBUM || sourceType == TYPE_FOLDER
+            findItem(R.id.favorite).isVisible =
+                (sourceType == TYPE_PLAYLIST && (playlist?.id ?: 0) > SMART_PLAYLIST_ID_MAX) || sourceType == TYPE_ALBUM || sourceType == TYPE_FOLDER
             findItem(R.id.search).isVisible = sourceType != TYPE_ALBUM
             findItem(R.id.sort).isVisible = sourceType != TYPE_ALBUM && playlistSortable()
             findItem(R.id.add_file_to_playlist).isVisible = addFilesToPlaylistEnabled()
@@ -130,6 +132,7 @@ class TracksActivity : SimpleMusicActivity() {
                 R.id.add_file_to_playlist -> addFileToPlaylist()
                 R.id.add_folder_to_playlist -> addFolderToPlaylist()
                 R.id.play_tracklist -> playTracklist()
+                R.id.favorite -> toggleFavorite()
                 R.id.export_playlist -> tryExportPlaylist()
                 else -> return@setOnMenuItemClickListener false
             }
@@ -388,6 +391,42 @@ class TracksActivity : SimpleMusicActivity() {
             runOnUiThread {
                 val track = tracks.find { track -> track.mediaStoreId == lastMediaId } ?: tracks.first()
                 itemClicked(track)
+            }
+        }
+    }
+
+    private fun toggleFavorite() {
+        fun showToast(isFavorite: Boolean) {
+            val message =
+                getString(R.string.favorites_toggle) + " : " + getString(if (isFavorite) com.simplemobiletools.commons.R.string.yes else com.simplemobiletools.commons.R.string.no)
+            toast(message)
+        }
+
+        if (sourceType == TYPE_PLAYLIST) {
+            val id = playlist?.id ?: 0
+            executeBackgroundThread {
+                playlistDAO.select(id)?.let {
+                    val favoriteTime = if (it.favoriteTime > 0) 0 else System.currentTimeMillis()
+                    playlistDAO.updateFavorite(id.toLong(), favoriteTime)
+                    EventBus.getDefault().post(Events.PlaylistsUpdated())
+                    runOnUiThread { showToast(favoriteTime > 0) }
+                }
+            }
+        } else if (sourceType == TYPE_FOLDER && folder != null) {
+            val folderConfig = FolderConfig.getInstance(this)
+            val favorite = folderConfig.getFolderFavoriteTime(folder!!)
+            val newFavorite = if (favorite > 0) 0 else System.currentTimeMillis()
+            folderConfig.setFolderFavoriteTime(listOf(folder!! to newFavorite))
+            showToast(newFavorite > 0)
+            EventBus.getDefault().post(Events.FoldersUpdated())
+        } else if (sourceType == TYPE_ALBUM) {
+            executeBackgroundThread {
+                albumsDAO.select(albumId)?.let {
+                    val favoriteTime = if (it.favoriteTime > 0) 0 else System.currentTimeMillis()
+                    albumsDAO.updateFavorite(albumId, favoriteTime)
+                    EventBus.getDefault().post(Events.AlbumsUpdated())
+                    runOnUiThread { showToast(favoriteTime > 0) }
+                }
             }
         }
     }

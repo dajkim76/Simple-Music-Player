@@ -4,7 +4,7 @@
 
     <item
         android:id="@+id/play_tracklist"
-        android:title="@string/playable"
+        android:title="@string/playlists"
         android:icon="@drawable/ic_play_tracklist"
         app:showAsAction="always" />
 

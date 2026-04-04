@@ -494,6 +494,21 @@ class MainActivity : SimpleMusicActivity() {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
+    fun foldersUpdated(event: Events.FoldersUpdated) {
+        getAdapter()?.getFoldersFragment()?.setupFragment(this)
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun artistsUpdated(event: Events.ArtistsUpdated) {
+        getAdapter()?.getArtistsFragment()?.setupFragment(this)
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun albumsUpdated(event: Events.AlbumsUpdated) {
+        getAdapter()?.getAlbumsFragment()?.setupFragment(this)
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
     fun tracksUpdated(event: Events.RefreshTracks) {
         getAdapter()?.getTracksFragment()?.setupFragment(this)
     }

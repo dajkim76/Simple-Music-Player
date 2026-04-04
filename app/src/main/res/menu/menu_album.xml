@@ -5,5 +5,9 @@
         android:id="@+id/play_tracklist"
         android:icon="@drawable/ic_play_vector"
         android:title="@string/playable"
-        app:showAsAction="collapseActionView|always" />
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/favorite"
+        android:title="@string/favorites_toggle"
+        app:showAsAction="never" />
 </menu>

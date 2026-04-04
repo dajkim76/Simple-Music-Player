@@ -7,9 +7,7 @@ import com.simplemobiletools.commons.extensions.getProperTextColor
 import com.simplemobiletools.musicplayer.activities.SimpleActivity
 import com.simplemobiletools.musicplayer.databinding.*
 import com.simplemobiletools.musicplayer.extensions.getVisibleTabs
-import com.simplemobiletools.musicplayer.fragments.MyViewPagerFragment
-import com.simplemobiletools.musicplayer.fragments.PlaylistsFragment
-import com.simplemobiletools.musicplayer.fragments.TracksFragment
+import com.simplemobiletools.musicplayer.fragments.*
 import com.simplemobiletools.musicplayer.helpers.*
 
 class ViewPagerAdapter(val activity: SimpleActivity) : RecyclerView.Adapter<ViewPagerAdapter.ViewHolder>() {
@@ -49,6 +47,12 @@ class ViewPagerAdapter(val activity: SimpleActivity) : RecyclerView.Adapter<View
     fun getFragment(position: Int) = fragments[position]
 
     fun getPlaylistsFragment() = fragments.values.find { it is PlaylistsFragment }
+
+    fun getFoldersFragment() = fragments.values.find { it is FoldersFragment }
+
+    fun getArtistsFragment() = fragments.values.find { it is ArtistsFragment }
+
+    fun getAlbumsFragment() = fragments.values.find { it is AlbumsFragment }
 
     fun getTracksFragment() = fragments.values.find { it is TracksFragment }
 }

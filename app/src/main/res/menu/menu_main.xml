@@ -6,7 +6,7 @@
     <item
         android:id="@+id/play_tracklist"
         android:icon="@drawable/ic_playlist_play"
-        android:title="@string/playable"
+        android:title="@string/playlists"
         app:showAsAction="always" />
     <item
         android:id="@+id/sort"

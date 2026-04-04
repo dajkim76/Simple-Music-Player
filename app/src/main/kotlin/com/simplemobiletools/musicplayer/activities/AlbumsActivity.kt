@@ -18,6 +18,7 @@ import com.simplemobiletools.musicplayer.helpers.ALBUM
 import com.simplemobiletools.musicplayer.helpers.ARTIST
 import com.simplemobiletools.musicplayer.models.*
 import com.simplemobiletools.musicplayer.objects.executeBackgroundThread
+import org.greenrobot.eventbus.EventBus
 
 // Artists -> Albums -> Tracks
 class AlbumsActivity : SimpleMusicActivity() {
@@ -47,6 +48,8 @@ class AlbumsActivity : SimpleMusicActivity() {
         binding.albumsToolbar.setOnMenuItemClickListener { menuItem ->
             if (menuItem.itemId == R.id.play_tracklist) {
                 playTracklist(artistId)
+            } else if (menuItem.itemId == R.id.favorite) {
+                toggleFavorite(artistId)
             }
             true
         }
@@ -115,6 +118,21 @@ class AlbumsActivity : SimpleMusicActivity() {
             val lastMediaId = artistDAO.getLastMediaId(artistId) ?: 0
             val startIndex = albumTracks.indexOfFirst { track -> track.mediaStoreId == lastMediaId }.takeIf { it >= 0 } ?: 0
             prepareAndPlay(albumTracks, showPlayback = config.showPlaybackActivity, "t:$artistId", startIndex)
+        }
+    }
+
+    private fun toggleFavorite(artistId: Long) {
+        executeBackgroundThread {
+            artistDAO.select(artistId)?.let {
+                val favoriteTime = if (it.favoriteTime > 0) 0 else System.currentTimeMillis()
+                artistDAO.updateFavorite(artistId, favoriteTime)
+                EventBus.getDefault().post(Events.ArtistsUpdated())
+                runOnUiThread {
+                    val message =
+                        getString(R.string.favorites_toggle) + " : " + getString(if (favoriteTime > 0) com.simplemobiletools.commons.R.string.yes else com.simplemobiletools.commons.R.string.no)
+                    toast(message)
+                }
+            }
         }
     }
 }
