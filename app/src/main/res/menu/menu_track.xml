@@ -5,7 +5,7 @@
     <item
         android:id="@+id/play_tracklist"
         android:title="@string/playable"
-        android:icon="@drawable/ic_playlist_play"
+        android:icon="@drawable/ic_play_tracklist"
         app:showAsAction="always" />
 
     <item
@@ -25,6 +25,13 @@
         android:title="@string/youtube_timestamp_text"
         android:icon="@drawable/ic_cue_list"
         app:showAsAction="always" />
+
+    <item
+        android:id="@+id/equalizer"
+        android:icon="@drawable/ic_equalizer_vector"
+        android:title="@string/equalizer"
+        app:showAsAction="never" />
+
     <item
         android:id="@+id/add_to_playlist"
         android:title="@string/add_to_playlist"

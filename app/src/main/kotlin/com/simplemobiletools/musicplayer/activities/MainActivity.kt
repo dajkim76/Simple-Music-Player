@@ -24,6 +24,7 @@ import com.simplemobiletools.musicplayer.adapters.ViewPagerAdapter
 import com.simplemobiletools.musicplayer.databinding.ActivityMainBinding
 import com.simplemobiletools.musicplayer.dialogs.NewPlaylistDialog
 import com.simplemobiletools.musicplayer.dialogs.SelectPlaylistDialog
+import com.simplemobiletools.musicplayer.dialogs.SelectTracklistDialog
 import com.simplemobiletools.musicplayer.dialogs.SleepTimerCustomDialog
 import com.simplemobiletools.musicplayer.extensions.*
 import com.simplemobiletools.musicplayer.fragments.PlaylistsFragment
@@ -124,7 +125,6 @@ class MainActivity : SimpleMusicActivity() {
             findItem(R.id.create_new_playlist).isVisible = isPlaylistFragment
             findItem(R.id.create_playlist_from_folder).isVisible = isPlaylistFragment
             findItem(R.id.import_playlist).isVisible = isPlaylistFragment && isOreoPlus()
-            findItem(R.id.more_apps_from_us).isVisible = !resources.getBoolean(com.simplemobiletools.commons.R.bool.hide_google_relations)
         }
     }
 
@@ -146,13 +146,14 @@ class MainActivity : SimpleMusicActivity() {
         binding.mainMenu.getToolbar().setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.sort -> showSortingDialog()
+                R.id.play_tracklist -> SelectTracklistDialog(this)
                 R.id.rescan_media -> refreshAllFragments(showProgress = true)
                 R.id.sleep_timer -> showSleepTimer()
                 R.id.create_new_playlist -> createNewPlaylist()
                 R.id.create_playlist_from_folder -> createPlaylistFromFolder()
                 R.id.import_playlist -> tryImportPlaylist()
                 R.id.equalizer -> launchEqualizer()
-                R.id.more_apps_from_us -> launchMoreAppsFromUsIntent()
+                R.id.more_apps_from_us -> launchViewIntent("https://play.google.com/store/apps/developer?id=Daejeong+Kim")
                 R.id.settings -> launchSettings()
                 R.id.about -> launchAbout()
                 else -> return@setOnMenuItemClickListener false

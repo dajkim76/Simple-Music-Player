@@ -4,10 +4,25 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:ignore="AppCompatResource">
     <item
+        android:id="@+id/play_tracklist"
+        android:icon="@drawable/ic_playlist_play"
+        android:title="@string/playable"
+        app:showAsAction="always" />
+    <item
         android:id="@+id/sort"
         android:icon="@drawable/ic_sort_vector"
         android:title="@string/sort_by"
         app:showAsAction="always" />
+    <item
+        android:id="@+id/settings"
+        android:icon="@drawable/ic_settings_cog_vector"
+        android:title="@string/settings"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/equalizer"
+        android:icon="@drawable/ic_equalizer_vector"
+        android:title="@string/equalizer"
+        app:showAsAction="never" />
     <item
         android:id="@+id/create_new_playlist"
         android:showAsAction="never"
@@ -34,23 +49,13 @@
         android:title="@string/sleep_timer"
         app:showAsAction="never" />
     <item
-        android:id="@+id/equalizer"
-        android:icon="@drawable/ic_equalizer_vector"
-        android:title="@string/equalizer"
-        app:showAsAction="always" />
-    <item
-        android:id="@+id/settings"
-        android:icon="@drawable/ic_settings_cog_vector"
-        android:title="@string/settings"
-        app:showAsAction="ifRoom" />
+        android:id="@+id/more_apps_from_us"
+        android:icon="@drawable/ic_google_play_vector"
+        android:title="@string/more_apps_from_us"
+        app:showAsAction="never" />
     <item
         android:id="@+id/about"
         android:icon="@drawable/ic_info_vector"
         android:title="@string/about"
-        app:showAsAction="ifRoom" />
-    <item
-        android:id="@+id/more_apps_from_us"
-        android:icon="@drawable/ic_google_play_vector"
-        android:title="@string/more_apps_from_us"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="never" />
 </menu>

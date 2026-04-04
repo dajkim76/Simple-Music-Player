@@ -1,6 +1,5 @@
 package com.simplemobiletools.musicplayer.dialogs
 
-import android.app.Activity
 import android.util.TypedValue
 import android.view.ViewGroup
 import android.widget.LinearLayout
@@ -9,7 +8,7 @@ import androidx.appcompat.app.AlertDialog
 import com.simplemobiletools.commons.extensions.*
 import com.simplemobiletools.commons.helpers.ensureBackgroundThread
 import com.simplemobiletools.musicplayer.R
-import com.simplemobiletools.musicplayer.activities.TrackActivity
+import com.simplemobiletools.musicplayer.activities.SimpleControllerActivity
 import com.simplemobiletools.musicplayer.databinding.DialogSelectTracklistBinding
 import com.simplemobiletools.musicplayer.databinding.ItemSelectTracklistBinding
 import com.simplemobiletools.musicplayer.extensions.*
@@ -19,8 +18,9 @@ import com.simplemobiletools.musicplayer.models.Album
 import com.simplemobiletools.musicplayer.models.Artist
 import com.simplemobiletools.musicplayer.models.Playlist
 import com.simplemobiletools.musicplayer.models.sortSafely
+import com.simplemobiletools.musicplayer.objects.executeBackgroundThread
 
-class SelectTracklistDialog(val activity: Activity, val callback: (tracklistType: Int, id: Long, data: String) -> Unit) {
+class SelectTracklistDialog(val activity: SimpleControllerActivity) {
     private var dialog: AlertDialog? = null
     private val binding by activity.viewBinding(DialogSelectTracklistBinding::inflate)
     private val foregroundDrawable = activity.resources.getColoredDrawableWithColor(R.drawable.rounded_white_border, activity.getProperPrimaryColor())
@@ -85,7 +85,9 @@ class SelectTracklistDialog(val activity: Activity, val callback: (tracklistType
                 text = title
                 setTextColor(activity.getProperTextColor())
                 setOnClickListener {
-                    callback(type, id, data)
+                    executeBackgroundThread {
+                        activity.onSelectTracklist(type, id, data)
+                    }
                     dialog?.dismiss()
                 }
             }
@@ -109,7 +111,7 @@ class SelectTracklistDialog(val activity: Activity, val callback: (tracklistType
         const val TRACKLIST_ARTIST = 2
         const val TRACKLIST_FOLDER = 3
 
-        fun TrackActivity.onSelectTracklist(tracklistType: Int, id: Long, data: String) {
+        fun SimpleControllerActivity.onSelectTracklist(tracklistType: Int, id: Long, data: String) {
             if (tracklistType == TRACKLIST_PLAYLIST) {
                 val playlistTracks = audioHelper.getPlaylistTracks(id.toInt())
                 if (playlistTracks.isEmpty()) return
