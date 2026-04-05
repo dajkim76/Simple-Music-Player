@@ -8,4 +8,5 @@ class Events {
     class AlbumsUpdated
     class RefreshFragments
     class RefreshTracks
+    class QueueItemsChanged
 }

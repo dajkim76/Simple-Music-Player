@@ -4,11 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:ignore="AppCompatResource">
     <item
-        android:id="@+id/play_tracklist"
-        android:icon="@drawable/ic_playlist_play"
-        android:title="@string/playlists"
-        app:showAsAction="always" />
-    <item
         android:id="@+id/sort"
         android:icon="@drawable/ic_sort_vector"
         android:title="@string/sort_by"
@@ -17,12 +12,17 @@
         android:id="@+id/settings"
         android:icon="@drawable/ic_settings_cog_vector"
         android:title="@string/settings"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/play_tracklist"
+        android:icon="@drawable/ic_playlist_play"
+        android:title="@string/playlists"
+        app:showAsAction="always" />
     <item
         android:id="@+id/equalizer"
         android:icon="@drawable/ic_equalizer_vector"
         android:title="@string/equalizer"
-        app:showAsAction="never" />
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/create_new_playlist"
         android:showAsAction="never"

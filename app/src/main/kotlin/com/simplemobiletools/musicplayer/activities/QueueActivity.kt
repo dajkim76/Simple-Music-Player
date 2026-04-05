@@ -4,6 +4,8 @@ import android.annotation.SuppressLint
 import android.app.SearchManager
 import android.content.Context
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.*
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.GestureDetectorCompat
@@ -20,10 +22,15 @@ import com.simplemobiletools.musicplayer.R
 import com.simplemobiletools.musicplayer.adapters.QueueAdapter
 import com.simplemobiletools.musicplayer.databinding.ActivityQueueBinding
 import com.simplemobiletools.musicplayer.dialogs.NewPlaylistDialog
+import com.simplemobiletools.musicplayer.dialogs.SelectTracklistDialog
 import com.simplemobiletools.musicplayer.extensions.*
 import com.simplemobiletools.musicplayer.helpers.RoomHelper
+import com.simplemobiletools.musicplayer.models.Events
 import com.simplemobiletools.musicplayer.models.Track
 import com.simplemobiletools.musicplayer.objects.executeBackgroundThread
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 class QueueActivity : SimpleControllerActivity() {
     private var searchMenuItem: MenuItem? = null
@@ -43,11 +50,26 @@ class QueueActivity : SimpleControllerActivity() {
         setupAdapter()
         setupFlingListener()
         binding.queueFastscroller.updateColors(getProperPrimaryColor())
+        EventBus.getDefault().register(this)
+    }
+
+    override fun onDestroy() {
+        EventBus.getDefault().unregister(this)
+        super.onDestroy()
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun queueItemsChanged(event: Events.QueueItemsChanged) {
+        Handler(Looper.getMainLooper()).postDelayed({
+            binding.queueList.adapter = null
+            setupAdapter()
+        }, 300)
     }
 
     override fun onResume() {
         super.onResume()
         setupToolbar(binding.queueToolbar, NavigationIcon.Arrow, searchMenuItem = searchMenuItem)
+        getAdapter()?.updateCurrentTrack()
     }
 
     override fun onBackPressed() {
@@ -67,6 +89,7 @@ class QueueActivity : SimpleControllerActivity() {
         binding.queueToolbar.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.create_playlist_from_queue -> createPlaylistFromQueue()
+                R.id.play_tracklist -> SelectTracklistDialog(this)
                 else -> return@setOnMenuItemClickListener false
             }
             return@setOnMenuItemClickListener true
