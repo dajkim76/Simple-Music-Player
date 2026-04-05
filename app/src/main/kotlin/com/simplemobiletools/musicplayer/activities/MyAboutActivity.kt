@@ -68,18 +68,13 @@ class MyAboutActivity : ComponentActivity() {
                         val showHelpUsSection =
                             remember { showGoogleRelations || !showExternalLinks }
                         HelpUsSection(
-                            onRateUsClick = {
-                                onRateUsClick(
-                                    showConfirmationAdvancedDialog = onRateUsClickAlertDialogState::show,
-                                    showRateStarsDialog = rateStarsAlertDialogState::show
-                                )
-                            },
+                            onRateUsClick = { onRateUsClick(showConfirmationAdvancedDialog = onRateUsClickAlertDialogState::show) },
                             onInviteClick = ::onInviteClick,
                             onContributorsClick = ::onContributorsClick,
                             showDonate = resources.getBoolean(R.bool.show_donate_in_about) && showExternalLinks,
                             onDonateClick = ::onDonateClick,
                             showInvite = showHelpUsSection,
-                            showRateUs = false /* Disable App rating */
+                            showRateUs = true
                         )
                     },
                     aboutSection = {
@@ -133,8 +128,7 @@ class MyAboutActivity : ComponentActivity() {
         if (baseConfig.appId.removeSuffix(".debug").endsWith(".pro")) {
             version += " ${getString(R.string.pro)}"
         }
-        val title = getString(R.string.rate_us) + "\n"
-        val fullVersion = remember { title + String.format(getString(R.string.version_placeholder, version)) }
+        val fullVersion = remember { getString(R.string.version_placeholder, version) }
         return Pair(showWebsite, fullVersion)
     }
 
@@ -226,7 +220,7 @@ class MyAboutActivity : ComponentActivity() {
     }
 
     private fun launchEmailIntent() {
-        val appVersion = String.format(getString(R.string.app_version, intent.getStringExtra(APP_VERSION_NAME)))
+        val appVersion = getString(R.string.app_version, intent.getStringExtra(APP_VERSION_NAME))
         val deviceOS = String.format(getString(R.string.device_os), Build.VERSION.RELEASE)
         val newline = "\n"
         val separator = "------------------------------"
@@ -256,11 +250,10 @@ class MyAboutActivity : ComponentActivity() {
     }
 
     private fun onRateUsClick(
-        showConfirmationAdvancedDialog: () -> Unit,
-        showRateStarsDialog: () -> Unit
+        showConfirmationAdvancedDialog: () -> Unit
     ) {
         if (baseConfig.wasBeforeRateShown) {
-            launchRateUsPrompt(showRateStarsDialog)
+            redirectToRateUs()
         } else {
             baseConfig.wasBeforeRateShown = true
             showConfirmationAdvancedDialog()
@@ -270,11 +263,7 @@ class MyAboutActivity : ComponentActivity() {
     private fun launchRateUsPrompt(
         showRateStarsDialog: () -> Unit
     ) {
-        if (baseConfig.wasAppRated) {
-            redirectToRateUs()
-        } else {
-            showRateStarsDialog()
-        }
+        redirectToRateUs()
     }
 
     private fun onInviteClick() {
