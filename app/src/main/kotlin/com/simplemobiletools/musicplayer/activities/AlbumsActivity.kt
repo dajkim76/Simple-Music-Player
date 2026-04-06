@@ -53,6 +53,7 @@ class AlbumsActivity : SimpleMusicActivity() {
             }
             true
         }
+        updateFavoriteMenu(artistId)
 
         ensureBackgroundThread {
             val albums = audioHelper.getArtistAlbums(artist.id)
@@ -121,6 +122,17 @@ class AlbumsActivity : SimpleMusicActivity() {
         }
     }
 
+    private fun updateFavoriteMenu(artistId: Long) {
+        executeBackgroundThread {
+            val favoriteTime = artistDAO.select(artistId)?.favoriteTime ?: 0
+            runOnUiThread {
+                val resId =
+                    if (favoriteTime > 0) com.simplemobiletools.commons.R.string.remove_from_favorites else com.simplemobiletools.commons.R.string.add_to_favorites
+                binding.albumsToolbar.menu.findItem(R.id.favorite)?.title = getString(resId)
+            }
+        }
+    }
+
     private fun toggleFavorite(artistId: Long) {
         executeBackgroundThread {
             artistDAO.select(artistId)?.let {
@@ -128,9 +140,10 @@ class AlbumsActivity : SimpleMusicActivity() {
                 artistDAO.updateFavorite(artistId, favoriteTime)
                 EventBus.getDefault().post(Events.ArtistsUpdated())
                 runOnUiThread {
-                    val message =
-                        getString(R.string.favorites_toggle) + " : " + getString(if (favoriteTime > 0) com.simplemobiletools.commons.R.string.yes else com.simplemobiletools.commons.R.string.no)
-                    toast(message)
+                    val resId =
+                        if (favoriteTime > 0) com.simplemobiletools.commons.R.string.remove_from_favorites else com.simplemobiletools.commons.R.string.add_to_favorites
+                    binding.albumsToolbar.menu.findItem(R.id.favorite)?.title = getString(resId)
+                    toast(com.simplemobiletools.commons.R.string.ok)
                 }
             }
         }

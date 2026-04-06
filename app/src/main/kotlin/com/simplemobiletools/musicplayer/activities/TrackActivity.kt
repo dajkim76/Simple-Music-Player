@@ -182,7 +182,7 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
 
         setupTopArt(track)
         setupCues(track)
-        updateFavorite(track)
+        updateFavoriteMenu(track)
         binding.apply {
             activityTrackTitle.text = track.title
             updateCueTitle(track.mediaStoreId, -1)
@@ -1062,7 +1062,7 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
         }
     }
 
-    private fun updateFavorite(track: Track) {
+    private fun updateFavoriteMenu(track: Track) {
         executeBackgroundThread {
             val isFavorite = audioHelper.isFavoriteTrack(track)
             runOnUiThread {

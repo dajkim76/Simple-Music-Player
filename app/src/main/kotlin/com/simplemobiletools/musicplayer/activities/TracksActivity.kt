@@ -80,6 +80,7 @@ class TracksActivity : SimpleMusicActivity() {
         super.onResume()
         setupToolbar(binding.tracksToolbar, NavigationIcon.Arrow, searchMenuItem = searchMenuItem)
         refreshTracks()
+        updateFavoriteMenu()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, resultData: Intent?) {
@@ -395,11 +396,32 @@ class TracksActivity : SimpleMusicActivity() {
         }
     }
 
+    private fun updateFavoriteMenu() {
+        executeBackgroundThread {
+            val favoriteTime = if (sourceType == TYPE_PLAYLIST) {
+                val id = playlist?.id ?: 0
+                playlistDAO.select(id)?.favoriteTime ?: 0
+            } else if (sourceType == TYPE_FOLDER && folder != null) {
+                FolderConfig.getInstance(this).getFolderFavoriteTime(folder!!)
+            } else if (sourceType == TYPE_ALBUM) {
+                albumsDAO.select(albumId)?.favoriteTime ?: 0
+            } else
+                0
+
+            runOnUiThread {
+                val resId =
+                    if (favoriteTime > 0) com.simplemobiletools.commons.R.string.remove_from_favorites else com.simplemobiletools.commons.R.string.add_to_favorites
+                binding.tracksToolbar.menu.findItem(R.id.favorite)?.title = getString(resId)
+            }
+        }
+    }
+
     private fun toggleFavorite() {
         fun showToast(isFavorite: Boolean) {
-            val message =
-                getString(R.string.favorites_toggle) + " : " + getString(if (isFavorite) com.simplemobiletools.commons.R.string.yes else com.simplemobiletools.commons.R.string.no)
-            toast(message)
+            val resId =
+                if (isFavorite) com.simplemobiletools.commons.R.string.remove_from_favorites else com.simplemobiletools.commons.R.string.add_to_favorites
+            binding.tracksToolbar.menu.findItem(R.id.favorite)?.title = getString(resId)
+            toast(com.simplemobiletools.commons.R.string.ok)
         }
 
         if (sourceType == TYPE_PLAYLIST) {
