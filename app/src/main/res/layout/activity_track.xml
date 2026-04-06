@@ -280,7 +280,7 @@
             <ImageView
                 android:id="@+id/next_track_divider"
                 android:layout_width="match_parent"
-                android:layout_height="1px"
+                android:layout_height="1dp"
                 android:background="@color/divider_grey"
                 android:importantForAccessibility="no" />
 
