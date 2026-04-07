@@ -34,8 +34,14 @@ android {
         versionName = project.libs.versions.app.version.versionName.get()
         versionCode = project.libs.versions.app.version.versionCode.get().toInt()
         vectorDrawables.useSupportLibrary = true
+        //noinspection WrongGradleMethod
         ksp {
             arg("room.schemaLocation", "$projectDir/schemas")
+        }
+
+        ndk {
+            // Exclude armeabi-v7a : MMKV 2.0+ support only 64-bit.
+            abiFilters.add("arm64-v8a")
         }
     }
 
