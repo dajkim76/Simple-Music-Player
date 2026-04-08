@@ -19,9 +19,7 @@ object SimpleEqualizer {
         try {
             val preset = context.config.equalizerPreset
             instance = Equalizer(0, player.getAudioSessionId())
-            if (!instance.enabled) {
-                instance.enabled = true
-            }
+            instance.enabled = context.config.equalizerEnabled
 
             if (preset != EQUALIZER_PRESET_CUSTOM) {
                 instance.usePreset(preset.toShort())

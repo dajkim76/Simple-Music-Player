@@ -130,6 +130,12 @@ class Config private constructor(context: Context) : BaseConfig(context) {
             mmkv.encode(GENRE_SORTING, genreSorting)
         }
 
+    var equalizerEnabled: Boolean
+        get() = mmkv.decodeBool(EQUALIZER_ENABLED, false)
+        set(equalizerEnabled) {
+            mmkv.encode(EQUALIZER_ENABLED, equalizerEnabled)
+        }
+
     var equalizerPreset: Int
         get() = mmkv.decodeInt(EQUALIZER_PRESET, 0)
         set(equalizerPreset) {

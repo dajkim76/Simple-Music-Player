@@ -37,6 +37,7 @@ class EqualizerActivity : SimpleActivity() {
         setupMaterialScrollListener(binding.equalizerNestedScrollview, binding.equalizerToolbar)
         if (!SimpleEqualizer.isInstanceInitialized()) {
             toast(com.simplemobiletools.commons.R.string.unknown_error_occurred)
+            finish()
             return
         }
         initMediaPlayer()
@@ -51,15 +52,24 @@ class EqualizerActivity : SimpleActivity() {
     private fun initMediaPlayer() {
         val equalizer = SimpleEqualizer.instance
         try {
-            if (!equalizer.enabled) {
-                equalizer.enabled = true
-            }
+            equalizer.enabled = config.equalizerEnabled
         } catch (ignored: IllegalStateException) {
+        }
+
+        binding.equalizerSwitch.isChecked = config.equalizerEnabled
+        binding.equalizerSwitch.setOnCheckedChangeListener { _, isChecked ->
+            config.equalizerEnabled = isChecked
+            try {
+                equalizer.enabled = isChecked
+            } catch (ignored: Exception) {
+            }
+            updateVisualizerState(isChecked)
         }
 
         setupBands(equalizer)
         setupPresets(equalizer)
         updateTextColors(binding.equalizerHolder)
+        updateVisualizerState(config.equalizerEnabled)
 
         val presetTextColor = if (isWhiteTheme()) {
             DARK_GREY
@@ -192,6 +202,18 @@ class EqualizerActivity : SimpleActivity() {
                 val level = equalizer.getBandLevel(band.toShort()).minus(lowestBandLevel!!)
                 bandSeekBars[band].progress = level
             }
+        }
+    }
+
+    private fun updateVisualizerState(isEnabled: Boolean) {
+        val alpha = if (isEnabled) 1.0f else 0.5f
+        binding.equalizerDbLabelsHolder.alpha = alpha
+        binding.equalizerBandsHolder.alpha = alpha
+        binding.equalizerPreset.alpha = alpha
+        binding.equalizerPreset.isEnabled = isEnabled
+
+        for (seekBar in bandSeekBars) {
+            seekBar.isEnabled = isEnabled
         }
     }
 
