@@ -124,6 +124,7 @@ class TracksHeaderAdapter(activity: SimpleActivity, items: ArrayList<ListItem>, 
     }
 
     fun updateLastMedia(lastMediaId: Long) {
+        if (this.lastMediaId == lastMediaId) return
         if (items.filterIsInstance<Track>().size <= 1) return
         val beforeIndex = items.indexOfFirst { it is Track && it.mediaStoreId == this.lastMediaId }
         this.lastMediaId = lastMediaId

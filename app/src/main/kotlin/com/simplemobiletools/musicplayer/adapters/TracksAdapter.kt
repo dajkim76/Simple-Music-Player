@@ -177,6 +177,7 @@ class TracksAdapter(
     override fun getSelectedTracks(): List<Track> = items.filter { selectedKeys.contains(it.hashCode()) }
 
     fun updateLastMedia(lastMediaId: Long) {
+        if (this.lastMediaId == lastMediaId) return
         if (items.size <= 1) return
         val beforeIndex = items.indexOfFirst { it.mediaStoreId == this.lastMediaId }
         this.lastMediaId = lastMediaId
