@@ -61,7 +61,7 @@ glide = "5.0.5"
 glideCompose = "1.0.0-beta08"
 androidx-customview = "1.2.0"
 androidx-customview-pooling = "1.1.0"
-mmkv = "2.4.0"
+mmkv = "1.3.16"
 
 [libraries]
 #AndroidX

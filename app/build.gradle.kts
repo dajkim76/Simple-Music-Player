@@ -38,11 +38,6 @@ android {
         ksp {
             arg("room.schemaLocation", "$projectDir/schemas")
         }
-
-        ndk {
-            // Exclude armeabi-v7a : MMKV 2.0+ support only 64-bit.
-            abiFilters.add("arm64-v8a")
-        }
     }
 
     signingConfigs {
