@@ -38,4 +38,8 @@
         android:id="@+id/favorite"
         android:title="@string/favorites_toggle"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/create_shortcut"
+        android:title="@string/create_shortcut"
+        app:showAsAction="never" />
 </menu>

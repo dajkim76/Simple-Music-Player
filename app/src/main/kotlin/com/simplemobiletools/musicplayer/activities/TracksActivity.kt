@@ -21,6 +21,7 @@ import com.simplemobiletools.commons.helpers.ensureBackgroundThread
 import com.simplemobiletools.commons.helpers.isOreoPlus
 import com.simplemobiletools.commons.helpers.isQPlus
 import com.simplemobiletools.musicplayer.R
+import com.simplemobiletools.musicplayer.activities.ShortcutReceiverActivity.Companion.createTracklistShortcut
 import com.simplemobiletools.musicplayer.adapters.TracksAdapter
 import com.simplemobiletools.musicplayer.adapters.TracksAdapter.Companion.TYPE_ALBUM
 import com.simplemobiletools.musicplayer.adapters.TracksAdapter.Companion.TYPE_FOLDER
@@ -96,9 +97,11 @@ class TracksActivity : SimpleMusicActivity() {
     }
 
     private fun refreshMenuItems() {
+        val isVisiblePlayTrackList =
+            (sourceType == TYPE_PLAYLIST && (playlist?.id ?: 0) >= FAVORITE_TRACKS_PLAYLIST_ID) || sourceType == TYPE_ALBUM || sourceType == TYPE_FOLDER
         binding.tracksToolbar.menu.apply {
-            findItem(R.id.play_tracklist).isVisible =
-                (sourceType == TYPE_PLAYLIST && (playlist?.id ?: 0) >= SMART_PLAYLIST_ID_MAX) || sourceType == TYPE_ALBUM || sourceType == TYPE_FOLDER
+            findItem(R.id.play_tracklist).isVisible = isVisiblePlayTrackList
+            findItem(R.id.create_shortcut).isVisible = isVisiblePlayTrackList
             findItem(R.id.favorite).isVisible =
                 (sourceType == TYPE_PLAYLIST && (playlist?.id ?: 0) > SMART_PLAYLIST_ID_MAX) || sourceType == TYPE_ALBUM || sourceType == TYPE_FOLDER
             findItem(R.id.search).isVisible = sourceType != TYPE_ALBUM
@@ -134,6 +137,7 @@ class TracksActivity : SimpleMusicActivity() {
                 R.id.add_folder_to_playlist -> addFolderToPlaylist()
                 R.id.play_tracklist -> playTracklist()
                 R.id.favorite -> toggleFavorite()
+                R.id.create_shortcut -> createTracklistShortcut(binding.tracksToolbar.title.toString(), getQueueSource())
                 R.id.export_playlist -> tryExportPlaylist()
                 else -> return@setOnMenuItemClickListener false
             }
@@ -487,16 +491,7 @@ class TracksActivity : SimpleMusicActivity() {
             else -> getTracksAdapter()?.items
         } ?: ArrayList()
 
-        val queueSource = when (sourceType) {
-            TYPE_ALBUM -> "a:$albumId"
-            TYPE_PLAYLIST -> {
-                val playlistId = playlist?.id ?: 0
-                if (playlistId >= FAVORITE_TRACKS_PLAYLIST_ID) "p:$playlistId" else ""
-            }
-
-            TYPE_FOLDER -> "f:${folder ?: ""}"
-            else -> ""
-        }
+        val queueSource = getQueueSource()
 
         handleNotificationPermission { granted ->
             if (granted) {
@@ -505,6 +500,19 @@ class TracksActivity : SimpleMusicActivity() {
             } else {
                 PermissionRequiredDialog(this, com.simplemobiletools.commons.R.string.allow_notifications_music_player, { openNotificationSettings() })
             }
+        }
+    }
+
+    private fun getQueueSource(): String {
+        return when (sourceType) {
+            TYPE_ALBUM -> "a:$albumId"
+            TYPE_PLAYLIST -> {
+                val playlistId = playlist?.id ?: 0
+                if (playlistId >= FAVORITE_TRACKS_PLAYLIST_ID) "p:$playlistId" else ""
+            }
+
+            TYPE_FOLDER -> "f:${folder ?: ""}"
+            else -> ""
         }
     }
 

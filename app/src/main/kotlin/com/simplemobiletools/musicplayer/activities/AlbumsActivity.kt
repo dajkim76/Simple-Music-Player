@@ -9,6 +9,7 @@ import com.simplemobiletools.commons.extensions.*
 import com.simplemobiletools.commons.helpers.NavigationIcon
 import com.simplemobiletools.commons.helpers.ensureBackgroundThread
 import com.simplemobiletools.musicplayer.R
+import com.simplemobiletools.musicplayer.activities.ShortcutReceiverActivity.Companion.createTracklistShortcut
 import com.simplemobiletools.musicplayer.adapters.AlbumsTracksAdapter
 import com.simplemobiletools.musicplayer.databinding.ActivityAlbumsBinding
 import com.simplemobiletools.musicplayer.extensions.artistDAO
@@ -46,10 +47,10 @@ class AlbumsActivity : SimpleMusicActivity() {
         binding.albumsToolbar.title = artist.title
         binding.albumsToolbar.inflateMenu(R.menu.menu_album)
         binding.albumsToolbar.setOnMenuItemClickListener { menuItem ->
-            if (menuItem.itemId == R.id.play_tracklist) {
-                playTracklist(artistId)
-            } else if (menuItem.itemId == R.id.favorite) {
-                toggleFavorite(artistId)
+            when (menuItem.itemId) {
+                R.id.play_tracklist -> playTracklist(artistId)
+                R.id.favorite -> toggleFavorite(artistId)
+                R.id.create_shortcut -> createTracklistShortcut(binding.albumsToolbar.title.toString(), "t:$artistId")
             }
             true
         }
