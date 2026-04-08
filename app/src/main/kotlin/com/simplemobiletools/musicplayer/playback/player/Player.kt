@@ -100,11 +100,12 @@ internal fun PlaybackService.updatePlaybackState() {
             if (currentMediaItem != null) {
                 val currentItems = currentMediaItems
                 val position = currentPosition
+                val startPosition = if (position > duration - 1000) 0 else position
 
                 mediaItemProvider.saveRecentItemsWithStartPosition(
                     mediaItems = currentItems,
                     current = currentMediaItem,
-                    startPosition = position
+                    startPosition = startPosition
                 )
             }
         }, SAVE_RECENT_ITEMS_TOKEN, SystemClock.uptimeMillis() + 1000)
