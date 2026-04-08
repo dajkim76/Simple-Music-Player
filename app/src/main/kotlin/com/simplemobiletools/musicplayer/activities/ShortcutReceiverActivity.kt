@@ -10,7 +10,6 @@ import androidx.core.content.pm.ShortcutManagerCompat
 import androidx.core.graphics.drawable.IconCompat
 import com.simplemobiletools.commons.extensions.getAlertDialogBuilder
 import com.simplemobiletools.commons.extensions.setupDialogStuff
-import com.simplemobiletools.commons.extensions.toast
 import com.simplemobiletools.commons.views.MyEditText
 import com.simplemobiletools.musicplayer.R
 import com.simplemobiletools.musicplayer.dialogs.SelectTracklistDialog.Companion.TRACKLIST_ALBUM
@@ -23,27 +22,36 @@ import com.simplemobiletools.musicplayer.objects.executeBackgroundThread
 class ShortcutReceiverActivity : SimpleControllerActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        useDynamicTheme = false // Keep transparent activity
         super.onCreate(savedInstanceState)
+    }
 
+    override fun onPlayerPrepared(success: Boolean) {
+        // One tempo later when the process first starts
+        if (!intent.getBooleanExtra("skipNext", false)) {
+            intent.putExtra("skipNext", true)
+            handleIntent()
+        }
+    }
+
+    private fun handleIntent() {
         val queueSource = intent.getStringExtra("queue_source") ?: ""
         executeBackgroundThread {
             if (queueSource.startsWith("p:")) {
                 val id = queueSource.substring(2).toLong()
-                onSelectTracklist(TRACKLIST_PLAYLIST, id, "")
+                onSelectTracklist(TRACKLIST_PLAYLIST, id, "", fromShortcut = true)
             } else if (queueSource.startsWith("a:")) {
                 val id = queueSource.substring(2).toLong()
-                onSelectTracklist(TRACKLIST_ALBUM, id, "")
+                onSelectTracklist(TRACKLIST_ALBUM, id, "", fromShortcut = true)
             } else if (queueSource.startsWith("f:")) {
                 val data = queueSource.substring(2)
-                onSelectTracklist(TRACKLIST_FOLDER, 0, data)
+                onSelectTracklist(TRACKLIST_FOLDER, 0, data, fromShortcut = true)
             } else if (queueSource.startsWith("t:")) {
                 val id = queueSource.substring(2).toLong()
-                onSelectTracklist(TRACKLIST_ARTIST, id, "")
+                onSelectTracklist(TRACKLIST_ARTIST, id, "", fromShortcut = true)
             }
+            runOnUiThread { finish() }
         }
-
-        toast(com.simplemobiletools.commons.R.string.ok)
-        finish()
     }
 
     companion object {
