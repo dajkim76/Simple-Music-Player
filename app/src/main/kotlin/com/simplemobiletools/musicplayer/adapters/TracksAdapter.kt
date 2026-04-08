@@ -37,7 +37,7 @@ class TracksAdapter(
     val folder: String? = null,
     val playlist: Playlist? = null,
     items: ArrayList<Track>,
-    val lastMediaId: Long,
+    var lastMediaId: Long,
     itemClick: (Any) -> Unit
 ) : BaseMusicAdapter<Track>(items, activity, recyclerView, itemClick), RecyclerViewFastScroller.OnPopupTextUpdate, ItemTouchHelperContract {
 
@@ -175,6 +175,15 @@ class TracksAdapter(
     }
 
     override fun getSelectedTracks(): List<Track> = items.filter { selectedKeys.contains(it.hashCode()) }
+
+    fun updateLastMedia(lastMediaId: Long) {
+        if (items.size <= 1) return
+        val beforeIndex = items.indexOfFirst { it.mediaStoreId == this.lastMediaId }
+        this.lastMediaId = lastMediaId
+        val afterIndex = items.indexOfFirst { it.mediaStoreId == this.lastMediaId }
+        if (beforeIndex >= 0) notifyItemChanged(beforeIndex)
+        if (afterIndex >= 0) notifyItemChanged(afterIndex)
+    }
 
     @SuppressLint("ClickableViewAccessibility")
     private fun setupView(view: View, track: Track, holder: ViewHolder) {

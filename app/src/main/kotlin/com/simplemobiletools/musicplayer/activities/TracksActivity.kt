@@ -501,6 +501,9 @@ class TracksActivity : SimpleMusicActivity() {
                 PermissionRequiredDialog(this, com.simplemobiletools.commons.R.string.allow_notifications_music_player, { openNotificationSettings() })
             }
         }
+
+        if (sourceType == TYPE_ALBUM) (binding.tracksList.adapter as? TracksHeaderAdapter)?.updateLastMedia(track.mediaStoreId)
+        else getTracksAdapter()?.updateLastMedia(track.mediaStoreId)
     }
 
     private fun getQueueSource(): String {

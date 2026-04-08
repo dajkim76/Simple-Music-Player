@@ -25,7 +25,7 @@ import com.simplemobiletools.musicplayer.models.Track
 
 // we show both albums and individual tracks here
 class AlbumsTracksAdapter(
-    activity: SimpleActivity, items: ArrayList<ListItem>, val lastMediaId: Long, recyclerView: MyRecyclerView,
+    activity: SimpleActivity, items: ArrayList<ListItem>, var lastMediaId: Long, recyclerView: MyRecyclerView,
     itemClick: (Any) -> Unit
 ) : BaseMusicAdapter<ListItem>(items, activity, recyclerView, itemClick), RecyclerViewFastScroller.OnPopupTextUpdate {
 
@@ -134,6 +134,15 @@ class AlbumsTracksAdapter(
     }
 
     private fun getSelectedAlbums(): List<Album> = getSelectedItems().filterIsInstance<Album>().toList()
+
+    fun updateLastMedia(lastMediaId: Long) {
+        if (items.filterIsInstance<Track>().size <= 1) return
+        val beforeIndex = items.indexOfFirst { it is Track && it.mediaStoreId == this.lastMediaId }
+        this.lastMediaId = lastMediaId
+        val afterIndex = items.indexOfFirst { it is Track && it.mediaStoreId == this.lastMediaId }
+        if (beforeIndex >= 0) notifyItemChanged(beforeIndex)
+        if (afterIndex >= 0) notifyItemChanged(afterIndex)
+    }
 
     private fun setupAlbum(view: View, album: Album) {
         ItemAlbumBinding.bind(view).apply {

@@ -93,6 +93,7 @@ class AlbumsActivity : SimpleMusicActivity() {
                                 )
                             }
                         }
+                        (binding.albumsList.adapter as AlbumsTracksAdapter).updateLastMedia((it as Track).mediaStoreId)
                     }
                 }.apply {
                     binding.albumsList.adapter = this

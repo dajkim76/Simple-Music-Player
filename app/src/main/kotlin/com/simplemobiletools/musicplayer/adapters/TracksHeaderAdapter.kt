@@ -22,7 +22,7 @@ import com.simplemobiletools.musicplayer.models.AlbumHeader
 import com.simplemobiletools.musicplayer.models.ListItem
 import com.simplemobiletools.musicplayer.models.Track
 
-class TracksHeaderAdapter(activity: SimpleActivity, items: ArrayList<ListItem>, val lastMediaId: Long, recyclerView: MyRecyclerView, itemClick: (Any) -> Unit) :
+class TracksHeaderAdapter(activity: SimpleActivity, items: ArrayList<ListItem>, var lastMediaId: Long, recyclerView: MyRecyclerView, itemClick: (Any) -> Unit) :
     BaseMusicAdapter<ListItem>(items, activity, recyclerView, itemClick), RecyclerViewFastScroller.OnPopupTextUpdate {
 
     private val ITEM_HEADER = 0
@@ -84,7 +84,7 @@ class TracksHeaderAdapter(activity: SimpleActivity, items: ArrayList<ListItem>, 
             R.id.cab_play_next -> playNextInQueue()
         }
     }
-    
+
     override fun onActionModeCreated() = notifyDataChanged()
 
     override fun onActionModeDestroyed() = notifyDataChanged()
@@ -121,6 +121,15 @@ class TracksHeaderAdapter(activity: SimpleActivity, items: ArrayList<ListItem>, 
                 }
             }
         }
+    }
+
+    fun updateLastMedia(lastMediaId: Long) {
+        if (items.filterIsInstance<Track>().size <= 1) return
+        val beforeIndex = items.indexOfFirst { it is Track && it.mediaStoreId == this.lastMediaId }
+        this.lastMediaId = lastMediaId
+        val afterIndex = items.indexOfFirst { it is Track && it.mediaStoreId == this.lastMediaId }
+        if (beforeIndex >= 0) notifyItemChanged(beforeIndex)
+        if (afterIndex >= 0) notifyItemChanged(afterIndex)
     }
 
     @SuppressLint("SetTextI18n")
