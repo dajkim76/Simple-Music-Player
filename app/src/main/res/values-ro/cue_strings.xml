@@ -25,4 +25,5 @@
     <string name="update_message">O nouă versiune a fost lansată.\n\nDoriți să actualizați?</string>
     <string name="update">Actualizare</string>
     <string name="new_timestamp">Marcaj de timp nou</string>
+    <string name="no_tracks">Nicio piesă</string>
 </resources>

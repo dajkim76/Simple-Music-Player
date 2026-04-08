@@ -25,4 +25,5 @@
     <string name="update_message">نسخه جدیدی منتشر شده است.\n\nآیا مایل به بروزرسانی هستید؟</string>
     <string name="update">بروزرسانی</string>
     <string name="new_timestamp">مهر زمانی جدید</string>
+    <string name="no_tracks">آهنگی وجود ندارد</string>
 </resources>

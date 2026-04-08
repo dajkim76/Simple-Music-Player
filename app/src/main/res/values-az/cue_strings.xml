@@ -25,4 +25,5 @@
     <string name="update_message">Yeni versiya buraxıldı.\n\nYeniləmək istəyirsiniz?</string>
     <string name="update">Yeniləyin</string>
     <string name="new_timestamp">Yeni vaxt möhürü</string>
+    <string name="no_tracks">Mahnı yoxdur</string>
 </resources>

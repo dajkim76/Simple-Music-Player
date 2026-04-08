@@ -25,4 +25,5 @@
     <string name="update_message">تم إصدار نسخة جديدة.\n\nهل ترغب في التحديث؟</string>
     <string name="update">تحديث</string>
     <string name="new_timestamp">طابع زمني جديد</string>
+    <string name="no_tracks">لا توجد مقاطع</string>
 </resources>

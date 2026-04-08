@@ -25,4 +25,5 @@
     <string name="update_message">Izdana je bila nova različica.\n\nAli jo želite posodobiti?</string>
     <string name="update">Posodobi</string>
     <string name="new_timestamp">Nov časovni žig</string>
+    <string name="no_tracks">Ni skladb</string>
 </resources>

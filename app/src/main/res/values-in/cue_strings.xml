@@ -25,4 +25,5 @@
     <string name="update_message">Versi baru telah dirilis.\n\nApakah Anda ingin memperbarui?</string>
     <string name="update">Perbarui</string>
     <string name="new_timestamp">Stempel waktu baru</string>
+    <string name="no_tracks">Tidak ada trek</string>
 </resources>

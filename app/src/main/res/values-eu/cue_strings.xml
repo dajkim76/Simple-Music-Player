@@ -25,4 +25,5 @@
     <string name="update_message">Bertsio berri bat kaleratu da.\n\nEguneratu nahi duzu?</string>
     <string name="update">Eguneratu</string>
     <string name="new_timestamp">Denbora-zigilu berria</string>
+    <string name="no_tracks">Ez dago pistarik</string>
 </resources>

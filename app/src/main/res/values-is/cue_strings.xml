@@ -25,4 +25,5 @@
     <string name="update_message">Ný útgáfa hefur verið gefin út.\n\nViltu uppfæra?</string>
     <string name="update">Uppfæra</string>
     <string name="new_timestamp">Nýtt tímastimpil</string>
+    <string name="no_tracks">Engin lög</string>
 </resources>

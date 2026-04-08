@@ -25,4 +25,5 @@
     <string name="update_message">Byla vydána nová verze.\n\nChcete provést aktualizaci?</string>
     <string name="update">Aktualizovat</string>
     <string name="new_timestamp">Nový časový údaj</string>
+    <string name="no_tracks">Žádné skladby</string>
 </resources>

@@ -25,4 +25,5 @@
     <string name="update_message">Eine neue Version wurde veröffentlicht.\n\nMöchten Sie aktualisieren?</string>
     <string name="update">Aktualisieren</string>
     <string name="new_timestamp">Neuer Zeitstempel</string>
+    <string name="no_tracks">Keine Titel</string>
 </resources>

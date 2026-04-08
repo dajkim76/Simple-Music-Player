@@ -25,4 +25,5 @@
     <string name="update_message">เวอร์ชันใหม่ได้รับการเผยแพร่แล้ว\n\nคุณต้องการอัปเดตหรือไม่?</string>
     <string name="update">อัปเดต</string>
     <string name="new_timestamp">การประทับเวลาใหม่</string>
+    <string name="no_tracks">ไม่มีแทร็ก</string>
 </resources>

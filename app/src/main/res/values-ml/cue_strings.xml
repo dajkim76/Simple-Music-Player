@@ -25,4 +25,5 @@
     <string name="update_message">ഒരു പുതിയ പതിപ്പ് പുറത്തിറങ്ങി.\n\nനിങ്ങൾക്ക് പുതുക്കണോ?</string>
     <string name="update">പുതുക്കുക</string>
     <string name="new_timestamp">പുതിയ ടൈംസ്റ്റാമ്പ്</string>
+    <string name="no_tracks">ട്രാക്കുകളൊന്നുമില്ല</string>
 </resources>

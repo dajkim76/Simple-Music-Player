@@ -25,4 +25,5 @@
     <string name="update_message">ਇੱਕ ਨਵਾਂ ਸੰਸਕਰਣ ਜਾਰੀ ਕੀਤਾ ਗਿਆ ਹੈ।\n\nਕੀ ਤੁਸੀਂ ਅੱਪਡੇਟ ਕਰਨਾ ਚਾਹੁੰਦੇ ਹੋ?</string>
     <string name="update">ਅੱਪਡੇਟ</string>
     <string name="new_timestamp">ਨਵਾਂ ਟਾਈਮਸਟੈਂਪ</string>
+    <string name="no_tracks">کوئی ٹریک نہیں</string>
 </resources>

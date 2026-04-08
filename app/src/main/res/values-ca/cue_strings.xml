@@ -25,4 +25,5 @@
     <string name="update_message">S\'ha publicat una nova versió.\n\nVoleu actualitzar?</string>
     <string name="update">Actualització</string>
     <string name="new_timestamp">Nova marca de temps</string>
+    <string name="no_tracks">No hi ha pistes</string>
 </resources>

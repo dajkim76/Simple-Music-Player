@@ -25,4 +25,5 @@
     <string name="update_message">새로운 버전이 출시되었습니다.\n\n업데이트하시겠습니까?</string>
     <string name="update">업데이트</string>
     <string name="new_timestamp">새 타임스탬프</string>
+    <string name="no_tracks">트랙 없음</string>
 </resources>

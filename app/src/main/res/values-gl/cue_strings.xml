@@ -25,4 +25,5 @@
     <string name="update_message">Lanzouse unha nova versión.\n\nQueres actualizar?</string>
     <string name="update">Actualizar</string>
     <string name="new_timestamp">Nova marca de tempo</string>
+    <string name="no_tracks">Non hai pistas</string>
 </resources>

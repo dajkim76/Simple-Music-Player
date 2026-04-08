@@ -25,4 +25,5 @@
     <string name="update_message">En ny versjon er sluppet.\n\nVil du oppdatere?</string>
     <string name="update">Oppdater</string>
     <string name="new_timestamp">Nytt tidsstempel</string>
+    <string name="no_tracks">Ingen spor</string>
 </resources>

@@ -25,4 +25,5 @@
     <string name="update_message">Išleista nauja versija.\n\nAr norite atnaujinti?</string>
     <string name="update">Atnaujinti</string>
     <string name="new_timestamp">Nauja laiko žyma</string>
+    <string name="no_tracks">Nėra takelių</string>
 </resources>

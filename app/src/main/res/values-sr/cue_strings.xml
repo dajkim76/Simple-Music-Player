@@ -25,4 +25,5 @@
     <string name="update_message">Објављена је нова верзија.\n\nЖелите ли да ажурирате?</string>
     <string name="update">Ажурирај</string>
     <string name="new_timestamp">Нова временска ознака</string>
+    <string name="no_tracks">Нема песама</string>
 </resources>

@@ -25,4 +25,5 @@
     <string name="update_message">Выпушчана новая версія.\n\nЖадаеце абнавіць?</string>
     <string name="update">Аднавіць</string>
     <string name="new_timestamp">Новая метка часу</string>
+    <string name="no_tracks">Няма трэкаў</string>
 </resources>

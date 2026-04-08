@@ -25,4 +25,5 @@
     <string name="update_message">Uusi versio on julkaistu.\n\nHaluatko päivittää?</string>
     <string name="update">Päivitä</string>
     <string name="new_timestamp">Uusi aikaleima</string>
+    <string name="no_tracks">Ei kappaleita</string>
 </resources>

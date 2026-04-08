@@ -25,4 +25,5 @@
     <string name="update_message">Versi baharu telah dikeluarkan.\n\nAdakah anda mahu mengemas kini?</string>
     <string name="update">Kemas kini</string>
     <string name="new_timestamp">Setem masa baru</string>
+    <string name="no_tracks">Tiada trek</string>
 </resources>

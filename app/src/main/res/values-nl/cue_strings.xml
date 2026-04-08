@@ -25,4 +25,5 @@
     <string name="update_message">Er is een nieuwe versie uitgebracht.\n\nWilt u bijwerken?</string>
     <string name="update">Bijwerken</string>
     <string name="new_timestamp">Nieuw tijdstempel</string>
+    <string name="no_tracks">Geen nummers</string>
 </resources>

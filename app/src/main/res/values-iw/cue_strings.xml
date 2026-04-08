@@ -25,4 +25,5 @@
     <string name="update_message">גרסה חדשה שוחררה.\n\nהאם ברצונך לעדכן?</string>
     <string name="update">עדכון</string>
     <string name="new_timestamp">חותמת זמן חדשה</string>
+    <string name="no_tracks">אין רצועות</string>
 </resources>

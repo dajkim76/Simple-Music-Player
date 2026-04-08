@@ -25,4 +25,5 @@
     <string name="update_message">Μια νέα έκδοση έχει κυκλοφορήσει.\n\nΘέλετε να κάνετε ενημέρωση;</string>
     <string name="update">Ενημέρωση</string>
     <string name="new_timestamp">Νέα χρονική σήμανση</string>
+    <string name="no_tracks">Δεν υπάρχουν κομμάτια</string>
 </resources>

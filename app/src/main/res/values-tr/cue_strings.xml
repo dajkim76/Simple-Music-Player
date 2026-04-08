@@ -25,4 +25,5 @@
     <string name="update_message">Yeni bir sürüm yayınlandı.\n\nGüncellemek ister misiniz?</string>
     <string name="update">Güncelle</string>
     <string name="new_timestamp">Yeni zaman damgası</string>
+    <string name="no_tracks">Parça yok</string>
 </resources>

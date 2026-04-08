@@ -25,4 +25,5 @@
     <string name="update_message">Издадена е нова версия.\n\nЖелаете ли да актуализирате?</string>
     <string name="update">Актуализиране</string>
     <string name="new_timestamp">Нов времеви печат</string>
+    <string name="no_tracks">Няма песни</string>
 </resources>

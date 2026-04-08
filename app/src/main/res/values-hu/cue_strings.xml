@@ -25,4 +25,5 @@
     <string name="update_message">Új verzió jelent meg.\n\nSzeretné frissíteni?</string>
     <string name="update">Frissítés</string>
     <string name="new_timestamp">Új időbélyeg</string>
+    <string name="no_tracks">Nincsenek számok</string>
 </resources>
