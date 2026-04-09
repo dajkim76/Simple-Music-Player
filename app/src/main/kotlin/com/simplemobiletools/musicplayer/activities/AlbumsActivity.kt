@@ -1,7 +1,9 @@
 package com.simplemobiletools.musicplayer.activities
 
 import android.content.Intent
+import android.graphics.Bitmap
 import android.os.Bundle
+import android.widget.ImageView
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.simplemobiletools.commons.dialogs.PermissionRequiredDialog
@@ -17,6 +19,7 @@ import com.simplemobiletools.musicplayer.extensions.audioHelper
 import com.simplemobiletools.musicplayer.extensions.config
 import com.simplemobiletools.musicplayer.helpers.ALBUM
 import com.simplemobiletools.musicplayer.helpers.ARTIST
+import com.simplemobiletools.musicplayer.helpers.ViewUtils
 import com.simplemobiletools.musicplayer.models.*
 import com.simplemobiletools.musicplayer.objects.executeBackgroundThread
 import org.greenrobot.eventbus.EventBus
@@ -50,7 +53,22 @@ class AlbumsActivity : SimpleMusicActivity() {
             when (menuItem.itemId) {
                 R.id.play_tracklist -> playTracklist(artistId)
                 R.id.favorite -> toggleFavorite(artistId)
-                R.id.create_shortcut -> createTracklistShortcut(binding.albumsToolbar.title.toString(), "t:$artistId")
+                R.id.create_shortcut -> {
+                    var bitmap: Bitmap? = null
+                    val adapter = (binding.albumsList.adapter as AlbumsTracksAdapter)
+                    // find first valid album image
+                    for ((index, item) in adapter.items.withIndex()) {
+                        if (item is Album) {
+                            binding.albumsList.findViewHolderForAdapterPosition(index)?.let { viewHolder ->
+                                viewHolder.itemView.findViewById<ImageView>(R.id.album_image)?.let { imageView ->
+                                    bitmap = ViewUtils.imageViewToBitmap(imageView)
+                                }
+                            }
+                            if (bitmap != null) break
+                        }
+                    }
+                    createTracklistShortcut(binding.albumsToolbar.title.toString(), "t:$artistId", bitmap = bitmap)
+                }
             }
             true
         }

@@ -5,9 +5,11 @@ import android.app.SearchManager
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.MenuItemCompat
@@ -137,7 +139,18 @@ class TracksActivity : SimpleMusicActivity() {
                 R.id.add_folder_to_playlist -> addFolderToPlaylist()
                 R.id.play_tracklist -> playTracklist()
                 R.id.favorite -> toggleFavorite()
-                R.id.create_shortcut -> createTracklistShortcut(binding.tracksToolbar.title.toString(), getQueueSource())
+                R.id.create_shortcut -> {
+                    var bitmap: Bitmap? = null
+                    if (sourceType == TYPE_ALBUM) {
+                        binding.tracksList.findViewHolderForAdapterPosition(0)?.let { viewHolder ->
+                            viewHolder.itemView.findViewById<ImageView>(R.id.album_image)?.let { imageView ->
+                                bitmap = ViewUtils.imageViewToBitmap(imageView)
+                            }
+                        }
+                    }
+                    createTracklistShortcut(binding.tracksToolbar.title.toString(), getQueueSource(), bitmap = bitmap)
+                }
+
                 R.id.export_playlist -> tryExportPlaylist()
                 else -> return@setOnMenuItemClickListener false
             }

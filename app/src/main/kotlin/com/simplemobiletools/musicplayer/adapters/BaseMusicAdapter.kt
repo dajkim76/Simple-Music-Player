@@ -21,6 +21,7 @@ import com.simplemobiletools.commons.adapters.MyRecyclerViewAdapter
 import com.simplemobiletools.commons.extensions.getProperPrimaryColor
 import com.simplemobiletools.commons.helpers.ensureBackgroundThread
 import com.simplemobiletools.commons.views.MyRecyclerView
+import com.simplemobiletools.musicplayer.R
 import com.simplemobiletools.musicplayer.activities.SimpleControllerActivity
 import com.simplemobiletools.musicplayer.extensions.*
 import com.simplemobiletools.musicplayer.helpers.GlideLoadFailChecker
@@ -171,12 +172,14 @@ abstract class BaseMusicAdapter<Type>(
         // If it 's a bitmap, it' s faster to not go through Glide .
         if (resource is Bitmap) {
             imageView.setImageBitmap(resource)
+            imageView.setTag(R.id.album_image, true)
             return
         }
 
         if (resource is String) {
             if (GlideLoadFailChecker.isFailed(resource)) {
                 imageView.setImageDrawable(placeholder)
+                imageView.setTag(R.id.album_image, false)
                 return
             }
         }
@@ -201,6 +204,7 @@ abstract class BaseMusicAdapter<Type>(
                                 GlideLoadFailChecker.markFailed(resource)
                             }
                         }
+                        imageView.setTag(R.id.album_image, false)
                         return false // Glide의 placeholder/error 그대로 사용
                     }
 
@@ -210,7 +214,10 @@ abstract class BaseMusicAdapter<Type>(
                         target: Target<Drawable?>?,
                         dataSource: DataSource,
                         isFirstResource: Boolean
-                    ): Boolean = false
+                    ): Boolean {
+                        imageView.setTag(R.id.album_image, true)
+                        return false
+                    }
                 })
                 .into(imageView)
         }

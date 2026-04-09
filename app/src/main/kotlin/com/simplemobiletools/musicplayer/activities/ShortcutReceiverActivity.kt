@@ -1,6 +1,7 @@
 package com.simplemobiletools.musicplayer.activities
 
 import android.content.Intent
+import android.graphics.Bitmap
 import android.os.Bundle
 import android.util.TypedValue
 import android.view.ViewGroup
@@ -55,7 +56,7 @@ class ShortcutReceiverActivity : SimpleControllerActivity() {
     }
 
     companion object {
-        fun SimpleControllerActivity.createTracklistShortcut(shortcutLabel: String, queueSource: String) {
+        fun SimpleControllerActivity.createTracklistShortcut(shortcutLabel: String, queueSource: String, bitmap: Bitmap? = null) {
             if (queueSource.isEmpty()) return
 
             // build layout
@@ -74,7 +75,7 @@ class ShortcutReceiverActivity : SimpleControllerActivity() {
                 .setNegativeButton(com.simplemobiletools.commons.R.string.cancel, null)
                 .setPositiveButton(com.simplemobiletools.commons.R.string.ok) { _, _ ->
                     val title = edit.text.toString().takeIf { it.isNotEmpty() } ?: shortcutLabel
-                    val icon = IconCompat.createWithResource(this, R.drawable.ic_tracklist)
+                    val icon = if (bitmap != null) IconCompat.createWithBitmap(bitmap) else IconCompat.createWithResource(this, R.drawable.ic_tracklist)
                     val shortcut = ShortcutInfoCompat.Builder(this, "tracklist_$queueSource")
                         .setShortLabel(title)
                         .setIcon(icon)
