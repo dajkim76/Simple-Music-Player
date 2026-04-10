@@ -124,6 +124,12 @@ class Config private constructor(context: Context) : BaseConfig(context) {
             mmkv.encode(TRACK_SORTING, trackSorting)
         }
 
+    var queueSorting: Int
+        get() = mmkv.decodeInt(QUEUE_SORTING, PLAYER_SORT_BY_TITLE)
+        set(queueSorting) {
+            mmkv.encode(QUEUE_SORTING, queueSorting)
+        }
+
     var genreSorting: Int
         get() = mmkv.decodeInt(GENRE_SORTING, PLAYER_SORT_BY_TITLE)
         set(genreSorting) {

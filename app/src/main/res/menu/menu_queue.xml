@@ -10,6 +10,11 @@
         app:actionViewClass="androidx.appcompat.widget.SearchView"
         app:showAsAction="collapseActionView|always" />
     <item
+        android:id="@+id/sort"
+        android:icon="@drawable/ic_sort_vector"
+        android:title="@string/sort_by"
+        app:showAsAction="always" />
+    <item
         android:id="@+id/play_tracklist"
         android:icon="@drawable/ic_playlist_play"
         android:title="@string/playlists"

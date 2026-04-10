@@ -41,6 +41,7 @@ class ChangeSortingDialog(val activity: Activity, val location: Int, val playlis
             TAB_ALBUMS -> config.albumSorting
             TAB_TRACKS -> config.trackSorting
             TAB_GENRES -> config.genreSorting
+            ACTIVITY_QUEUE -> config.queueSorting
             else -> if (playlist != null) {
                 config.getProperPlaylistSorting(playlist.id)
             } else if (path != null) {
@@ -115,6 +116,15 @@ class ChangeSortingDialog(val activity: Activity, val location: Int, val playlis
                     radioItems.add(RadioItem(6, activity.getString(com.simplemobiletools.commons.R.string.custom), PLAYER_SORT_BY_CUSTOM))
                 }
             }
+
+            ACTIVITY_QUEUE -> {
+                radioItems.add(RadioItem(0, activity.getString(com.simplemobiletools.commons.R.string.title), PLAYER_SORT_BY_TITLE))
+                radioItems.add(RadioItem(1, activity.getString(com.simplemobiletools.commons.R.string.artist), PLAYER_SORT_BY_ARTIST_TITLE))
+                radioItems.add(RadioItem(2, activity.getString(com.simplemobiletools.commons.R.string.duration), PLAYER_SORT_BY_DURATION))
+                radioItems.add(RadioItem(3, activity.getString(R.string.track_number), PLAYER_SORT_BY_TRACK_ID))
+                radioItems.add(RadioItem(4, activity.getString(com.simplemobiletools.commons.R.string.date_added), PLAYER_SORT_BY_DATE_ADDED))
+                radioItems.add(RadioItem(5, activity.getString(com.simplemobiletools.commons.R.string.last_modified), PLAYER_SORT_BY_LAST_MODIFIED))
+            }
         }
 
         binding.sortingDialogRadioSorting.setOnCheckedChangeListener { _, checkedId ->
@@ -156,7 +166,7 @@ class ChangeSortingDialog(val activity: Activity, val location: Int, val playlis
             sorting = sorting or SORT_DESCENDING
         }
 
-        if (currSorting != sorting || location == ACTIVITY_PLAYLIST_FOLDER) {
+        if (currSorting != sorting || location == ACTIVITY_PLAYLIST_FOLDER || location == ACTIVITY_QUEUE) {
             when (location) {
                 TAB_PLAYLISTS -> config.playlistSorting = sorting
                 TAB_FOLDERS -> config.folderSorting = sorting
@@ -164,6 +174,7 @@ class ChangeSortingDialog(val activity: Activity, val location: Int, val playlis
                 TAB_ALBUMS -> config.albumSorting = sorting
                 TAB_TRACKS -> config.trackSorting = sorting
                 TAB_GENRES -> config.genreSorting = sorting
+                ACTIVITY_QUEUE -> config.queueSorting = sorting
                 ACTIVITY_PLAYLIST_FOLDER -> {
                     if (binding.sortingDialogUseForThisOnly.isChecked) {
                         if (playlist != null) {

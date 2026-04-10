@@ -91,6 +91,7 @@ const val TAB_ALBUMS = 8
 const val TAB_TRACKS = 16
 const val TAB_GENRES = 32
 const val ACTIVITY_PLAYLIST_FOLDER = 64
+const val ACTIVITY_QUEUE = 128
 
 const val FLAG_MANUAL_CACHE = 1
 const val FLAG_IS_CURRENT = 2
@@ -128,6 +129,7 @@ const val FOLDER_SORTING = "folder_sorting"
 const val ARTIST_SORTING = "artist_sorting"
 const val ALBUM_SORTING = "album_sorting"
 const val TRACK_SORTING = "track_sorting"
+const val QUEUE_SORTING = "queue_sorting"
 const val GENRE_SORTING = "genre_sorting"
 
 const val MIME_TYPE_M3U = "audio/x-mpegurl"

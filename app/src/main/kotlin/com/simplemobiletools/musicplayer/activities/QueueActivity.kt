@@ -21,12 +21,16 @@ import com.simplemobiletools.commons.helpers.ensureBackgroundThread
 import com.simplemobiletools.musicplayer.R
 import com.simplemobiletools.musicplayer.adapters.QueueAdapter
 import com.simplemobiletools.musicplayer.databinding.ActivityQueueBinding
+import com.simplemobiletools.musicplayer.dialogs.ChangeSortingDialog
 import com.simplemobiletools.musicplayer.dialogs.NewPlaylistDialog
 import com.simplemobiletools.musicplayer.dialogs.SelectTracklistDialog
 import com.simplemobiletools.musicplayer.extensions.*
+import com.simplemobiletools.musicplayer.helpers.ACTIVITY_QUEUE
 import com.simplemobiletools.musicplayer.helpers.RoomHelper
 import com.simplemobiletools.musicplayer.models.Events
+import com.simplemobiletools.musicplayer.models.QueueItem
 import com.simplemobiletools.musicplayer.models.Track
+import com.simplemobiletools.musicplayer.models.sortSafely
 import com.simplemobiletools.musicplayer.objects.executeBackgroundThread
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -90,6 +94,32 @@ class QueueActivity : SimpleControllerActivity() {
             when (menuItem.itemId) {
                 R.id.create_playlist_from_queue -> createPlaylistFromQueue()
                 R.id.play_tracklist -> SelectTracklistDialog(this)
+                R.id.sort -> {
+                    ChangeSortingDialog(this, ACTIVITY_QUEUE) {
+                        val adapter = getAdapter() ?: return@ChangeSortingDialog
+                        val tracks = ArrayList(adapter.items)
+                        tracks.sortSafely(config.queueSorting)
+                        adapter.updateItems(tracks, forceUpdate = true)
+
+                        withPlayer {
+                            val currentTrackId = currentMediaItem?.getMediaStoreId()
+                            val currentPositionMs = currentPosition
+                            val queueItems = tracks.mapIndexed { index, track ->
+                                val isCurrent = track.mediaStoreId == currentTrackId
+                                val lastPosition = if (isCurrent) currentPositionMs.toInt() else 0
+                                QueueItem(trackId = track.mediaStoreId, trackOrder = index, isCurrent = isCurrent, lastPosition = lastPosition)
+                            }
+
+                            val currentIndex = tracks.indexOfFirst { it.mediaStoreId == currentTrackId }.coerceAtLeast(0)
+                            prepareUsingTracks(tracks, startIndex = currentIndex, startPositionMs = currentPositionMs, play = isPlaying)
+
+                            executeBackgroundThread {
+                                audioHelper.resetQueue(queueItems)
+                            }
+                        }
+                    }
+                }
+
                 else -> return@setOnMenuItemClickListener false
             }
             return@setOnMenuItemClickListener true
