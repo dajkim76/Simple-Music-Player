@@ -166,7 +166,7 @@ class QueueAdapter(activity: SimpleActivity, items: ArrayList<Track>, var curren
             }
 
             trackQueueDuration.text = track.duration.getFormattedDuration()
-            trackQueueDragHandle.beVisibleIf(selectedKeys.isNotEmpty())
+            trackQueueDragHandle.beVisibleIf(textToHighlight.isEmpty())
             trackQueueDragHandle.applyColorFilter(textColor)
             trackQueueDragHandle.setOnTouchListener { _, event ->
                 if (event.action == MotionEvent.ACTION_DOWN) {
