@@ -8,6 +8,7 @@ plugins {
     alias(libs.plugins.google.services)
     alias(libs.plugins.firebase.crashlytics)
     alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.kotlinSerialization)
     base
 }
 
@@ -137,6 +138,7 @@ dependencies {
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.bundles.compose)
     implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.10.0")
     debugImplementation(libs.androidx.ui.tooling)
 
     implementation(libs.bundles.room)

@@ -239,6 +239,12 @@ class Config private constructor(context: Context) : BaseConfig(context) {
         }
 
     var lastQueueSource by string("last_queue_source", "")
+
+    var queueId by long("queue_id", 0)  // current selected queue id (0 is legacy queue)
+
+    var nextQueueId by long("next_queue_id", 1) // crete new queue with generate unique queue id (user defined queue id from 1)
+
+    var queueListJson by string("queueList", "[]") // List<QueueData>
 }
 
 fun isInExcludeFolders(path: String, excludeFolder: Set<String>): Boolean {

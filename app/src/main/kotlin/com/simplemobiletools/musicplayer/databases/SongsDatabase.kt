@@ -10,7 +10,7 @@ import com.simplemobiletools.musicplayer.interfaces.*
 import com.simplemobiletools.musicplayer.models.*
 import com.simplemobiletools.musicplayer.objects.MyExecutor
 
-@Database(entities = [Track::class, Playlist::class, QueueItem::class, Artist::class, Album::class, Genre::class, CueEntity::class], version = 20)
+@Database(entities = [Track::class, Playlist::class, QueueItem::class, Artist::class, Album::class, Genre::class, CueEntity::class], version = 21)
 abstract class SongsDatabase : RoomDatabase() {
 
     abstract fun SongsDao(): SongsDao
@@ -54,6 +54,7 @@ abstract class SongsDatabase : RoomDatabase() {
                             .addMigrations(MIGRATION_17_18)
                             .addMigrations(MIGRATION_18_19)
                             .addMigrations(MIGRATION_19_20)
+                            .addMigrations(MIGRATION_20_21)
                             .build()
                     }
                 }
@@ -250,6 +251,24 @@ abstract class SongsDatabase : RoomDatabase() {
                     execSQL("ALTER TABLE `playlists` ADD COLUMN `last_media_id` INTEGER NOT NULL DEFAULT 0")
                     execSQL("ALTER TABLE `artists` ADD COLUMN `last_media_id` INTEGER NOT NULL DEFAULT 0")
                     execSQL("ALTER TABLE `albums` ADD COLUMN `last_media_id` INTEGER NOT NULL DEFAULT 0")
+                }
+            }
+        }
+
+        private val MIGRATION_20_21 = object : Migration(20, 21) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                database.apply {
+                    execSQL("CREATE TABLE IF NOT EXISTS `multi_queue_items` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `queue_id` INTEGER NOT NULL, `track_id` INTEGER NOT NULL, `track_order` INTEGER NOT NULL, `is_current` INTEGER NOT NULL, `last_position` INTEGER NOT NULL)")
+                    execSQL("CREATE UNIQUE INDEX IF NOT EXISTS `index_multi_queue_items_queue_id_track_id` ON `multi_queue_items` (`queue_id`, `track_id`)")
+                    // migration data from queue_items to multi_queue_items
+                    execSQL(
+                        """
+                        INSERT INTO multi_queue_items (id, queue_id, track_id, track_order, is_current, last_position)
+                        SELECT NULL, 0, track_id, track_order, is_current, last_position * 1000
+                        FROM queue_items
+                        """.trimIndent()
+                    )
+                    execSQL("DROP TABLE IF EXISTS `queue_items`")
                 }
             }
         }
