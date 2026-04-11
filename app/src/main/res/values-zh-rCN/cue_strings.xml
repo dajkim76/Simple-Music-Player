@@ -25,5 +25,10 @@
     <string name="update_message">新版本已发布。\n\n是否更新？</string>
     <string name="update">更新</string>
     <string name="new_timestamp">新时间戳</string>
-    <string name="no_tracks">无曲目</string>
-</resources>
+    <string name="no_tracks">无音轨</string>
+    <string name="play_queue">播放队列</string>
+    <string name="create_new_queue">创建新队列</string>
+    <string name="queue_name">队列名称</string>
+    <string name="select_queue">选择队列</string>
+    <string name="default_queue">默认 队列称</string>
+    </resources>

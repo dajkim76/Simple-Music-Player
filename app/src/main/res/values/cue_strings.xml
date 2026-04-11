@@ -27,7 +27,8 @@
     <string name="new_timestamp">New timestamp</string>
     <string name="no_tracks">No tracks</string>
     <string name="play_queue">Play queue</string>
-    <string name="create_new_queue_here">Create new queue here</string>
+    <string name="create_new_queue">Create new queue</string>
     <string name="queue_name">Queue name</string>
     <string name="select_queue">Select queue</string>
+    <string name="default_queue">Default queue</string>
 </resources>

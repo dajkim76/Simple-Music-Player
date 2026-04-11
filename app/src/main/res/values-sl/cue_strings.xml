@@ -26,4 +26,9 @@
     <string name="update">Posodobi</string>
     <string name="new_timestamp">Nov časovni žig</string>
     <string name="no_tracks">Ni skladb</string>
+    <string name="play_queue">Čakalna vrsta za predvajanje</string>
+    <string name="create_new_queue">Aj ustvari novo vrsto</string>
+    <string name="queue_name">Ime čakalne vrste</string>
+    <string name="select_queue">Izberi čakalno vrsto</string>
+    <string name="default_queue">Privzeto Ime čakalne vrste</string>
 </resources>

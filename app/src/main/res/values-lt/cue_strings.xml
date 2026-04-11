@@ -26,4 +26,9 @@
     <string name="update">Atnaujinti</string>
     <string name="new_timestamp">Nauja laiko žyma</string>
     <string name="no_tracks">Nėra takelių</string>
+    <string name="play_queue">Grojimo eilė</string>
+    <string name="create_new_queue">Sukurti naują eilę čia</string>
+    <string name="queue_name">Eilės pavadinimas</string>
+    <string name="select_queue">Pasirinkti eilę</string>
+    <string name="default_queue">Numatytasis Eilės pavadinimas</string>
 </resources>

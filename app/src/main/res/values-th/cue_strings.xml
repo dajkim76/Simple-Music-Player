@@ -26,4 +26,9 @@
     <string name="update">อัปเดต</string>
     <string name="new_timestamp">การประทับเวลาใหม่</string>
     <string name="no_tracks">ไม่มีแทร็ก</string>
+    <string name="play_queue">คิวการเล่น</string>
+    <string name="create_new_queue">สร้างคิวใหม่</string>
+    <string name="queue_name">ชื่อคิว</string>
+    <string name="select_queue">เลือกคิว</string>
+    <string name="default_queue">ค่าเริ่มต้น ชื่อคิว</string>
 </resources>

@@ -25,5 +25,10 @@
     <string name="update_message">Se ha lanzado una nueva versión.\n\n¿Desea actualizar?</string>
     <string name="update">Actualizar</string>
     <string name="new_timestamp">Nueva marca de tiempo</string>
-    <string name="no_tracks">No hay pistas</string>
-</resources>
+    <string name="no_tracks">Sin pistas</string>
+    <string name="play_queue">Reproducir cola</string>
+    <string name="create_new_queue">Crear nueva cola</string>
+    <string name="queue_name">Nombre de la cola</string>
+    <string name="select_queue">Seleccionar cola</string>
+    <string name="default_queue">Predeterminado de la cola</string>
+    </resources>

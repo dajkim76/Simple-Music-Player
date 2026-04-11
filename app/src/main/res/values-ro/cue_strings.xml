@@ -26,4 +26,9 @@
     <string name="update">Actualizare</string>
     <string name="new_timestamp">Marcaj de timp nou</string>
     <string name="no_tracks">Nicio piesă</string>
+    <string name="play_queue">Coada de redare</string>
+    <string name="create_new_queue">Creează o coadă nouă a</string>
+    <string name="queue_name">Nume coadă</string>
+    <string name="select_queue">Selectează coada</string>
+    <string name="default_queue">Implicit Nume coadă</string>
 </resources>

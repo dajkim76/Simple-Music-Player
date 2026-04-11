@@ -26,4 +26,9 @@
     <string name="update">Eguneratu</string>
     <string name="new_timestamp">Denbora-zigilu berria</string>
     <string name="no_tracks">Ez dago pistarik</string>
+    <string name="play_queue">Erreprodukzio-ilaran</string>
+    <string name="create_new_queue">Sor ilara berria</string>
+    <string name="queue_name">Ilararen izena</string>
+    <string name="select_queue">Hautatu ilara</string>
+    <string name="default_queue">Lehenetsia Ilararen izena</string>
 </resources>

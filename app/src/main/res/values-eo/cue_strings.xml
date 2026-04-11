@@ -26,4 +26,9 @@
     <string name="update">Ĝisdatigi</string>
     <string name="new_timestamp">Nova horo-marko</string>
     <string name="no_tracks">Neniuj trakoj</string>
+    <string name="play_queue">Ludvico</string>
+    <string name="create_new_queue">Kreu novan vicon ĉi tie</string>
+    <string name="queue_name">Nomo de vico</string>
+    <string name="select_queue">Elektu vicon</string>
+    <string name="default_queue">Implicite o de vico</string>
 </resources>

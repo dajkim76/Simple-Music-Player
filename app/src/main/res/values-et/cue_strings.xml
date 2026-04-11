@@ -26,4 +26,9 @@
     <string name="update">Värskenda</string>
     <string name="new_timestamp">Uus ajatempel</string>
     <string name="no_tracks">Lugusid pole</string>
+    <string name="play_queue">Esitusjärjekord</string>
+    <string name="create_new_queue">Loo uus järjekord</string>
+    <string name="queue_name">Järjekorra nimi</string>
+    <string name="select_queue">Vali järjekord</string>
+    <string name="default_queue">Vaikimisi Järjekorra nimi</string>
 </resources>

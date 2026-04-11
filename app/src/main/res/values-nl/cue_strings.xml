@@ -26,4 +26,9 @@
     <string name="update">Bijwerken</string>
     <string name="new_timestamp">Nieuw tijdstempel</string>
     <string name="no_tracks">Geen nummers</string>
+    <string name="play_queue">Wachtrij</string>
+    <string name="create_new_queue">Maak een nieuwe wachtrij</string>
+    <string name="queue_name">Wachtrijnaam</string>
+    <string name="select_queue">Selecteer wachtrij</string>
+    <string name="default_queue">Standaard Wachtrijnaam</string>
 </resources>

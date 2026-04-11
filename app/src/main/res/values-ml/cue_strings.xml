@@ -26,4 +26,9 @@
     <string name="update">പുതുക്കുക</string>
     <string name="new_timestamp">പുതിയ ടൈംസ്റ്റാമ്പ്</string>
     <string name="no_tracks">ട്രാക്കുകളൊന്നുമില്ല</string>
+    <string name="play_queue">പ്ലേ ക്യൂ</string>
+    <string name="create_new_queue">പുതിയ ക്യൂ സൃഷ്ടിക്കുക</string>
+    <string name="queue_name">ക്യൂവിന്റെ പേര്</string>
+    <string name="select_queue">ക്യൂ തിരഞ്ഞെടുക്കുക</string>
+    <string name="default_queue">ഡിഫോൾട്ട് ക്യൂവിന്റെ പേര്</string>
 </resources>

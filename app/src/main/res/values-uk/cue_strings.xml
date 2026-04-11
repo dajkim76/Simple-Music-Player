@@ -26,4 +26,9 @@
     <string name="update">Оновити</string>
     <string name="new_timestamp">Нова мітка часу</string>
     <string name="no_tracks">Немає треків</string>
+    <string name="play_queue">Черга відтворення</string>
+    <string name="create_new_queue">Створити нову чергу</string>
+    <string name="queue_name">Назва черги</string>
+    <string name="select_queue">Вибрати чергу</string>
+    <string name="default_queue">За замовчуванням Назва черги</string>
 </resources>

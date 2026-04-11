@@ -26,4 +26,9 @@
     <string name="update">Uppfæra</string>
     <string name="new_timestamp">Nýtt tímastimpil</string>
     <string name="no_tracks">Engin lög</string>
+    <string name="play_queue">Spilunarröð</string>
+    <string name="create_new_queue">Búa til nýja röð</string>
+    <string name="queue_name">Nafn raðar</string>
+    <string name="select_queue">Velja röð</string>
+    <string name="default_queue">Sjálfgefið Nafn raðar</string>
 </resources>

@@ -26,4 +26,9 @@
     <string name="update">Ажурирај</string>
     <string name="new_timestamp">Нова временска ознака</string>
     <string name="no_tracks">Нема песама</string>
+    <string name="play_queue">Ред за репродукцију</string>
+    <string name="create_new_queue">Креирајте нови ред</string>
+    <string name="queue_name">Назив реда</string>
+    <string name="select_queue">Изаберите ред</string>
+    <string name="default_queue">Подразумевано Назив реда</string>
 </resources>

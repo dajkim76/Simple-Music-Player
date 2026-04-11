@@ -26,4 +26,9 @@
     <string name="update">Aktualizovať</string>
     <string name="new_timestamp">Nová časová pečiatka</string>
     <string name="no_tracks">Žiadne skladby</string>
+    <string name="play_queue">Fronta prehrávania</string>
+    <string name="create_new_queue">Vytvoriť novú fron</string>
+    <string name="queue_name">Názov fronty</string>
+    <string name="select_queue">Vybrať frontu</string>
+    <string name="default_queue">Predvolené Názov fronty</string>
 </resources>

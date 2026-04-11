@@ -26,4 +26,9 @@
     <string name="update">Actualizar</string>
     <string name="new_timestamp">Nova marca de tempo</string>
     <string name="no_tracks">Non hai pistas</string>
+    <string name="play_queue">Cola de reprodución</string>
+    <string name="create_new_queue">Crear nova cola</string>
+    <string name="queue_name">Nome da cola</string>
+    <string name="select_queue">Seleccionar cola</string>
+    <string name="default_queue">Predeterminado e da cola</string>
 </resources>

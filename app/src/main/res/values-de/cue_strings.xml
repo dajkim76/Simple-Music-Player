@@ -26,4 +26,9 @@
     <string name="update">Aktualisieren</string>
     <string name="new_timestamp">Neuer Zeitstempel</string>
     <string name="no_tracks">Keine Titel</string>
+    <string name="play_queue">Warteschlange abspielen</string>
+    <string name="create_new_queue">Neue Warteschlange erstellen</string>
+    <string name="queue_name">Warteschlangen-Name</string>
+    <string name="select_queue">Warteschlange auswählen</string>
+    <string name="default_queue">Standard Warteschlangen-</string>
 </resources>

@@ -26,4 +26,9 @@
     <string name="update">アップデート</string>
     <string name="new_timestamp">新しいタイムスタンプ</string>
     <string name="no_tracks">トラックなし</string>
+    <string name="play_queue">再生キュー</string>
+    <string name="create_new_queue">新しいキューを作成</string>
+    <string name="queue_name">キュー名</string>
+    <string name="select_queue">キューを選択</string>
+    <string name="default_queue">デフォルトのキュー</string>
 </resources>
