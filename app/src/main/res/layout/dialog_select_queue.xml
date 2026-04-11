@@ -1,47 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/dialog_select_playlist_holder"
+    android:id="@+id/dialog_select_queue_holder"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <RelativeLayout
-        android:id="@+id/dialog_select_playlist_wrapper"
+        android:id="@+id/dialog_select_queue_wrapper"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <LinearLayout
-            android:id="@+id/dialog_select_playlist_linear"
+            android:id="@+id/dialog_select_queue_linear"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/medium_margin"
+            android:paddingBottom="@dimen/smaller_margin"
+            android:paddingStart="@dimen/smaller_margin"
+            android:paddingEnd="@dimen/smaller_margin"
             android:orientation="vertical" />
 
         <ImageView
-            android:id="@+id/dialog_select_playlist_divider"
+            android:id="@+id/dialog_select_queue_divider"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_below="@+id/dialog_select_playlist_linear"
+            android:layout_below="@+id/dialog_select_queue_linear"
             android:background="@color/divider_grey"
             android:importantForAccessibility="no" />
 
-        <RadioGroup
-            android:id="@+id/dialog_select_playlist_create_new"
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/dialog_select_queue_new"
+            android:layout_below="@+id/dialog_select_queue_divider"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/dialog_select_playlist_divider"
             android:paddingStart="@dimen/normal_margin"
             android:paddingTop="@dimen/small_margin"
             android:paddingEnd="@dimen/normal_margin"
-            android:paddingBottom="@dimen/small_margin">
-
-            <com.simplemobiletools.commons.views.MyCompatRadioButton
-                android:id="@+id/dialog_select_playlist_new_radio"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="@dimen/small_margin"
-                android:paddingBottom="@dimen/small_margin"
-                android:text="@string/create_new_playlist" />
-
-        </RadioGroup>
+            android:paddingBottom="@dimen/normal_margin"
+            android:text="@string/create_new_queue_here" />
     </RelativeLayout>
 </ScrollView>

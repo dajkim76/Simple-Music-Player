@@ -1,5 +1,6 @@
 package com.simplemobiletools.musicplayer.dialogs
 
+import android.app.Activity
 import android.util.TypedValue
 import android.view.ViewGroup
 import android.widget.LinearLayout
@@ -10,7 +11,7 @@ import com.simplemobiletools.commons.views.MyEditText
 import com.simplemobiletools.musicplayer.R
 import com.simplemobiletools.musicplayer.activities.ShortcutReceiverActivity.Companion.createTracklistShortcut
 import com.simplemobiletools.musicplayer.activities.SimpleControllerActivity
-import com.simplemobiletools.musicplayer.databinding.DialogSelectTracklistBinding
+import com.simplemobiletools.musicplayer.databinding.DialogSelectQueueBinding
 import com.simplemobiletools.musicplayer.databinding.ItemSelectQueueBinding
 import com.simplemobiletools.musicplayer.dialogs.SelectTracklistDialog.Companion.TRACKLIST_QUEUE
 import com.simplemobiletools.musicplayer.dialogs.SelectTracklistDialog.Companion.onSelectTracklist
@@ -21,10 +22,12 @@ import com.simplemobiletools.musicplayer.models.getQueueDataListFromJson
 import com.simplemobiletools.musicplayer.models.toJson
 import com.simplemobiletools.musicplayer.objects.executeBackgroundThread
 
-class SelectQueueDialog(val activity: SimpleControllerActivity) {
+class SelectQueueDialog(val activity: Activity, val playQueue: Boolean = true, val callback: (queueId: Long) -> Unit = {}) {
     private var dialog: AlertDialog? = null
+    private val simpleControllerActivity = activity as? SimpleControllerActivity
     private val config = activity.config
-    private val binding by activity.viewBinding(DialogSelectTracklistBinding::inflate)
+    private val binding by activity.viewBinding(DialogSelectQueueBinding::inflate)
+    private val textColor = activity.getProperTextColor()
     private val primaryColor = activity.getProperPrimaryColor()
     private val foregroundDrawable = activity.resources.getColoredDrawableWithColor(R.drawable.rounded_white_border, activity.getProperPrimaryColor())
     private val lastQueueSource = config.lastQueueSource.takeIf { it.startsWith("q:") } ?: "q:0"
@@ -33,25 +36,31 @@ class SelectQueueDialog(val activity: SimpleControllerActivity) {
         val queueDataList = getQueueDataListFromJson(config.queueListJson).toMutableList()
         queueDataList.add(0, QueueData("Default", 0))
         queueDataList.forEach {
-            addItemView("q:", it.name, TRACKLIST_QUEUE, it.queueId)
+            addItemView(it.name, it.queueId)
         }
 
+        binding.dialogSelectQueueNew.setTextColor(textColor)
+        binding.dialogSelectQueueNew.setOnClickListener { createNewQueue() }
+
         activity.getAlertDialogBuilder().apply {
-            activity.setupDialogStuff(binding.root, this, titleId = R.string.change_queue) { alertDialog ->
+            activity.setupDialogStuff(binding.root, this, titleId = if (playQueue) R.string.play_queue else R.string.select_queue) { alertDialog ->
                 dialog = alertDialog
             }
         }
     }
 
-    private fun addItemView(prefix: String, title: String, type: Int, id: Long) {
+    private fun addItemView(title: String, id: Long) {
         ItemSelectQueueBinding.inflate(activity.layoutInflater).apply {
             name.apply {
                 text = title
-                setTextColor(activity.getProperTextColor())
+                setTextColor(textColor)
                 setOnClickListener {
-                    executeBackgroundThread {
-                        activity.onSelectTracklist(type, id, "")
+                    if (playQueue) {
+                        executeBackgroundThread {
+                            simpleControllerActivity?.onSelectTracklist(TRACKLIST_QUEUE, id, "")
+                        }
                     }
+                    callback.invoke(id)
                     dialog?.dismiss()
                 }
             }
@@ -75,7 +84,7 @@ class SelectQueueDialog(val activity: SimpleControllerActivity) {
                             when (w) {
                                 0 -> changeQueueName(id, title, name)
                                 1 -> createShortcut(id, title)
-                                2 -> deleteQueue(id, title) { binding.dialogSelectPlaylistLinear.removeView(this.root) }
+                                2 -> deleteQueue(id, title) { binding.dialogSelectQueueLinear.removeView(this.root) }
                             }
                         }
                     }
@@ -83,20 +92,31 @@ class SelectQueueDialog(val activity: SimpleControllerActivity) {
             }
 
             // last selected track list
-            if ("$prefix$id" == lastQueueSource) {
+            if ("q:$id" == lastQueueSource) {
                 this.root.foreground = foregroundDrawable
             }
 
-            binding.dialogSelectPlaylistLinear.addView(
+            binding.dialogSelectQueueLinear.addView(
                 this.root,
                 LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
             )
         }
     }
 
+    fun createNewQueue() {
+        activity.showQueueNameDialog("") { name ->
+            val queueId = config.nextQueueId
+            config.nextQueueId++
+            addItemView(name, queueId)
+
+            val queueDataList = getQueueDataListFromJson(config.queueListJson).toMutableList()
+            queueDataList.add(QueueData(name, queueId))
+            config.queueListJson = queueDataList.toJson()
+        }
+    }
+
     fun changeQueueName(id: Long, title: String, nameView: TextView) {
-        activity.showQueueNameDialog(title) { name ->
-            val newName = name.takeIf { it.isNotEmpty() } ?: "noname"
+        activity.showQueueNameDialog(title) { newName ->
             nameView.text = newName
 
             val queueDataList = getQueueDataListFromJson(config.queueListJson)
@@ -124,7 +144,7 @@ class SelectQueueDialog(val activity: SimpleControllerActivity) {
                 executeBackgroundThread {
                     activity.queueDAO.deleteAllItems(id)
                     if (config.queueId == id) {
-                        activity.onSelectTracklist(TRACKLIST_QUEUE, 0, "")
+                        simpleControllerActivity?.onSelectTracklist(TRACKLIST_QUEUE, 0, "")
                     }
                 }
             }
@@ -132,7 +152,7 @@ class SelectQueueDialog(val activity: SimpleControllerActivity) {
     }
 
     companion object {
-        fun SimpleControllerActivity.showQueueNameDialog(title: String, callback: (title: String) -> Unit) {
+        fun Activity.showQueueNameDialog(title: String, callback: (title: String) -> Unit) {
             // build layout
             val edit = MyEditText(this).apply {
                 isSingleLine = true

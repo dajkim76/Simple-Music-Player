@@ -16,7 +16,7 @@
     <item
         android:id="@+id/change_queue"
         android:icon="@drawable/ic_queue"
-        android:title="@string/change_queue"
+        android:title="@string/play_queue"
         app:showAsAction="always" />
     <item
         android:id="@+id/settings"

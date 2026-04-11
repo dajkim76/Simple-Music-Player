@@ -1,5 +1,6 @@
 package com.simplemobiletools.musicplayer.activities
 
+import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
@@ -60,7 +61,7 @@ class ShortcutReceiverActivity : SimpleControllerActivity() {
     }
 
     companion object {
-        fun SimpleControllerActivity.createTracklistShortcut(
+        fun Activity.createTracklistShortcut(
             shortcutLabel: String,
             queueSource: String,
             bitmap: Bitmap? = null,

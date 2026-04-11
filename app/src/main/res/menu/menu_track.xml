@@ -29,7 +29,7 @@
     <item
         android:id="@+id/change_queue"
         android:icon="@drawable/ic_queue_playback"
-        android:title="@string/change_queue"
+        android:title="@string/play_queue"
         app:showAsAction="always" />
 
     <item

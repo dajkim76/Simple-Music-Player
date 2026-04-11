@@ -23,10 +23,13 @@ import com.simplemobiletools.commons.helpers.ensureBackgroundThread
 import com.simplemobiletools.commons.views.MyRecyclerView
 import com.simplemobiletools.musicplayer.R
 import com.simplemobiletools.musicplayer.activities.SimpleControllerActivity
+import com.simplemobiletools.musicplayer.dialogs.SelectQueueDialog
 import com.simplemobiletools.musicplayer.extensions.*
 import com.simplemobiletools.musicplayer.helpers.GlideLoadFailChecker
 import com.simplemobiletools.musicplayer.helpers.TagHelper
+import com.simplemobiletools.musicplayer.models.QueueItem
 import com.simplemobiletools.musicplayer.models.Track
+import com.simplemobiletools.musicplayer.objects.executeBackgroundThread
 import com.simplemobiletools.musicplayer.playback.PlaybackService
 
 abstract class BaseMusicAdapter<Type>(
@@ -104,6 +107,23 @@ abstract class BaseMusicAdapter<Type>(
     }
 
     fun addToQueue() {
+        SelectQueueDialog(activity, playQueue = false) { queueId ->
+            if (activity.config.queueId == queueId) {
+                addToCurrentQueue()
+            } else {
+                executeBackgroundThread {
+                    val allSelectedTracks = getAllSelectedTracks()
+                    val maxOrder = activity.queueDAO.getMaxOrder(queueId) + 1
+                    val queueItems = allSelectedTracks.mapIndexed { index, track ->
+                        QueueItem(id = 0, queueId = queueId, trackId = track.mediaStoreId, trackOrder = maxOrder + index, isCurrent = false, lastPosition = 0)
+                    }
+                    activity.queueDAO.insertAll(queueItems)
+                }
+            }
+        }
+    }
+
+    private fun addToCurrentQueue() {
         ensureBackgroundThread {
             val allSelectedTracks = getAllSelectedTracks()
             context.runOnUiThread {

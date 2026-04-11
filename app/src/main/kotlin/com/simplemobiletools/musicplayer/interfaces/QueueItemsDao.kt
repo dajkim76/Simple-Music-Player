@@ -28,4 +28,7 @@ interface QueueItemsDao {
 
     @Query("DELETE FROM multi_queue_items WHERE queue_id = :queueId")
     fun deleteAllItems(queueId: Long)
+
+    @Query("SELECT max(track_order) FROM multi_queue_items WHERE queue_id = :queueId")
+    fun getMaxOrder(queueId: Long): Int
 }
