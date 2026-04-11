@@ -22,10 +22,7 @@ import com.simplemobiletools.musicplayer.BuildConfig
 import com.simplemobiletools.musicplayer.R
 import com.simplemobiletools.musicplayer.adapters.ViewPagerAdapter
 import com.simplemobiletools.musicplayer.databinding.ActivityMainBinding
-import com.simplemobiletools.musicplayer.dialogs.NewPlaylistDialog
-import com.simplemobiletools.musicplayer.dialogs.SelectPlaylistDialog
-import com.simplemobiletools.musicplayer.dialogs.SelectTracklistDialog
-import com.simplemobiletools.musicplayer.dialogs.SleepTimerCustomDialog
+import com.simplemobiletools.musicplayer.dialogs.*
 import com.simplemobiletools.musicplayer.extensions.*
 import com.simplemobiletools.musicplayer.fragments.PlaylistsFragment
 import com.simplemobiletools.musicplayer.helpers.*
@@ -147,6 +144,7 @@ class MainActivity : SimpleMusicActivity() {
             when (menuItem.itemId) {
                 R.id.sort -> showSortingDialog()
                 R.id.play_tracklist -> SelectTracklistDialog(this)
+                R.id.change_queue -> SelectQueueDialog(this)
                 R.id.rescan_media -> refreshAllFragments(showProgress = true)
                 R.id.sleep_timer -> showSleepTimer()
                 R.id.create_new_playlist -> createNewPlaylist()

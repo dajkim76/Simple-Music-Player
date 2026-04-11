@@ -55,6 +55,7 @@ import com.simplemobiletools.musicplayer.adapters.CueAdapter
 import com.simplemobiletools.musicplayer.databinding.ActivityTrackBinding
 import com.simplemobiletools.musicplayer.databinding.AdjustCueTimestampBinding
 import com.simplemobiletools.musicplayer.databinding.InputCueTextBinding
+import com.simplemobiletools.musicplayer.dialogs.SelectQueueDialog
 import com.simplemobiletools.musicplayer.dialogs.SelectTracklistDialog
 import com.simplemobiletools.musicplayer.extensions.*
 import com.simplemobiletools.musicplayer.fragments.PlaybackSpeedFragment
@@ -107,6 +108,7 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
                     R.id.show_meta_data -> showMetaDataDialog()
                     R.id.favorite -> toggleFavorite()
                     R.id.play_tracklist -> SelectTracklistDialog(this@TrackActivity)
+                    R.id.change_queue -> SelectQueueDialog(this@TrackActivity)
                     R.id.equalizer -> startActivity(Intent(applicationContext, EqualizerActivity::class.java))
                     R.id.add_to_playlist -> currentTrack?.let { addTracksToPlaylist(listOf(it)) {} }
                     R.id.goto_artist_page -> gotoArtistPage()

@@ -3,12 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/play_tracklist"
-        android:title="@string/playlists"
-        android:icon="@drawable/ic_play_tracklist"
-        app:showAsAction="always" />
-
-    <item
         android:id="@+id/favorite"
         android:title="@string/favorite_tracks"
         android:icon="@drawable/ic_not_favorite"
@@ -24,6 +18,18 @@
         android:id="@+id/edit_cues"
         android:title="@string/youtube_timestamp_text"
         android:icon="@drawable/ic_cue_list"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/play_tracklist"
+        android:title="@string/playlists"
+        android:icon="@drawable/ic_play_tracklist"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/change_queue"
+        android:icon="@drawable/ic_queue_playback"
+        android:title="@string/change_queue"
         app:showAsAction="always" />
 
     <item
