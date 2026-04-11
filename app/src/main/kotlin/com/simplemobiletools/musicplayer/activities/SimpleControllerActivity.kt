@@ -55,7 +55,14 @@ abstract class SimpleControllerActivity : SimpleActivity(), Player.Listener {
 
     fun withPlayer(callback: MediaController.() -> Unit) = controller.withController(callback)
 
-    fun prepareAndPlay(tracks: List<Track>, showPlayback: Boolean, queueSource: String, startIndex: Int = 0, startPositionMs: Long = 0) {
+    fun prepareAndPlay(
+        tracks: List<Track>,
+        showPlayback: Boolean,
+        queueSource: String,
+        startIndex: Int = 0,
+        startPositionMs: Long = 0,
+        startPlay: Boolean = true
+    ) {
         val keepTrackLastPosition = config.keepTrackLastPosition
         executeBackgroundThread {
             val track = tracks[startIndex]
@@ -106,7 +113,7 @@ abstract class SimpleControllerActivity : SimpleActivity(), Player.Listener {
                     tracks = tracks,
                     startIndex = startIndex,
                     startPositionMs = lastPosition,
-                    play = true,
+                    play = startPlay,
                     isTracksSameWithCurrentItems = isTracksSameWithCurrentItems
                 ) { success ->
                     if (success) {

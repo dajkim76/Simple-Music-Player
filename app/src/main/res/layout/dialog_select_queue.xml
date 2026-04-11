@@ -36,6 +36,6 @@
             android:paddingTop="@dimen/small_margin"
             android:paddingEnd="@dimen/normal_margin"
             android:paddingBottom="@dimen/normal_margin"
-            android:text="@string/create_new_queue_here" />
+            android:text="@string/create_new_queue" />
     </RelativeLayout>
 </ScrollView>

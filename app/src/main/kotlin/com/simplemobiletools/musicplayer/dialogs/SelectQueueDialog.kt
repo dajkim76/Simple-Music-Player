@@ -24,7 +24,6 @@ import com.simplemobiletools.musicplayer.objects.executeBackgroundThread
 
 class SelectQueueDialog(val activity: Activity, val playQueue: Boolean = true, val callback: (queueId: Long) -> Unit = {}) {
     private var dialog: AlertDialog? = null
-    private val simpleControllerActivity = activity as? SimpleControllerActivity
     private val config = activity.config
     private val binding by activity.viewBinding(DialogSelectQueueBinding::inflate)
     private val textColor = activity.getProperTextColor()
@@ -34,7 +33,7 @@ class SelectQueueDialog(val activity: Activity, val playQueue: Boolean = true, v
 
     init {
         val queueDataList = getQueueDataListFromJson(config.queueListJson).toMutableList()
-        queueDataList.add(0, QueueData("Default", 0))
+        queueDataList.add(0, QueueData(activity.getString(R.string.default_queue), 0))
         queueDataList.forEach {
             addItemView(it.name, it.queueId)
         }
@@ -56,9 +55,7 @@ class SelectQueueDialog(val activity: Activity, val playQueue: Boolean = true, v
                 setTextColor(textColor)
                 setOnClickListener {
                     if (playQueue) {
-                        executeBackgroundThread {
-                            simpleControllerActivity?.onSelectTracklist(TRACKLIST_QUEUE, id, "")
-                        }
+                        prepareQueue(id)
                     }
                     callback.invoke(id)
                     dialog?.dismiss()
@@ -77,6 +74,7 @@ class SelectQueueDialog(val activity: Activity, val playQueue: Boolean = true, v
                     )
                 }
                 activity.getAlertDialogBuilder()
+                    .setTitle(title)
                     .setItems(items) { _, w ->
                         if (id == 0L) {
                             createShortcut(id, title)
@@ -103,7 +101,17 @@ class SelectQueueDialog(val activity: Activity, val playQueue: Boolean = true, v
         }
     }
 
-    fun createNewQueue() {
+    private fun prepareQueue(queueId: Long) {
+        val simpleControllerActivity = (activity as? SimpleControllerActivity) ?: return
+        simpleControllerActivity.withPlayer {
+            val startPlay = isPlaying
+            executeBackgroundThread {
+                simpleControllerActivity.onSelectTracklist(TRACKLIST_QUEUE, queueId, "", startPlay = startPlay)
+            }
+        }
+    }
+
+    private fun createNewQueue() {
         activity.showQueueNameDialog("") { name ->
             val queueId = config.nextQueueId
             config.nextQueueId++
@@ -115,7 +123,7 @@ class SelectQueueDialog(val activity: Activity, val playQueue: Boolean = true, v
         }
     }
 
-    fun changeQueueName(id: Long, title: String, nameView: TextView) {
+    private fun changeQueueName(id: Long, title: String, nameView: TextView) {
         activity.showQueueNameDialog(title) { newName ->
             nameView.text = newName
 
@@ -125,11 +133,11 @@ class SelectQueueDialog(val activity: Activity, val playQueue: Boolean = true, v
         }
     }
 
-    fun createShortcut(id: Long, title: String) {
+    private fun createShortcut(id: Long, title: String) {
         activity.createTracklistShortcut(title, "q:$id", drawableId = R.drawable.ic_shortcut_queue)
     }
 
-    fun deleteQueue(id: Long, title: String, callback: () -> Unit) {
+    private fun deleteQueue(id: Long, title: String, callback: () -> Unit) {
         activity.getAlertDialogBuilder()
             .setTitle(title)
             .setMessage(com.simplemobiletools.commons.R.string.are_you_sure_delete)
@@ -144,7 +152,7 @@ class SelectQueueDialog(val activity: Activity, val playQueue: Boolean = true, v
                 executeBackgroundThread {
                     activity.queueDAO.deleteAllItems(id)
                     if (config.queueId == id) {
-                        simpleControllerActivity?.onSelectTracklist(TRACKLIST_QUEUE, 0, "")
+                        prepareQueue(0)
                     }
                 }
             }
