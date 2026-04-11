@@ -12,10 +12,7 @@ import androidx.core.view.GestureDetectorCompat
 import androidx.core.view.MenuItemCompat
 import androidx.media3.common.MediaItem
 import androidx.recyclerview.widget.RecyclerView
-import com.simplemobiletools.commons.extensions.areSystemAnimationsEnabled
-import com.simplemobiletools.commons.extensions.beGoneIf
-import com.simplemobiletools.commons.extensions.getProperPrimaryColor
-import com.simplemobiletools.commons.extensions.viewBinding
+import com.simplemobiletools.commons.extensions.*
 import com.simplemobiletools.commons.helpers.NavigationIcon
 import com.simplemobiletools.commons.helpers.ensureBackgroundThread
 import com.simplemobiletools.musicplayer.R
@@ -23,14 +20,13 @@ import com.simplemobiletools.musicplayer.adapters.QueueAdapter
 import com.simplemobiletools.musicplayer.databinding.ActivityQueueBinding
 import com.simplemobiletools.musicplayer.dialogs.ChangeSortingDialog
 import com.simplemobiletools.musicplayer.dialogs.NewPlaylistDialog
+import com.simplemobiletools.musicplayer.dialogs.SelectQueueDialog
+import com.simplemobiletools.musicplayer.dialogs.SelectQueueDialog.Companion.showQueueNameDialog
 import com.simplemobiletools.musicplayer.dialogs.SelectTracklistDialog
 import com.simplemobiletools.musicplayer.extensions.*
 import com.simplemobiletools.musicplayer.helpers.ACTIVITY_QUEUE
 import com.simplemobiletools.musicplayer.helpers.RoomHelper
-import com.simplemobiletools.musicplayer.models.Events
-import com.simplemobiletools.musicplayer.models.QueueItem
-import com.simplemobiletools.musicplayer.models.Track
-import com.simplemobiletools.musicplayer.models.sortSafely
+import com.simplemobiletools.musicplayer.models.*
 import com.simplemobiletools.musicplayer.objects.executeBackgroundThread
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -94,32 +90,9 @@ class QueueActivity : SimpleControllerActivity() {
             when (menuItem.itemId) {
                 R.id.create_playlist_from_queue -> createPlaylistFromQueue()
                 R.id.play_tracklist -> SelectTracklistDialog(this)
-                R.id.sort -> {
-                    ChangeSortingDialog(this, ACTIVITY_QUEUE) {
-                        val adapter = getAdapter() ?: return@ChangeSortingDialog
-                        val tracks = ArrayList(adapter.items)
-                        tracks.sortSafely(config.queueSorting)
-                        adapter.updateItems(tracks, forceUpdate = true)
-
-                        withPlayer {
-                            val currentTrackId = currentMediaItem?.getMediaStoreId()
-                            val currentPositionMs = currentPosition
-                            val queueItems = tracks.mapIndexed { index, track ->
-                                val isCurrent = track.mediaStoreId == currentTrackId
-                                val lastPosition = if (isCurrent) currentPositionMs.toInt() else 0
-                                QueueItem(trackId = track.mediaStoreId, trackOrder = index, isCurrent = isCurrent, lastPosition = lastPosition)
-                            }
-
-                            val currentIndex = tracks.indexOfFirst { it.mediaStoreId == currentTrackId }.coerceAtLeast(0)
-                            prepareUsingTracks(tracks, startIndex = currentIndex, startPositionMs = currentPositionMs, play = isPlaying)
-
-                            executeBackgroundThread {
-                                audioHelper.resetQueue(queueItems)
-                            }
-                        }
-                    }
-                }
-
+                R.id.sort -> changeSorting()
+                R.id.create_new_queue -> createNewQueue()
+                R.id.change_queue -> SelectQueueDialog(this)
                 else -> return@setOnMenuItemClickListener false
             }
             return@setOnMenuItemClickListener true
@@ -245,6 +218,61 @@ class QueueActivity : SimpleControllerActivity() {
 
             ensureBackgroundThread {
                 RoomHelper(this).insertTracksWithPlaylist(tracks)
+            }
+        }
+    }
+
+    private fun changeSorting() {
+        ChangeSortingDialog(this, ACTIVITY_QUEUE) {
+            val adapter = getAdapter() ?: return@ChangeSortingDialog
+            val tracks = ArrayList(adapter.items)
+            if (tracks.isEmpty()) {
+                toast(R.string.no_tracks)
+                return@ChangeSortingDialog
+            }
+            tracks.sortSafely(config.queueSorting)
+            adapter.updateItems(tracks, forceUpdate = true)
+            val queueId = config.queueId
+
+            withPlayer {
+                val currentTrackId = currentMediaItem?.getMediaStoreId()
+                val currentPositionMs = currentPosition
+                val currentIndex = tracks.indexOfFirst { it.mediaStoreId == currentTrackId }.coerceAtLeast(0)
+                prepareUsingTracks(tracks, startIndex = currentIndex, startPositionMs = currentPositionMs, play = isPlaying)
+            }
+        }
+    }
+
+    private fun createNewQueue() {
+        val adapter = getAdapter() ?: return
+        val tracks = ArrayList(adapter.items)
+        if (tracks.isEmpty()) {
+            toast(R.string.no_tracks)
+            return
+        }
+        showQueueNameDialog("") { queueName ->
+            val queueId = config.nextQueueId
+            config.queueId = queueId
+            config.nextQueueId++
+            // append new Queue
+            val queueDataList = getQueueDataListFromJson(config.queueListJson)
+            queueDataList.toMutableList().also {
+                it.add(QueueData(queueName, queueId))
+                config.queueListJson = it.toJson()
+            }
+
+            withPlayer {
+                val currentTrackId = currentMediaItem?.getMediaStoreId()
+                val currentPositionMs = currentPosition
+                val queueItems = tracks.mapIndexed { index, track ->
+                    val isCurrent = track.mediaStoreId == currentTrackId
+                    val lastPosition = if (isCurrent) currentPositionMs else 0
+                    QueueItem(id = 0, queueId = queueId, trackId = track.mediaStoreId, trackOrder = index, isCurrent = isCurrent, lastPosition = lastPosition)
+                }
+
+                executeBackgroundThread {
+                    audioHelper.resetQueue(queueId, queueItems)
+                }
             }
         }
     }

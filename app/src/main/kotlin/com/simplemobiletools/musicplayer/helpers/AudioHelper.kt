@@ -346,7 +346,12 @@ class AudioHelper(private val context: Context) {
         deleteArtists(invalidArtists)
     }
 
-    fun getQueuedTracks(queueItems: List<QueueItem> = context.queueDAO.getAll(config.queueId)): ArrayList<Track> {
+    fun getQueuedTracks(queueId: Long = config.queueId): ArrayList<Track> {
+        val queueItems: List<QueueItem> = context.queueDAO.getAll(queueId)
+        return getQueuedTracks(queueItems)
+    }
+
+    fun getQueuedTracks(queueItems: List<QueueItem>): ArrayList<Track> {
         val allTracks = getAllTracks().associateBy { it.mediaStoreId }
 
         // make sure we fetch the songs in the order they were displayed in

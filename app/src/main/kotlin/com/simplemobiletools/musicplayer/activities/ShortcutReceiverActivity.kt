@@ -17,6 +17,7 @@ import com.simplemobiletools.musicplayer.dialogs.SelectTracklistDialog.Companion
 import com.simplemobiletools.musicplayer.dialogs.SelectTracklistDialog.Companion.TRACKLIST_ARTIST
 import com.simplemobiletools.musicplayer.dialogs.SelectTracklistDialog.Companion.TRACKLIST_FOLDER
 import com.simplemobiletools.musicplayer.dialogs.SelectTracklistDialog.Companion.TRACKLIST_PLAYLIST
+import com.simplemobiletools.musicplayer.dialogs.SelectTracklistDialog.Companion.TRACKLIST_QUEUE
 import com.simplemobiletools.musicplayer.dialogs.SelectTracklistDialog.Companion.onSelectTracklist
 import com.simplemobiletools.musicplayer.objects.executeBackgroundThread
 
@@ -50,13 +51,21 @@ class ShortcutReceiverActivity : SimpleControllerActivity() {
             } else if (queueSource.startsWith("t:")) {
                 val id = queueSource.substring(2).toLong()
                 onSelectTracklist(TRACKLIST_ARTIST, id, "", fromShortcut = true)
+            } else if (queueSource.startsWith("q:")) {
+                val id = queueSource.substring(2).toLong()
+                onSelectTracklist(TRACKLIST_QUEUE, id, "", fromShortcut = true)
             }
             runOnUiThread { finish() }
         }
     }
 
     companion object {
-        fun SimpleControllerActivity.createTracklistShortcut(shortcutLabel: String, queueSource: String, bitmap: Bitmap? = null) {
+        fun SimpleControllerActivity.createTracklistShortcut(
+            shortcutLabel: String,
+            queueSource: String,
+            bitmap: Bitmap? = null,
+            drawableId: Int = R.drawable.ic_tracklist
+        ) {
             if (queueSource.isEmpty()) return
 
             // build layout
@@ -75,7 +84,7 @@ class ShortcutReceiverActivity : SimpleControllerActivity() {
                 .setNegativeButton(com.simplemobiletools.commons.R.string.cancel, null)
                 .setPositiveButton(com.simplemobiletools.commons.R.string.ok) { _, _ ->
                     val title = edit.text.toString().takeIf { it.isNotEmpty() } ?: shortcutLabel
-                    val icon = if (bitmap != null) IconCompat.createWithBitmap(bitmap) else IconCompat.createWithResource(this, R.drawable.ic_tracklist)
+                    val icon = if (bitmap != null) IconCompat.createWithBitmap(bitmap) else IconCompat.createWithResource(this, drawableId)
                     val shortcut = ShortcutInfoCompat.Builder(this, "tracklist_$queueSource")
                         .setShortLabel(title)
                         .setIcon(icon)
