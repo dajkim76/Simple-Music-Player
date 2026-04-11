@@ -135,12 +135,13 @@ internal class MediaItemProvider(private val context: Context) {
     }
 
     fun getRecentItemsWithStartPosition(): MediaItemsWithStartPosition {
-        val recentItems = context.queueDAO.getAll().mapNotNull { getMediaItemFromQueueItem(it) }
+        val queueId = context.config.queueId
+        val recentItems = context.queueDAO.getAll(queueId).mapNotNull { getMediaItemFromQueueItem(it) }
         var startPosition = 0L
-        val currentItem = context.queueDAO.getCurrent()?.let {
+        val currentItem = context.queueDAO.getCurrent(queueId)?.let {
             val mediaItem = getMediaItemFromQueueItem(it) ?: return@let null
             val metadata = mediaItem.mediaMetadata.buildUpon().build()
-            startPosition = it.lastPosition * 1000L
+            startPosition = it.lastPosition
             mediaItem.buildUpon().setMediaMetadata(metadata).build()
         }
 
@@ -154,13 +155,14 @@ internal class MediaItemProvider(private val context: Context) {
         }
 
         val keepTrackLastPosition = context.config.keepTrackLastPosition
+        val queueId = context.config.queueId
         executor.execute {
             val queueItems = mediaItems.mapIndexed { index, mediaItem ->
-                QueueItem(trackId = mediaItem.getMediaStoreId(), trackOrder = index, isCurrent = false, lastPosition = 0)
+                QueueItem(id = 0, queueId = queueId, trackId = mediaItem.getMediaStoreId(), trackOrder = index, isCurrent = false, lastPosition = 0)
             }
 
             val trackId = current.getMediaStoreId()
-            audioHelper.resetQueue(queueItems, trackId, startPosition)
+            audioHelper.resetQueue(queueId, queueItems, trackId, startPosition)
             if (keepTrackLastPosition) {
                 audioHelper.updateRecentPlayedTrackLastPosition(mediaItem = current, lastPosition = startPosition)
             }

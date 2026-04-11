@@ -60,24 +60,24 @@ abstract class SimpleControllerActivity : SimpleActivity(), Player.Listener {
         executeBackgroundThread {
             val track = tracks[startIndex]
             var lastPosition = audioHelper.updateRecentPlayedTrack(track)
-            if (!keepTrackLastPosition) lastPosition = 0
+            if (!keepTrackLastPosition) lastPosition = startPositionMs
 
             withPlayer {
                 if (isPlaying) {
                     val currentItem = currentMediaItem
                     if (currentItem != null && currentItem.getMediaStoreId() != track.mediaStoreId) {
+                        val playPosition = currentPosition
                         if (keepTrackLastPosition) {
-                            val playingLastPosition = currentPosition
                             val lastQueueSource = config.lastQueueSource
                             executeBackgroundThread {
-                                audioHelper.updateRecentPlayedTrackLastPosition(currentItem, playingLastPosition)
-                                audioHelper.updateQueueSourceLastMedia(lastQueueSource, currentItem.getMediaStoreId())
+                                audioHelper.updateRecentPlayedTrackLastPosition(currentItem, playPosition)
+                                audioHelper.updateQueueSourceLastMedia(lastQueueSource, currentItem.getMediaStoreId(), playPosition)
                             }
                         } else {
                             // The last item in the playlist is recorded before it changes.
                             val lastQueueSource = config.lastQueueSource
                             executeBackgroundThread {
-                                audioHelper.updateQueueSourceLastMedia(lastQueueSource, currentItem.getMediaStoreId())
+                                audioHelper.updateQueueSourceLastMedia(lastQueueSource, currentItem.getMediaStoreId(), playPosition)
                             }
                         }
                     } else if (currentItem != null && currentItem.getMediaStoreId() == track.mediaStoreId) {
@@ -97,6 +97,10 @@ abstract class SimpleControllerActivity : SimpleActivity(), Player.Listener {
 
                 // Shortly afterwards, the media ID of the current queueSource is updated while saving queue items.
                 config.lastQueueSource = queueSource
+                // If not selected from multiple queues, forcibly apply to a legacy queue with ID 0.
+                if (queueSource.startsWith("q:").not() && config.queueId != 0L) {
+                    config.queueId = 0
+                }
 
                 prepareUsingTracks(
                     tracks = tracks,

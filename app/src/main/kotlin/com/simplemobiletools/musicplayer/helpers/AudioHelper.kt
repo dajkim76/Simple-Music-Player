@@ -9,8 +9,6 @@ import com.simplemobiletools.musicplayer.extensions.*
 import com.simplemobiletools.musicplayer.inlines.indexOfFirstOrNull
 import com.simplemobiletools.musicplayer.models.*
 import org.greenrobot.eventbus.EventBus
-import kotlin.time.Duration.Companion.milliseconds
-import kotlin.time.Duration.Companion.seconds
 
 class AudioHelper(private val context: Context) {
 
@@ -260,7 +258,7 @@ class AudioHelper(private val context: Context) {
         }
     }
 
-    fun updateQueueSourceLastMedia(lastQueueSource: String, lastMediaId: Long) {
+    fun updateQueueSourceLastMedia(lastQueueSource: String, lastMediaId: Long, lastPosition: Long? = null) {
         if (lastQueueSource.isEmpty()) return
         when {
             lastQueueSource.startsWith("p:") -> {
@@ -281,6 +279,12 @@ class AudioHelper(private val context: Context) {
             lastQueueSource.startsWith("f:") -> {
                 val folderName = lastQueueSource.substring(2)
                 FolderConfig.getInstance(context).updateLastMediaId(folderName, lastMediaId)
+            }
+
+            lastQueueSource.startsWith("q:") -> {
+                val queueId = lastQueueSource.substring(2).toLong()
+                context.queueDAO.resetCurrent(queueId)
+                context.queueDAO.saveCurrentTrackProgress(queueId, lastMediaId, lastPosition ?: 0)
             }
         }
     }
@@ -342,7 +346,7 @@ class AudioHelper(private val context: Context) {
         deleteArtists(invalidArtists)
     }
 
-    fun getQueuedTracks(queueItems: List<QueueItem> = context.queueDAO.getAll()): ArrayList<Track> {
+    fun getQueuedTracks(queueItems: List<QueueItem> = context.queueDAO.getAll(config.queueId)): ArrayList<Track> {
         val allTracks = getAllTracks().associateBy { it.mediaStoreId }
 
         // make sure we fetch the songs in the order they were displayed in
@@ -351,6 +355,7 @@ class AudioHelper(private val context: Context) {
             if (track != null) {
                 if (queueItem.isCurrent) {
                     track.flags = track.flags.addBit(FLAG_IS_CURRENT)
+                    track.lastPosition = queueItem.lastPosition
                 }
                 track
             } else {
@@ -366,13 +371,14 @@ class AudioHelper(private val context: Context) {
      */
     fun getQueuedTracksLazily(callback: (tracks: List<Track>, startIndex: Int, startPositionMs: Long, isFirstPhase: Boolean) -> Unit) {
         ensureBackgroundThread {
-            var queueItems = context.queueDAO.getAll()
+            val queueId = config.queueId
+            var queueItems = context.queueDAO.getAll(queueId)
             if (queueItems.isEmpty()) {
-                initQueue()
-                queueItems = context.queueDAO.getAll()
+                initQueue(queueId)
+                queueItems = context.queueDAO.getAll(queueId)
             }
 
-            val currentItem = context.queueDAO.getCurrent()
+            val currentItem = context.queueDAO.getCurrent(queueId)
             if (currentItem == null) {
                 callback(emptyList(), 0, 0, true)
                 return@ensureBackgroundThread
@@ -385,7 +391,7 @@ class AudioHelper(private val context: Context) {
             }
 
             // immediately return the current track.
-            val startPositionMs = currentItem.lastPosition.seconds.inWholeMilliseconds
+            val startPositionMs = currentItem.lastPosition
             callback(listOf(currentTrack), 0, startPositionMs, true)
 
             // return the rest of the queued tracks.
@@ -395,24 +401,23 @@ class AudioHelper(private val context: Context) {
         }
     }
 
-    fun initQueue(): ArrayList<Track> {
+    fun initQueue(queueId: Long): ArrayList<Track> {
         val tracks = getAllTracks()
         val queueItems = tracks.mapIndexed { index, mediaItem ->
-            QueueItem(trackId = mediaItem.mediaStoreId, trackOrder = index, isCurrent = index == 0, lastPosition = 0)
+            QueueItem(id = 0, queueId = queueId, trackId = mediaItem.mediaStoreId, trackOrder = index, isCurrent = index == 0, lastPosition = 0)
         }
 
-        resetQueue(queueItems)
+        resetQueue(queueId, queueItems)
         return tracks
     }
 
-    fun resetQueue(items: List<QueueItem>, currentTrackId: Long? = null, startPosition: Long? = null) {
-        context.queueDAO.deleteAllItems()
+    fun resetQueue(queueId: Long, items: List<QueueItem>, currentTrackId: Long? = null, startPosition: Long? = null) {
+        context.queueDAO.deleteAllItems(queueId)
         context.queueDAO.insertAll(items)
         if (currentTrackId != null && startPosition != null) {
-            val startPositionSeconds = startPosition.milliseconds.inWholeSeconds.toInt()
-            context.queueDAO.saveCurrentTrackProgress(currentTrackId, startPositionSeconds)
+            context.queueDAO.saveCurrentTrackProgress(queueId, currentTrackId, startPosition)
         } else if (currentTrackId != null) {
-            context.queueDAO.saveCurrentTrack(currentTrackId)
+            context.queueDAO.saveCurrentTrack(queueId, currentTrackId)
         }
     }
 }

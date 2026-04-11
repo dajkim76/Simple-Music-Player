@@ -11,27 +11,21 @@ interface QueueItemsDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(queueItems: List<QueueItem>)
 
-    @Query("SELECT * FROM queue_items ORDER BY track_order")
-    fun getAll(): List<QueueItem>
+    @Query("SELECT * FROM multi_queue_items WHERE queue_id = :queueId ORDER BY track_order")
+    fun getAll(queueId: Long): List<QueueItem>
 
-    @Query("UPDATE queue_items SET is_current = 0")
-    fun resetCurrent()
+    @Query("UPDATE multi_queue_items SET is_current = 0 WHERE queue_id = :queueId AND is_current = 1")
+    fun resetCurrent(queueId: Long)
 
-    @Query("SELECT * FROM queue_items WHERE is_current = 1")
-    fun getCurrent(): QueueItem?
+    @Query("SELECT * FROM multi_queue_items WHERE queue_id = :queueId AND is_current = 1")
+    fun getCurrent(queueId: Long): QueueItem?
 
-    @Query("UPDATE queue_items SET is_current = 1 WHERE track_id = :trackId")
-    fun saveCurrentTrack(trackId: Long)
+    @Query("UPDATE multi_queue_items SET is_current = 1 WHERE queue_id = :queueId AND track_id = :trackId")
+    fun saveCurrentTrack(queueId: Long, trackId: Long)
 
-    @Query("UPDATE queue_items SET is_current = 1, last_position = :lastPosition WHERE track_id = :trackId")
-    fun saveCurrentTrackProgress(trackId: Long, lastPosition: Int)
+    @Query("UPDATE multi_queue_items SET is_current = 1, last_position = :lastPosition WHERE queue_id = :queueId AND track_id = :trackId")
+    fun saveCurrentTrackProgress(queueId: Long, trackId: Long, lastPosition: Long)
 
-    @Query("UPDATE queue_items SET track_order = :order WHERE track_id = :trackId")
-    fun setOrder(trackId: Long, order: Int)
-
-    @Query("DELETE FROM queue_items WHERE track_id = :trackId")
-    fun removeQueueItem(trackId: Long)
-
-    @Query("DELETE FROM queue_items")
-    fun deleteAllItems()
+    @Query("DELETE FROM multi_queue_items WHERE queue_id = :queueId")
+    fun deleteAllItems(queueId: Long)
 }
