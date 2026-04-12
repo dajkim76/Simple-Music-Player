@@ -114,8 +114,7 @@ class SimpleMusicPlayer(private val exoPlayer: ExoPlayer) : ForwardingPlayer(exo
         if (seekToNextCue()) return
         play()
         if (!maybeForceNext()) {
-            seekToNextCount += 1
-            seekWithDelay()
+            seekByCount(1)
         }
     }
 
@@ -123,8 +122,7 @@ class SimpleMusicPlayer(private val exoPlayer: ExoPlayer) : ForwardingPlayer(exo
         if (seekToPreviousCue()) return
         play()
         if (!maybeForcePrevious()) {
-            seekToPreviousCount += 1
-            seekWithDelay()
+            seekByCount(-1)
         }
     }
 
@@ -132,8 +130,7 @@ class SimpleMusicPlayer(private val exoPlayer: ExoPlayer) : ForwardingPlayer(exo
         if (seekToNextCue()) return
         play()
         if (!maybeForceNext()) {
-            seekToNextCount += 1
-            seekWithDelay()
+            seekByCount(1)
         }
     }
 
@@ -141,8 +138,7 @@ class SimpleMusicPlayer(private val exoPlayer: ExoPlayer) : ForwardingPlayer(exo
         if (seekToPreviousCue()) return
         play()
         if (!maybeForcePrevious()) {
-            seekToPreviousCount += 1
-            seekWithDelay()
+            seekByCount(-1)
         }
     }
 
@@ -247,21 +243,6 @@ class SimpleMusicPlayer(private val exoPlayer: ExoPlayer) : ForwardingPlayer(exo
         }
     }
 
-    /**
-     * This is here so the player can quickly seek next/previous without doing too much work.
-     * It probably won't be needed once https://github.com/androidx/media/issues/81 is resolved.
-     */
-    private fun seekWithDelay() {
-        seekJob?.cancel()
-        seekJob = scope.launch {
-            delay(timeMillis = 300)
-            val seekCount = seekToNextCount - seekToPreviousCount
-            if (seekCount != 0) {
-                seekByCount(seekCount)
-            }
-        }
-    }
-
     private fun seekByCount(seekCount: Int) {
         runOnPlayerThread {
             if (currentMediaItem == null) {
@@ -278,8 +259,6 @@ class SimpleMusicPlayer(private val exoPlayer: ExoPlayer) : ForwardingPlayer(exo
             }
 
             seekTo(seekIndex, 0)
-            seekToNextCount = 0
-            seekToPreviousCount = 0
         }
     }
 
