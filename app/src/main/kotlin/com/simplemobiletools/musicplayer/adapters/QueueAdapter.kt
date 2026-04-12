@@ -67,6 +67,7 @@ class QueueAdapter(activity: SimpleActivity, items: ArrayList<Track>, var curren
             R.id.cab_delete_file -> deleteTracks()
             R.id.cab_share -> shareFiles()
             R.id.cab_add_to_playlist -> addToPlaylist()
+            R.id.cab_add_to_queue -> addToQueue()
             R.id.cab_select_all -> selectAll()
         }
     }
