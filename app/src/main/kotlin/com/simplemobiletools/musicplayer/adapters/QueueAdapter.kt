@@ -28,6 +28,7 @@ class QueueAdapter(activity: SimpleActivity, items: ArrayList<Track>, var curren
 
     private var startReorderDragListener: StartReorderDragListener
     private val foregroundDrawable = context.resources.getColoredDrawableWithColor(R.drawable.rounded_white_border, properPrimaryColor)
+    private var isDragging = false
 
     init {
         setupDragListener(true)
@@ -77,6 +78,10 @@ class QueueAdapter(activity: SimpleActivity, items: ArrayList<Track>, var curren
     override fun onActionModeDestroyed() = notifyDataChanged()
 
     fun updateCurrentTrack() {
+        if (isDragging) {
+            return
+        }
+
         context.withPlayer {
             val track = currentMediaItem?.toTrack()
             if (track != null) {
@@ -196,9 +201,14 @@ class QueueAdapter(activity: SimpleActivity, items: ArrayList<Track>, var curren
         swapMediaItemInQueue(fromPosition, toPosition)
     }
 
-    override fun onRowClear(myViewHolder: ViewHolder?) {}
+    override fun onRowClear(myViewHolder: ViewHolder?) {
+        isDragging = false
+        updateCurrentTrack()
+    }
 
-    override fun onRowSelected(myViewHolder: ViewHolder?) {}
+    override fun onRowSelected(myViewHolder: ViewHolder?) {
+        isDragging = true
+    }
 
     override fun onChange(position: Int) = items.getOrNull(position)?.getBubbleText(context.config.trackSorting) ?: ""
 
