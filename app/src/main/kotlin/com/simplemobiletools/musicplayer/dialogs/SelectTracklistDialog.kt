@@ -136,7 +136,7 @@ class SelectTracklistDialog(val activity: SimpleControllerActivity) {
                 val startIndex = playlistTracks.indexOfFirst { track -> track.mediaStoreId == lastMediaId }.coerceAtLeast(0)
                 val queueSource = "p:$id"
 
-                prepareAndPlay(playlistTracks, config.showPlaybackActivity, queueSource, startIndex, startPlay = startPlay)
+                prepareAndPlay(playlistTracks, false, queueSource, startIndex, startPlay = startPlay)
             } else if (tracklistType == TRACKLIST_ALBUM) {
                 val playlistTracks = audioHelper.getAlbumTracks(id)
                 if (playlistTracks.isEmpty()) return 0
@@ -144,7 +144,7 @@ class SelectTracklistDialog(val activity: SimpleControllerActivity) {
                 val startIndex = playlistTracks.indexOfFirst { track -> track.mediaStoreId == lastMediaId }.coerceAtLeast(0)
                 val queueSource = "a:$id"
 
-                prepareAndPlay(playlistTracks, config.showPlaybackActivity, queueSource, startIndex, startPlay = startPlay)
+                prepareAndPlay(playlistTracks, false, queueSource, startIndex, startPlay = startPlay)
             } else if (tracklistType == TRACKLIST_ARTIST) {
                 val albums = audioHelper.getArtistAlbums(id)
                 val playlistTracks = audioHelper.getAlbumTracks(albums)
@@ -153,7 +153,7 @@ class SelectTracklistDialog(val activity: SimpleControllerActivity) {
                 val startIndex = playlistTracks.indexOfFirst { track -> track.mediaStoreId == lastMediaId }.coerceAtLeast(0)
                 val queueSource = "t:$id"
 
-                prepareAndPlay(playlistTracks, config.showPlaybackActivity, queueSource, startIndex, startPlay = startPlay)
+                prepareAndPlay(playlistTracks, false, queueSource, startIndex, startPlay = startPlay)
             } else if (tracklistType == TRACKLIST_FOLDER) {
                 val playlistTracks = audioHelper.getFolderTracks(data)
                 if (playlistTracks.isEmpty()) return 0
@@ -161,7 +161,7 @@ class SelectTracklistDialog(val activity: SimpleControllerActivity) {
                 val startIndex = playlistTracks.indexOfFirst { track -> track.mediaStoreId == lastMediaId }.coerceAtLeast(0)
                 val queueSource = "f:$data"
 
-                prepareAndPlay(playlistTracks, config.showPlaybackActivity, queueSource, startIndex, startPlay = startPlay)
+                prepareAndPlay(playlistTracks, false, queueSource, startIndex, startPlay = startPlay)
             } else if (tracklistType == TRACKLIST_QUEUE) {
                 val tracks = audioHelper.getQueuedTracks(id)
                 if (tracks.isEmpty()) return 0
