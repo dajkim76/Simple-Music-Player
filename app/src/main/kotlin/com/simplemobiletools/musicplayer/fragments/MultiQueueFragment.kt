@@ -14,10 +14,7 @@ import com.simplemobiletools.musicplayer.dialogs.ChangeSortingDialog
 import com.simplemobiletools.musicplayer.dialogs.SelectQueueDialog
 import com.simplemobiletools.musicplayer.extensions.*
 import com.simplemobiletools.musicplayer.helpers.ACTIVITY_QUEUE
-import com.simplemobiletools.musicplayer.models.QueueItem
-import com.simplemobiletools.musicplayer.models.Track
-import com.simplemobiletools.musicplayer.models.getQueueDataListFromJson
-import com.simplemobiletools.musicplayer.models.sortSafely
+import com.simplemobiletools.musicplayer.models.*
 import com.simplemobiletools.musicplayer.objects.executeBackgroundThread
 
 class MultiQueueFragment(context: Context, attributeSet: AttributeSet) : MyViewPagerFragment(context, attributeSet) {
@@ -87,6 +84,7 @@ class MultiQueueFragment(context: Context, attributeSet: AttributeSet) : MyViewP
         val startPositionMs = if (selectedTrack.isCurrent()) selectedTrack.lastPosition else 0
         val queueSource = "q:$currentQueueId"
         config.queueId = currentQueueId
+        Events.QueueItemsChanged.setSkipOnce()
         prepareAndPlay(tracks, showPlayback = config.showPlaybackActivity, queueSource, startIndex, startPositionMs = startPositionMs)
         binding.multiQueueSelectHeader.foreground = foregroundDrawable
         getAdapter()?.updateLastMediaId(selectedTrack.mediaStoreId)

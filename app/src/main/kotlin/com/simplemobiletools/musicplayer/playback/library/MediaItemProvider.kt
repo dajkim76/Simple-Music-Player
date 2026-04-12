@@ -16,8 +16,10 @@ import com.google.common.util.concurrent.MoreExecutors
 import com.simplemobiletools.musicplayer.R
 import com.simplemobiletools.musicplayer.extensions.*
 import com.simplemobiletools.musicplayer.helpers.*
+import com.simplemobiletools.musicplayer.models.Events
 import com.simplemobiletools.musicplayer.models.QueueItem
 import com.simplemobiletools.musicplayer.models.toMediaItems
+import org.greenrobot.eventbus.EventBus
 import java.util.concurrent.Executors
 
 private const val STATE_CREATED = 1
@@ -167,6 +169,9 @@ internal class MediaItemProvider(private val context: Context) {
                 audioHelper.updateRecentPlayedTrackLastPosition(mediaItem = current, lastPosition = startPosition)
             }
             audioHelper.updateQueueSourceLastMedia(context.config.lastQueueSource, trackId)
+            if (Events.QueueItemsChanged.getIsPost()) {
+                EventBus.getDefault().post(Events.QueueItemsChanged)
+            }
         }
     }
 

@@ -8,5 +8,26 @@ class Events {
     class AlbumsUpdated
     class RefreshFragments
     class RefreshTracks
-    class QueueItemsChanged
+    object QueueItemsChanged {
+        private var isPost = false
+        private var skipOnce = false
+
+        fun setSkipOnce() {
+            skipOnce = true
+        }
+
+        fun setIsPost() {
+            if (skipOnce) {
+                skipOnce = false
+                return
+            }
+            isPost = true
+        }
+
+        fun getIsPost(): Boolean {
+            val r = isPost
+            isPost = false
+            return r
+        }
+    }
 }

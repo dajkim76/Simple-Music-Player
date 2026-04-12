@@ -514,6 +514,11 @@ class MainActivity : SimpleMusicActivity() {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
+    fun queueItemsUpdated(event: Events.QueueItemsChanged) {
+        getAdapter()?.getMultiQueueFragment()?.setupFragment(this)
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
     fun shouldRefreshFragments(event: Events.RefreshFragments) {
         refreshAllFragments()
     }

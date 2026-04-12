@@ -21,7 +21,7 @@ abstract class MyViewPagerFragment(context: Context, attributeSet: AttributeSet)
 
     abstract fun setupColors(textColor: Int, adjustedPrimaryColor: Int)
 
-    fun prepareAndPlay(tracks: List<Track>, showPlayback: Boolean, startIndex: Int = 0, startPositionMs: Long = 0) {
-        (context as SimpleControllerActivity).prepareAndPlay(tracks, showPlayback, "", startIndex, startPositionMs)
+    fun prepareAndPlay(tracks: List<Track>, showPlayback: Boolean, queueSource: String, startIndex: Int = 0, startPositionMs: Long = 0) {
+        (context as SimpleControllerActivity).prepareAndPlay(tracks, showPlayback, queueSource, startIndex, startPositionMs)
     }
 }

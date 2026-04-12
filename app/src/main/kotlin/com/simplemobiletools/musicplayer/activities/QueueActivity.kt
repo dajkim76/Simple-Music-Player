@@ -4,8 +4,6 @@ import android.annotation.SuppressLint
 import android.app.SearchManager
 import android.content.Context
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.view.*
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.GestureDetectorCompat
@@ -60,10 +58,8 @@ class QueueActivity : SimpleControllerActivity() {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun queueItemsChanged(event: Events.QueueItemsChanged) {
-        Handler(Looper.getMainLooper()).postDelayed({
-            binding.queueList.adapter = null
-            setupAdapter()
-        }, 300)
+        binding.queueList.adapter = null
+        setupAdapter()
     }
 
     override fun onResume() {

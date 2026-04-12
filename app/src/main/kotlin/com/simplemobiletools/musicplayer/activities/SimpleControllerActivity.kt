@@ -119,7 +119,7 @@ abstract class SimpleControllerActivity : SimpleActivity(), Player.Listener {
                     if (success) {
                         updatePlaybackInfo(this)
                     }
-                    EventBus.getDefault().post(Events.QueueItemsChanged())
+                    Events.QueueItemsChanged.setIsPost()
                 }
             }
         }

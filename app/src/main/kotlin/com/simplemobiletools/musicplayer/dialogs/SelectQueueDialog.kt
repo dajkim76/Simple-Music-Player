@@ -29,7 +29,7 @@ class SelectQueueDialog(val activity: Activity, val playQueue: Boolean = true, v
     private val textColor = activity.getProperTextColor()
     private val primaryColor = activity.getProperPrimaryColor()
     private val foregroundDrawable = activity.resources.getColoredDrawableWithColor(R.drawable.rounded_white_border, activity.getProperPrimaryColor())
-    private val lastQueueSource = config.lastQueueSource.takeIf { it.startsWith("q:") } ?: "q:0"
+    private val queueId = config.queueId
 
     init {
         val queueDataList = getQueueDataListFromJson(config.queueListJson).toMutableList()
@@ -90,7 +90,7 @@ class SelectQueueDialog(val activity: Activity, val playQueue: Boolean = true, v
             }
 
             // last selected track list
-            if ("q:$id" == lastQueueSource) {
+            if (queueId == id) {
                 this.root.foreground = foregroundDrawable
             }
 
