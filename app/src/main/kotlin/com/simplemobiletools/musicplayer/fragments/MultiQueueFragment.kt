@@ -4,7 +4,6 @@ import android.content.Context
 import android.util.AttributeSet
 import com.simplemobiletools.commons.activities.BaseSimpleActivity
 import com.simplemobiletools.commons.extensions.*
-import com.simplemobiletools.commons.helpers.ensureBackgroundThread
 import com.simplemobiletools.musicplayer.R
 import com.simplemobiletools.musicplayer.activities.SimpleActivity
 import com.simplemobiletools.musicplayer.activities.SimpleControllerActivity
@@ -43,22 +42,29 @@ class MultiQueueFragment(context: Context, attributeSet: AttributeSet) : MyViewP
             }
         }
 
-        ensureBackgroundThread {
+        executeBackgroundThread {
             tracks = context.audioHelper.getQueuedTracks(currentQueueId)
             val lastMediaId = tracks.find { it.isCurrent() }?.mediaStoreId ?: 0L
 
             activity.runOnUiThread {
                 binding.multiQueuePlaceholder.beVisibleIf(tracks.isEmpty())
-                val adapter = MultiQueueAdapter(
-                    activity = activity as SimpleActivity,
-                    recyclerView = binding.multiQueueList,
-                    items = tracks,
-                    queueId = currentQueueId,
-                    lastMediaId = lastMediaId
-                ) {
-                    preparePlay(it as Track)
+                val multiQueueAdapter = binding.multiQueueList.adapter as? MultiQueueAdapter
+                if (multiQueueAdapter == null) {
+                    val adapter = MultiQueueAdapter(
+                        activity = activity as SimpleActivity,
+                        recyclerView = binding.multiQueueList,
+                        items = tracks,
+                        queueId = currentQueueId,
+                        lastMediaId = lastMediaId
+                    ) {
+                        preparePlay(it as Track)
+                    }
+                    binding.multiQueueList.adapter = adapter
+                } else {
+                    multiQueueAdapter.updateItems(tracks, forceUpdate = true)
+                    multiQueueAdapter.queueId = currentQueueId
+                    multiQueueAdapter.updateLastMediaId(lastMediaId)
                 }
-                binding.multiQueueList.adapter = adapter
 
                 if (context.areSystemAnimationsEnabled) {
                     binding.multiQueueList.scheduleLayoutAnimation()
@@ -88,6 +94,20 @@ class MultiQueueFragment(context: Context, attributeSet: AttributeSet) : MyViewP
         prepareAndPlay(tracks, showPlayback = config.showPlaybackActivity, queueSource, startIndex, startPositionMs = startPositionMs)
         binding.multiQueueSelectHeader.foreground = foregroundDrawable
         getAdapter()?.updateLastMediaId(selectedTrack.mediaStoreId)
+    }
+
+    fun updateCurrentTrack(mediaId: Long) {
+        if (config.queueId == currentQueueId) {
+            getAdapter()?.updateLastMediaId(mediaId)
+        }
+    }
+
+    fun queueItemsUpdated(activity: BaseSimpleActivity, queueId: Long) {
+        if (queueId == currentQueueId) {
+            setupFragment(activity)
+        } else {
+            updateQueueName()
+        }
     }
 
     override fun finishActMode() {

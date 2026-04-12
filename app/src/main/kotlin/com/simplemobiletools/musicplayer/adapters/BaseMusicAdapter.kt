@@ -27,10 +27,12 @@ import com.simplemobiletools.musicplayer.dialogs.SelectQueueDialog
 import com.simplemobiletools.musicplayer.extensions.*
 import com.simplemobiletools.musicplayer.helpers.GlideLoadFailChecker
 import com.simplemobiletools.musicplayer.helpers.TagHelper
+import com.simplemobiletools.musicplayer.models.Events
 import com.simplemobiletools.musicplayer.models.QueueItem
 import com.simplemobiletools.musicplayer.models.Track
 import com.simplemobiletools.musicplayer.objects.executeBackgroundThread
 import com.simplemobiletools.musicplayer.playback.PlaybackService
+import org.greenrobot.eventbus.EventBus
 
 abstract class BaseMusicAdapter<Type>(
     var items: ArrayList<Type>,
@@ -118,6 +120,7 @@ abstract class BaseMusicAdapter<Type>(
                         QueueItem(id = 0, queueId = queueId, trackId = track.mediaStoreId, trackOrder = maxOrder + index, isCurrent = false, lastPosition = 0)
                     }
                     activity.queueDAO.insertAll(queueItems)
+                    EventBus.getDefault().post(Events.QueueItemsChanged.setQueueId(queueId))
                 }
             }
         }

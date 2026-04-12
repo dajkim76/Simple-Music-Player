@@ -62,7 +62,7 @@ class SelectQueueDialog(val activity: Activity, val playQueue: Boolean = true, v
                 }
             }
 
-            more.applyColorFilter(primaryColor)
+            more.applyColorFilter(textColor)
             more.setOnClickListener {
                 val items = if (id == 0L) {
                     arrayOf(activity.getString(com.simplemobiletools.commons.R.string.create_shortcut))

@@ -138,7 +138,7 @@ dependencies {
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.bundles.compose)
     implementation(libs.androidx.lifecycle.runtime.ktx)
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.10.0")
+    implementation(libs.kotlinx.serialization.json)
     debugImplementation(libs.androidx.ui.tooling)
 
     implementation(libs.bundles.room)

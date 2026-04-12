@@ -14,6 +14,10 @@ object MyExecutors {
     fun execute(callback: () -> Unit) = executors.execute(callback)
 
     fun executeOnMainThread(callback: () -> Unit) = mainHandler.post(callback)
+
+    fun postDelayed(delayMillis: Long, callback: () -> Unit) {
+        mainHandler.postDelayed(callback, delayMillis)
+    }
 }
 
 fun executeBackgroundThread(callback: () -> Unit) = MyExecutors.execute(callback)

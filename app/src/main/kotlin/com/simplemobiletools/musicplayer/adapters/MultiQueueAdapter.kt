@@ -4,12 +4,13 @@ import android.annotation.SuppressLint
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
+import androidx.media3.session.MediaController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.qtalk.recyclerviewfastscroller.RecyclerViewFastScroller
 import com.simplemobiletools.commons.dialogs.ConfirmationDialog
 import com.simplemobiletools.commons.extensions.*
-import com.simplemobiletools.commons.helpers.ensureBackgroundThread
 import com.simplemobiletools.commons.interfaces.ItemMoveCallback
 import com.simplemobiletools.commons.interfaces.ItemTouchHelperContract
 import com.simplemobiletools.commons.interfaces.StartReorderDragListener
@@ -17,17 +18,16 @@ import com.simplemobiletools.commons.views.MyRecyclerView
 import com.simplemobiletools.musicplayer.R
 import com.simplemobiletools.musicplayer.activities.SimpleActivity
 import com.simplemobiletools.musicplayer.databinding.ItemTrackQueueBinding
-import com.simplemobiletools.musicplayer.extensions.config
-import com.simplemobiletools.musicplayer.extensions.getTrackFileArt
-import com.simplemobiletools.musicplayer.extensions.queueDAO
-import com.simplemobiletools.musicplayer.extensions.swap
+import com.simplemobiletools.musicplayer.extensions.*
+import com.simplemobiletools.musicplayer.helpers.EXTRA_SHUFFLE_INDICES
 import com.simplemobiletools.musicplayer.models.Track
 import com.simplemobiletools.musicplayer.objects.executeBackgroundThread
+import com.simplemobiletools.musicplayer.playback.CustomCommands
 
 class MultiQueueAdapter(
     activity: SimpleActivity,
     items: ArrayList<Track>,
-    val queueId: Long,
+    var queueId: Long,
     var lastMediaId: Long,
     recyclerView: MyRecyclerView,
     itemClick: (Any) -> Unit
@@ -35,6 +35,7 @@ class MultiQueueAdapter(
 
     private var startReorderDragListener: StartReorderDragListener
     private val foregroundDrawable = activity.resources.getColoredDrawableWithColor(R.drawable.rounded_white_border, activity.getProperPrimaryColor())
+    private val config = activity.config
 
     init {
         setupDragListener(true)
@@ -89,7 +90,7 @@ class MultiQueueAdapter(
             }
         }
 
-        if (activity.config.queueId == queueId) {
+        if (config.queueId == queueId) {
             context.removeQueueItems(selectedTracks) {
                 refreshTracksList(positions)
             }
@@ -133,7 +134,7 @@ class MultiQueueAdapter(
 
             // deleteTrakcs에서 removeQueueItem도 호출한다.
             context.deleteTracks(selectedTracks) {
-                ensureBackgroundThread {
+                executeBackgroundThread {
                     selectedTracks.forEach {
                         activity.queueDAO.removeQueueItem(queueId, it.mediaStoreId)
                     }
@@ -176,7 +177,6 @@ class MultiQueueAdapter(
 
     fun updateLastMediaId(lastMediaId: Long) {
         if (this.lastMediaId == lastMediaId) return
-        if (items.size <= 1) return
         val beforeIndex = items.indexOfFirst { it.mediaStoreId == this.lastMediaId }
         this.lastMediaId = lastMediaId
         val afterIndex = items.indexOfFirst { it.mediaStoreId == this.lastMediaId }
@@ -187,14 +187,39 @@ class MultiQueueAdapter(
     override fun onRowMoved(fromPosition: Int, toPosition: Int) {
         items.swap(fromPosition, toPosition)
         notifyItemMoved(fromPosition, toPosition)
-        ensureBackgroundThread {
-            activity.queueDAO.updateOrder(queueId, items)
+        if (config.queueId == queueId) {
+            swapMediaItemInQueue(fromPosition, toPosition)
         }
     }
 
-    override fun onRowClear(myViewHolder: ViewHolder?) {}
+    override fun onRowClear(myViewHolder: ViewHolder?) {
+        if (config.queueId != queueId) {
+            executeBackgroundThread {
+                activity.queueDAO.updateOrder(queueId, items)
+            }
+        }
+    }
 
     override fun onRowSelected(myViewHolder: ViewHolder?) {}
 
     override fun onChange(position: Int) = items.getOrNull(position)?.title ?: ""
+
+    /**
+     * [MediaController.moveMediaItem] is the proper way to move media items but it doesn't work when shuffle mode is enabled. This method modifies
+     * the shuffle order when shuffle mode is enabled and defaults to [MediaController.moveMediaItem] otherwise.
+     */
+    private fun swapMediaItemInQueue(fromPosition: Int, toPosition: Int) {
+        context.withPlayer {
+            if (shuffleModeEnabled) {
+                val indices = shuffledMediaItemsIndices.toMutableList()
+                indices.swap(fromPosition, toPosition)
+                sendCommand(
+                    command = CustomCommands.SET_SHUFFLE_ORDER,
+                    extras = bundleOf(EXTRA_SHUFFLE_INDICES to indices.toIntArray())
+                )
+            } else {
+                moveMediaItem(fromPosition, toPosition)
+            }
+        }
+    }
 }

@@ -20,6 +20,7 @@ import com.simplemobiletools.musicplayer.activities.SimpleActivity
 import com.simplemobiletools.musicplayer.databinding.ItemTrackQueueBinding
 import com.simplemobiletools.musicplayer.extensions.*
 import com.simplemobiletools.musicplayer.helpers.EXTRA_SHUFFLE_INDICES
+import com.simplemobiletools.musicplayer.models.Events
 import com.simplemobiletools.musicplayer.models.Track
 import com.simplemobiletools.musicplayer.playback.CustomCommands
 
@@ -108,6 +109,7 @@ class QueueAdapter(activity: SimpleActivity, items: ArrayList<Track>, var curren
             }
         }
 
+        Events.QueueItemsChanged.setNeedToPostFromQueueActivity()
         context.removeQueueItems(selectedTracks) {
             refreshTracksList(positions)
         }
@@ -130,6 +132,7 @@ class QueueAdapter(activity: SimpleActivity, items: ArrayList<Track>, var curren
                 }
             }
 
+            Events.QueueItemsChanged.setNeedToPostFromQueueActivity()
             context.deleteTracks(selectedTracks) {
                 refreshTracksList(positions)
             }
@@ -204,6 +207,7 @@ class QueueAdapter(activity: SimpleActivity, items: ArrayList<Track>, var curren
     override fun onRowClear(myViewHolder: ViewHolder?) {
         isDragging = false
         updateCurrentTrack()
+        Events.QueueItemsChanged.setNeedToPostFromQueueActivity()
     }
 
     override fun onRowSelected(myViewHolder: ViewHolder?) {

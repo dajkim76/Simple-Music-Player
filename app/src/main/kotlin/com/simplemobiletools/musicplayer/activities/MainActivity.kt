@@ -9,6 +9,7 @@ import android.media.AudioManager
 import android.net.Uri
 import android.os.Bundle
 import android.widget.Toast
+import androidx.media3.common.MediaItem
 import androidx.viewpager2.widget.ViewPager2
 import com.simplemobiletools.commons.databinding.BottomTablayoutItemBinding
 import com.simplemobiletools.commons.dialogs.FilePickerDialog
@@ -24,6 +25,7 @@ import com.simplemobiletools.musicplayer.adapters.ViewPagerAdapter
 import com.simplemobiletools.musicplayer.databinding.ActivityMainBinding
 import com.simplemobiletools.musicplayer.dialogs.*
 import com.simplemobiletools.musicplayer.extensions.*
+import com.simplemobiletools.musicplayer.fragments.MultiQueueFragment
 import com.simplemobiletools.musicplayer.fragments.PlaylistsFragment
 import com.simplemobiletools.musicplayer.helpers.*
 import com.simplemobiletools.musicplayer.helpers.M3uImporter.ImportResult
@@ -94,6 +96,15 @@ class MainActivity : SimpleMusicActivity() {
 
         if (storedExcludedFolders != config.excludedFolders.hashCode()) {
             refreshAllFragments()
+        }
+
+        // update current track
+        val multiQueueFragment = getAdapter()?.getMultiQueueFragment() as? MultiQueueFragment
+        multiQueueFragment?.let {
+            withPlayer {
+                val mediaStoreId = currentMediaItem?.getMediaStoreId() ?: return@withPlayer
+                multiQueueFragment.updateCurrentTrack(mediaStoreId)
+            }
         }
     }
 
@@ -515,12 +526,21 @@ class MainActivity : SimpleMusicActivity() {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun queueItemsUpdated(event: Events.QueueItemsChanged) {
-        getAdapter()?.getMultiQueueFragment()?.setupFragment(this)
+        val multiQueueFragment = getAdapter()?.getMultiQueueFragment() as? MultiQueueFragment
+        multiQueueFragment?.queueItemsUpdated(this, event.queueId)
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun shouldRefreshFragments(event: Events.RefreshFragments) {
         refreshAllFragments()
+    }
+
+    override fun onMediaItemTransition(mediaItem: MediaItem?, reason: Int) {
+        super.onMediaItemTransition(mediaItem, reason)
+        val mediaStoreId = mediaItem?.getMediaStoreId() ?: return
+        val f = getAdapter()?.getMultiQueueFragment() as? MultiQueueFragment
+        val multiQueueFragment = f ?: return
+        multiQueueFragment.updateCurrentTrack(mediaStoreId)
     }
 
     private fun launchEqualizer() {

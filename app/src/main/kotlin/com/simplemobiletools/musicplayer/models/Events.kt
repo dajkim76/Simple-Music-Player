@@ -9,25 +9,37 @@ class Events {
     class RefreshFragments
     class RefreshTracks
     object QueueItemsChanged {
-        private var isPost = false
+        private var needToPost = false
         private var skipOnce = false
+        var queueId = 0L
+            private set
+        var fromQueueActivity = false
 
         fun setSkipOnce() {
             skipOnce = true
         }
 
-        fun setIsPost() {
+        fun setNeedToPostFromQueueActivity() {
+            fromQueueActivity = true
+            setNeedToPost()
+        }
+
+        fun setNeedToPost() {
             if (skipOnce) {
                 skipOnce = false
                 return
             }
-            isPost = true
+            needToPost = true
         }
 
-        fun getIsPost(): Boolean {
-            val r = isPost
-            isPost = false
+        fun getNeedToPost(): Boolean {
+            val r = needToPost
+            needToPost = false
             return r
+        }
+
+        fun setQueueId(queueId: Long) = apply {
+            this.queueId = queueId
         }
     }
 }

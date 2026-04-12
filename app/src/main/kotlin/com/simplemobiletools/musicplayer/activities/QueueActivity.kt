@@ -58,6 +58,10 @@ class QueueActivity : SimpleControllerActivity() {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun queueItemsChanged(event: Events.QueueItemsChanged) {
+        if (event.fromQueueActivity) {
+            event.fromQueueActivity = false
+            return
+        }
         binding.queueList.adapter = null
         setupAdapter()
     }
@@ -234,7 +238,9 @@ class QueueActivity : SimpleControllerActivity() {
                 val currentTrackId = currentMediaItem?.getMediaStoreId()
                 val currentPositionMs = currentPosition
                 val currentIndex = tracks.indexOfFirst { it.mediaStoreId == currentTrackId }.coerceAtLeast(0)
-                prepareUsingTracks(tracks, startIndex = currentIndex, startPositionMs = currentPositionMs, play = isPlaying)
+                prepareUsingTracks(tracks, startIndex = currentIndex, startPositionMs = currentPositionMs, play = isPlaying) {
+                    Events.QueueItemsChanged.setNeedToPostFromQueueActivity()
+                }
             }
         }
     }
