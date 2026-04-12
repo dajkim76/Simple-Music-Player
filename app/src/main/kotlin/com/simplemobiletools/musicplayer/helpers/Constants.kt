@@ -90,13 +90,14 @@ const val TAB_ARTISTS = 4
 const val TAB_ALBUMS = 8
 const val TAB_TRACKS = 16
 const val TAB_GENRES = 32
+const val TAB_MULTI_QUEUE = 256
 const val ACTIVITY_PLAYLIST_FOLDER = 64
 const val ACTIVITY_QUEUE = 128
 
 const val FLAG_MANUAL_CACHE = 1
 const val FLAG_IS_CURRENT = 2
 
-const val ALL_TABS_MASK = TAB_PLAYLISTS or TAB_FOLDERS or TAB_ARTISTS or TAB_ALBUMS or TAB_TRACKS
+const val ALL_TABS_MASK = TAB_PLAYLISTS or TAB_FOLDERS or TAB_ARTISTS or TAB_ALBUMS or TAB_MULTI_QUEUE
 
 val tabsList: ArrayList<Int>
     get() = arrayListOf(
@@ -104,6 +105,7 @@ val tabsList: ArrayList<Int>
         TAB_FOLDERS,
         TAB_ARTISTS,
         TAB_ALBUMS,
+        TAB_MULTI_QUEUE,
         TAB_TRACKS,
         TAB_GENRES
     )
@@ -138,3 +140,5 @@ const val M3U_ENTRY = "#EXTINF:"
 const val M3U_DURATION_SEPARATOR = ","
 
 fun getPermissionToRequest() = if (isTiramisuPlus()) PERMISSION_READ_MEDIA_AUDIO else PERMISSION_WRITE_STORAGE
+
+fun Lx(msg: String?) = android.util.Log.e("__T", msg ?: "null")

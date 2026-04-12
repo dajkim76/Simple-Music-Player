@@ -1,10 +1,8 @@
 package com.simplemobiletools.musicplayer.interfaces
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import com.simplemobiletools.musicplayer.models.QueueItem
+import com.simplemobiletools.musicplayer.models.Track
 
 @Dao
 interface QueueItemsDao {
@@ -13,6 +11,27 @@ interface QueueItemsDao {
 
     @Query("SELECT * FROM multi_queue_items WHERE queue_id = :queueId ORDER BY track_order")
     fun getAll(queueId: Long): List<QueueItem>
+
+    @Update
+    fun update(queueItems: List<QueueItem>)
+
+    @Query("DELETE FROM multi_queue_items WHERE queue_id = :queueId AND track_id = :trackId")
+    fun removeQueueItem(queueId: Long, trackId: Long)
+
+    @Transaction
+    fun updateOrder(queueId: Long, items: List<Track>) {
+        val queueItems = getAll(queueId)
+        val updateItems = items.mapIndexedNotNull { index, track ->
+            val item = queueItems.find { it.trackId == track.mediaStoreId }
+            if (item != null && item.trackOrder != index) {
+                item.trackOrder = index
+                item
+            } else {
+                null
+            }
+        }
+        update(updateItems)
+    }
 
     @Query("UPDATE multi_queue_items SET is_current = 0 WHERE queue_id = :queueId AND is_current = 1")
     fun resetCurrent(queueId: Long)

@@ -19,6 +19,7 @@ class ManageVisibleTabsDialog(val activity: BaseSimpleActivity, val callback: (r
             put(TAB_FOLDERS, binding.manageVisibleTabsFolders)
             put(TAB_ARTISTS, binding.manageVisibleTabsArtists)
             put(TAB_ALBUMS, binding.manageVisibleTabsAlbums)
+            put(TAB_MULTI_QUEUE, binding.manageVisibleTabsMultiQueue)
             put(TAB_TRACKS, binding.manageVisibleTabsTracks)
             put(TAB_GENRES, binding.manageVisibleTabsGenres)
         }

@@ -265,7 +265,7 @@ class MainActivity : SimpleMusicActivity() {
         updateNavigationBarColor(bottomBarColor)
     }
 
-    private fun getInactiveTabIndexes(activeIndex: Int) = (0 until tabsList.size).filter { it != activeIndex }
+    private fun getInactiveTabIndexes(activeIndex: Int) = (0 until getVisibleTabs().size).filter { it != activeIndex }
 
     private fun getTabIcon(position: Int): Drawable {
         val drawableId = when (position) {
@@ -273,6 +273,7 @@ class MainActivity : SimpleMusicActivity() {
             TAB_FOLDERS -> R.drawable.ic_folders_vector
             TAB_ARTISTS -> com.simplemobiletools.commons.R.drawable.ic_person_vector
             TAB_ALBUMS -> R.drawable.ic_album_vector
+            TAB_MULTI_QUEUE -> R.drawable.ic_queue
             TAB_GENRES -> R.drawable.ic_genre_vector
             else -> R.drawable.ic_music_note_vector
         }
@@ -286,6 +287,7 @@ class MainActivity : SimpleMusicActivity() {
             TAB_FOLDERS -> R.string.folders
             TAB_ARTISTS -> R.string.artists
             TAB_ALBUMS -> R.string.albums
+            TAB_MULTI_QUEUE -> R.string.queue
             TAB_GENRES -> R.string.genres
             else -> R.string.tracks
         }

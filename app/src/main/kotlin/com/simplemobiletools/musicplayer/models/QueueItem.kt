@@ -29,7 +29,7 @@ fun List<QueueData>.toJson(): String = Json.encodeToString(this)
 data class QueueItem(
     @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id") var id: Long,
     @ColumnInfo(name = "queue_id") var queueId: Long,
-    @ColumnInfo(name = "track_id") var trackId: Long,
+    @ColumnInfo(name = "track_id") var trackId: Long,   // media store id
     @ColumnInfo(name = "track_order") var trackOrder: Int,
     @ColumnInfo(name = "is_current") var isCurrent: Boolean,
     @ColumnInfo(name = "last_position") var lastPosition: Long // Changed to Milliseconds

@@ -23,6 +23,7 @@ class ViewPagerAdapter(val activity: SimpleActivity) : RecyclerView.Adapter<View
             TAB_FOLDERS -> FragmentFoldersBinding.inflate(layoutInflater, parent, false).root
             TAB_ARTISTS -> FragmentArtistsBinding.inflate(layoutInflater, parent, false).root
             TAB_ALBUMS -> FragmentAlbumsBinding.inflate(layoutInflater, parent, false).root
+            TAB_MULTI_QUEUE -> FragmentMultiQueueBinding.inflate(layoutInflater, parent, false).root
             TAB_TRACKS -> FragmentTracksBinding.inflate(layoutInflater, parent, false).root
             TAB_GENRES -> FragmentGenresBinding.inflate(layoutInflater, parent, false).root
             else -> throw IllegalArgumentException("Unknown tab: $tab")
@@ -53,6 +54,8 @@ class ViewPagerAdapter(val activity: SimpleActivity) : RecyclerView.Adapter<View
     fun getArtistsFragment() = fragments.values.find { it is ArtistsFragment }
 
     fun getAlbumsFragment() = fragments.values.find { it is AlbumsFragment }
+
+    fun getMultiQueueFragment() = fragments.values.find { it is MultiQueueFragment }
 
     fun getTracksFragment() = fragments.values.find { it is TracksFragment }
 }
