@@ -18,6 +18,16 @@ interface QueueItemsDao {
     @Query("DELETE FROM multi_queue_items WHERE queue_id = :queueId AND track_id = :trackId")
     fun removeQueueItem(queueId: Long, trackId: Long)
 
+    @Query("DELETE FROM multi_queue_items WHERE track_id = :trackId")
+    fun deleteTrack(trackId: Long)
+
+    @Transaction
+    fun deleteTrackList(trackList: List<Track>) {
+        trackList.forEach {
+            deleteTrack(it.mediaStoreId)
+        }
+    }
+
     @Transaction
     fun updateOrder(queueId: Long, items: List<Track>) {
         val queueItems = getAll(queueId)

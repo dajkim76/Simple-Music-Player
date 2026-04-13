@@ -189,6 +189,7 @@ abstract class SimpleControllerActivity : SimpleActivity(), Player.Listener {
         try {
             audioHelper.deleteTracks(tracks)
             audioHelper.removeInvalidAlbumsArtists()
+            queueDAO.deleteTrackList(tracks)
         } catch (ignored: Exception) {
         }
 

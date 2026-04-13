@@ -134,12 +134,7 @@ class MultiQueueAdapter(
 
             // deleteTrakcs에서 removeQueueItem도 호출한다.
             context.deleteTracks(selectedTracks) {
-                executeBackgroundThread {
-                    selectedTracks.forEach {
-                        activity.queueDAO.removeQueueItem(queueId, it.mediaStoreId)
-                    }
-                    refreshTracksList(positions)
-                }
+                refreshTracksList(positions)
             }
         }
     }

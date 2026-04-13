@@ -132,6 +132,7 @@ abstract class BaseMusicAdapter<Type>(
             context.runOnUiThread {
                 context.addTracksToQueue(allSelectedTracks) {
                     finishActMode()
+                    Events.QueueItemsChanged.setNeedToPost()
                 }
             }
         }
