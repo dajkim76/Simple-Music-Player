@@ -114,6 +114,7 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
                     R.id.goto_artist_page -> gotoArtistPage()
                     R.id.goto_album_page -> gotoAlbumPage()
                     R.id.track_property -> currentTrack?.let { showTrackProperties(listOf(it)) }
+                    R.id.new_timestamp -> currentTrack?.let { onClickNewCue(it) }
                     else -> return@setOnMenuItemClickListener false
                 }
                 return@setOnMenuItemClickListener true
@@ -761,7 +762,7 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
                         val timestamp = (currentTimestamp + seconds).takeIf { it >= 0 } ?: 0
                         val title = binding.title.text.toString().replace("\n", "").trim().takeIf { it.isNotBlank() } ?: "Untitled"
                         val cue = Cue(timestamp, title)
-                        val cueList = cueAdapter?.cues?.toMutableList() ?: return@setPositiveButton
+                        val cueList = cueAdapter?.cues?.toMutableList() ?: mutableListOf()
                         cueList.add(cue)
                         cueList.sortBy { it.timestamp }
                         updateCueList(track, cueList)

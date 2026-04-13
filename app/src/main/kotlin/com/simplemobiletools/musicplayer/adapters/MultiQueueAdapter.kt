@@ -160,7 +160,7 @@ class MultiQueueAdapter(
                 false
             }
 
-            if (track.mediaStoreId == lastMediaId) {
+            if (actMode == null && track.mediaStoreId == lastMediaId) {
                 this.root.foreground = foregroundDrawable
             } else {
                 this.root.foreground = null

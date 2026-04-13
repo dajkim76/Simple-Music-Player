@@ -4,6 +4,7 @@ autofittextview = "0.2.1"
 desugar_jdk_libs = "2.1.5"
 # higher versions of jaudiotagger not compatible with <= API 25 devices
 # https://bitbucket.org/ijabz/jaudiotagger/issues/149/some-nio-classes-are-unavailable-while
+flexbox = "3.0.0"
 jaudiotagger = "3.0.1"
 kotlin = "2.3.20"
 #KSP
@@ -97,6 +98,7 @@ androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref =
 eventbus = { module = "org.greenrobot:eventbus", version.ref = "eventbus" }
 #Helpers
 desugar_jdk_libs = { module = "com.android.tools:desugar_jdk_libs", version.ref = "desugar_jdk_libs" }
+flexbox = { module = "com.google.android.flexbox:flexbox", version.ref = "flexbox" }
 jaudiotagger = { module = "net.jthink:jaudiotagger", version.ref = "jaudiotagger" }
 lottie = { module = "com.airbnb.android:lottie", version.ref = "lottie" }
 autofittextview = { module = "me.grantland:autofittextview", version.ref = "autofittextview" }

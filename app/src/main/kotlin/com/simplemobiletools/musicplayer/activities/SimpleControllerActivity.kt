@@ -186,11 +186,13 @@ abstract class SimpleControllerActivity : SimpleActivity(), Player.Listener {
     }
 
     fun deleteTracks(tracks: List<Track>, callback: () -> Unit) {
-        try {
-            audioHelper.deleteTracks(tracks)
-            audioHelper.removeInvalidAlbumsArtists()
-            queueDAO.deleteTrackList(tracks)
-        } catch (ignored: Exception) {
+        ensureBackgroundThread { // mainthread에서 호출되는 경우가 있어서 방어코드
+            try {
+                audioHelper.deleteTracks(tracks)
+                audioHelper.removeInvalidAlbumsArtists()
+                queueDAO.deleteTrackList(tracks)
+            } catch (ignored: Exception) {
+            }
         }
 
         val contentUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI

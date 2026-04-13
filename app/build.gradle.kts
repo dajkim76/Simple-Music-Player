@@ -114,7 +114,7 @@ android {
 dependencies {
     implementation(project(":Simple-Commons:commons"))
     implementation(libs.eventbus)
-
+    implementation(libs.flexbox)
     implementation(libs.androidx.media)
     implementation(libs.androidx.swiperefreshlayout)
     implementation(libs.androidx.constraintlayout)
