@@ -61,8 +61,8 @@ class MultiQueueFragment(context: Context, attributeSet: AttributeSet) : MyViewP
                     }
                     binding.multiQueueList.adapter = adapter
                 } else {
-                    multiQueueAdapter.updateItems(tracks, forceUpdate = true)
                     multiQueueAdapter.queueId = currentQueueId
+                    multiQueueAdapter.updateItems(tracks, forceUpdate = true)
                     multiQueueAdapter.updateLastMediaId(lastMediaId)
                 }
 
@@ -90,6 +90,7 @@ class MultiQueueFragment(context: Context, attributeSet: AttributeSet) : MyViewP
         val startPositionMs = if (selectedTrack.isCurrent()) selectedTrack.lastPosition else 0
         val queueSource = "q:$currentQueueId"
         config.queueId = currentQueueId
+        getAdapter()?.notifyDataChanged()
         Events.QueueItemsChanged.setSkipOnce()
         prepareAndPlay(tracks, showPlayback = config.showPlaybackActivity, queueSource, startIndex, startPositionMs = startPositionMs)
         binding.multiQueueSelectHeader.foreground = foregroundDrawable
@@ -107,6 +108,7 @@ class MultiQueueFragment(context: Context, attributeSet: AttributeSet) : MyViewP
             setupFragment(activity)
         } else {
             updateQueueName()
+            getAdapter()?.notifyDataChanged()
         }
     }
 

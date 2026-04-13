@@ -153,6 +153,9 @@ class MultiQueueAdapter(
             trackQueueTitle.setTextColor(textColor)
             trackQueueDuration.setTextColor(textColor)
             trackQueueDuration.text = track.duration.getFormattedDuration()
+            val alpha = if (config.queueId == queueId) 1.0f else 0.6f
+            trackQueueTitle.alpha = alpha
+            trackQueueDuration.alpha = alpha
             trackQueueDragHandle.beVisibleIf(textToHighlight.isEmpty())
             trackQueueDragHandle.applyColorFilter(textColor)
             trackQueueDragHandle.setOnTouchListener { _, event ->
