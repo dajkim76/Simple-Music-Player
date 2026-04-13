@@ -258,9 +258,9 @@ abstract class BaseMusicAdapter<Type>(
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun notifyDataChanged() = if (itemCount == 0) {
+    fun notifyDataChanged() {
+        // When existing and newly added items are mixed, there is a problem where updates occur sequentially.
+        // Since view binding costs are low and images are cached in memory or Glide cached, updates are performed by simply calling notifyDataSetChanged.
         notifyDataSetChanged()
-    } else {
-        notifyItemRangeChanged(0, itemCount)
     }
 }
