@@ -17,10 +17,12 @@ import com.simplemobiletools.musicplayer.dialogs.SelectTracklistDialog.Companion
 import com.simplemobiletools.musicplayer.dialogs.SelectTracklistDialog.Companion.onSelectTracklist
 import com.simplemobiletools.musicplayer.extensions.config
 import com.simplemobiletools.musicplayer.extensions.queueDAO
+import com.simplemobiletools.musicplayer.models.Events
 import com.simplemobiletools.musicplayer.models.QueueData
 import com.simplemobiletools.musicplayer.models.getQueueDataListFromJson
 import com.simplemobiletools.musicplayer.models.toJson
 import com.simplemobiletools.musicplayer.objects.executeBackgroundThread
+import org.greenrobot.eventbus.EventBus
 
 class SelectQueueDialog(val activity: Activity, val playQueue: Boolean = true, val callback: (queueId: Long) -> Unit = {}) {
     private var dialog: AlertDialog? = null
@@ -153,6 +155,10 @@ class SelectQueueDialog(val activity: Activity, val playQueue: Boolean = true, v
                     activity.queueDAO.deleteAllItems(id)
                     if (config.queueId == id) {
                         prepareQueue(0)
+                    }
+                    if (config.tabQueueId == id) {
+                        config.tabQueueId = 0
+                        EventBus.getDefault().post(Events.QueueItemsChanged.setQueueId(id))
                     }
                 }
             }

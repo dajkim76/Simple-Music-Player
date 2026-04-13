@@ -19,7 +19,7 @@ import com.simplemobiletools.musicplayer.objects.executeBackgroundThread
 class MultiQueueFragment(context: Context, attributeSet: AttributeSet) : MyViewPagerFragment(context, attributeSet) {
     private var tracks = ArrayList<Track>()
     private val config = context.config
-    private var currentQueueId = config.queueId
+    private var currentQueueId = config.tabQueueId
     private val binding by viewBinding(FragmentMultiQueueBinding::bind)
     private val foregroundDrawable = context.resources.getColoredDrawableWithColor(R.drawable.rounded_white_border, context.getProperPrimaryColor())
 
@@ -29,6 +29,7 @@ class MultiQueueFragment(context: Context, attributeSet: AttributeSet) : MyViewP
         binding.multiQueueSelectHeader.setOnClickListener {
             SelectQueueDialog(activity as SimpleActivity, playQueue = false) { queueId ->
                 currentQueueId = queueId
+                config.tabQueueId = queueId
                 setupFragment(activity)
             }
         }
@@ -74,9 +75,13 @@ class MultiQueueFragment(context: Context, attributeSet: AttributeSet) : MyViewP
     }
 
     private fun updateQueueName() {
-        val queueDataList = getQueueDataListFromJson(config.queueListJson)
-        val currentQueue = queueDataList.find { it.queueId == currentQueueId }
-        binding.currentQueueName.text = currentQueue?.name ?: context.getString(R.string.default_queue)
+        if (currentQueueId == 0L) {
+            binding.currentQueueName.text = context.getString(R.string.default_queue)
+        } else {
+            val queueDataList = getQueueDataListFromJson(config.queueListJson)
+            val currentQueue = queueDataList.find { it.queueId == currentQueueId }
+            binding.currentQueueName.text = currentQueue?.name ?: "Noname"
+        }
 
         if (config.queueId == currentQueueId) {
             binding.multiQueueSelectHeader.foreground = foregroundDrawable
