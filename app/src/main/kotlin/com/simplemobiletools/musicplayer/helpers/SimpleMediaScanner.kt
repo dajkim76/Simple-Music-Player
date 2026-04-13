@@ -51,9 +51,9 @@ class SimpleMediaScanner private constructor(private val context: Application) {
      * triggered in two stages to ensure that the UI is updated as soon as possible.
      */
     @Synchronized
-    fun scan(progress: Boolean = false, callback: ((complete: Boolean) -> Unit)? = null) {
+    fun scan(progress: Boolean = false, forceScan: Boolean = false, callback: ((complete: Boolean) -> Unit)? = null) {
         if (!progress) {
-            if (!needToFullScan()) {
+            if (!forceScan && !needToFullScan()) {
                 // cancel full scan
                 return
             }

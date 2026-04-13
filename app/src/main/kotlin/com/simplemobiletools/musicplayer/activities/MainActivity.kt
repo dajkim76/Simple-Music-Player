@@ -95,7 +95,7 @@ class MainActivity : SimpleMusicActivity() {
         }
 
         if (storedExcludedFolders != config.excludedFolders.hashCode()) {
-            refreshAllFragments()
+            refreshAllFragments(forceScan = true)
         }
 
         // update current track
@@ -194,13 +194,13 @@ class MainActivity : SimpleMusicActivity() {
         refreshAllFragments()
     }
 
-    private fun refreshAllFragments(showProgress: Boolean = config.appRunCount == 1) {
+    private fun refreshAllFragments(showProgress: Boolean = config.appRunCount == 1, forceScan: Boolean = false) {
         if (showProgress) {
             binding.loadingProgressBar.show()
         }
 
         handleNotificationPermission { granted ->
-            mediaScanner.scan(progress = showProgress && granted) { complete ->
+            mediaScanner.scan(progress = showProgress && granted, forceScan = forceScan) { complete ->
                 runOnUiThread {
                     getAllFragments().forEach {
                         it.setupFragment(this)
@@ -532,7 +532,7 @@ class MainActivity : SimpleMusicActivity() {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun shouldRefreshFragments(event: Events.RefreshFragments) {
-        refreshAllFragments()
+        refreshAllFragments(forceScan = true)
     }
 
     override fun onMediaItemTransition(mediaItem: MediaItem?, reason: Int) {
