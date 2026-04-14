@@ -36,6 +36,7 @@ class MultiQueueAdapter(
     private var startReorderDragListener: StartReorderDragListener
     private val foregroundDrawable = activity.resources.getColoredDrawableWithColor(R.drawable.rounded_white_border, activity.getProperPrimaryColor())
     private val config = activity.config
+    private var isItemOrderChanged = false
 
     init {
         setupDragListener(true)
@@ -45,6 +46,7 @@ class MultiQueueAdapter(
 
         startReorderDragListener = object : StartReorderDragListener {
             override fun requestDrag(viewHolder: RecyclerView.ViewHolder) {
+                isItemOrderChanged = false
                 touchHelper.startDrag(viewHolder)
             }
         }
@@ -188,10 +190,11 @@ class MultiQueueAdapter(
         if (config.queueId == queueId) {
             swapMediaItemInQueue(fromPosition, toPosition)
         }
+        isItemOrderChanged = true
     }
 
     override fun onRowClear(myViewHolder: ViewHolder?) {
-        if (config.queueId != queueId) {
+        if (isItemOrderChanged && config.queueId != queueId) {
             executeBackgroundThread {
                 activity.queueDAO.updateOrder(queueId, items)
             }

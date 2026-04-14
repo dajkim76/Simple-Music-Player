@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/dialog_select_queue_holder"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
@@ -9,21 +10,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <LinearLayout
-            android:id="@+id/dialog_select_queue_linear"
+        <com.simplemobiletools.commons.views.MyRecyclerView
+            android:id="@+id/dialog_select_queue_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/medium_margin"
-            android:paddingBottom="@dimen/smaller_margin"
-            android:paddingStart="@dimen/smaller_margin"
-            android:paddingEnd="@dimen/smaller_margin"
-            android:orientation="vertical" />
+            app:layoutManager="com.simplemobiletools.commons.views.MyLinearLayoutManager" />
 
         <ImageView
             android:id="@+id/dialog_select_queue_divider"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_below="@+id/dialog_select_queue_linear"
+            android:layout_below="@+id/dialog_select_queue_list"
             android:background="@color/divider_grey"
             android:importantForAccessibility="no" />
 
