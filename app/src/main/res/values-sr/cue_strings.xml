@@ -31,4 +31,5 @@
     <string name="queue_name">Назив реда</string>
     <string name="select_queue">Изаберите ред</string>
     <string name="default_queue">Подразумевано Назив реда</string>
+    <string name="queue">Назив реда</string>
 </resources>

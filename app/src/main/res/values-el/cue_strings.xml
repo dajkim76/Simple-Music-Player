@@ -31,4 +31,5 @@
     <string name="queue_name">Όνομα ουράς</string>
     <string name="select_queue">Επιλογή ουράς</string>
     <string name="default_queue">Προεπιλογή Όνομα ουράς</string>
+    <string name="queue">ουράς</string>
 </resources>

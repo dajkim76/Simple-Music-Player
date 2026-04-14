@@ -31,4 +31,5 @@
     <string name="queue_name">ക്യൂവിന്റെ പേര്</string>
     <string name="select_queue">ക്യൂ തിരഞ്ഞെടുക്കുക</string>
     <string name="default_queue">ഡിഫോൾട്ട് ക്യൂവിന്റെ പേര്</string>
+    <string name="queue">ക്യൂവിന്റെ</string>
 </resources>

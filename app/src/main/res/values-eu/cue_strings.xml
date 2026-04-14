@@ -31,4 +31,5 @@
     <string name="queue_name">Ilararen izena</string>
     <string name="select_queue">Hautatu ilara</string>
     <string name="default_queue">Lehenetsia Ilararen izena</string>
+    <string name="queue">Ilararen izena</string>
 </resources>

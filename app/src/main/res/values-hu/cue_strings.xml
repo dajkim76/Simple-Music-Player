@@ -31,4 +31,5 @@
     <string name="queue_name">Sor neve</string>
     <string name="select_queue">Sor kiválasztása</string>
     <string name="default_queue">Alapértelmezett Sor neve</string>
+    <string name="queue">Sor neve</string>
 </resources>

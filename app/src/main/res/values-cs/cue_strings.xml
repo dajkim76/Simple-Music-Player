@@ -31,4 +31,5 @@
     <string name="queue_name">Název fronty</string>
     <string name="select_queue">Vybrat frontu</string>
     <string name="default_queue">Výchozí Název fronty</string>
+    <string name="queue">fronty</string>
 </resources>

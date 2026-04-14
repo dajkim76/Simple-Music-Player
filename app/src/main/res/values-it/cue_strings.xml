@@ -31,4 +31,5 @@
     <string name="queue_name">Nome coda</string>
     <string name="select_queue">Seleziona coda</string>
     <string name="default_queue">Predefinito e coda</string>
+    <string name="queue">Coda</string>
 </resources>

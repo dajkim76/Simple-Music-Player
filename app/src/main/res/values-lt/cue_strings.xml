@@ -31,4 +31,5 @@
     <string name="queue_name">Eilės pavadinimas</string>
     <string name="select_queue">Pasirinkti eilę</string>
     <string name="default_queue">Numatytasis Eilės pavadinimas</string>
+    <string name="queue">Eilės pavadinimas</string>
 </resources>

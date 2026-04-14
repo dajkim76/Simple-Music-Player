@@ -31,4 +31,5 @@
     <string name="queue_name">Nama giliran</string>
     <string name="select_queue">Pilih giliran</string>
     <string name="default_queue">Lalai Nama giliran</string>
+    <string name="queue">Nama giliran</string>
 </resources>

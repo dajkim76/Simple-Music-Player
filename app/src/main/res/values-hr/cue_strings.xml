@@ -31,4 +31,5 @@
     <string name="queue_name">Naziv redoslijeda</string>
     <string name="select_queue">Odaberi redoslijed</string>
     <string name="default_queue">Zadano Naziv redoslijeda</string>
+    <string name="queue">redoslije</string>
 </resources>

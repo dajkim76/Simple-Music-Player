@@ -31,4 +31,5 @@
     <string name="queue_name">Nume coadă</string>
     <string name="select_queue">Selectează coada</string>
     <string name="default_queue">Implicit Nume coadă</string>
+    <string name="queue">coadă</string>
 </resources>

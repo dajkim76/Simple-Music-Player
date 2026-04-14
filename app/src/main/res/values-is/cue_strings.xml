@@ -31,4 +31,5 @@
     <string name="queue_name">Nafn raðar</string>
     <string name="select_queue">Velja röð</string>
     <string name="default_queue">Sjálfgefið Nafn raðar</string>
+    <string name="queue">Nafn raðar</string>
 </resources>

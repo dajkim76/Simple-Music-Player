@@ -31,4 +31,5 @@
     <string name="queue_name">Име на опашката</string>
     <string name="select_queue">Изберете опашка</string>
     <string name="default_queue">По подразбиране Име на опашката</string>
+    <string name="queue">Име на опашката</string>
 </resources>

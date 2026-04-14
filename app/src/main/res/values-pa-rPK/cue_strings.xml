@@ -31,4 +31,5 @@
     <string name="queue_name">کیو دا ناں</string>
     <string name="select_queue">کیو چنو</string>
     <string name="default_queue">ڈیفالٹ کیو دا ناں</string>
+    <string name="queue">کیو دا ناں</string>
 </resources>

@@ -31,4 +31,5 @@
     <string name="queue_name">Nombre de la cola</string>
     <string name="select_queue">Seleccionar cola</string>
     <string name="default_queue">Predeterminado de la cola</string>
-    </resources>
+        <string name="queue">Cola</string>
+</resources>

@@ -13,7 +13,7 @@
     <string name="cue_not_playable_desc">"Trek adı '@' ilə başlayırsa, o, çalınmayacaq."</string>
     <string name="favorites_toggle">Sevimliləri dəyişdir</string>
     <string name="adjust_timestamp">Zaman damğasını tənzimləyin</string>
-    <string name="youtube_timestamp_player">Youtube Zaman Damğası Pleyeri</string>
+    <string name="youtube_timestamp_player">Youtube Zaman Damgası Pleyeri</string>
     <string name="demo_video">Demo Video</string>
     <string name="show_playback_activity_when_play_track">Bir treki oynatdığınızda, o sizi həmin trekin oxutma ekranına aparır.</string>
     <string name="recently_added_tracks">Bu yaxınlarda əlavə edilmiş treklər</string>
@@ -31,4 +31,5 @@
     <string name="queue_name">Növbə adı</string>
     <string name="select_queue">Növbə seçin</string>
     <string name="default_queue">Defolt Növbə adı</string>
+    <string name="queue">Növbə</string>
 </resources>

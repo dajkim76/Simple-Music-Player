@@ -31,4 +31,5 @@
     <string name="queue_name">Назва черги</string>
     <string name="select_queue">Вибрати чергу</string>
     <string name="default_queue">За замовчуванням Назва черги</string>
+    <string name="queue">Назва черги</string>
 </resources>

@@ -31,4 +31,5 @@
     <string name="queue_name">Kønamn</string>
     <string name="select_queue">Vel kø</string>
     <string name="default_queue">Standard Kønamn</string>
+    <string name="queue">Kø</string>
 </resources>

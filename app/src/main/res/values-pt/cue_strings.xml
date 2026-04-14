@@ -12,7 +12,7 @@
     <string name="playable">Jogável</string>
     <string name="cue_not_playable_desc">"Se o nome da faixa começar com '@', ela não será reproduzida."</string>
     <string name="favorites_toggle">Alternar favoritos</string>
-    <string name="adjust_timestamp">Ajustar o carimbo de data/hora</string>
+    <string name="adjust_timestamp">Ajuster o carimbo de data/hora</string>
     <string name="youtube_timestamp_player">Reprodutor de carimbo de data/hora do Youtube</string>
     <string name="demo_video">Vídeo de demonstração</string>
     <string name="show_playback_activity_when_play_track">Quando você reproduz uma faixa, isso leva você para a tela de reprodução dessa faixa.</string>
@@ -30,5 +30,6 @@
     <string name="create_new_queue">Criar nova fila</string>
     <string name="queue_name">Nome da fila</string>
     <string name="select_queue">Selecionar fila</string>
-    <string name="default_queue">Predefinido e da fila</string>
+    <string name="default_queue">Predefinido da fila</string>
+    <string name="queue">Fila</string>
 </resources>

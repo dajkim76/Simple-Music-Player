@@ -31,4 +31,5 @@
     <string name="queue_name">队列名称</string>
     <string name="select_queue">选择队列</string>
     <string name="default_queue">默认 队列称</string>
-    </resources>
+        <string name="queue">队列</string>
+</resources>

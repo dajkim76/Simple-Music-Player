@@ -31,4 +31,5 @@
     <string name="queue_name">Nazwa kolejki</string>
     <string name="select_queue">Wybierz kolejkę</string>
     <string name="default_queue">Domyślne Nazwa kolejki</string>
+    <string name="queue">kolejki</string>
 </resources>

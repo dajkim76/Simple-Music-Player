@@ -31,4 +31,5 @@
     <string name="queue_name">Järjekorra nimi</string>
     <string name="select_queue">Vali järjekord</string>
     <string name="default_queue">Vaikimisi Järjekorra nimi</string>
+    <string name="queue">Järjekorra</string>
 </resources>

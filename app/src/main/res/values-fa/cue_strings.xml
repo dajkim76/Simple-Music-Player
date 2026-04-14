@@ -31,4 +31,5 @@
     <string name="queue_name">نام صف</string>
     <string name="select_queue">انتخاب صف</string>
     <string name="default_queue">پیش‌فرض نام صف</string>
+    <string name="queue">صف</string>
 </resources>

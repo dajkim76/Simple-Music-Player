@@ -31,4 +31,5 @@
     <string name="queue_name">Nomo de vico</string>
     <string name="select_queue">Elektu vicon</string>
     <string name="default_queue">Implicite o de vico</string>
+    <string name="queue">o de vico</string>
 </resources>

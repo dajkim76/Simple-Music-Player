@@ -31,4 +31,5 @@
     <string name="queue_name">Wachtrijnaam</string>
     <string name="select_queue">Selecteer wachtrij</string>
     <string name="default_queue">Standaard Wachtrijnaam</string>
+    <string name="queue">Wachtrijnaam</string>
 </resources>

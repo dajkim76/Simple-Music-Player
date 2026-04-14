@@ -31,4 +31,5 @@
     <string name="queue_name">Jonon nimi</string>
     <string name="select_queue">Valitse jono</string>
     <string name="default_queue">Oletus Jonon nimi</string>
+    <string name="queue">Jonon</string>
 </resources>

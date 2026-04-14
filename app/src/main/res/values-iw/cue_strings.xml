@@ -4,7 +4,7 @@
     <string name="youtube_timestamp_info">תכונת חותמת הזמן של YouTube מאפשרת לך ליצור רשימת שירים באופן אוטומטי על ידי העתקה והדבקה של טקסט של חותמת זמן מהערות YouTube.</string>
     <string name="source_code">קוד מקור</string>
     <string name="no_cue">אין רמז</string>
-    <string name="youtube_meta_data">מטא נתונים של Youtube</string>
+    <string name="youtube_meta_data">מטא ננתונים של Youtube</string>
     <string name="all_data">כל הנתונים</string>
     <string name="youtube">יוטיוב</string>
     <string name="make_cue_list">הכן רשימת רמזים</string>
@@ -15,7 +15,7 @@
     <string name="adjust_timestamp">התאם את חותמת הזמן</string>
     <string name="youtube_timestamp_player">נגן חותמות זמן של יוטיוב</string>
     <string name="demo_video">סרטון הדגמה</string>
-    <string name="show_playback_activity_when_play_track">כאשר אתה מנגן רצועה, זה לוקח אותך למסך ההשמעה של רצועה זו.</string>
+    <string name="show_playback_activity_when_play_track">כאשר אתה מנגן רצועה, זה לוקח אותך למסך ההשมעה של רצועה זו.</string>
     <string name="recently_added_tracks">רצועות שנוספו לאחרונה</string>
     <string name="most_played_tracks">הרצועות המושמעות ביותר</string>
     <string name="recently_played_tracks">רצועות שהושמעו לאחרונה</string>
@@ -30,5 +30,6 @@
     <string name="create_new_queue">צור תור חדש</string>
     <string name="queue_name">שם התור</string>
     <string name="select_queue">בחר תור</string>
-    <string name="default_queue">ברירת מחדル שם התור</string>
+    <string name="default_queue">ברירת מחדל שם התור</string>
+    <string name="queue">תור</string>
 </resources>

@@ -71,12 +71,12 @@
         <item quantity="other">%d Track</item>
     </plurals>
     <!-- Queue -->
-    <string name="next_track">Next:</string>
-    <string name="track_queue">Track queue</string>
-    <string name="add_to_queue">Add to queue</string>
+    <string name="next_track">ถัดไป:</string>
+    <string name="track_queue">คิวเพลง</string>
+    <string name="add_to_queue">เพิ่มลงในคิว</string>
     <string name="play_next">Play next</string>
-    <string name="remove_from_queue">Remove from queue</string>
-    <string name="create_playlist_from_queue">Create playlist from queue</string>
+    <string name="remove_from_queue">เอาออกจากคิว</string>
+    <string name="create_playlist_from_queue">สร้างรายการเล่นจากคิว</string>
     <!-- Settings -->
     <string name="equalizer">Equalizer</string>
     <string name="swap_prev_next">Swap previous/next headphone buttons</string>

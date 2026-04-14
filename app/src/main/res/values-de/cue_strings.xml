@@ -30,5 +30,6 @@
     <string name="create_new_queue">Neue Warteschlange erstellen</string>
     <string name="queue_name">Warteschlangen-Name</string>
     <string name="select_queue">Warteschlange auswählen</string>
-    <string name="default_queue">Standard Warteschlangen-</string>
+    <string name="default_queue">Standard Warteschlangen-Name</string>
+    <string name="queue">Warteschlange</string>
 </resources>

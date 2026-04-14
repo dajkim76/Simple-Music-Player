@@ -31,4 +31,5 @@
     <string name="queue_name">Nome da fila</string>
     <string name="select_queue">Selecionar fila</string>
     <string name="default_queue">Padrão e da fila</string>
+    <string name="queue">Fila</string>
 </resources>

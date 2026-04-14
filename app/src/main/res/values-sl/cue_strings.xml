@@ -31,4 +31,5 @@
     <string name="queue_name">Ime čakalne vrste</string>
     <string name="select_queue">Izberi čakalno vrsto</string>
     <string name="default_queue">Privzeto Ime čakalne vrste</string>
+    <string name="queue">Ime čakalne vrste</string>
 </resources>
