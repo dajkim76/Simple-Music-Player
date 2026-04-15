@@ -101,11 +101,11 @@ const val ALL_TABS_MASK = TAB_PLAYLISTS or TAB_FOLDERS or TAB_ARTISTS or TAB_ALB
 
 val tabsList: ArrayList<Int>
     get() = arrayListOf(
+        TAB_MULTI_QUEUE,
         TAB_PLAYLISTS,
+        TAB_ALBUMS,
         TAB_FOLDERS,
         TAB_ARTISTS,
-        TAB_ALBUMS,
-        TAB_MULTI_QUEUE,
         TAB_TRACKS,
         TAB_GENRES
     )

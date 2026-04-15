@@ -11,10 +11,22 @@
         android:layout_height="wrap_content"
         android:padding="@dimen/medium_margin">
 
+        <ImageView
+            android:id="@+id/multi_queue_play"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_centerVertical="true"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="@dimen/medium_margin"
+            android:src="@drawable/ic_play_vector" />
+
         <LinearLayout
             android:id="@+id/multi_queue_select_header"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_toEndOf="@+id/multi_queue_play"
             android:background="?attr/selectableItemBackground"
             android:clickable="true"
             android:focusable="true"
@@ -42,18 +54,6 @@
                 android:rotation="90"
                 android:src="@drawable/ic_chevron_right_vector" />
         </LinearLayout>
-
-        <ImageView
-            android:id="@+id/multi_queue_play"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:clickable="true"
-            android:focusable="true"
-            android:padding="@dimen/small_margin"
-            android:src="@drawable/ic_play_vector" />
     </RelativeLayout>
 
     <com.simplemobiletools.commons.views.MyTextView

@@ -31,5 +31,5 @@
     <string name="queue_name">Queue name</string>
     <string name="select_queue">Select queue</string>
     <string name="default_queue">Default queue</string>
-    <string name="queue">Queue</string>
+    <string name="queue">Queues</string>
 </resources>

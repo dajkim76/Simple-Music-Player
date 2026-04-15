@@ -14,12 +14,28 @@
         android:paddingEnd="@dimen/activity_margin">
 
         <com.simplemobiletools.commons.views.MyAppCompatCheckbox
+            android:id="@+id/manage_visible_tabs_multi_queue"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/activity_margin"
+            android:paddingBottom="@dimen/activity_margin"
+            android:text="@string/queue" />
+
+        <com.simplemobiletools.commons.views.MyAppCompatCheckbox
             android:id="@+id/manage_visible_tabs_playlists"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingTop="@dimen/activity_margin"
             android:paddingBottom="@dimen/activity_margin"
             android:text="@string/playlists" />
+
+        <com.simplemobiletools.commons.views.MyAppCompatCheckbox
+            android:id="@+id/manage_visible_tabs_albums"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/activity_margin"
+            android:paddingBottom="@dimen/activity_margin"
+            android:text="@string/albums" />
 
         <com.simplemobiletools.commons.views.MyAppCompatCheckbox
             android:id="@+id/manage_visible_tabs_folders"
@@ -36,22 +52,6 @@
             android:paddingTop="@dimen/activity_margin"
             android:paddingBottom="@dimen/activity_margin"
             android:text="@string/artists" />
-
-        <com.simplemobiletools.commons.views.MyAppCompatCheckbox
-            android:id="@+id/manage_visible_tabs_albums"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="@dimen/activity_margin"
-            android:paddingBottom="@dimen/activity_margin"
-            android:text="@string/albums" />
-
-        <com.simplemobiletools.commons.views.MyAppCompatCheckbox
-            android:id="@+id/manage_visible_tabs_multi_queue"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="@dimen/activity_margin"
-            android:paddingBottom="@dimen/activity_margin"
-            android:text="@string/queue" />
 
         <com.simplemobiletools.commons.views.MyAppCompatCheckbox
             android:id="@+id/manage_visible_tabs_tracks"
