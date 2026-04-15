@@ -169,8 +169,16 @@ class AudioHelper(private val context: Context) {
         context.playlistDAO.update(playlist)
     }
 
+    fun getAllQueueList(): List<QueueData> {
+        val result = getQueueDataListFromJson(config.queueListJson).toMutableList()
+        result.add(0, QueueData(context.getString(com.simplemobiletools.musicplayer.R.string.default_queue), 0))
+        return result
+    }
+
     fun getAllPlaylists(): ArrayList<Playlist> {
-        return context.playlistDAO.getAll() as ArrayList<Playlist>
+        val playlists = context.playlistDAO.getAll() as ArrayList<Playlist>
+        playlists.sortSafely(config.playlistSorting)
+        return playlists
     }
 
     fun getAllGenres(): ArrayList<Genre> {

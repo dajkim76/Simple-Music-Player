@@ -42,7 +42,6 @@ class PlaylistsFragment(context: Context, attributeSet: AttributeSet) : MyViewPa
                 it.trackCount = context.audioHelper.getPlaylistTrackCount(it.id)
             }
 
-            playlists.sortSafely(context.config.playlistSorting)
             this.playlists = playlists
 
             activity.runOnUiThread {

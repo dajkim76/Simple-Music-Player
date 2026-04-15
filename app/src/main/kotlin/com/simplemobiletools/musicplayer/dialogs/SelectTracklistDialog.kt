@@ -17,7 +17,6 @@ import com.simplemobiletools.musicplayer.helpers.FolderConfig
 import com.simplemobiletools.musicplayer.models.Album
 import com.simplemobiletools.musicplayer.models.Artist
 import com.simplemobiletools.musicplayer.models.Playlist
-import com.simplemobiletools.musicplayer.models.sortSafely
 import com.simplemobiletools.musicplayer.objects.executeBackgroundThread
 
 class SelectTracklistDialog(val activity: SimpleControllerActivity) {
@@ -33,13 +32,12 @@ class SelectTracklistDialog(val activity: SimpleControllerActivity) {
             val artistList = activity.artistDAO.getFavoriteArtistList()
             val folderNameList = FolderConfig.getInstance(activity).getFolderFavoriteList()
             activity.runOnUiThread {
-                initDialog(ArrayList(playlists), albumList, artistList, folderNameList)
+                initDialog(playlists, albumList, artistList, folderNameList)
             }
         }
     }
 
-    private fun initDialog(playlists: ArrayList<Playlist>, albumList: List<Album>, artistList: List<Artist>, folderNameList: List<String>) {
-        playlists.sortSafely(activity.config.playlistSorting)
+    private fun initDialog(playlists: List<Playlist>, albumList: List<Album>, artistList: List<Artist>, folderNameList: List<String>) {
         addItemTitleView(R.string.playlists)
         playlists.forEach { playlist -> addItemView("p:", playlist.title, TRACKLIST_PLAYLIST, playlist.id.toLong(), "") }
 
