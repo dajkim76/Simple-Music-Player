@@ -1,16 +1,16 @@
 package com.simplemobiletools.musicplayer.dialogs
 
-import android.util.TypedValue
-import android.view.ViewGroup
-import android.widget.LinearLayout
-import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
-import com.simplemobiletools.commons.extensions.*
+import com.simplemobiletools.commons.extensions.getAlertDialogBuilder
+import com.simplemobiletools.commons.extensions.setupDialogStuff
+import com.simplemobiletools.commons.extensions.toast
+import com.simplemobiletools.commons.extensions.viewBinding
 import com.simplemobiletools.commons.helpers.ensureBackgroundThread
 import com.simplemobiletools.musicplayer.R
 import com.simplemobiletools.musicplayer.activities.SimpleControllerActivity
+import com.simplemobiletools.musicplayer.adapters.SelectTracklistAdapter
+import com.simplemobiletools.musicplayer.adapters.TracklistItem
 import com.simplemobiletools.musicplayer.databinding.DialogSelectTracklistBinding
-import com.simplemobiletools.musicplayer.databinding.ItemSelectTracklistBinding
 import com.simplemobiletools.musicplayer.extensions.*
 import com.simplemobiletools.musicplayer.helpers.FAVORITE_TRACKS_PLAYLIST_ID
 import com.simplemobiletools.musicplayer.helpers.FolderConfig
@@ -22,8 +22,6 @@ import com.simplemobiletools.musicplayer.objects.executeBackgroundThread
 class SelectTracklistDialog(val activity: SimpleControllerActivity) {
     private var dialog: AlertDialog? = null
     private val binding by activity.viewBinding(DialogSelectTracklistBinding::inflate)
-    private val foregroundDrawable = activity.resources.getColoredDrawableWithColor(R.drawable.rounded_white_border, activity.getProperPrimaryColor())
-    private val lastQueueSource = activity.config.lastQueueSource
 
     init {
         ensureBackgroundThread {
@@ -38,71 +36,51 @@ class SelectTracklistDialog(val activity: SimpleControllerActivity) {
     }
 
     private fun initDialog(playlists: List<Playlist>, albumList: List<Album>, artistList: List<Artist>, folderNameList: List<String>) {
-        addItemTitleView(R.string.playlists)
-        playlists.forEach { playlist -> addItemView("p:", playlist.title, TRACKLIST_PLAYLIST, playlist.id.toLong(), "") }
+        val items = mutableListOf<TracklistItem>()
+
+        if (playlists.isNotEmpty()) {
+            items.add(TracklistItem.TracklistItemTitle(R.string.playlists))
+            playlists.forEach { playlist ->
+                items.add(TracklistItem.TracklistItemData("p:", playlist.title, TRACKLIST_PLAYLIST, playlist.id.toLong(), ""))
+            }
+        }
 
         if (albumList.isNotEmpty()) {
-            addItemTitleView(R.string.albums)
-            albumList.forEach { album -> addItemView("a:", album.title + " • " + album.artist, TRACKLIST_ALBUM, album.id, "") }
+            items.add(TracklistItem.TracklistItemTitle(R.string.albums))
+            albumList.forEach { album ->
+                items.add(TracklistItem.TracklistItemData("a:", album.title + " • " + album.artist, TRACKLIST_ALBUM, album.id, ""))
+            }
         }
 
         if (folderNameList.isNotEmpty()) {
-            addItemTitleView(R.string.folders)
+            items.add(TracklistItem.TracklistItemTitle(R.string.folders))
             folderNameList.forEach { folderName ->
-                addItemView("f:", folderName, TRACKLIST_FOLDER, 0, folderName)
+                items.add(TracklistItem.TracklistItemData("f:", folderName, TRACKLIST_FOLDER, 0, folderName))
             }
         }
 
         if (artistList.isNotEmpty()) {
-            addItemTitleView(R.string.artists)
-            artistList.forEach { artist -> addItemView("t:", artist.title, TRACKLIST_ARTIST, artist.id, "") }
+            items.add(TracklistItem.TracklistItemTitle(R.string.artists))
+            artistList.forEach { artist ->
+                items.add(TracklistItem.TracklistItemData("t:", artist.title, TRACKLIST_ARTIST, artist.id, ""))
+            }
         }
+
+        val adapter = SelectTracklistAdapter(activity, items) { itemData ->
+            activity.withPlayer {
+                val startPlay = isPlaying
+                executeBackgroundThread {
+                    activity.onSelectTracklist(itemData.type, itemData.id, itemData.data, startPlay = startPlay)
+                }
+            }
+            dialog?.dismiss()
+        }
+        binding.dialogSelectPlaylistList.adapter = adapter
 
         activity.getAlertDialogBuilder().apply {
             activity.setupDialogStuff(binding.root, this) { alertDialog ->
                 dialog = alertDialog
             }
-        }
-    }
-
-    private fun addItemTitleView(resId: Int) {
-        TextView(activity).apply {
-            text = activity.getString(resId)
-            setTextSize(TypedValue.COMPLEX_UNIT_SP, 12f)
-            setTextColor(activity.getProperPrimaryColor())
-            binding.dialogSelectPlaylistLinear.addView(
-                this,
-                LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
-            )
-        }
-    }
-
-    private fun addItemView(prefix: String, title: String, type: Int, id: Long, data: String) {
-        ItemSelectTracklistBinding.inflate(activity.layoutInflater).apply {
-            selectTracklistItemRadioButton.apply {
-                text = title
-                setTextColor(activity.getProperTextColor())
-                setOnClickListener {
-                    activity.withPlayer {
-                        val startPlay = isPlaying
-                        executeBackgroundThread {
-                            activity.onSelectTracklist(type, id, data, startPlay = startPlay)
-                        }
-                    }
-                    dialog?.dismiss()
-                }
-            }
-
-            // last selected track list
-            val suffix = data.ifEmpty { id.toString() }
-            if ("$prefix$suffix" == lastQueueSource) {
-                this.root.foreground = foregroundDrawable
-            }
-
-            binding.dialogSelectPlaylistLinear.addView(
-                this.root,
-                LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
-            )
         }
     }
 
@@ -130,7 +108,7 @@ class SelectTracklistDialog(val activity: SimpleControllerActivity) {
             if (tracklistType == TRACKLIST_PLAYLIST) {
                 val playlistTracks = audioHelper.getPlaylistTracks(id.toInt())
                 if (playlistTracks.isEmpty()) return 0
-                val lastMediaId = playlistDAO.getLastMediaId(id.toInt()) ?: 0
+                val lastMediaId = playlistDAO.getLastMediaId(id.toInt()) ?: 0L
                 val startIndex = playlistTracks.indexOfFirst { track -> track.mediaStoreId == lastMediaId }.coerceAtLeast(0)
                 val queueSource = "p:$id"
 
@@ -138,7 +116,7 @@ class SelectTracklistDialog(val activity: SimpleControllerActivity) {
             } else if (tracklistType == TRACKLIST_ALBUM) {
                 val playlistTracks = audioHelper.getAlbumTracks(id)
                 if (playlistTracks.isEmpty()) return 0
-                val lastMediaId = albumsDAO.getLastMediaId(id) ?: 0
+                val lastMediaId = albumsDAO.getLastMediaId(id) ?: 0L
                 val startIndex = playlistTracks.indexOfFirst { track -> track.mediaStoreId == lastMediaId }.coerceAtLeast(0)
                 val queueSource = "a:$id"
 
@@ -147,7 +125,7 @@ class SelectTracklistDialog(val activity: SimpleControllerActivity) {
                 val albums = audioHelper.getArtistAlbums(id)
                 val playlistTracks = audioHelper.getAlbumTracks(albums)
                 if (playlistTracks.isEmpty()) return 0
-                val lastMediaId = artistDAO.getLastMediaId(id) ?: 0
+                val lastMediaId = artistDAO.getLastMediaId(id) ?: 0L
                 val startIndex = playlistTracks.indexOfFirst { track -> track.mediaStoreId == lastMediaId }.coerceAtLeast(0)
                 val queueSource = "t:$id"
 

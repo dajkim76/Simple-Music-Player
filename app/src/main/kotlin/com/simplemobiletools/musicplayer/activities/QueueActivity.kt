@@ -219,6 +219,7 @@ class QueueActivity : SimpleControllerActivity() {
             ensureBackgroundThread {
                 RoomHelper(this).insertTracksWithPlaylist(tracks)
             }
+            EventBus.getDefault().post(Events.PlaylistsUpdated())
         }
     }
 

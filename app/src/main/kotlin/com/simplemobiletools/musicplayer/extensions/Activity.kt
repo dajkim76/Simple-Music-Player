@@ -14,17 +14,17 @@ import com.simplemobiletools.musicplayer.helpers.RoomHelper
 import com.simplemobiletools.musicplayer.models.Track
 
 fun Activity.addTracksToPlaylist(tracks: List<Track>, callback: () -> Unit) {
-    SelectPlaylistDialog(this) { playlistId ->
-        val tracksToAdd = ArrayList<Track>()
-        tracks.forEach {
-            it.id = 0
-            it.playListId = playlistId
-            tracksToAdd.add(it)
-        }
-
+    SelectPlaylistDialog(this) { playlistIds ->
         ensureBackgroundThread {
-            RoomHelper(this).insertTracksWithPlaylist(tracksToAdd)
-
+            playlistIds.forEach { playlistId ->
+                val tracksToAdd = ArrayList<Track>()
+                tracks.forEach {
+                    it.id = 0
+                    it.playListId = playlistId
+                    tracksToAdd.add(it)
+                }
+                audioHelper.insertTracks(tracksToAdd)
+            }
             runOnUiThread {
                 callback()
             }

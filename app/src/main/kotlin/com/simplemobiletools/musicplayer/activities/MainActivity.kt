@@ -399,33 +399,37 @@ class MainActivity : SimpleMusicActivity() {
 
     private fun showFilePickerDialog() {
         FilePickerDialog(this, enforceStorageRestrictions = false) { path ->
-            SelectPlaylistDialog(this) { id ->
-                importPlaylist(path, id)
+            SelectPlaylistDialog(this) { ids ->
+                importPlaylist(path, ids)
             }
         }
     }
 
     private fun showImportPlaylistDialog(path: String) {
-        SelectPlaylistDialog(this) { id ->
-            importPlaylist(path, id)
+        SelectPlaylistDialog(this) { ids ->
+            importPlaylist(path, ids)
         }
     }
 
-    private fun importPlaylist(path: String, id: Int) {
+    private fun importPlaylist(path: String, ids: List<Int>) {
         ensureBackgroundThread {
-            M3uImporter(this) { result ->
-                runOnUiThread {
-                    toast(
-                        when (result) {
-                            ImportResult.IMPORT_OK -> com.simplemobiletools.commons.R.string.importing_successful
-                            ImportResult.IMPORT_PARTIAL -> com.simplemobiletools.commons.R.string.importing_some_entries_failed
-                            else -> com.simplemobiletools.commons.R.string.importing_failed
-                        }
-                    )
+            ids.forEachIndexed { index, id ->
+                M3uImporter(this) { result ->
+                    if (index == ids.size - 1) {
+                        runOnUiThread {
+                            toast(
+                                when (result) {
+                                    ImportResult.IMPORT_OK -> com.simplemobiletools.commons.R.string.importing_successful
+                                    ImportResult.IMPORT_PARTIAL -> com.simplemobiletools.commons.R.string.importing_some_entries_failed
+                                    else -> com.simplemobiletools.commons.R.string.importing_failed
+                                }
+                            )
 
-                    getAdapter()?.getPlaylistsFragment()?.setupFragment(this)
-                }
-            }.importPlaylist(path, id)
+                            getAdapter()?.getPlaylistsFragment()?.setupFragment(this)
+                        }
+                    }
+                }.importPlaylist(path, id)
+            }
         }
     }
 
