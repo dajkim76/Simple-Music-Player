@@ -2,17 +2,23 @@ package com.simplemobiletools.musicplayer.playback
 
 import android.os.Bundle
 import android.os.ConditionVariable
+import androidx.media3.common.C
 import androidx.media3.common.MediaItem
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.session.*
 import androidx.media3.session.MediaLibraryService.MediaLibrarySession
+import androidx.media3.session.MediaSession.MediaItemsWithStartPosition
+import com.google.common.collect.ImmutableList
 import com.google.common.util.concurrent.Futures
 import com.google.common.util.concurrent.ListenableFuture
 import com.google.common.util.concurrent.MoreExecutors
 import com.google.common.util.concurrent.SettableFuture
-import com.simplemobiletools.musicplayer.extensions.addRemainingMediaItems
+import com.simplemobiletools.musicplayer.BuildConfig
+import com.simplemobiletools.musicplayer.extensions.*
 import com.simplemobiletools.musicplayer.helpers.EXTRA_NEXT_MEDIA_ID
 import com.simplemobiletools.musicplayer.helpers.EXTRA_SHUFFLE_INDICES
+import com.simplemobiletools.musicplayer.models.Track
+import com.simplemobiletools.musicplayer.playback.library.RESUME_PLAYBACK_ID
 import com.simplemobiletools.musicplayer.playback.player.updatePlaybackState
 import java.util.concurrent.Executors
 
@@ -43,6 +49,9 @@ internal fun PlaybackService.getMediaSessionCallback() = object : MediaLibrarySe
         for (command in customCommands) {
             availableSessionCommands.add(command)
         }
+
+        // Search function is removed for now because the loading bar spins infinitely during searches., not working
+        availableSessionCommands.remove(SessionCommand.COMMAND_CODE_LIBRARY_SEARCH)
 
         return MediaSession.ConnectionResult.accept(
             availableSessionCommands.build(),
@@ -169,18 +178,106 @@ internal fun PlaybackService.getMediaSessionCallback() = object : MediaLibrarySe
         }
 
         // this is to avoid single items in the queue: https://github.com/androidx/media/issues/156
-        var queueItems = mediaItems
-        val startItemId = mediaItems[0].mediaId
-        val currentItems = mediaItemProvider.getChildren(currentRoot).orEmpty()
+        val automotiveMediaId = mediaItems[0].mediaId
+        val (mediaStoreId, queueSource) = decodeAutomotiveMediaId(automotiveMediaId)
 
-        queueItems = if (currentItems.any { it.mediaId == startItemId }) {
-            currentItems.toMutableList()
+        saveCurrentMediaLastPosition(mediaSession)
+        if (queueSource != null) {
+            if (queueSource.startsWith("q:")) {
+                val queueId = queueSource.substring(2).toLong()
+                val lastMediaId = if (mediaStoreId == RESUME_PLAYBACK_ID) null else mediaStoreId
+                val itemsWithStartPosition = mediaItemProvider.getQueueItemsWithStartPosition(queueId, lastMediaId)
+                if (itemsWithStartPosition.mediaItems.isNotEmpty()) {
+                    config.lastQueueSource = queueSource
+                    config.queueId = queueId
+                    // save recently played track
+                    val index = itemsWithStartPosition.startIndex
+                    if (index >= 0) {
+                        val saveItem = itemsWithStartPosition.mediaItems[index]
+                        saveItem.toTrack()?.let {
+                            audioHelper.updateRecentPlayedTrack(it)
+                        }
+                    }
+                    return Futures.immediateFuture(itemsWithStartPosition)
+                }
+            } else if (queueSource.startsWith("p:")) {  // playlist
+                val playlistId = queueSource.substring(2).toInt()
+                val lastMediaId = if (mediaStoreId == RESUME_PLAYBACK_ID) playlistDAO.getLastMediaId(playlistId)?.toString() else mediaStoreId
+                val trackList = audioHelper.getPlaylistTracks(playlistId)
+                if (trackList.isNotEmpty()) {
+                    config.lastQueueSource = queueSource
+                    config.queueId = 0
+                    return Futures.immediateFuture(getMediaItemsWithStartPosition(trackList, lastMediaId))
+                }
+            } else if (queueSource.startsWith("a:")) { //album
+                val albumId = queueSource.substring(2).toLong()
+                val lastMediaId = if (mediaStoreId == RESUME_PLAYBACK_ID) albumsDAO.getLastMediaId(albumId)?.toString() else mediaStoreId
+                val trackList = audioHelper.getAlbumTracks(albumId)
+                if (trackList.isNotEmpty()) {
+                    config.lastQueueSource = queueSource
+                    config.queueId = 0
+                    return Futures.immediateFuture(getMediaItemsWithStartPosition(trackList, lastMediaId))
+                }
+            } else if (queueSource.startsWith("f:")) { // folder
+                val folderName = queueSource.substring(2)
+                val lastMediaId =
+                    if (mediaStoreId == RESUME_PLAYBACK_ID) folderConfig.getLastMediaId(folderName).takeIf { it != 0L }?.toString() else mediaStoreId
+                val trackList = audioHelper.getFolderTracks(folderName)
+                if (trackList.isNotEmpty()) {
+                    config.lastQueueSource = queueSource
+                    config.queueId = 0
+                    return Futures.immediateFuture(getMediaItemsWithStartPosition(trackList, lastMediaId))
+                }
+            }
+
+            // If you delete a list on the phone, itemList may be empty.
+            // The itemList read by mediaItemProvider.getChildren(queueSource) has mediaIds encoded for automotive,
+            // so passing it as Queue items can cause issues in the app. Therefore, it is better to respond with emptyList().
+            return super.onSetMediaItems(mediaSession, controller, emptyList(), C.INDEX_UNSET, 0)
         } else {
-            mediaItemProvider.getDefaultQueue()?.toMutableList() ?: queueItems
+            // from Tracks , Genres
+            config.lastQueueSource = ""
+            config.queueId = 0
         }
 
-        val startItemIndex = queueItems.indexOfFirst { it.mediaId == startItemId }
-        return super.onSetMediaItems(mediaSession, controller, queueItems, startItemIndex, startPositionMs)
+        val currentItems = mediaItemProvider.getChildren(currentRoot).orEmpty()
+
+        // Tracks, Genres 's automotiveMediaId is not encoded, So there is no problem using this in the app.
+        if (BuildConfig.DEBUG) {
+            val allValidMediaStoreId = currentItems.all { !it.mediaId.contains(':') && !it.mediaId.startsWith("__") }
+            check(allValidMediaStoreId)
+        }
+
+        val startItemIndex = currentItems.indexOfFirst { it.mediaId == automotiveMediaId }
+        if (startItemIndex >= 0) {
+            return super.onSetMediaItems(mediaSession, controller, currentItems, startItemIndex, startPositionMs)
+        } else {
+            // fallback: If currentRoot is incorrect, Use `Default queue` items,
+            val queuedItemsWithStartPosition = mediaItemProvider.getQueueItemsWithStartPosition(0)
+            return Futures.immediateFuture(queuedItemsWithStartPosition)
+        }
+    }
+
+    // Save the media currently playing and the position.
+    private fun saveCurrentMediaLastPosition(mediaSession: MediaSession) {
+        with(mediaSession) {
+            if (player.isPlaying) {
+                val currentItem = player.currentMediaItem ?: return@with
+                val playPosition = player.currentPosition
+                if (config.keepTrackLastPosition) {
+                    audioHelper.updateRecentPlayedTrackLastPosition(currentItem, playPosition)
+                }
+                audioHelper.updateQueueSourceLastMedia(config.lastQueueSource, currentItem.getMediaStoreId(), playPosition)
+            }
+        }
+    }
+
+    private fun getMediaItemsWithStartPosition(trackList: List<Track>, lastMediaId: String?): MediaItemsWithStartPosition {
+        val mediaItemList = trackList.map { it.toMediaItem() }
+        val startIndex = trackList
+            .indexOfFirst { it.mediaStoreId.toString() == lastMediaId } // startIndex can be C.INDEX_UNSET(-1)
+        val startPositionMs = if (startIndex >= 0) audioHelper.updateRecentPlayedTrack(trackList[startIndex]) else 0L
+        return MediaItemsWithStartPosition(mediaItemList, startIndex, startPositionMs)
     }
 
     override fun onAddMediaItems(
@@ -197,6 +294,44 @@ internal fun PlaybackService.getMediaSessionCallback() = object : MediaLibrarySe
         }
 
         return Futures.immediateFuture(items)
+    }
+
+    private fun normalize(query: String) = query.trim().lowercase()
+
+    override fun onSearch(
+        session: MediaLibrarySession,
+        browser: MediaSession.ControllerInfo,
+        query: String,
+        params: MediaLibraryService.LibraryParams?
+    ): ListenableFuture<LibraryResult<Void>> {
+        val searchQuery = normalize(query)
+        return mediaItemProvider.makeResultsFromSearch(searchQuery)
+    }
+
+    override fun onGetSearchResult(
+        session: MediaLibrarySession,
+        browser: MediaSession.ControllerInfo,
+        query: String,
+        page: Int,
+        pageSize: Int,
+        params: MediaLibraryService.LibraryParams?
+    ): ListenableFuture<LibraryResult<ImmutableList<MediaItem>>> {
+        val searchQuery = normalize(query)
+        val results = mediaItemProvider.getResultsFromSearchCache(searchQuery)
+
+        // paging 처리
+        val fromIndex = page * pageSize
+        val toIndex = minOf(fromIndex + pageSize, results.size)
+
+        val paged = if (fromIndex < toIndex) {
+            results.subList(fromIndex, toIndex)
+        } else {
+            emptyList()
+        }
+
+        return Futures.immediateFuture(
+            LibraryResult.ofItemList(paged, params)
+        )
     }
 
     private fun getMediaItemFromSearchQuery(query: String): MediaItem {

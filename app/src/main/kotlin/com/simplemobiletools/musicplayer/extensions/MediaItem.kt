@@ -10,6 +10,26 @@ import com.simplemobiletools.musicplayer.helpers.*
 import com.simplemobiletools.musicplayer.inlines.indexOfFirstOrNull
 import com.simplemobiletools.musicplayer.models.*
 
+private const val AUTOMOTIVE_ID_SEPARATOR = "^|_"
+
+// When transmitting data via Android Auto, `extras` and RequestMetaData cannot be used, so additional data is encoded into the mediaId.
+fun encodeAutomotiveMediaId(mediaId: String, automotiveQueueSource: String? = null): String {
+    return if (automotiveQueueSource == null)
+        mediaId
+    else
+        "$mediaId$AUTOMOTIVE_ID_SEPARATOR$automotiveQueueSource"
+}
+
+// return Pair<MediaStoreId, QueueSource>
+fun decodeAutomotiveMediaId(mediaId: String): Pair<String, String?> {
+    return if (mediaId.indexOf(AUTOMOTIVE_ID_SEPARATOR) > 0) {
+        val items = mediaId.split(AUTOMOTIVE_ID_SEPARATOR)
+        items[0] to items[1]
+    } else {
+        mediaId to null
+    }
+}
+
 fun buildMediaItem(
     mediaId: String,
     title: String,
@@ -22,7 +42,8 @@ fun buildMediaItem(
     year: Int? = null,
     sourceUri: Uri? = null,
     artworkUri: Uri? = null,
-    track: Track? = null
+    track: Track? = null,
+    automotiveQueueSource: String? = null,
 ): MediaItem {
     val metadata = MediaMetadata.Builder()
         .setTitle(title)
@@ -44,13 +65,13 @@ fun buildMediaItem(
         .build()
 
     return MediaItem.Builder()
-        .setMediaId(mediaId)
+        .setMediaId(encodeAutomotiveMediaId(mediaId, automotiveQueueSource))
         .setUri(sourceUri)
         .setMediaMetadata(metadata)
         .build()
 }
 
-fun Track.toMediaItem(): MediaItem {
+fun Track.toMediaItem(automotiveQueueSource: String? = null): MediaItem {
     return buildMediaItem(
         mediaId = mediaStoreId.toString(),
         title = title,
@@ -61,13 +82,22 @@ fun Track.toMediaItem(): MediaItem {
         trackNumber = trackId,
         sourceUri = getUri(),
         artworkUri = coverArt.toUri(),
-        track = this
+        track = this,
+        automotiveQueueSource = automotiveQueueSource,
+    )
+}
+
+fun QueueData.toMediaItem(): MediaItem {
+    return buildMediaItem(
+        mediaId = "q:$queueId",
+        title = name,
+        mediaType = MediaMetadata.MEDIA_TYPE_PLAYLIST,
     )
 }
 
 fun Playlist.toMediaItem(): MediaItem {
     return buildMediaItem(
-        mediaId = id.toString(),
+        mediaId = "p:$id",
         title = title,
         mediaType = MediaMetadata.MEDIA_TYPE_PLAYLIST,
         trackCnt = trackCount
@@ -76,7 +106,7 @@ fun Playlist.toMediaItem(): MediaItem {
 
 fun Folder.toMediaItem(): MediaItem {
     return buildMediaItem(
-        mediaId = title,
+        mediaId = "f:$title",
         title = title,
         mediaType = MediaMetadata.MEDIA_TYPE_PLAYLIST,
         trackCnt = trackCount
@@ -85,7 +115,7 @@ fun Folder.toMediaItem(): MediaItem {
 
 fun Artist.toMediaItem(): MediaItem {
     return buildMediaItem(
-        mediaId = id.toString(),
+        mediaId = "t:$id",
         title = title,
         mediaType = MediaMetadata.MEDIA_TYPE_ARTIST,
         trackCnt = trackCnt,
@@ -95,7 +125,7 @@ fun Artist.toMediaItem(): MediaItem {
 
 fun Album.toMediaItem(): MediaItem {
     return buildMediaItem(
-        mediaId = id.toString(),
+        mediaId = "a:$id",
         title = title,
         artist = artist,
         mediaType = MediaMetadata.MEDIA_TYPE_ALBUM,
@@ -108,7 +138,7 @@ fun Album.toMediaItem(): MediaItem {
 fun Genre.toMediaItem(): MediaItem {
     return buildMediaItem(
         title = title,
-        mediaId = id.toString(),
+        mediaId = "g:$id",
         mediaType = MediaMetadata.MEDIA_TYPE_GENRE,
         trackCnt = trackCnt,
         artworkUri = albumArt.toUri()

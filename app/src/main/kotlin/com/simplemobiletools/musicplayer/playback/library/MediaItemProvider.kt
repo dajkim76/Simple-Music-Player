@@ -11,13 +11,17 @@ import androidx.media3.common.MediaItem
 import androidx.media3.common.MediaMetadata
 import androidx.media3.common.MediaMetadata.MediaType
 import androidx.media3.common.util.UnstableApi
+import androidx.media3.session.LibraryResult
 import androidx.media3.session.MediaSession.MediaItemsWithStartPosition
+import com.google.common.util.concurrent.Futures
+import com.google.common.util.concurrent.ListenableFuture
 import com.google.common.util.concurrent.MoreExecutors
 import com.simplemobiletools.musicplayer.R
 import com.simplemobiletools.musicplayer.extensions.*
 import com.simplemobiletools.musicplayer.helpers.*
 import com.simplemobiletools.musicplayer.models.Events
 import com.simplemobiletools.musicplayer.models.QueueItem
+import com.simplemobiletools.musicplayer.models.Track
 import com.simplemobiletools.musicplayer.models.toMediaItems
 import org.greenrobot.eventbus.EventBus
 import java.util.concurrent.Executors
@@ -28,12 +32,14 @@ private const val STATE_INITIALIZED = 3
 private const val STATE_ERROR = 4
 
 private const val SMP_ROOT_ID = "__ROOT__"
+private const val SMP_QUEUES_ROOT_ID = "__QUEUES__"
 private const val SMP_PLAYLISTS_ROOT_ID = "__PLAYLISTS__"
 private const val SMP_FOLDERS_ROOT_ID = "__FOLDERS__"
 private const val SMP_ARTISTS_ROOT_ID = "__ARTISTS__"
 private const val SMP_ALBUMS_ROOT_ID = "__ALBUMS__"
 private const val SMP_TRACKS_ROOT_ID = "__TRACKS__"
 private const val SMP_GENRES_ROOT_ID = "__GENRES__"
+internal const val RESUME_PLAYBACK_ID = "__PLAYBACK__"
 
 /**
  * This is not (yet) used internally and currently only required (mostly) for media browser's outside the app.
@@ -53,6 +59,7 @@ internal class MediaItemProvider(private val context: Context) {
     private val treeNodes = mutableMapOf<String, MediaItemNode>()
     private var titleMap: MutableMap<String, MediaItemNode> = mutableMapOf()
     private val onReadyListeners = mutableListOf<(Boolean) -> Unit>()
+    private val searchCache = mutableMapOf<String, List<MediaItem>>()
 
     private var state: Int = STATE_CREATED
         set(value) {
@@ -117,11 +124,29 @@ internal class MediaItemProvider(private val context: Context) {
     fun getItemFromSearch(searchQuery: String): MediaItem? {
         var mediaItem = titleMap[searchQuery]?.item
         if (mediaItem == null) {
+            // TODO multiple results?
             val partialMatch = titleMap.keys.find { it.contains(searchQuery) } ?: return null
             mediaItem = titleMap[partialMatch]?.item
         }
 
         return mediaItem
+    }
+
+    fun makeResultsFromSearch(searchQuery: String): ListenableFuture<LibraryResult<Void>> {
+        return Futures.submit<LibraryResult<Void>>({
+            // Set search result to cache
+            val cache = searchCache[searchQuery] ?: run {
+                val searchItem = getItemFromSearch(searchQuery)
+                val resultList = searchItem?.let { listOf(it) } ?: emptyList()
+                searchCache[searchQuery] = resultList
+                resultList
+            }
+            LibraryResult.ofVoid()
+        }, executor)
+    }
+
+    fun getResultsFromSearchCache(searchQuery: String): List<MediaItem> {
+        return searchCache[searchQuery] ?: emptyList()
     }
 
     fun getDefaultQueue() = getChildren(SMP_TRACKS_ROOT_ID)
@@ -137,18 +162,20 @@ internal class MediaItemProvider(private val context: Context) {
     }
 
     fun getRecentItemsWithStartPosition(): MediaItemsWithStartPosition {
-        val queueId = context.config.queueId
-        val recentItems = context.queueDAO.getAll(queueId).mapNotNull { getMediaItemFromQueueItem(it) }
-        var startPosition = 0L
-        val currentItem = context.queueDAO.getCurrent(queueId)?.let {
-            val mediaItem = getMediaItemFromQueueItem(it) ?: return@let null
-            val metadata = mediaItem.mediaMetadata.buildUpon().build()
-            startPosition = it.lastPosition
-            mediaItem.buildUpon().setMediaMetadata(metadata).build()
-        }
+        return getQueueItemsWithStartPosition(context.config.queueId)
+    }
 
-        val startIndex = maxOf(recentItems.indexOf(currentItem), 0)
-        return MediaItemsWithStartPosition(recentItems, startIndex, startPosition)
+    fun getQueueItemsWithStartPosition(queueId: Long, lastMediaId: String? = null): MediaItemsWithStartPosition {
+        val queuedTracks = audioHelper.getQueuedTracks(queueId)
+        val mediaItems = queuedTracks.map { it.toMediaItem() }
+        val startIndex = queuedTracks.indexOfFirst {
+            if (lastMediaId != null)
+                it.mediaStoreId.toString() == lastMediaId
+            else
+                it.isCurrent()
+        } // startIndex can be C.INDEX_UNSET(-1)
+        val startPositionMs = if (startIndex >= 0) queuedTracks[startIndex].lastPosition else 0L
+        return MediaItemsWithStartPosition(mediaItems, startIndex, startPositionMs)
     }
 
     fun saveRecentItemsWithStartPosition(mediaItems: List<MediaItem>, current: MediaItem, startPosition: Long) {
@@ -184,9 +211,11 @@ internal class MediaItemProvider(private val context: Context) {
     fun reload() {
         state = STATE_INITIALIZING
         executor.execute {
+            searchCache.clear()
             buildRoot()
 
             try {
+                buildQueueItems()
                 buildPlaylists()
                 buildFolders()
                 buildArtists()
@@ -211,15 +240,43 @@ internal class MediaItemProvider(private val context: Context) {
         addNodeAndChildren(item = root, children = rootChildren)
     }
 
+    private fun buildQueueItems() = with(audioHelper) {
+        getAllQueueList().forEach { queueData ->
+            val automotiveQueueSource = "q:${queueData.queueId}"
+            val trackList = getQueuedTracks(queueData.queueId)
+            val children = buildAutomotiveMediaItemList(trackList, automotiveQueueSource)
+            addNodeAndChildren(SMP_QUEUES_ROOT_ID, queueData.toMediaItem(), children)
+        }
+    }
+
+    private fun buildAutomotiveMediaItemList(trackList: List<Track>, automotiveQueueSource: String): List<MediaItem> {
+        if (trackList.isEmpty()) return emptyList()
+        val playTrackListItem = buildMediaItem(
+            title = "\u25B6 " + context.getString(R.string.resume_playback),
+            mediaId = encodeAutomotiveMediaId(RESUME_PLAYBACK_ID, automotiveQueueSource),
+            mediaType = MediaMetadata.MEDIA_TYPE_MUSIC,
+        )
+        val list = mutableListOf<MediaItem>()
+        list.add(playTrackListItem)
+        list.addAll(trackList.map { it.toMediaItem(automotiveQueueSource) })
+        return list
+    }
+
     private fun buildPlaylists() = with(audioHelper) {
-        getAllPlaylists().forEach { playlist ->
-            addNodeAndChildren(SMP_PLAYLISTS_ROOT_ID, playlist.toMediaItem(), getPlaylistTracks(playlist.id).map { it.toMediaItem() })
+        getAllPlaylists().filter { it.id >= FAVORITE_TRACKS_PLAYLIST_ID }.forEach { playlist ->
+            val automotiveQueueSource = "p:${playlist.id}"
+            val trackList = getPlaylistTracks(playlist.id)
+            val children = buildAutomotiveMediaItemList(trackList, automotiveQueueSource)
+            addNodeAndChildren(SMP_PLAYLISTS_ROOT_ID, playlist.toMediaItem(), children)
         }
     }
 
     private fun buildFolders() = with(audioHelper) {
         getAllFolders().forEach { folder ->
-            addNodeAndChildren(SMP_FOLDERS_ROOT_ID, folder.toMediaItem(), getFolderTracks(folder.title).map { it.toMediaItem() })
+            val automotiveQueueSource = "f:${folder.title}"
+            val trackList = getFolderTracks(folder.title)
+            val children = buildAutomotiveMediaItemList(trackList, automotiveQueueSource)
+            addNodeAndChildren(SMP_FOLDERS_ROOT_ID, folder.toMediaItem(), children)
         }
     }
 
@@ -231,7 +288,10 @@ internal class MediaItemProvider(private val context: Context) {
 
     private fun buildAlbums() = with(audioHelper) {
         getAllAlbums().forEach { album ->
-            addNodeAndChildren(SMP_ALBUMS_ROOT_ID, album.toMediaItem(), getAlbumTracks(album.id).map { it.toMediaItem() })
+            val automotiveQueueSource = "a:${album.id}"
+            val trackList = getAlbumTracks(album.id)
+            val children = buildAutomotiveMediaItemList(trackList, automotiveQueueSource)
+            addNodeAndChildren(SMP_ALBUMS_ROOT_ID, album.toMediaItem(), children)
         }
     }
 
@@ -268,10 +328,11 @@ internal class MediaItemProvider(private val context: Context) {
 }
 
 private enum class RootCategories(@StringRes val titleRes: Int, @DrawableRes val drawableRes: Int, val mediaId: String, val mediaType: @MediaType Int) {
-    PLAYLISTS(R.string.playlists, R.drawable.ic_playlist_vector, SMP_PLAYLISTS_ROOT_ID, MediaMetadata.MEDIA_TYPE_FOLDER_PLAYLISTS),
+    QUEUES(R.string.queue, R.drawable.ic_queue, SMP_QUEUES_ROOT_ID, MediaMetadata.MEDIA_TYPE_PLAYLIST),
+    PLAYLISTS(R.string.playlists, R.drawable.ic_playlist_vector, SMP_PLAYLISTS_ROOT_ID, MediaMetadata.MEDIA_TYPE_PLAYLIST),
+    ALBUMS(R.string.albums, R.drawable.ic_album_vector, SMP_ALBUMS_ROOT_ID, MediaMetadata.MEDIA_TYPE_FOLDER_ALBUMS),
     FOLDERS(R.string.folders, R.drawable.ic_folders_vector, SMP_FOLDERS_ROOT_ID, MediaMetadata.MEDIA_TYPE_FOLDER_PLAYLISTS),
     ARTISTS(R.string.artists, com.simplemobiletools.commons.R.drawable.ic_person_vector, SMP_ARTISTS_ROOT_ID, MediaMetadata.MEDIA_TYPE_FOLDER_ARTISTS),
-    ALBUMS(R.string.albums, R.drawable.ic_album_vector, SMP_ALBUMS_ROOT_ID, MediaMetadata.MEDIA_TYPE_FOLDER_ALBUMS),
     TRACKS(R.string.tracks, R.drawable.ic_music_note_vector, SMP_TRACKS_ROOT_ID, MediaMetadata.MEDIA_TYPE_PLAYLIST),
     GENRES(R.string.genres, R.drawable.ic_genre_vector, SMP_GENRES_ROOT_ID, MediaMetadata.MEDIA_TYPE_FOLDER_GENRES);
 
@@ -295,6 +356,7 @@ private enum class RootCategories(@StringRes val titleRes: Int, @DrawableRes val
 
         private fun getTabFlag(mediaId: String): Int {
             return when (mediaId) {
+                SMP_QUEUES_ROOT_ID -> TAB_MULTI_QUEUE
                 SMP_PLAYLISTS_ROOT_ID -> TAB_PLAYLISTS
                 SMP_FOLDERS_ROOT_ID -> TAB_FOLDERS
                 SMP_ARTISTS_ROOT_ID -> TAB_ARTISTS

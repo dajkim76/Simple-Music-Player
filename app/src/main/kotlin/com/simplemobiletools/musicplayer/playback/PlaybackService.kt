@@ -19,10 +19,7 @@ import androidx.media3.session.MediaSessionService
 import com.simplemobiletools.commons.extensions.hasPermission
 import com.simplemobiletools.commons.extensions.showErrorToast
 import com.simplemobiletools.musicplayer.extensions.*
-import com.simplemobiletools.musicplayer.helpers.Config
-import com.simplemobiletools.musicplayer.helpers.CueListCache
-import com.simplemobiletools.musicplayer.helpers.NotificationHelper
-import com.simplemobiletools.musicplayer.helpers.getPermissionToRequest
+import com.simplemobiletools.musicplayer.helpers.*
 import com.simplemobiletools.musicplayer.playback.library.MediaItemProvider
 import com.simplemobiletools.musicplayer.playback.player.SimpleMusicPlayer
 import com.simplemobiletools.musicplayer.playback.player.initializeSessionAndPlayer
@@ -36,6 +33,7 @@ class PlaybackService : MediaLibraryService(), MediaSessionService.Listener {
     internal lateinit var mediaSession: MediaLibrarySession
     internal lateinit var mediaItemProvider: MediaItemProvider
     internal lateinit var config: Config
+    internal lateinit var folderConfig: FolderConfig
 
     internal var currentRoot = ""
     internal var lastCueTitle: String? = null
@@ -47,6 +45,7 @@ class PlaybackService : MediaLibraryService(), MediaSessionService.Listener {
     override fun onCreate() {
         super.onCreate()
         config = Config.getInstance(applicationContext)
+        folderConfig = FolderConfig.getInstance(applicationContext)
         setListener(this)
         initializeSessionAndPlayer(handleAudioFocus = true, handleAudioBecomingNoisy = true, skipSilence = config.gaplessPlayback)
         initializeLibrary()
