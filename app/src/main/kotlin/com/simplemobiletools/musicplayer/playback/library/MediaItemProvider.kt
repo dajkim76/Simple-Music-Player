@@ -159,16 +159,22 @@ internal class MediaItemProvider(private val context: Context) {
         val keepTrackLastPosition = context.config.keepTrackLastPosition
         val queueId = context.config.queueId
         executor.execute {
+            val currentMediaId = current.getMediaStoreId()
             val queueItems = mediaItems.mapIndexed { index, mediaItem ->
-                QueueItem(id = 0, queueId = queueId, trackId = mediaItem.getMediaStoreId(), trackOrder = index, isCurrent = false, lastPosition = 0)
+                val mediaStoreId = mediaItem.getMediaStoreId()
+                val isCurrent = currentMediaId == mediaStoreId
+                val lastPosition = if (isCurrent) startPosition else 0
+                QueueItem(id = 0, queueId = queueId, trackId = mediaStoreId, trackOrder = index, isCurrent = isCurrent, lastPosition = lastPosition)
             }
 
-            val trackId = current.getMediaStoreId()
-            audioHelper.resetQueue(queueId, queueItems, trackId, startPosition)
+            audioHelper.resetQueue(queueId, queueItems, null, null)
             if (keepTrackLastPosition) {
                 audioHelper.updateRecentPlayedTrackLastPosition(mediaItem = current, lastPosition = startPosition)
             }
-            audioHelper.updateQueueSourceLastMedia(context.config.lastQueueSource, trackId)
+            val lastQueueSource = context.config.lastQueueSource
+            if (lastQueueSource.startsWith("q:").not()) {
+                audioHelper.updateQueueSourceLastMedia(lastQueueSource, currentMediaId, startPosition)
+            }
             if (Events.QueueItemsChanged.getNeedToPost()) {
                 EventBus.getDefault().post(Events.QueueItemsChanged.setQueueId(queueId))
             }

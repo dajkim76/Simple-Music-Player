@@ -266,7 +266,7 @@ class AudioHelper(private val context: Context) {
         }
     }
 
-    fun updateQueueSourceLastMedia(lastQueueSource: String, lastMediaId: Long, lastPosition: Long? = null) {
+    fun updateQueueSourceLastMedia(lastQueueSource: String, lastMediaId: Long, lastPosition: Long) {
         if (lastQueueSource.isEmpty()) return
         when {
             lastQueueSource.startsWith("p:") -> {
@@ -292,7 +292,7 @@ class AudioHelper(private val context: Context) {
             lastQueueSource.startsWith("q:") -> {
                 val queueId = lastQueueSource.substring(2).toLong()
                 context.queueDAO.resetCurrent(queueId)
-                context.queueDAO.saveCurrentTrackProgress(queueId, lastMediaId, lastPosition ?: 0)
+                context.queueDAO.saveCurrentTrackProgress(queueId, lastMediaId, lastPosition)
             }
         }
     }
