@@ -30,3 +30,8 @@
 -keep public class org.jaudiotagger.** { public protected *; }
 -keepnames class org.jaudiotagger.**
 -dontwarn org.jaudiotagger.**
+
+# Remove method call if Release mode
+-assumenosideeffects class com.simplemobiletools.commons.helpers.TraceUtils {
+	public static void *** (...);
+}
