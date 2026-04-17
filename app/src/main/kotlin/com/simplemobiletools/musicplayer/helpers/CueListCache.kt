@@ -6,10 +6,10 @@ import android.os.Looper
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.simplemobiletools.commons.extensions.toInt
+import com.simplemobiletools.commons.helpers.executeBackgroundThread
 import com.simplemobiletools.musicplayer.extensions.audioHelper
 import com.simplemobiletools.musicplayer.models.Cue
 import com.simplemobiletools.musicplayer.models.Track
-import com.simplemobiletools.musicplayer.objects.executeBackgroundThread
 import java.util.concurrent.ConcurrentHashMap
 
 object CueListCache {

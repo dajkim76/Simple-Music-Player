@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.AttributeSet
 import com.simplemobiletools.commons.activities.BaseSimpleActivity
 import com.simplemobiletools.commons.extensions.*
+import com.simplemobiletools.commons.helpers.executeBackgroundThread
 import com.simplemobiletools.musicplayer.R
 import com.simplemobiletools.musicplayer.activities.SimpleActivity
 import com.simplemobiletools.musicplayer.activities.SimpleControllerActivity
@@ -14,7 +15,6 @@ import com.simplemobiletools.musicplayer.dialogs.SelectQueueDialog
 import com.simplemobiletools.musicplayer.extensions.*
 import com.simplemobiletools.musicplayer.helpers.ACTIVITY_QUEUE
 import com.simplemobiletools.musicplayer.models.*
-import com.simplemobiletools.musicplayer.objects.executeBackgroundThread
 
 class MultiQueueFragment(context: Context, attributeSet: AttributeSet) : MyViewPagerFragment(context, attributeSet) {
     private var tracks = ArrayList<Track>()

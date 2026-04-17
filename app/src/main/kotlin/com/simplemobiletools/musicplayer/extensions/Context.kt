@@ -24,6 +24,8 @@ import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.Target
 import com.simplemobiletools.commons.extensions.*
+import com.simplemobiletools.commons.helpers.executeBackgroundThread
+import com.simplemobiletools.commons.helpers.executeMainThread
 import com.simplemobiletools.commons.helpers.isQPlus
 import com.simplemobiletools.musicplayer.BuildConfig
 import com.simplemobiletools.musicplayer.databases.SongsDatabase
@@ -33,8 +35,6 @@ import com.simplemobiletools.musicplayer.models.Album
 import com.simplemobiletools.musicplayer.models.Artist
 import com.simplemobiletools.musicplayer.models.Genre
 import com.simplemobiletools.musicplayer.models.Track
-import com.simplemobiletools.musicplayer.objects.executeBackgroundThread
-import com.simplemobiletools.musicplayer.objects.executeMainThread
 import java.io.File
 
 fun Activity.myAppLaunched(appId: String) {

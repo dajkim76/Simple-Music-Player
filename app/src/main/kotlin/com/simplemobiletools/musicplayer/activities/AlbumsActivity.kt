@@ -10,6 +10,7 @@ import com.simplemobiletools.commons.dialogs.PermissionRequiredDialog
 import com.simplemobiletools.commons.extensions.*
 import com.simplemobiletools.commons.helpers.NavigationIcon
 import com.simplemobiletools.commons.helpers.ensureBackgroundThread
+import com.simplemobiletools.commons.helpers.executeBackgroundThread
 import com.simplemobiletools.musicplayer.R
 import com.simplemobiletools.musicplayer.activities.ShortcutReceiverActivity.Companion.createTracklistShortcut
 import com.simplemobiletools.musicplayer.adapters.AlbumsTracksAdapter
@@ -21,7 +22,6 @@ import com.simplemobiletools.musicplayer.helpers.ALBUM
 import com.simplemobiletools.musicplayer.helpers.ARTIST
 import com.simplemobiletools.musicplayer.helpers.ViewUtils
 import com.simplemobiletools.musicplayer.models.*
-import com.simplemobiletools.musicplayer.objects.executeBackgroundThread
 import org.greenrobot.eventbus.EventBus
 
 // Artists -> Albums -> Tracks

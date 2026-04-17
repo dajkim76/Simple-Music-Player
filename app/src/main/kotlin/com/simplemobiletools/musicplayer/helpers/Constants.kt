@@ -140,5 +140,3 @@ const val M3U_ENTRY = "#EXTINF:"
 const val M3U_DURATION_SEPARATOR = ","
 
 fun getPermissionToRequest() = if (isTiramisuPlus()) PERMISSION_READ_MEDIA_AUDIO else PERMISSION_WRITE_STORAGE
-
-fun Lx(msg: String?) = android.util.Log.e("__T", msg ?: "null")

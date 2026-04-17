@@ -12,6 +12,7 @@ import androidx.core.content.pm.ShortcutManagerCompat
 import androidx.core.graphics.drawable.IconCompat
 import com.simplemobiletools.commons.extensions.getAlertDialogBuilder
 import com.simplemobiletools.commons.extensions.setupDialogStuff
+import com.simplemobiletools.commons.helpers.executeBackgroundThread
 import com.simplemobiletools.commons.views.MyEditText
 import com.simplemobiletools.musicplayer.R
 import com.simplemobiletools.musicplayer.dialogs.SelectTracklistDialog.Companion.TRACKLIST_ALBUM
@@ -20,7 +21,6 @@ import com.simplemobiletools.musicplayer.dialogs.SelectTracklistDialog.Companion
 import com.simplemobiletools.musicplayer.dialogs.SelectTracklistDialog.Companion.TRACKLIST_PLAYLIST
 import com.simplemobiletools.musicplayer.dialogs.SelectTracklistDialog.Companion.TRACKLIST_QUEUE
 import com.simplemobiletools.musicplayer.dialogs.SelectTracklistDialog.Companion.onSelectTracklist
-import com.simplemobiletools.musicplayer.objects.executeBackgroundThread
 
 class ShortcutReceiverActivity : SimpleControllerActivity() {
 

@@ -6,6 +6,7 @@ import com.simplemobiletools.commons.extensions.setupDialogStuff
 import com.simplemobiletools.commons.extensions.toast
 import com.simplemobiletools.commons.extensions.viewBinding
 import com.simplemobiletools.commons.helpers.ensureBackgroundThread
+import com.simplemobiletools.commons.helpers.executeBackgroundThread
 import com.simplemobiletools.musicplayer.R
 import com.simplemobiletools.musicplayer.activities.SimpleControllerActivity
 import com.simplemobiletools.musicplayer.adapters.SelectTracklistAdapter
@@ -17,7 +18,6 @@ import com.simplemobiletools.musicplayer.helpers.FolderConfig
 import com.simplemobiletools.musicplayer.models.Album
 import com.simplemobiletools.musicplayer.models.Artist
 import com.simplemobiletools.musicplayer.models.Playlist
-import com.simplemobiletools.musicplayer.objects.executeBackgroundThread
 
 class SelectTracklistDialog(val activity: SimpleControllerActivity) {
     private var dialog: AlertDialog? = null
