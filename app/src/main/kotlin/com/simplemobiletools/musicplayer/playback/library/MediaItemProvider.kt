@@ -215,12 +215,13 @@ internal class MediaItemProvider(private val context: Context) {
             buildRoot()
 
             try {
-                buildQueueItems()
+                val allTracks = audioHelper.getAllTracks()
+                buildQueueItems(allTracks)
                 buildPlaylists()
-                buildFolders()
+                buildFolders(allTracks)
                 buildArtists()
                 buildAlbums()
-                buildTracks()
+                buildTracks(allTracks)
                 buildGenres()
             } catch (e: Exception) {
                 state = STATE_ERROR
@@ -240,10 +241,13 @@ internal class MediaItemProvider(private val context: Context) {
         addNodeAndChildren(item = root, children = rootChildren)
     }
 
-    private fun buildQueueItems() = with(audioHelper) {
+    private fun buildQueueItems(allTracks: List<Track>) = with(audioHelper) {
+        val allTracksMap = allTracks.associateBy { it.mediaStoreId }
+        val queueDAO = context.queueDAO
         getAllQueueList().forEach { queueData ->
             val automotiveQueueSource = "q:${queueData.queueId}"
-            val trackList = getQueuedTracks(queueData.queueId)
+            val queueItems = queueDAO.getAll(queueData.queueId)
+            val trackList = getQueuedTracksByMap(queueItems, allTracksMap)
             val children = buildAutomotiveMediaItemList(trackList, automotiveQueueSource)
             addNodeAndChildren(SMP_QUEUES_ROOT_ID, queueData.toMediaItem(), children)
         }
@@ -271,8 +275,8 @@ internal class MediaItemProvider(private val context: Context) {
         }
     }
 
-    private fun buildFolders() = with(audioHelper) {
-        getAllFolders().forEach { folder ->
+    private fun buildFolders(allTracks: List<Track>) = with(audioHelper) {
+        getAllFoldersByTracks(allTracks).forEach { folder ->
             val automotiveQueueSource = "f:${folder.title}"
             val trackList = getFolderTracks(folder.title)
             val children = buildAutomotiveMediaItemList(trackList, automotiveQueueSource)
@@ -295,8 +299,8 @@ internal class MediaItemProvider(private val context: Context) {
         }
     }
 
-    private fun buildTracks() = with(audioHelper) {
-        getAllTracks().forEach { track ->
+    private fun buildTracks(allTracks: List<Track>) = with(audioHelper) {
+        allTracks.forEach { track ->
             addNodeAndChildren(SMP_TRACKS_ROOT_ID, track.toMediaItem())
             titleMap[track.title.lowercase()] = MediaItemNode(track.toMediaItem())
         }

@@ -32,7 +32,10 @@ class AudioHelper(private val context: Context) {
     }
 
     fun getAllFolders(): ArrayList<Folder> {
-        val tracks = context.audioHelper.getAllTracks()
+        return getAllFoldersByTracks(context.audioHelper.getAllTracks())
+    }
+
+    fun getAllFoldersByTracks(tracks: List<Track>): ArrayList<Folder> {
         val foldersMap = tracks.groupBy { it.folderName }
         val folders = ArrayList<Folder>()
         val excludedFolders = config.excludedFolders
@@ -360,11 +363,14 @@ class AudioHelper(private val context: Context) {
     }
 
     fun getQueuedTracks(queueItems: List<QueueItem>): ArrayList<Track> {
-        val allTracks = getAllTracks().associateBy { it.mediaStoreId }
+        val allTracksMap = getAllTracks().associateBy { it.mediaStoreId }
+        return getQueuedTracksByMap(queueItems, allTracksMap)
+    }
 
+    fun getQueuedTracksByMap(queueItems: List<QueueItem>, allTracksMap: Map<Long, Track>): ArrayList<Track> {
         // make sure we fetch the songs in the order they were displayed in
         val tracks = queueItems.mapNotNull { queueItem ->
-            val track = allTracks[queueItem.trackId]
+            val track = allTracksMap[queueItem.trackId]
             if (track != null) {
                 if (queueItem.isCurrent) {
                     track.flags = track.flags.addBit(FLAG_IS_CURRENT)

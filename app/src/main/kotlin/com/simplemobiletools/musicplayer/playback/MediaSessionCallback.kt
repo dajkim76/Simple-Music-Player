@@ -276,7 +276,12 @@ internal fun PlaybackService.getMediaSessionCallback() = object : MediaLibrarySe
         val mediaItemList = trackList.map { it.toMediaItem() }
         val startIndex = trackList
             .indexOfFirst { it.mediaStoreId.toString() == lastMediaId } // startIndex can be C.INDEX_UNSET(-1)
-        val startPositionMs = if (startIndex >= 0) audioHelper.updateRecentPlayedTrack(trackList[startIndex]) else 0L
+        val startPositionMs = if (startIndex >= 0) {
+            val lastPosition = audioHelper.updateRecentPlayedTrack(trackList[startIndex])
+            if (config.keepTrackLastPosition) lastPosition else 0L
+        } else {
+            0L
+        }
         return MediaItemsWithStartPosition(mediaItemList, startIndex, startPositionMs)
     }
 
