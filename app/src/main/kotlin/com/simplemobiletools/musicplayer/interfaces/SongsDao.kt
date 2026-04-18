@@ -17,8 +17,15 @@ interface SongsDao {
     @Delete
     fun delete(track: Track)
 
+    @Query("DELETE FROM tracks WHERE playlist_id = 0")  // 0 is not query in UI (Buggy version inserted this tracks)
+    fun deleteUselessTracks()
+
     @Query("SELECT * FROM tracks")
     fun getAll(): List<Track>
+
+    // Tracks with playlist_id 0, else are duplicates. Since the UI only displays those with 1, we filter by 1 to improve performance.
+    @Query("SELECT * FROM tracks WHERE playlist_id = $ALL_TRACKS_PLAYLIST_ID")
+    fun getFilteredAll(): List<Track>
 
     @Query("SELECT * FROM tracks WHERE playlist_id = :playlistId")
     fun getTracksFromPlaylist(playlistId: Int): List<Track>

@@ -24,9 +24,7 @@ class AudioHelper(private val context: Context) {
     }
 
     fun getAllTracks(): ArrayList<Track> {
-        val tracks = context.tracksDAO.getAll()
-            .applyProperFilenames(config.showFilename)
-
+        val tracks = context.tracksDAO.getFilteredAll().applyProperFilenames(config.showFilename)
         tracks.sortSafely(config.trackSorting)
         return tracks
     }

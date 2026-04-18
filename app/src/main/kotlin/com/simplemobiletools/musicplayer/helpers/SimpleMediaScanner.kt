@@ -18,6 +18,7 @@ import com.simplemobiletools.musicplayer.R
 import com.simplemobiletools.musicplayer.extensions.audioHelper
 import com.simplemobiletools.musicplayer.extensions.config
 import com.simplemobiletools.musicplayer.extensions.getFriendlyFolder
+import com.simplemobiletools.musicplayer.extensions.tracksDAO
 import com.simplemobiletools.musicplayer.models.*
 import java.io.File
 import java.io.FileInputStream
@@ -187,7 +188,7 @@ class SimpleMediaScanner private constructor(private val context: Application) {
 
     private fun updateAllDatabases() {
         context.audioHelper.apply {
-            insertTracks(newTracks)
+            //insertTracks(newTracks) playListId 0 Track이 중복되므로 comment
             updateAlbumsOrInsert(newAlbums)
             updateArtistsOrInsert(newArtists)
             insertGenres(newGenres)
@@ -220,6 +221,7 @@ class SimpleMediaScanner private constructor(private val context: Application) {
             .filter { it.mediaStoreId !in tracksRemovedFromAllTracks && it.playListId == 0 && !isInExcludeFolders(it.path.getParentPath(), excludedFolders) }
             .onEach { it.playListId = ALL_TRACKS_PLAYLIST_ID }
         RoomHelper(context).insertTracksWithPlaylist(tracksWithPlaylist as ArrayList<Track>)
+        context.tracksDAO.deleteUselessTracks()
     }
 
     private fun getTracksSync(): ArrayList<Track> {
@@ -631,7 +633,7 @@ class SimpleMediaScanner private constructor(private val context: Application) {
         // remove invalid tracks
         val newTrackIds = newTracks.map { it.mediaStoreId } as ArrayList<Long>
         val newTrackPaths = newTracks.map { it.path } as ArrayList<String>
-        val invalidTracks = context.audioHelper.getAllTracks().filter { it.mediaStoreId !in newTrackIds || it.path !in newTrackPaths }
+        val invalidTracks = context.tracksDAO.getAll().filter { it.mediaStoreId !in newTrackIds || it.path !in newTrackPaths }
         context.audioHelper.deleteTracks(invalidTracks)
         newTracks.removeAll(invalidTracks.toSet())
 

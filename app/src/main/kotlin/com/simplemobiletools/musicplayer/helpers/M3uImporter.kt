@@ -3,6 +3,7 @@ package com.simplemobiletools.musicplayer.helpers
 import com.simplemobiletools.commons.extensions.showErrorToast
 import com.simplemobiletools.musicplayer.activities.SimpleActivity
 import com.simplemobiletools.musicplayer.extensions.audioHelper
+import com.simplemobiletools.musicplayer.extensions.tracksDAO
 import com.simplemobiletools.musicplayer.models.Track
 import net.bjoernpetersen.m3u.M3uParser
 import net.bjoernpetersen.m3u.model.M3uEntry
@@ -29,8 +30,7 @@ class M3uImporter(
         try {
             val m3uEntries: List<M3uEntry> = M3uParser.parse(inputStream.reader())
 
-            val existingTracks = activity.audioHelper.getAllTracks()
-                .filter { it.playListId == 0 }
+            val existingTracks = activity.tracksDAO.getFilteredAll()
 
             val playlistItems = mutableListOf<Track>()
             for (m3uEntry in m3uEntries) {
