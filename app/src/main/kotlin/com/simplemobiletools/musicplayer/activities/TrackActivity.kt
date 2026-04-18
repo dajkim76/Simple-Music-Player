@@ -21,14 +21,15 @@ import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
 import android.util.Log
 import android.util.Size
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewOutlineProvider
 import android.widget.*
 import androidx.annotation.OptIn
 import androidx.appcompat.app.AlertDialog
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.os.postDelayed
-import androidx.core.view.GestureDetectorCompat
 import androidx.core.view.children
 import androidx.core.view.isVisible
 import androidx.media3.common.MediaItem
@@ -417,108 +418,41 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
         }
     }
 
-    @SuppressLint("ClickableViewAccessibility")
     private fun setupFlingListener() {
-        var isFlinging = false
-        val flingListener = object : GestureDetector.SimpleOnGestureListener() {
-            override fun onDown(e: MotionEvent): Boolean {
-                isFlinging = false
-                return true
-            }
-
-            override fun onFling(
-                e1: MotionEvent?,
-                e2: MotionEvent,
-                velocityX: Float,
-                velocityY: Float
-            ): Boolean {
-                if (e1 == null) return false
-
-                val diffY = e2.y - e1.y
-                val diffX = e2.x - e1.x
-
-                val SWIPE_THRESHOLD = 50
-                val SWIPE_VELOCITY_THRESHOLD = 50
-
-                if (Math.abs(diffX) > Math.abs(diffY)) {
-                    if (Math.abs(diffX) > SWIPE_THRESHOLD && Math.abs(velocityX) > SWIPE_VELOCITY_THRESHOLD) {
-                        isFlinging = true
-                        if (diffX > 0) {
-                            onSwipeRight()
-                        } else {
-                            onSwipeLeft()
-                        }
-                        return true
-                    }
-                } else {
-                    if (Math.abs(diffY) > SWIPE_THRESHOLD && Math.abs(velocityY) > SWIPE_VELOCITY_THRESHOLD) {
-                        isFlinging = true
-                        if (diffY > 0) {
-                            onSwipeDown()
-                        } else {
-                            onSwipeUp()
-                        }
-                        return true
-                    }
+        val swipeDetector = SwipeGestureDetector(this) { swipeWhat ->
+            when (swipeWhat) {
+                SwipeGestureDetector.SWIPE_LEFT -> binding.activityTrackNext.performClick()
+                SwipeGestureDetector.SWIPE_RIGHT -> binding.activityTrackPrevious.performClick()
+                SwipeGestureDetector.SWIPE_UP -> binding.nextTrackHolder.performClick()
+                SwipeGestureDetector.SWIPE_DOWN -> {
+                    finish()
+                    binding.activityTrackTopShadow.animate().alpha(0f).start()
+                    overridePendingTransition(0, com.simplemobiletools.commons.R.anim.slide_down)
                 }
-                return false
             }
-
-            private fun onSwipeDown() {
-                finish()
-                binding.activityTrackTopShadow.animate().alpha(0f).start()
-                overridePendingTransition(0, com.simplemobiletools.commons.R.anim.slide_down)
-            }
-
-            private fun onSwipeUp() {
-                binding.nextTrackHolder.performClick()
-            }
-
-            private fun onSwipeLeft() {
-                binding.activityTrackNext.performClick()
-            }
-
-            private fun onSwipeRight() {
-                binding.activityTrackPrevious.performClick()
-            }
-        }
-
-        val gestureDetector = GestureDetectorCompat(this, flingListener)
-        gestureDetector.setIsLongpressEnabled(false)
-
-        val onTouchListener = View.OnTouchListener { v, event ->
-            val handled = gestureDetector.onTouchEvent(event)
-            if (isFlinging && event.action == MotionEvent.ACTION_UP) {
-                val cancelEvent = MotionEvent.obtain(event)
-                cancelEvent.action = MotionEvent.ACTION_CANCEL
-                v.onTouchEvent(cancelEvent)
-                cancelEvent.recycle()
-                return@OnTouchListener true
-            }
-            v.onTouchEvent(event) || handled
         }
 
         // Make swiping possible even on Views with click and longClick listeners attached.
         binding.apply {
             // progress
-            activityTrackProgressCurrent.setOnTouchListener(onTouchListener)
-            activityTrackSpeedClickArea.setOnTouchListener(onTouchListener)
-            activityTrackProgressMax.setOnTouchListener(onTouchListener)
+            swipeDetector.attachTouchListener(activityTrackProgressCurrent)
+            swipeDetector.attachTouchListener(activityTrackSpeedClickArea)
+            swipeDetector.attachTouchListener(activityTrackProgressMax)
             // track, artist name
-            activityTrackHolder.setOnTouchListener(onTouchListener)
-            activityTrackTitle.setOnTouchListener(onTouchListener)
-            activityCueTitle.setOnTouchListener(onTouchListener)
-            activityTrackArtist.setOnTouchListener(onTouchListener)
+            swipeDetector.attachTouchListener(activityTrackHolder)
+            swipeDetector.attachTouchListener(activityTrackTitle)
+            swipeDetector.attachTouchListener(activityCueTitle)
+            swipeDetector.attachTouchListener(activityTrackArtist)
             // controller
-            activityTrackToggleShuffle.setOnTouchListener(onTouchListener)
-            activityTrackPrevious.setOnTouchListener(onTouchListener)
-            activityTrackSeekBack.setOnTouchListener(onTouchListener)
-            activityTrackPlayPause.setOnTouchListener(onTouchListener)
-            activityTrackSeekForward.setOnTouchListener(onTouchListener)
-            activityTrackNext.setOnTouchListener(onTouchListener)
-            activityTrackPlaybackSetting.setOnTouchListener(onTouchListener)
+            swipeDetector.attachTouchListener(activityTrackToggleShuffle)
+            swipeDetector.attachTouchListener(activityTrackPrevious)
+            swipeDetector.attachTouchListener(activityTrackSeekBack)
+            swipeDetector.attachTouchListener(activityTrackPlayPause)
+            swipeDetector.attachTouchListener(activityTrackSeekForward)
+            swipeDetector.attachTouchListener(activityTrackNext)
+            swipeDetector.attachTouchListener(activityTrackPlaybackSetting)
             // next track bar
-            nextTrackHolder.setOnTouchListener(onTouchListener)
+            swipeDetector.attachTouchListener(nextTrackHolder)
         }
     }
 

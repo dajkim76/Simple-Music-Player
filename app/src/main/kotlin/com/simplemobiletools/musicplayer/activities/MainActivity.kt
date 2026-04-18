@@ -57,6 +57,7 @@ class MainActivity : SimpleMusicActivity() {
         storeStateVariables()
         setupTabs()
         setupCurrentTrackBar(binding.currentTrackBar.root)
+        setupFlingListener()
 
         handlePermission(getPermissionToRequest()) {
             if (it) {
@@ -260,6 +261,23 @@ class MainActivity : SimpleMusicActivity() {
         )
 
         binding.mainTabsHolder.beGoneIf(binding.mainTabsHolder.tabCount == 1)
+    }
+
+    // Swipe up on the tab bar and current track bar to open the playback page.
+    private fun setupFlingListener() {
+        val swipeDetector = SwipeGestureDetector(this, SwipeGestureDetector.SWIPE_UP) {
+            startActivity(Intent(applicationContext, TrackActivity::class.java))
+            overridePendingTransition(R.anim.slide_up_enter, R.anim.slide_up_exit)
+        }
+
+        binding.apply {
+            swipeDetector.attachTouchListener(currentTrackBar.root)
+            swipeDetector.attachTouchListener(currentTrackBar.root.findViewById(R.id.current_track_play_pause))
+            swipeDetector.attachTouchListener(currentTrackBar.root.findViewById(R.id.next_track_image))
+            for (i in 0..<mainTabsHolder.tabCount) {
+                swipeDetector.attachTouchListener(mainTabsHolder.getTabAt(i)?.view)
+            }
+        }
     }
 
     private fun setupTabColors() {
