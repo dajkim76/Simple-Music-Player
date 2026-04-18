@@ -32,4 +32,5 @@
     <string name="select_queue">Pilih antrean</string>
     <string name="default_queue">Default Nama antrean</string>
     <string name="queue">Nama antrean</string>
+    <string name="resume_playback">Lanjutkan pemutaran</string>
 </resources>

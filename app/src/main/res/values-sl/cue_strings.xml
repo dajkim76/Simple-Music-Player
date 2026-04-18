@@ -32,4 +32,5 @@
     <string name="select_queue">Izberi čakalno vrsto</string>
     <string name="default_queue">Privzeto Ime čakalne vrste</string>
     <string name="queue">Ime čakalne vrste</string>
+    <string name="resume_playback">Nadaljuj s predvajanjem</string>
 </resources>

@@ -32,4 +32,5 @@
     <string name="select_queue">اختر قائمة الانتظار</string>
     <string name="default_queue">افتراضي اسم قائمة الانتظار</string>
     <string name="queue">قائمة الانتظار</string>
+    <string name="resume_playback">استئناف التشغيل</string>
 </resources>

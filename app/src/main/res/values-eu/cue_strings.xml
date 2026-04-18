@@ -32,4 +32,5 @@
     <string name="select_queue">Hautatu ilara</string>
     <string name="default_queue">Lehenetsia Ilararen izena</string>
     <string name="queue">Ilararen izena</string>
+    <string name="resume_playback">Erreprodukzioari ekin</string>
 </resources>

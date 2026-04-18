@@ -32,4 +32,5 @@
     <string name="select_queue">Välj kö</string>
     <string name="default_queue">Standard Könamn</string>
     <string name="queue">Kö</string>
+    <string name="resume_playback">Återuppta uppspelning</string>
 </resources>

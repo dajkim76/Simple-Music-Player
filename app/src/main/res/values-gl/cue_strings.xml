@@ -32,4 +32,5 @@
     <string name="select_queue">Seleccionar cola</string>
     <string name="default_queue">Predeterminado e da cola</string>
     <string name="queue">e da co</string>
+    <string name="resume_playback">Reanudar a reprodución</string>
 </resources>

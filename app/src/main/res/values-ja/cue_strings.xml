@@ -32,4 +32,5 @@
     <string name="select_queue">キューを選択</string>
     <string name="default_queue">デフォルトのキュー</string>
     <string name="queue">キュー</string>
+    <string name="resume_playback">再生を再開</string>
 </resources>

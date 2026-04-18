@@ -32,4 +32,5 @@
     <string name="select_queue">Pasirinkti eilę</string>
     <string name="default_queue">Numatytasis Eilės pavadinimas</string>
     <string name="queue">Eilės pavadinimas</string>
+    <string name="resume_playback">Tęsti atkūrimą</string>
 </resources>

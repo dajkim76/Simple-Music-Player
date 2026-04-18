@@ -32,4 +32,5 @@
     <string name="select_queue">Velja röð</string>
     <string name="default_queue">Sjálfgefið Nafn raðar</string>
     <string name="queue">Nafn raðar</string>
+    <string name="resume_playback">Halda áfram afspilun</string>
 </resources>

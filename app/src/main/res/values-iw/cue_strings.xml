@@ -32,4 +32,5 @@
     <string name="select_queue">בחר תור</string>
     <string name="default_queue">ברירת מחדל שם התור</string>
     <string name="queue">תור</string>
+    <string name="resume_playback">המשך השמעה</string>
 </resources>

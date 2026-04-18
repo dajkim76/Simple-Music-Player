@@ -32,4 +32,5 @@
     <string name="select_queue">Vali järjekord</string>
     <string name="default_queue">Vaikimisi Järjekorra nimi</string>
     <string name="queue">Järjekorra</string>
+    <string name="resume_playback">Jätka taasesitust</string>
 </resources>

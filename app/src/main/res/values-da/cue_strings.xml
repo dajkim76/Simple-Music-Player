@@ -32,4 +32,5 @@
     <string name="select_queue">Vælg kø</string>
     <string name="default_queue">Standard Kønavn</string>
     <string name="queue">Kø</string>
+    <string name="resume_playback">Genoptag afspilning</string>
 </resources>

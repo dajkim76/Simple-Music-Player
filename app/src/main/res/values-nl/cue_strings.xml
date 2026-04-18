@@ -32,4 +32,5 @@
     <string name="select_queue">Selecteer wachtrij</string>
     <string name="default_queue">Standaard Wachtrijnaam</string>
     <string name="queue">Wachtrijnaam</string>
+    <string name="resume_playback">Afspelen hervatten</string>
 </resources>

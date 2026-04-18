@@ -32,4 +32,5 @@
     <string name="select_queue">Selecionar fila</string>
     <string name="default_queue">Padrão e da fila</string>
     <string name="queue">Fila</string>
+    <string name="resume_playback">Retomar reprodução</string>
 </resources>

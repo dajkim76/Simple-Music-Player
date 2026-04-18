@@ -32,4 +32,5 @@
     <string name="select_queue">เลือกคิว</string>
     <string name="default_queue">คิวเริ่มต้น</string>
     <string name="queue">คิว</string>
-    </resources>
+        <string name="resume_playback">เล่นต่อ</string>
+</resources>

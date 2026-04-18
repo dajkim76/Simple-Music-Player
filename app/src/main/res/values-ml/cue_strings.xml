@@ -32,4 +32,5 @@
     <string name="select_queue">ക്യൂ തിരഞ്ഞെടുക്കുക</string>
     <string name="default_queue">ഡിഫോൾട്ട് ക്യൂവിന്റെ പേര്</string>
     <string name="queue">ക്യൂവിന്റെ</string>
+    <string name="resume_playback">പ്ലേബാക്ക് പുനരാരംഭിക്കുക</string>
 </resources>

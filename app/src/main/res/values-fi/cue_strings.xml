@@ -32,4 +32,5 @@
     <string name="select_queue">Valitse jono</string>
     <string name="default_queue">Oletus Jonon nimi</string>
     <string name="queue">Jonon</string>
+    <string name="resume_playback">Jatka toistoa</string>
 </resources>

@@ -32,4 +32,5 @@
     <string name="select_queue">Sıra seç</string>
     <string name="default_queue">Varsayılan Sıra adı</string>
     <string name="queue">Sıra</string>
+    <string name="resume_playback">Oynatmaya devam et</string>
 </resources>

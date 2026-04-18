@@ -32,4 +32,5 @@
     <string name="select_queue">Selectează coada</string>
     <string name="default_queue">Implicit Nume coadă</string>
     <string name="queue">coadă</string>
+    <string name="resume_playback">Reluare redare</string>
 </resources>

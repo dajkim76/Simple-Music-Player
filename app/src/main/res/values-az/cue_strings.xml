@@ -32,4 +32,5 @@
     <string name="select_queue">Növbə seçin</string>
     <string name="default_queue">Defolt Növbə adı</string>
     <string name="queue">Növbə</string>
+    <string name="resume_playback">Oxutmağa davam et</string>
 </resources>
