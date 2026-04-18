@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import com.qtalk.recyclerviewfastscroller.RecyclerViewFastScroller
 import com.simplemobiletools.commons.dialogs.ConfirmationDialog
 import com.simplemobiletools.commons.extensions.*
@@ -185,6 +186,12 @@ class TracksHeaderAdapter(activity: SimpleActivity, items: ArrayList<ListItem>, 
 
             arrayOf(albumTitle, albumArtist, albumMeta).forEach {
                 it.setTextColor(textColor)
+                it.setOnLongClickListener { view ->
+                    (view as? TextView)?.let { textView ->
+                        activity.copyToClipboard(textView.value)
+                    }
+                    true
+                }
             }
 
             ensureBackgroundThread {
