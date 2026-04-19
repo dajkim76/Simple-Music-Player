@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.simplemobiletools.commons.activities.BaseSimpleActivity
@@ -76,6 +77,7 @@ class SelectQueueAdapter(
     val activity: BaseSimpleActivity,
     val items: MutableList<QueueData>,
     val playQueue: Boolean,
+    val isBottomGravity: Boolean,
     val currentQueueId: Long,
     val recyclerView: MyRecyclerView,
     val itemClick: (Long) -> Unit
@@ -112,7 +114,7 @@ class SelectQueueAdapter(
                 }
 
                 selectQueueDragHandle.applyColorFilter(textColor)
-                selectQueueDragHandle.beVisibleIf(queueData.queueId != 0L)
+                selectQueueDragHandle.beVisibleIf(queueData.queueId != 0L && !isBottomGravity)
                 selectQueueDragHandle.setOnTouchListener { _, event ->
                     if (event.action == MotionEvent.ACTION_DOWN) {
                         startReorderDragListener.requestDrag(this@ViewHolder)
@@ -121,6 +123,7 @@ class SelectQueueAdapter(
                 }
 
                 more.applyColorFilter(textColor)
+                more.isVisible = !isBottomGravity
                 more.setOnClickListener {
                     showMoreMenu(queueData, this@ViewHolder)
                 }
@@ -174,7 +177,7 @@ class SelectQueueAdapter(
     private fun prepareQueue(queueId: Long) {
         val simpleControllerActivity = (activity as? SimpleControllerActivity) ?: return
         simpleControllerActivity.withPlayer {
-            val startPlay = isPlaying
+            val startPlay = isBottomGravity || isPlaying
             ensureBackgroundThread {
                 simpleControllerActivity.onSelectTracklist(TRACKLIST_QUEUE, queueId, "", startPlay = startPlay)
             }

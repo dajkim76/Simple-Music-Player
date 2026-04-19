@@ -78,6 +78,7 @@ class SelectTracklistDialog(val activity: SimpleControllerActivity) {
         binding.dialogSelectPlaylistList.adapter = adapter
 
         activity.getAlertDialogBuilder().apply {
+            setNegativeButton(com.simplemobiletools.commons.R.string.cancel, null)
             activity.setupDialogStuff(binding.root, this) { alertDialog ->
                 dialog = alertDialog
             }

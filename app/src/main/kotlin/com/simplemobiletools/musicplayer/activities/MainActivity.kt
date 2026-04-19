@@ -265,9 +265,17 @@ class MainActivity : SimpleMusicActivity() {
 
     // Swipe up on the tab bar and current track bar to open the playback page.
     private fun setupFlingListener() {
-        val swipeDetector = SwipeGestureDetector(this, SwipeGestureDetector.SWIPE_UP) {
-            startActivity(Intent(applicationContext, TrackActivity::class.java))
-            overridePendingTransition(R.anim.slide_up_enter, R.anim.slide_up_exit)
+        val swipeDetector = SwipeGestureDetector(this) { swipeWhat ->
+            when (swipeWhat) {
+                SwipeGestureDetector.SWIPE_LEFT -> seekToNext()
+                SwipeGestureDetector.SWIPE_RIGHT -> seekToPrev()
+                SwipeGestureDetector.SWIPE_UP -> {
+                    startActivity(Intent(applicationContext, TrackActivity::class.java))
+                    overridePendingTransition(R.anim.slide_up_enter, R.anim.slide_up_exit)
+                }
+
+                SwipeGestureDetector.SWIPE_DOWN -> SelectQueueDialog(this, isBottomGravity = true)
+            }
         }
 
         binding.apply {

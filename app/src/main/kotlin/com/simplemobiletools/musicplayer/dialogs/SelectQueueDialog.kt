@@ -2,9 +2,13 @@ package com.simplemobiletools.musicplayer.dialogs
 
 import android.app.Activity
 import android.util.TypedValue
+import android.view.Gravity
 import android.view.ViewGroup
+import android.view.ViewTreeObserver
 import android.widget.LinearLayout
 import androidx.appcompat.app.AlertDialog
+import androidx.core.view.isVisible
+import androidx.core.view.updateLayoutParams
 import com.simplemobiletools.commons.activities.BaseSimpleActivity
 import com.simplemobiletools.commons.extensions.getAlertDialogBuilder
 import com.simplemobiletools.commons.extensions.getProperTextColor
@@ -19,7 +23,12 @@ import com.simplemobiletools.musicplayer.models.QueueData
 import com.simplemobiletools.musicplayer.models.getQueueDataListFromJson
 import com.simplemobiletools.musicplayer.models.toJson
 
-class SelectQueueDialog(val activity: Activity, val playQueue: Boolean = true, val callback: (queueId: Long) -> Unit = {}) {
+class SelectQueueDialog(
+    val activity: Activity,
+    val playQueue: Boolean = true,
+    val isBottomGravity: Boolean = false,
+    val callback: (queueId: Long) -> Unit = {}
+) {
     private var dialog: AlertDialog? = null
     private val config = activity.config
     private val binding by activity.viewBinding(DialogSelectQueueBinding::inflate)
@@ -31,7 +40,14 @@ class SelectQueueDialog(val activity: Activity, val playQueue: Boolean = true, v
         val queueDataList = getQueueDataListFromJson(config.queueListJson).toMutableList()
         queueDataList.add(0, QueueData(activity.getString(R.string.default_queue), 0))
 
-        adapter = SelectQueueAdapter(activity as BaseSimpleActivity, queueDataList, playQueue, queueId, binding.dialogSelectQueueList) { id ->
+        adapter = SelectQueueAdapter(
+            activity as BaseSimpleActivity,
+            queueDataList,
+            playQueue,
+            isBottomGravity = isBottomGravity,
+            queueId,
+            binding.dialogSelectQueueList
+        ) { id ->
             callback.invoke(id)
             dialog?.dismiss()
         }
@@ -40,9 +56,31 @@ class SelectQueueDialog(val activity: Activity, val playQueue: Boolean = true, v
         binding.dialogSelectQueueNew.setTextColor(textColor)
         binding.dialogSelectQueueNew.setOnClickListener { createNewQueue() }
 
+        if (isBottomGravity) {
+            binding.dialogSelectQueueDivider.isVisible = false
+            binding.dialogSelectQueueNew.isVisible = false
+        }
+
         activity.getAlertDialogBuilder().apply {
+            setNegativeButton(com.simplemobiletools.commons.R.string.cancel, null)
+            if (isBottomGravity) setNeutralButton(com.simplemobiletools.commons.R.string.cancel, null)
             activity.setupDialogStuff(binding.root, this, titleId = if (playQueue) R.string.play_queue else R.string.select_queue) { alertDialog ->
                 dialog = alertDialog
+                if (isBottomGravity) {
+                    dialog?.window?.setGravity(Gravity.BOTTOM)
+                    // limit max height, Easy to operate with one hand.
+                    val container = binding.dialogSelectQueueList
+                    container.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+                        override fun onGlobalLayout() {
+                            container.viewTreeObserver.removeOnGlobalLayoutListener(this)
+
+                            val maxHeight = context.resources.displayMetrics.heightPixels * .3f
+                            if (container.height > maxHeight) {
+                                container.updateLayoutParams { height = maxHeight.toInt() }
+                            }
+                        }
+                    })
+                }
             }
         }
     }

@@ -147,6 +147,12 @@ abstract class SimpleControllerActivity : SimpleActivity(), Player.Listener {
         }
     }
 
+    fun seekToPrev() {
+        withPlayer {
+            forceSeekToPrevious()
+        }
+    }
+
     fun addTracksToQueue(tracks: List<Track>, callback: () -> Unit) {
         withPlayer {
             val currentMediaItemsIds = currentMediaItems.map { it.mediaId }

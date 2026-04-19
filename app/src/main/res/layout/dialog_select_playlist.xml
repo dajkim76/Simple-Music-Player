@@ -17,6 +17,7 @@
         android:id="@+id/dialog_select_playlist_divider"
         android:layout_width="match_parent"
         android:layout_height="1dp"
+        android:layout_marginTop="@dimen/smaller_margin"
         android:layout_below="@+id/dialog_select_playlist_list"
         android:background="@color/divider_grey"
         android:importantForAccessibility="no" />
@@ -25,12 +26,11 @@
         android:id="@+id/dialog_select_playlist_new_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/medium_margin"
         android:layout_below="@+id/dialog_select_playlist_divider"
         android:paddingStart="@dimen/normal_margin"
         android:paddingTop="@dimen/small_margin"
         android:paddingEnd="@dimen/normal_margin"
-        android:paddingBottom="@dimen/small_margin"
-        android:minHeight="@dimen/min_radio_checkbox_height"
         android:gravity="center_vertical"
         android:text="@string/create_new_playlist" />
 </RelativeLayout>
