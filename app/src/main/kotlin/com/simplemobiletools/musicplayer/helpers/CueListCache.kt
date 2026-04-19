@@ -57,6 +57,8 @@ object CueListHelper {
 
     const val CUE_DISABLED_PREFIX = "@"
     const val CUE_FAVORITE_PREFIX = "%"
+    const val CUE_SHIFT_PLUS = ">>>>"
+    const val CUE_SHIFT_MINUS = "<<<<"
 
     fun getCueJsonFromText(text: String): String {
         val cues = mutableListOf<Cue>()
@@ -80,6 +82,13 @@ object CueListHelper {
             }
         }
         if (cues.isEmpty()) return ""
+        // 0:10 >>>>
+        // all timestamp 10 seconds increment
+        cues.find { it.title == CUE_SHIFT_PLUS || it.title == CUE_SHIFT_MINUS }?.let { shiftCue ->
+            val shiftSeconds = if (shiftCue.title == CUE_SHIFT_PLUS) shiftCue.timestamp else shiftCue.timestamp * -1
+            cues.remove(shiftCue)
+            cues.forEach { it.timestamp += shiftSeconds }
+        }
         return Gson().toJson(cues.sortedBy { it.timestamp })
     }
 
