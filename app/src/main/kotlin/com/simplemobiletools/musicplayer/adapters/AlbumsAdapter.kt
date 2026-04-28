@@ -90,7 +90,7 @@ class AlbumsAdapter(
         ItemAlbumBinding.bind(view).apply {
             root.setupViewBackground(context)
             albumFrame.isSelected = selectedKeys.contains(album.hashCode())
-            albumArtist.text = album.artist
+            albumArtist.text = if (textToHighlight.isEmpty()) album.artist else album.artist.highlightTextPart(textToHighlight, properPrimaryColor)
             albumArtist.setTextColor(textColor)
             albumTitle.text = if (textToHighlight.isEmpty()) album.title else album.title.highlightTextPart(textToHighlight, properPrimaryColor)
             albumTitle.setTextColor(textColor)
