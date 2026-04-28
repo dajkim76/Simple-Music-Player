@@ -254,9 +254,13 @@ class MainActivity : SimpleMusicActivity() {
                 updateBottomTabItemColors(it.customView, false)
             },
             tabSelectedAction = {
-                binding.mainMenu.closeSearch()
                 binding.viewPager.currentItem = it.position
                 updateBottomTabItemColors(it.customView, true)
+                binding.viewPager.post {
+                    getAdapter()?.getFragment(it.position)?.onSearchQueryChanged(
+                        text = binding.mainMenu.getCurrentQuery()
+                    )
+                }
             }
         )
 
