@@ -1,11 +1,25 @@
 package com.simplemobiletools.musicplayer.models
 
+import androidx.room.Ignore
+import com.simplemobiletools.commons.extensions.normalizeString
 import com.simplemobiletools.commons.helpers.AlphanumericComparator
 import com.simplemobiletools.commons.helpers.SORT_DESCENDING
 import com.simplemobiletools.musicplayer.extensions.sortSafely
 import com.simplemobiletools.musicplayer.helpers.PLAYER_SORT_BY_TITLE
 
 data class Folder(val title: String, val trackCount: Int, val path: String, var favoriteTime: Long = 0) {
+    @Ignore
+    private var normalizedTitle: String? = null
+
+    fun normalizeSearch(text: String): Boolean {
+        val normalized = normalizedTitle ?: run {
+            title.normalizeString().also {
+                normalizedTitle = it
+            }
+        }
+        return normalized.contains(text.normalizeString(), ignoreCase = true)
+    }
+
     companion object {
         fun getComparator(sorting: Int) = Comparator<Folder> { first, second ->
             val firstIsSpecial = first.favoriteTime > 0

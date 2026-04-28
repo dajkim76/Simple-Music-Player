@@ -4,11 +4,9 @@ import android.content.ContentUris
 import android.net.Uri
 import android.provider.MediaStore
 import androidx.media3.common.MediaItem
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.Index
-import androidx.room.PrimaryKey
+import androidx.room.*
 import com.simplemobiletools.commons.extensions.getFormattedDuration
+import com.simplemobiletools.commons.extensions.normalizeString
 import com.simplemobiletools.commons.helpers.AlphanumericComparator
 import com.simplemobiletools.commons.helpers.SORT_DESCENDING
 import com.simplemobiletools.musicplayer.extensions.sortSafely
@@ -46,6 +44,9 @@ data class Track(
     @ColumnInfo(name = "disc_number") var discNumber: Int? = null,
 ) : Serializable, ListItem() {
 
+    @Ignore
+    private var normalizedList: MutableList<String>? = null
+
     val fileStableId: Long by lazy(LazyThreadSafetyMode.NONE) {
         val filename = path.substringAfterLast('/')
         val key = "$filename|$fileLength|$fileLastModified"
@@ -60,6 +61,23 @@ data class Track(
             hash *= prime
         }
         return hash
+    }
+
+    fun normalizeSearch(text: String, onlyTitleSearch: Boolean): Boolean {
+        val list = normalizedList ?: run {
+            mutableListOf<String>().also {
+                it.add(title.normalizeString())
+                it.add(artist.normalizeString())
+                it.add(album.normalizeString())
+                normalizedList = it
+            }
+        }
+        val normalizedText = text.normalizeString()
+        return if (onlyTitleSearch) {
+            list.first().contains(normalizedText, ignoreCase = true)
+        } else {
+            list.any { it.contains(normalizedText, ignoreCase = true) }
+        }
     }
 
     companion object {

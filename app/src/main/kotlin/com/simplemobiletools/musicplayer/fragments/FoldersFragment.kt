@@ -90,7 +90,7 @@ class FoldersFragment(context: Context, attributeSet: AttributeSet) : MyViewPage
     }
 
     override fun onSearchQueryChanged(text: String) {
-        val filtered = folders.filter { it.title.contains(text, true) }.toMutableList() as ArrayList<Folder>
+        val filtered = folders.filter { it.normalizeSearch(text) }.toMutableList() as ArrayList<Folder>
         getAdapter()?.updateItems(filtered, text)
         binding.foldersPlaceholder.beVisibleIf(filtered.isEmpty())
     }

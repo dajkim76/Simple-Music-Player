@@ -1,9 +1,7 @@
 package com.simplemobiletools.musicplayer.models
 
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.Index
-import androidx.room.PrimaryKey
+import androidx.room.*
+import com.simplemobiletools.commons.extensions.normalizeString
 import com.simplemobiletools.commons.helpers.AlphanumericComparator
 import com.simplemobiletools.commons.helpers.SORT_DESCENDING
 import com.simplemobiletools.musicplayer.extensions.sortSafely
@@ -16,6 +14,18 @@ data class Genre(
     @ColumnInfo(name = "track_cnt") var trackCnt: Int,
     @ColumnInfo(name = "album_art") var albumArt: String
 ) {
+    @Ignore
+    private var normalizedTitle: String? = null
+
+    fun normalizeSearch(text: String): Boolean {
+        val normalized = normalizedTitle ?: run {
+            title.normalizeString().also {
+                normalizedTitle = it
+            }
+        }
+        return normalized.contains(text.normalizeString(), ignoreCase = true)
+    }
+
     companion object {
         fun getComparator(sorting: Int) = Comparator<Genre> { first, second ->
             var result = when {

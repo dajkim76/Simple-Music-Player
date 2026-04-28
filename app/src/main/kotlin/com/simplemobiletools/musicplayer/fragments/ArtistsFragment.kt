@@ -97,7 +97,7 @@ class ArtistsFragment(context: Context, attributeSet: AttributeSet) : MyViewPage
     }
 
     override fun onSearchQueryChanged(text: String) {
-        val filtered = artists.filter { it.title.contains(text, true) }.toMutableList() as ArrayList<Artist>
+        val filtered = artists.filter { it.normalizeSearch(text) }.toMutableList() as ArrayList<Artist>
         getAdapter()?.updateItems(filtered, text)
         binding.artistsPlaceholder.beVisibleIf(filtered.isEmpty())
     }

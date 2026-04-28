@@ -1,6 +1,7 @@
 package com.simplemobiletools.musicplayer.models
 
 import androidx.room.*
+import com.simplemobiletools.commons.extensions.normalizeString
 import com.simplemobiletools.commons.helpers.AlphanumericComparator
 import com.simplemobiletools.commons.helpers.SORT_DESCENDING
 import com.simplemobiletools.musicplayer.extensions.sortSafely
@@ -18,6 +19,18 @@ data class Playlist(
     @Ignore var trackCount: Int = 0
 ) {
     constructor() : this(0, "", System.currentTimeMillis(), 0)
+
+    @Ignore
+    private var normalizedTitle: String? = null
+
+    fun normalizeSearch(text: String): Boolean {
+        val normalized = normalizedTitle ?: run {
+            title.normalizeString().also {
+                normalizedTitle = it
+            }
+        }
+        return normalized.contains(text.normalizeString(), ignoreCase = true)
+    }
 
     companion object {
         fun getComparator(sorting: Int) = Comparator<Playlist> { first, second ->

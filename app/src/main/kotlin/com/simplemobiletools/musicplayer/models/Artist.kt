@@ -1,10 +1,8 @@
 package com.simplemobiletools.musicplayer.models
 
 import android.provider.MediaStore
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.Index
-import androidx.room.PrimaryKey
+import androidx.room.*
+import com.simplemobiletools.commons.extensions.normalizeString
 import com.simplemobiletools.commons.helpers.AlphanumericComparator
 import com.simplemobiletools.commons.helpers.SORT_DESCENDING
 import com.simplemobiletools.musicplayer.extensions.sortSafely
@@ -21,6 +19,18 @@ data class Artist(
     @ColumnInfo(name = "favorite_time", defaultValue = "0") var favoriteTime: Long = 0,
     @ColumnInfo(name = "last_media_id", defaultValue = "0") var lastMediaId: Long = 0,
 ) {
+    @Ignore
+    private var normalizedTitle: String? = null
+
+    fun normalizeSearch(text: String): Boolean {
+        val normalized = normalizedTitle ?: run {
+            title.normalizeString().also {
+                normalizedTitle = it
+            }
+        }
+        return normalized.contains(text.normalizeString(), ignoreCase = true)
+    }
+
     companion object {
         fun getComparator(sorting: Int) = Comparator<Artist> { first, second ->
             val firstIsSpecial = first.favoriteTime > 0

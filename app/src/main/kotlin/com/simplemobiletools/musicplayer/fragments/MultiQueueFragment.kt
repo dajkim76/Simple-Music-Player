@@ -122,9 +122,7 @@ class MultiQueueFragment(context: Context, attributeSet: AttributeSet) : MyViewP
     }
 
     override fun onSearchQueryChanged(text: String) {
-        val filtered = tracks.filter {
-            it.title.contains(text, true) || ("${it.artist} - ${it.album}").contains(text, true)
-        }.toMutableList() as ArrayList<Track>
+        val filtered = tracks.filter { it.normalizeSearch(text, onlyTitleSearch = true) }.toMutableList() as ArrayList<Track>
         getAdapter()?.updateItems(filtered, text)
         binding.multiQueuePlaceholder.beVisibleIf(filtered.isEmpty())
     }
