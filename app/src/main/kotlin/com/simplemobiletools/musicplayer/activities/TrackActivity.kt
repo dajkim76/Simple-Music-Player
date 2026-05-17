@@ -67,7 +67,12 @@ import com.simplemobiletools.musicplayer.models.Cue
 import com.simplemobiletools.musicplayer.models.Track
 import com.simplemobiletools.musicplayer.playback.CustomCommands
 import com.simplemobiletools.musicplayer.playback.PlaybackService
+import org.mp4parser.IsoFile
+import org.mp4parser.PropertyBoxParserImpl
+import java.io.File
+import java.io.FileInputStream
 import java.text.DecimalFormat
+import java.util.Properties
 import java.util.concurrent.TimeUnit
 import kotlin.math.min
 import kotlin.time.Duration.Companion.milliseconds
@@ -797,16 +802,157 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
         textView.highlightColor = Color.TRANSPARENT
     }
 
+    private fun extractM4bChapters(uri: Uri): List<String> {
+        val chapters = mutableListOf<String>()
+
+        try {
+            contentResolver.openFileDescriptor(uri, "r")?.use { pfd ->
+                FileInputStream(pfd.fileDescriptor).use { fis ->
+                    val props = Properties()
+                    props.setProperty("ftyp", "org.mp4parser.boxes.iso14496.part12.FileTypeBox")
+                    props.setProperty("moov", "org.mp4parser.boxes.iso14496.part12.MovieBox")
+                    props.setProperty("trak", "org.mp4parser.boxes.iso14496.part12.TrackBox")
+                    props.setProperty("mdia", "org.mp4parser.boxes.iso14496.part12.MediaBox")
+                    props.setProperty("mdhd", "org.mp4parser.boxes.iso14496.part12.MediaHeaderBox")
+                    props.setProperty("hdlr", "org.mp4parser.boxes.iso14496.part12.HandlerBox")
+                    props.setProperty("minf", "org.mp4parser.boxes.iso14496.part12.MediaInformationBox")
+                    props.setProperty("stbl", "org.mp4parser.boxes.iso14496.part12.SampleTableBox")
+                    props.setProperty("stsd", "org.mp4parser.boxes.iso14496.part12.SampleDescriptionBox")
+                    props.setProperty("stts", "org.mp4parser.boxes.iso14496.part12.TimeToSampleBox")
+                    props.setProperty("stsz", "org.mp4parser.boxes.iso14496.part12.SampleSizeBox")
+                    props.setProperty("stsc", "org.mp4parser.boxes.iso14496.part12.SampleToChunkBox")
+                    props.setProperty("stco", "org.mp4parser.boxes.iso14496.part12.StaticChunkOffsetBox")
+                    props.setProperty("co64", "org.mp4parser.boxes.iso14496.part12.ChunkOffset64BitBox")
+                    props.setProperty("udta", "org.mp4parser.boxes.iso14496.part12.UserDataBox")
+                    props.setProperty("meta", "org.mp4parser.boxes.iso14496.part12.MetaBox")
+                    props.setProperty("chpl", "org.mp4parser.boxes.iso14496.part12.FreeBox")
+                    props.setProperty("default", "org.mp4parser.boxes.iso14496.part12.FreeBox")
+
+                    val boxParser = PropertyBoxParserImpl(props)
+                    val isoFile = IsoFile(fis.channel, boxParser)
+                    val moov = isoFile.getBoxes(org.mp4parser.boxes.iso14496.part12.MovieBox::class.java).firstOrNull()
+
+                    // 1. Apple/FFmpeg 방식 (Text Track) 탐색 및 샘플 추출
+                    moov?.getBoxes(org.mp4parser.boxes.iso14496.part12.TrackBox::class.java)?.forEach { trak ->
+                        val mdia = trak.mediaBox
+                        val hdlr = mdia?.getBoxes(org.mp4parser.boxes.iso14496.part12.HandlerBox::class.java)?.firstOrNull()
+                        if (hdlr?.handlerType == "text" || hdlr?.handlerType == "tmcd") {
+                            val mdhd = mdia.getBoxes(org.mp4parser.boxes.iso14496.part12.MediaHeaderBox::class.java).firstOrNull()
+                            val stbl = mdia.mediaInformationBox?.sampleTableBox
+                            val stts = stbl?.getBoxes(org.mp4parser.boxes.iso14496.part12.TimeToSampleBox::class.java)?.firstOrNull()
+                            val stsz = stbl?.getBoxes(org.mp4parser.boxes.iso14496.part12.SampleSizeBox::class.java)?.firstOrNull()
+                            val stsc = stbl?.getBoxes(org.mp4parser.boxes.iso14496.part12.SampleToChunkBox::class.java)?.firstOrNull()
+                            val stco = stbl?.getBoxes(org.mp4parser.boxes.iso14496.part12.StaticChunkOffsetBox::class.java)?.firstOrNull()
+                            val co64 = stbl?.getBoxes(org.mp4parser.boxes.iso14496.part12.ChunkOffset64BitBox::class.java)?.firstOrNull()
+
+                            if (mdhd != null && stts != null && stsz != null && (stco != null || co64 != null)) {
+                                val timescale = mdhd.timescale
+                                val chunkOffsets = stco?.chunkOffsets ?: co64?.chunkOffsets ?: LongArray(0)
+                                val sampleSizes = stsz.sampleSizes
+                                val defaultSize = stsz.sampleSize
+                                val sampleCount = stsz.sampleCount.toInt()
+                                // 모든 샘플의 오프셋 계산 (stsc 활용)
+                                val sampleOffsets = LongArray(sampleCount)
+                                if (stsc != null && chunkOffsets.isNotEmpty()) {
+                                    var currentSample = 0
+                                    val stscEntries = stsc.entries
+                                    for (i in stscEntries.indices) {
+                                        val entry = stscEntries[i]
+                                        val nextFirstChunk = if (i + 1 < stscEntries.size) stscEntries[i + 1].firstChunk else (chunkOffsets.size + 1).toLong()
+                                        for (chunkIdx in entry.firstChunk.toInt() until nextFirstChunk.toInt()) {
+                                            var offsetInChunk = chunkOffsets[chunkIdx - 1]
+                                            for (s in 0 until entry.samplesPerChunk.toInt()) {
+                                                if (currentSample < sampleCount) {
+                                                    sampleOffsets[currentSample] = offsetInChunk
+                                                    val sSize = if (sampleSizes.isNotEmpty()) sampleSizes[currentSample] else defaultSize
+                                                    offsetInChunk += sSize
+                                                    currentSample++
+                                                }
+                                            }
+                                        }
+                                    }
+                                } else if (chunkOffsets.size == sampleCount) {
+                                    System.arraycopy(chunkOffsets, 0, sampleOffsets, 0, sampleCount)
+                                }
+                                // 챕터 정보 추출
+                                var currentTimestamp = 0L
+                                var sampleIdx = 0
+                                stts.entries.forEach { sttsEntry ->
+                                    for (i in 0 until sttsEntry.count.toInt()) {
+                                        if (sampleIdx < sampleCount) {
+                                            val offset = sampleOffsets[sampleIdx]
+                                            val size = if (sampleSizes.isNotEmpty()) sampleSizes[sampleIdx].toInt() else defaultSize.toInt()
+                                            if (size > 2) {
+                                                val buffer = java.nio.ByteBuffer.allocate(size)
+                                                fis.channel.position(offset)
+                                                fis.channel.read(buffer)
+                                                buffer.flip()
+                                                val textLen = buffer.short.toInt() and 0xFFFF
+                                                if (textLen <= size - 2) {
+                                                    val textBytes = ByteArray(textLen)
+                                                    buffer.get(textBytes)
+                                                    val title = String(textBytes, Charsets.UTF_8).trim()
+                                                    if (title.isNotEmpty()) {
+                                                        chapters.add("${formatMilliseconds(currentTimestamp * 1000 / timescale)}  $title")
+                                                    }
+                                                }
+                                            }
+                                            currentTimestamp += sttsEntry.delta
+                                            sampleIdx++
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    // 2. Nero 방식 (chpl) 탐색 - Text Track에서 못 찾았을 경우
+                    if (chapters.isEmpty()) {
+                        val udta = moov?.getBoxes(org.mp4parser.boxes.iso14496.part12.UserDataBox::class.java)?.firstOrNull()
+                        val potentialChpl = udta?.getBoxes()?.filterIsInstance<org.mp4parser.boxes.iso14496.part12.FreeBox>()
+                            ?.firstOrNull { it.size > 16 }
+                        potentialChpl?.let { box ->
+                            try {
+                                val data = box.data.duplicate()
+                                data.position(4)
+                                val count = data.int
+                                if (count in 1..2000) {
+                                    for (i in 0 until count) {
+                                        if (data.remaining() < 9) break
+                                        val time100ns = data.long
+                                        val titleLen = data.get().toInt() and 0xFF
+                                        if (data.remaining() < titleLen) break
+                                        val titleBytes = ByteArray(titleLen)
+                                        data.get(titleBytes)
+                                        chapters.add("${formatMilliseconds(time100ns / 10000)}  ${String(titleBytes, Charsets.UTF_8)}")
+                                    }
+                                }
+                            } catch (e: Exception) {
+                            }
+                        }
+                    }
+                    isoFile.close()
+                }
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        return chapters
+    }
+
     @OptIn(UnstableApi::class)
     private fun showMetaDataDialog() {
         val track = currentTrack ?: return
-        val mediaItem = if (track.path.isNotEmpty()) {
-            MediaItem.fromUri(track.path)
+        val uri = if (track.path.isNotEmpty()) {
+            if (track.path.startsWith("content://")) {
+                Uri.parse(track.path)
+            } else {
+                Uri.fromFile(File(track.path))
+            }
         } else {
-            val uriStr = ContentUris.withAppendedId(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, track.mediaStoreId).toString()
-            val uri = Uri.parse(uriStr)
-            MediaItem.fromUri(uri)
+            ContentUris.withAppendedId(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, track.mediaStoreId)
         }
+        val mediaItem = MediaItem.fromUri(uri)
 
         data class MetaData(val type: String, val key: String, val value: String)
 
@@ -898,6 +1044,12 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
+            }
+
+            // try m4b Chapters
+            if (chapterList.isEmpty()) {
+                val m4bChapters = extractM4bChapters(uri)
+                chapterList.addAll(m4bChapters)
             }
 
             var cuesJson = ""

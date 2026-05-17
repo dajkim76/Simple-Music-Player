@@ -126,6 +126,7 @@ dependencies {
     implementation(libs.m3u.parser)
     implementation(libs.autofittextview)
     implementation(libs.jaudiotagger)
+    implementation("org.mp4parser:isoparser:1.9.56")
     implementation(libs.mmkv)
     implementation(libs.androidx.compose.ui.text)
     coreLibraryDesugaring(libs.desugar.jdk.libs)
