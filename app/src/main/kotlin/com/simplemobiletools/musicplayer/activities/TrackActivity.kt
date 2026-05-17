@@ -14,6 +14,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.provider.MediaStore
+import android.provider.OpenableColumns
 import android.text.SpannableString
 import android.text.Spanned
 import android.text.TextPaint
@@ -802,7 +803,7 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
         textView.highlightColor = Color.TRANSPARENT
     }
 
-    private fun extractM4bChapters(uri: Uri): List<String> {
+    private fun extractMP4Chapters(uri: Uri): List<String> {
         val chapters = mutableListOf<String>()
 
         try {
@@ -825,8 +826,13 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
                     props.setProperty("co64", "org.mp4parser.boxes.iso14496.part12.ChunkOffset64BitBox")
                     props.setProperty("udta", "org.mp4parser.boxes.iso14496.part12.UserDataBox")
                     props.setProperty("meta", "org.mp4parser.boxes.iso14496.part12.MetaBox")
+                    // OOM 방지 핵심: 거대한 박스(mdat 등)는 MediaDataBox로 매핑하여 데이터를 메모리에 로드하지 않음
+                    props.setProperty("mdat", "org.mp4parser.boxes.iso14496.part12.MediaDataBox")
+                    props.setProperty("free", "org.mp4parser.boxes.iso14496.part12.FreeBox")
+                    props.setProperty("skip", "org.mp4parser.boxes.iso14496.part12.FreeSpaceBox")
                     props.setProperty("chpl", "org.mp4parser.boxes.iso14496.part12.FreeBox")
-                    props.setProperty("default", "org.mp4parser.boxes.iso14496.part12.FreeBox")
+                    // 기본값은 MediaDataBox로 설정하여 알 수 없는 거대 박스로 인한 OOM 방지
+                    props.setProperty("default", "org.mp4parser.boxes.iso14496.part12.MediaDataBox")
 
                     val boxParser = PropertyBoxParserImpl(props)
                     val isoFile = IsoFile(fis.channel, boxParser)
@@ -907,7 +913,7 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
                     }
 
                     // 2. Nero 방식 (chpl) 탐색 - Text Track에서 못 찾았을 경우
-                    if (chapters.isEmpty()) {
+                    if (chapters.isEmpty()) {   // Not tested
                         val udta = moov?.getBoxes(org.mp4parser.boxes.iso14496.part12.UserDataBox::class.java)?.firstOrNull()
                         val potentialChpl = udta?.getBoxes()?.filterIsInstance<org.mp4parser.boxes.iso14496.part12.FreeBox>()
                             ?.firstOrNull { it.size > 16 }
@@ -938,6 +944,41 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
             e.printStackTrace()
         }
         return chapters
+    }
+
+    private fun getDisplayName(uri: Uri): String? {
+        val projection = arrayOf(OpenableColumns.DISPLAY_NAME)
+
+        contentResolver.query(uri, projection, null, null, null)
+            ?.use { cursor ->
+                if (cursor.moveToFirst()) {
+                    val index = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
+                    if (index >= 0) {
+                        return cursor.getString(index)
+                    }
+                }
+            }
+
+        return null
+    }
+
+    private fun isMP4File(path: String, mediaStoreId: Long): Boolean {
+        val uri = ContentUris.withAppendedId(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, mediaStoreId)
+        val mime = contentResolver.getType(uri)?.lowercase()
+        if (mime == "audio/x-m4b" || mime == "audio/m4b" || mime == "audio/mp4" || mime == "audio/m4a" || mime == "audio/x-m4a") {
+            return true
+        }
+
+        val name = getDisplayName(uri)
+        if (name?.endsWith(".m4b", ignoreCase = true) == true || name?.endsWith(".m4a", ignoreCase = true) == true) {
+            return true
+        }
+
+        if (path.endsWith(".m4b", ignoreCase = true) || path.endsWith(".m4a", ignoreCase = true)) {
+            return true
+        }
+
+        return false
     }
 
     @OptIn(UnstableApi::class)
@@ -1046,10 +1087,10 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
                 e.printStackTrace()
             }
 
-            // try m4b Chapters
-            if (chapterList.isEmpty()) {
-                val m4bChapters = extractM4bChapters(uri)
-                chapterList.addAll(m4bChapters)
+            // try m4b/m4a Chapters
+            if (chapterList.isEmpty() && isMP4File(track.path, track.mediaStoreId)) {
+                val chapters = extractMP4Chapters(uri)
+                chapterList.addAll(chapters)
             }
 
             var cuesJson = ""

@@ -31,6 +31,11 @@
 -keepnames class org.jaudiotagger.**
 -dontwarn org.jaudiotagger.**
 
+# MP4Parser
+-keep class org.mp4parser.** { *; }
+-keep interface org.mp4parser.** { *; }
+-dontwarn org.mp4parser.**
+
 # Remove method call if Release mode
 -assumenosideeffects class com.simplemobiletools.commons.helpers.TraceUtils {
 	public static void *** (...);
