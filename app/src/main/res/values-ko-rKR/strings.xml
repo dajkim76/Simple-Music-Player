@@ -91,4 +91,5 @@
         Haven't found some strings? There's more at
         https://github.com/SimpleMobileTools/Simple-Commons/tree/master/commons/src/main/res
     -->
+    <string name="edit_tags">태그 편집</string>
 </resources>

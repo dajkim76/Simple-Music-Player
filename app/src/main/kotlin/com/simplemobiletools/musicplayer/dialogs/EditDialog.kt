@@ -1,5 +1,10 @@
 package com.simplemobiletools.musicplayer.dialogs
 
+import android.content.ContentUris
+import android.content.res.ColorStateList
+import android.os.Looper
+import android.provider.MediaStore
+import android.widget.ProgressBar
 import androidx.appcompat.app.AlertDialog
 import com.simplemobiletools.commons.activities.BaseSimpleActivity
 import com.simplemobiletools.commons.extensions.*
@@ -16,6 +21,23 @@ class EditDialog(val activity: BaseSimpleActivity, val track: Track, val callbac
     private val binding by activity.viewBinding(DialogRenameSongBinding::inflate)
 
     init {
+        val uri = ContentUris.withAppendedId(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, track.mediaStoreId)
+        val projection = arrayOf(
+            MediaStore.Audio.Media.TITLE,
+            MediaStore.Audio.Media.ARTIST,
+            MediaStore.Audio.Media.ALBUM
+        )
+        try {
+            activity.contentResolver.query(uri, projection, null, null, null)?.use { cursor ->
+                if (cursor.moveToFirst()) {
+                    cursor.getStringValueOrNull(MediaStore.Audio.Media.TITLE)?.let { track.title = it }
+                    cursor.getStringValueOrNull(MediaStore.Audio.Media.ARTIST)?.let { track.artist = it }
+                    cursor.getStringValueOrNull(MediaStore.Audio.Media.ALBUM)?.let { track.album = it }
+                }
+            }
+        } catch (ignored: Exception) {
+        }
+
         binding.apply {
             title.setText(track.title)
             artist.setText(track.artist)
@@ -94,19 +116,65 @@ class EditDialog(val activity: BaseSimpleActivity, val track: Track, val callbac
     }
 
     private fun updateContentResolver(track: Track, newArtist: String, newTitle: String, newAlbum: String, onUpdateMediaStore: () -> Unit) {
+        var loadingDialog: AlertDialog? = null
+
+        fun showLoading() {
+            activity.runOnUiThread {
+                if (loadingDialog == null && !activity.isFinishing && !activity.isDestroyed) {
+                    val loadingView = activity.layoutInflater.inflate(R.layout.dialog_loading, null)
+                    loadingView.findViewById<ProgressBar>(R.id.progress_bar)?.indeterminateTintList =
+                        ColorStateList.valueOf(activity.getProperPrimaryColor())
+                    activity.setupDialogStuff(loadingView, activity.getAlertDialogBuilder(), cancelOnTouchOutside = false) { dialog ->
+                        dialog.setCancelable(false)
+                        loadingDialog = dialog
+                    }
+                }
+            }
+        }
+
+        fun dismissLoading() {
+            activity.runOnUiThread {
+                loadingDialog?.dismiss()
+                loadingDialog = null
+            }
+        }
+
+        val doWriteTag: () -> Unit = {
+            try {
+                tagHelper.writeTag(track, newArtist, newTitle, newAlbum)
+                activity.runOnUiThread {
+                    dismissLoading()
+                    onUpdateMediaStore.invoke()
+                }
+            } catch (e: SecurityException) {
+                dismissLoading()
+                throw e
+            } catch (e: Exception) {
+                e.printStackTrace()
+                android.util.Log.e("EditDialog", "Error updating tags", e)
+                dismissLoading()
+                activity.showErrorToast(e)
+            }
+        }
+
         ensureBackgroundThread {
             try {
                 activity.handleRecoverableSecurityException { granted ->
                     if (granted) {
-                        tagHelper.writeTag(track, newArtist, newTitle, newAlbum)
-                        activity.runOnUiThread {
-                            onUpdateMediaStore.invoke()
+                        showLoading()
+                        if (Looper.myLooper() == Looper.getMainLooper()) {
+                            ensureBackgroundThread {
+                                doWriteTag()
+                            }
+                        } else {
+                            doWriteTag()
                         }
                     }
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
                 android.util.Log.e("EditDialog", "Error updating tags", e)
+                dismissLoading()
                 activity.showErrorToast(e)
             }
         }

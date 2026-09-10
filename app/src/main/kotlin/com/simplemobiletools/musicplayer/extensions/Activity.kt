@@ -3,14 +3,18 @@ package com.simplemobiletools.musicplayer.extensions
 import android.app.Activity
 import android.content.ContentUris
 import android.provider.MediaStore
+import com.simplemobiletools.commons.activities.BaseSimpleActivity
 import com.simplemobiletools.commons.dialogs.PropertiesDialog
 import com.simplemobiletools.commons.extensions.rescanPaths
 import com.simplemobiletools.commons.extensions.sharePathsIntent
 import com.simplemobiletools.commons.helpers.ensureBackgroundThread
 import com.simplemobiletools.musicplayer.BuildConfig
+import com.simplemobiletools.musicplayer.R
+import com.simplemobiletools.musicplayer.activities.SimpleControllerActivity
+import com.simplemobiletools.musicplayer.dialogs.EditDialog
 import com.simplemobiletools.musicplayer.dialogs.SelectPlaylistDialog
 import com.simplemobiletools.musicplayer.helpers.FLAG_MANUAL_CACHE
-import com.simplemobiletools.musicplayer.helpers.RoomHelper
+import com.simplemobiletools.musicplayer.helpers.TagHelper
 import com.simplemobiletools.musicplayer.models.Track
 
 fun Activity.addTracksToPlaylist(tracks: List<Track>, callback: () -> Unit) {
@@ -58,7 +62,23 @@ fun Activity.showTrackProperties(selectedTracks: List<Track>) {
     }
 
     if (selectedPaths.size <= 1) {
-        PropertiesDialog(this, selectedPaths.first(), false)
+        val track = selectedTracks.firstOrNull()
+        if (track != null && TagHelper.isEditTagSupported(track) && !track.path.startsWith("content://") && this is BaseSimpleActivity) {
+            PropertiesDialog(
+                activity = this,
+                path = selectedPaths.first(),
+                countHiddenItems = false,
+                neutralButtonTextId = R.string.edit_tags,
+                onNeutralButtonClick = { dialog ->
+                    dialog.dismiss()
+                    EditDialog(this, track) { updatedTrack ->
+                        (this as? SimpleControllerActivity)?.refreshQueueAndTracks(updatedTrack)
+                    }
+                }
+            )
+        } else {
+            PropertiesDialog(this, selectedPaths.first(), false)
+        }
     } else {
         PropertiesDialog(this, selectedPaths, false)
     }

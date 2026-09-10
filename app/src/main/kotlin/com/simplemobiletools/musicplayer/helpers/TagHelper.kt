@@ -40,11 +40,13 @@ class TagHelper(private val activity: BaseSimpleActivity) {
         // Editing tags in WMA and WAV files are flaky so we exclude them
         private val EXCLUDED_EXTENSIONS = listOf("wma", "wav")
         private val SUPPORTED_EXTENSIONS = SupportedFileFormat.values().map { it.filesuffix }.filter { it.isNotEmpty() && it !in EXCLUDED_EXTENSIONS }
+
+        fun isEditTagSupported(track: Track): Boolean {
+            return SUPPORTED_EXTENSIONS.any { it.equals(track.path.getFilenameExtension(), ignoreCase = true) }
+        }
     }
 
-    fun isEditTagSupported(track: Track): Boolean {
-        return SUPPORTED_EXTENSIONS.any { it == track.path.getFilenameExtension() }
-    }
+    fun isEditTagSupported(track: Track): Boolean = Companion.isEditTagSupported(track)
 
     fun writeTag(track: Track, newArtist: String, newTitle: String, newAlbum: String) {
         if (isEditTagSupported(track)) {
