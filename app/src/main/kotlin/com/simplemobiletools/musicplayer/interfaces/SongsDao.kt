@@ -75,8 +75,8 @@ interface SongsDao {
     @Query("DELETE FROM tracks WHERE playlist_id = :playlistId")
     fun removePlaylistSongs(playlistId: Int)
 
-    @Query("UPDATE tracks SET path = :newPath, artist = :artist, title = :title, album = :album WHERE path = :oldPath")
-    fun updateSongInfo(newPath: String, artist: String, title: String, album: String, oldPath: String)
+    @Query("UPDATE tracks SET path = :newPath, artist = :artist, title = :title, album = :album, file_length = :fileLength, file_last_modified = :fileLastModified WHERE path = :oldPath")
+    fun updateSongInfo(newPath: String, artist: String, title: String, album: String, oldPath: String, fileLength: Long, fileLastModified: Long)
 
     @Query("UPDATE tracks SET cover_art = :coverArt WHERE media_store_id = :id")
     fun updateCoverArt(coverArt: String, id: Long)

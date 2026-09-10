@@ -72,6 +72,11 @@ fun Activity.showTrackProperties(selectedTracks: List<Track>) {
                 onNeutralButtonClick = { dialog ->
                     dialog.dismiss()
                     EditDialog(this, track) { updatedTrack ->
+                        track.artist = updatedTrack.artist
+                        track.title = updatedTrack.title
+                        track.album = updatedTrack.album
+                        track.fileLength = updatedTrack.fileLength
+                        track.fileLastModified = updatedTrack.fileLastModified
                         (this as? SimpleControllerActivity)?.refreshQueueAndTracks(updatedTrack)
                     }
                 }

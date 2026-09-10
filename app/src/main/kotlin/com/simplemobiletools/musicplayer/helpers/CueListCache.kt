@@ -17,13 +17,13 @@ object CueListCache {
 
     fun peekCueList(fileStableId: Long): List<Cue>? = cueListMap[fileStableId]
 
-    fun getCueList(context: Context, fileStableId: Long): List<Cue> {
+    fun getCueList(context: Context, fileStableId: Long, path: String = ""): List<Cue> {
         return cueListMap[fileStableId] ?: run {
             if (Looper.myLooper() == Looper.getMainLooper()) {
-                loadCueListAsync(context, fileStableId)
+                loadCueListAsync(context, fileStableId, path)
                 return emptyList()
             } else {
-                val cueJson = context.audioHelper.getTrackCue(fileStableId)
+                val cueJson = context.audioHelper.getTrackCue(fileStableId, path)
                 return updateCacheByCueJson(fileStableId, cueJson)
             }
         }
@@ -39,9 +39,16 @@ object CueListCache {
         cueListMap[fileStableId] = cueList
     }
 
-    private fun loadCueListAsync(context: Context, fileStableId: Long) {
+    fun migrateCache(oldFileStableId: Long, newFileStableId: Long) {
+        val cueList = cueListMap.remove(oldFileStableId)
+        if (cueList != null) {
+            cueListMap[newFileStableId] = cueList
+        }
+    }
+
+    private fun loadCueListAsync(context: Context, fileStableId: Long, path: String = "") {
         executeBackgroundThread {
-            val cueJson = context.audioHelper.getTrackCue(fileStableId)
+            val cueJson = context.audioHelper.getTrackCue(fileStableId, path)
             updateCacheByCueJson(fileStableId, cueJson)
         }
     }

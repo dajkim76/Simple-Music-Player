@@ -59,8 +59,12 @@ class AudioHelper(private val context: Context) {
         return tracks
     }
 
-    fun updateTrackInfo(newPath: String, artist: String, title: String, album: String, oldPath: String) {
-        context.tracksDAO.updateSongInfo(newPath, artist, title, album, oldPath)
+    fun updateTrackInfo(newPath: String, artist: String, title: String, album: String, oldPath: String, fileLength: Long = 0L, fileLastModified: Long = 0L) {
+        context.tracksDAO.updateSongInfo(newPath, artist, title, album, oldPath, fileLength, fileLastModified)
+    }
+
+    fun updateCueFileStableId(oldFileStableId: Long, newFileStableId: Long, newPath: String, newLength: Long, newLastModified: Long) {
+        context.cueDAO.updateCueFileStableId(oldFileStableId, newFileStableId, newPath, newLength, newLastModified)
     }
 
     fun deleteTrack(mediaStoreId: Long) {
@@ -325,8 +329,19 @@ class AudioHelper(private val context: Context) {
         context.tracksDAO.updateOrderInPlaylist(playlistId, trackId)
     }
 
-    fun getTrackCue(fileStableId: Long): String {
-        return context.cueDAO.getCue(fileStableId)?.cuesJson ?: ""
+    fun getTrackCue(fileStableId: Long, path: String = ""): String {
+        val cue = context.cueDAO.getCue(fileStableId)
+        if (cue != null) {
+            return cue.cuesJson
+        }
+        if (path.isNotEmpty()) {
+            val cueByPath = context.cueDAO.getCueByPath(path)
+            if (cueByPath != null) {
+                context.cueDAO.updateCueFileStableId(cueByPath.fileStableId, fileStableId, path, cueByPath.fileLength, cueByPath.fileLastModified)
+                return cueByPath.cuesJson
+            }
+        }
+        return ""
     }
 
     fun updateTrackCue(track: Track, cuesJson: String) {

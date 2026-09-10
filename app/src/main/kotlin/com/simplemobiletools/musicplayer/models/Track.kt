@@ -47,21 +47,8 @@ data class Track(
     @Ignore
     private var normalizedList: MutableList<String>? = null
 
-    val fileStableId: Long by lazy(LazyThreadSafetyMode.NONE) {
-        val filename = path.substringAfterLast('/')
-        val key = "$filename|$fileLength|$fileLastModified"
-        hash64(key)
-    }
-
-    private fun hash64(input: String): Long {
-        var hash = -0x340d631b8c46723bL  // 1469598103934665603 (offset basis)
-        val prime = 1099511628211L
-        for (b in input.toByteArray()) {
-            hash = hash xor (b.toLong() and 0xff)
-            hash *= prime
-        }
-        return hash
-    }
+    val fileStableId: Long
+        get() = calculateFileStableId(path, fileLength, fileLastModified)
 
     fun normalizeSearch(text: String, onlyTitleSearch: Boolean): Boolean {
         val list = normalizedList ?: run {
@@ -82,6 +69,22 @@ data class Track(
 
     companion object {
         private const val serialVersionUID = 6717978793256852245L
+
+        fun calculateFileStableId(path: String, fileLength: Long, fileLastModified: Long): Long {
+            val filename = path.substringAfterLast('/')
+            val key = "$filename|$fileLength|$fileLastModified"
+            return hash64(key)
+        }
+
+        private fun hash64(input: String): Long {
+            var hash = -0x340d631b8c46723bL  // 1469598103934665603 (offset basis)
+            val prime = 1099511628211L
+            for (b in input.toByteArray()) {
+                hash = hash xor (b.toLong() and 0xff)
+                hash *= prime
+            }
+            return hash
+        }
 
         fun getComparator(sorting: Int) = Comparator<Track> { first, second ->
             var result = when {

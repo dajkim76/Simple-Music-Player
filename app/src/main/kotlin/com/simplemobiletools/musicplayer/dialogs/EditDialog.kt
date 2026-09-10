@@ -13,12 +13,15 @@ import com.simplemobiletools.commons.helpers.isRPlus
 import com.simplemobiletools.musicplayer.R
 import com.simplemobiletools.musicplayer.databinding.DialogRenameSongBinding
 import com.simplemobiletools.musicplayer.extensions.audioHelper
+import com.simplemobiletools.musicplayer.helpers.CueListCache
 import com.simplemobiletools.musicplayer.helpers.TagHelper
 import com.simplemobiletools.musicplayer.models.Track
+import java.io.File
 
 class EditDialog(val activity: BaseSimpleActivity, val track: Track, val callback: (track: Track) -> Unit) {
     private val tagHelper = TagHelper(activity)
     private val binding by activity.viewBinding(DialogRenameSongBinding::inflate)
+    private val oldFileStableId = track.fileStableId
 
     init {
         val uri = ContentUris.withAppendedId(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, track.mediaStoreId)
@@ -78,22 +81,25 @@ class EditDialog(val activity: BaseSimpleActivity, val track: Track, val callbac
                                 val oldPath = track.path
                                 val newPath = "${oldPath.getParentPath()}/$newFilename.$newFileExtension"
                                 if (oldPath == newPath) {
-                                    storeEditedSong(track, oldPath, newPath)
-                                    callback(track)
-                                    alertDialog.dismiss()
+                                    storeEditedSong(track, oldPath, newPath) {
+                                        callback(track)
+                                        alertDialog.dismiss()
+                                    }
                                     return@updateContentResolver
                                 }
 
                                 if (!isRPlus()) {
                                     activity.renameFile(oldPath, newPath, false) { success, _ ->
                                         if (success) {
-                                            storeEditedSong(track, oldPath, newPath)
                                             track.path = newPath
-                                            callback(track)
+                                            storeEditedSong(track, oldPath, newPath) {
+                                                callback(track)
+                                                alertDialog.dismiss()
+                                            }
                                         } else {
                                             activity.toast(R.string.rename_song_error)
+                                            alertDialog.dismiss()
                                         }
-                                        alertDialog.dismiss()
                                     }
                                 }
                             }
@@ -105,12 +111,26 @@ class EditDialog(val activity: BaseSimpleActivity, val track: Track, val callbac
             }
     }
 
-    private fun storeEditedSong(track: Track, oldPath: String, newPath: String) {
+    private fun storeEditedSong(track: Track, oldPath: String, newPath: String, onDone: () -> Unit) {
+        val finalFile = File(newPath)
+        if (finalFile.exists()) {
+            track.fileLength = finalFile.length()
+            track.fileLastModified = finalFile.lastModified()
+        }
+        val newFileStableId = track.fileStableId
+
         ensureBackgroundThread {
             try {
-                activity.audioHelper.updateTrackInfo(newPath, track.artist, track.title, track.album, oldPath)
+                activity.audioHelper.updateTrackInfo(newPath, track.artist, track.title, track.album, oldPath, track.fileLength, track.fileLastModified)
+                if (oldFileStableId != newFileStableId) {
+                    activity.audioHelper.updateCueFileStableId(oldFileStableId, newFileStableId, newPath, track.fileLength, track.fileLastModified)
+                    CueListCache.migrateCache(oldFileStableId, newFileStableId)
+                }
             } catch (e: Exception) {
                 activity.showErrorToast(e)
+            }
+            activity.runOnUiThread {
+                onDone()
             }
         }
     }

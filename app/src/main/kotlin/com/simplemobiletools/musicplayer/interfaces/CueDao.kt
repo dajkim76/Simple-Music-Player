@@ -17,6 +17,12 @@ interface CueDao {
     @Query("SELECT * FROM track_cues WHERE file_stable_id = :fileStableId")
     fun getCue(fileStableId: Long): CueEntity?
 
+    @Query("SELECT * FROM track_cues WHERE path = :path LIMIT 1")
+    fun getCueByPath(path: String): CueEntity?
+
     @Query("DELETE FROM track_cues WHERE file_stable_id = :fileStableId")
     fun deleteCue(fileStableId: Long)
+
+    @Query("UPDATE track_cues SET file_stable_id = :newFileStableId, path = :newPath, file_length = :newLength, file_last_modified = :newLastModified WHERE file_stable_id = :oldFileStableId")
+    fun updateCueFileStableId(oldFileStableId: Long, newFileStableId: Long, newPath: String, newLength: Long, newLastModified: Long): Int
 }

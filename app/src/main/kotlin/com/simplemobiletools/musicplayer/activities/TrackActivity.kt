@@ -674,7 +674,7 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
         }
 
         executeBackgroundThread {
-            val cues = CueListCache.getCueList(applicationContext, track.fileStableId)
+            val cues = CueListCache.getCueList(applicationContext, track.fileStableId, track.path)
             runOnUiThread {
                 updateCueList(track, cues)
             }
