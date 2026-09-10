@@ -5,7 +5,7 @@ desugar_jdk_libs = "2.1.5"
 # higher versions of jaudiotagger not compatible with <= API 25 devices
 # https://bitbucket.org/ijabz/jaudiotagger/issues/149/some-nio-classes-are-unavailable-while
 flexbox = "3.0.0"
-jaudiotagger = "3.0.1"
+jaudiotagger = "2.3.15"
 kotlin = "2.3.20"
 #KSP
 ksp = "2.3.6"
@@ -99,7 +99,7 @@ eventbus = { module = "org.greenrobot:eventbus", version.ref = "eventbus" }
 #Helpers
 desugar_jdk_libs = { module = "com.android.tools:desugar_jdk_libs", version.ref = "desugar_jdk_libs" }
 flexbox = { module = "com.google.android.flexbox:flexbox", version.ref = "flexbox" }
-jaudiotagger = { module = "net.jthink:jaudiotagger", version.ref = "jaudiotagger" }
+jaudiotagger = { module = "com.github.Kaned1as:jaudiotagger", version.ref = "jaudiotagger" }
 lottie = { module = "com.airbnb.android:lottie", version.ref = "lottie" }
 autofittextview = { module = "me.grantland:autofittextview", version.ref = "autofittextview" }
 m3u-parser = { module = "com.github.bjoernpetersen:m3u-parser", version.ref = "m3uParser" }

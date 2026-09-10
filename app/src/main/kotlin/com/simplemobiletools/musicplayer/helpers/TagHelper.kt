@@ -8,8 +8,18 @@ import com.simplemobiletools.commons.extensions.getFilenameExtension
 import com.simplemobiletools.commons.extensions.getFilenameFromPath
 import com.simplemobiletools.commons.extensions.getTempFile
 import com.simplemobiletools.musicplayer.models.Track
+import java.io.File
+import java.io.RandomAccessFile
+import java.nio.Buffer
+import java.nio.ByteBuffer
+import java.nio.channels.FileChannel
 import org.jaudiotagger.audio.AudioFileIO
 import org.jaudiotagger.audio.SupportedFileFormat
+import org.jaudiotagger.audio.generic.Utils
+import org.jaudiotagger.audio.ogg.OggVorbisCommentTagCreator
+import org.jaudiotagger.audio.ogg.util.OggPage
+import org.jaudiotagger.audio.ogg.util.OggPageHeader
+import org.jaudiotagger.audio.opus.OpusHeader
 import org.jaudiotagger.tag.FieldKey
 import org.jaudiotagger.tag.Tag
 import org.jaudiotagger.tag.TagOptionSingleton
@@ -29,7 +39,7 @@ class TagHelper(private val activity: BaseSimpleActivity) {
 
         // Editing tags in WMA and WAV files are flaky so we exclude them
         private val EXCLUDED_EXTENSIONS = listOf("wma", "wav")
-        private val SUPPORTED_EXTENSIONS = SupportedFileFormat.values().map { it.filesuffix }.filter { it !in EXCLUDED_EXTENSIONS }
+        private val SUPPORTED_EXTENSIONS = SupportedFileFormat.values().map { it.filesuffix }.filter { it.isNotEmpty() && it !in EXCLUDED_EXTENSIONS }
     }
 
     fun isEditTagSupported(track: Track): Boolean {
@@ -39,48 +49,156 @@ class TagHelper(private val activity: BaseSimpleActivity) {
     fun writeTag(track: Track, newArtist: String, newTitle: String, newAlbum: String) {
         if (isEditTagSupported(track)) {
             val uri = ContentUris.withAppendedId(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, track.mediaStoreId)
-            val temp = activity.getTempFile(TEMP_FOLDER, track.path.getFilenameFromPath())
+            val temp = activity.getTempFile(TEMP_FOLDER, track.path.getFilenameFromPath()) ?: return
             activity.contentResolver.openInputStream(uri)!!.use { inputStream ->
-                temp!!.outputStream().use { out ->
+                temp.outputStream().use { out ->
                     inputStream.copyTo(out)
                 }
             }
 
+            val extension = track.path.getFilenameExtension()
             val audioFile = AudioFileIO.read(temp)
-            val tag = audioFile.tag ?: createTag(track.path.getFilenameExtension()).also { audioFile.tag = it }
+            val tag = audioFile.tag ?: createTag(extension).also { audioFile.tag = it }
             tag.setField(FieldKey.TITLE, newTitle)
             tag.setField(FieldKey.ARTIST, newArtist)
             tag.setField(FieldKey.ALBUM, newAlbum)
-            audioFile.commit()
 
-            activity.contentResolver.openOutputStream(uri, "w")!!.use { outputStream ->
-                outputStream.write(temp!!.readBytes())
+            if (extension.equals(SupportedFileFormat.OPUS.filesuffix, ignoreCase = true)) {
+                writeOpusTagStreaming(temp, tag)
+            } else {
+                audioFile.commit()
             }
 
-            temp!!.delete()
+            activity.contentResolver.openOutputStream(uri, "wt")!!.use { outputStream ->
+                temp.inputStream().use { inputStream ->
+                    inputStream.copyTo(outputStream)
+                }
+            }
 
-            updateContentResolver(track)
+            temp.delete()
+
+            updateContentResolver(track, newTitle, newArtist, newAlbum)
         }
+    }
+
+    private fun writeOpusTagStreaming(file: File, tag: Tag) {
+        val targetFile = File(file.parentFile, "${file.name}.tmp")
+        try {
+            RandomAccessFile(file, "r").use { sourceRaf ->
+                RandomAccessFile(targetFile, "rw").use { targetRaf ->
+                    val targetChannel = targetRaf.channel
+                    val tc = OggVorbisCommentTagCreator(ByteArray(0), OpusHeader.TAGS_CAPTURE_PATTERN_AS_BYTES, false)
+                    val tagBuffer = tc.convert(tag)
+
+                    // 1. 첫 번째 페이지 (OpusHead identification header)
+                    val firstPage = readPage(sourceRaf)
+                    writePage(targetChannel, firstPage)
+
+                    // 2. 기존 OpusTags 페이지 건너뛰기
+                    readPage(sourceRaf) // 기존 태그 첫 페이지 건너뜀
+                    var firstAudioPage: OggPage? = null
+                    while (sourceRaf.length() - sourceRaf.filePointer >= 27) {
+                        val page = try {
+                            readPage(sourceRaf)
+                        } catch (e: Exception) {
+                            break
+                        }
+                        if (page.header.isContinuedPage) {
+                            continue
+                        } else {
+                            firstAudioPage = page
+                            break
+                        }
+                    }
+
+                    // 3. 새 태그 페이지 쓰기
+                    val segments = tagBuffer.capacity() / 65025
+                    val remainder = tagBuffer.capacity() % 65025
+                    val serialNumber = firstPage.header.serialNumber
+                    var sequenceNo = 1
+
+                    for (i in 0 until segments) {
+                        val isContinued = (i != 0)
+                        val header = OggPageHeader.createCommentHeader(65025, isContinued, serialNumber, sequenceNo++)
+                        val slice = tagBuffer.slice()
+                        (slice as Buffer).limit(65025)
+                        writePage(targetChannel, OggPage(header, slice))
+                        Utils.skip(tagBuffer, 65025)
+                    }
+
+                    if (remainder > 0) {
+                        val isContinued = (segments > 0)
+                        val header = OggPageHeader.createCommentHeader(remainder, isContinued, serialNumber, sequenceNo++)
+                        val slice = tagBuffer.slice()
+                        writePage(targetChannel, OggPage(header, slice))
+                    }
+
+                    // 4. 나머지 모든 오디오 페이지 스트리밍 복사 및 sequenceNo 갱신
+                    if (firstAudioPage != null) {
+                        firstAudioPage.setSequenceNo(sequenceNo++)
+                        writePage(targetChannel, firstAudioPage)
+                        if (firstAudioPage.header.isLastPage) {
+                            return
+                        }
+                    }
+                    while (sourceRaf.length() - sourceRaf.filePointer >= 27) {
+                        val audioPage = try {
+                            readPage(sourceRaf)
+                        } catch (e: Exception) {
+                            // 파일 끝부분의 쓰레기 데이터나 패딩은 무시
+                            break
+                        }
+                        audioPage.setSequenceNo(sequenceNo++)
+                        writePage(targetChannel, audioPage)
+                        if (audioPage.header.isLastPage) {
+                            break
+                        }
+                    }
+                }
+            }
+            if (!targetFile.renameTo(file)) {
+                targetFile.copyTo(file, overwrite = true)
+                targetFile.delete()
+            }
+        } catch (e: Exception) {
+            targetFile.delete()
+            throw e
+        }
+    }
+
+    private fun readPage(raf: RandomAccessFile): OggPage {
+        val header = OggPageHeader.read(raf)
+        val content = ByteArray(header.pageLength)
+        raf.readFully(content)
+        return OggPage(header, ByteBuffer.wrap(content))
+    }
+
+    private fun writePage(channel: FileChannel, page: OggPage) {
+        val buf = ByteBuffer.allocate(page.size())
+        page.write(buf)
+        buf.rewind()
+        channel.write(buf)
     }
 
     private fun createTag(extension: String): Tag {
         return when (extension) {
-            SupportedFileFormat.OGG.filesuffix -> VorbisCommentTag()
+            SupportedFileFormat.OGG.filesuffix,
+            SupportedFileFormat.OPUS.filesuffix -> VorbisCommentTag()
             SupportedFileFormat.M4A.filesuffix -> Mp4Tag()
             SupportedFileFormat.FLAC.filesuffix -> FlacTag()
             else -> ID3v24Tag()
         }
     }
 
-    private fun updateContentResolver(track: Track) {
+    private fun updateContentResolver(track: Track, newTitle: String, newArtist: String, newAlbum: String) {
         val uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
         val where = "${MediaStore.Audio.Media._ID} = ?"
         val args = arrayOf(track.mediaStoreId.toString())
 
         val values = ContentValues().apply {
-            put(MediaStore.Audio.Media.TITLE, track.title)
-            put(MediaStore.Audio.Media.ARTIST, track.artist)
-            put(MediaStore.Audio.Media.ALBUM, track.album)
+            put(MediaStore.Audio.Media.TITLE, newTitle)
+            put(MediaStore.Audio.Media.ARTIST, newArtist)
+            put(MediaStore.Audio.Media.ALBUM, newAlbum)
         }
         activity.contentResolver.update(uri, values, where, args)
     }
