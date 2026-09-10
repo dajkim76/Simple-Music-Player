@@ -8,11 +8,6 @@ import com.simplemobiletools.commons.extensions.getFilenameExtension
 import com.simplemobiletools.commons.extensions.getFilenameFromPath
 import com.simplemobiletools.commons.extensions.getTempFile
 import com.simplemobiletools.musicplayer.models.Track
-import java.io.File
-import java.io.RandomAccessFile
-import java.nio.Buffer
-import java.nio.ByteBuffer
-import java.nio.channels.FileChannel
 import org.jaudiotagger.audio.AudioFileIO
 import org.jaudiotagger.audio.SupportedFileFormat
 import org.jaudiotagger.audio.generic.Utils
@@ -27,6 +22,12 @@ import org.jaudiotagger.tag.flac.FlacTag
 import org.jaudiotagger.tag.id3.ID3v24Tag
 import org.jaudiotagger.tag.mp4.Mp4Tag
 import org.jaudiotagger.tag.vorbiscomment.VorbisCommentTag
+import java.io.File
+import java.io.IOException
+import java.io.RandomAccessFile
+import java.nio.Buffer
+import java.nio.ByteBuffer
+import java.nio.channels.FileChannel
 
 class TagHelper(private val activity: BaseSimpleActivity) {
 
@@ -52,34 +53,40 @@ class TagHelper(private val activity: BaseSimpleActivity) {
         if (isEditTagSupported(track)) {
             val uri = ContentUris.withAppendedId(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, track.mediaStoreId)
             val temp = activity.getTempFile(TEMP_FOLDER, track.path.getFilenameFromPath()) ?: return
-            activity.contentResolver.openInputStream(uri)!!.use { inputStream ->
-                temp.outputStream().use { out ->
-                    inputStream.copyTo(out)
+            try {
+                val inputStream = activity.contentResolver.openInputStream(uri)
+                    ?: throw IOException("Cannot open input stream for ${track.path}")
+                inputStream.use { stream ->
+                    temp.outputStream().use { out ->
+                        stream.copyTo(out)
+                    }
                 }
-            }
 
-            val extension = track.path.getFilenameExtension()
-            val audioFile = AudioFileIO.read(temp)
-            val tag = audioFile.tag ?: createTag(extension).also { audioFile.tag = it }
-            tag.setField(FieldKey.TITLE, newTitle)
-            tag.setField(FieldKey.ARTIST, newArtist)
-            tag.setField(FieldKey.ALBUM, newAlbum)
+                val extension = track.path.getFilenameExtension()
+                val audioFile = AudioFileIO.read(temp)
+                val tag = audioFile.tag ?: createTag(extension).also { audioFile.tag = it }
+                tag.setField(FieldKey.TITLE, newTitle)
+                tag.setField(FieldKey.ARTIST, newArtist)
+                tag.setField(FieldKey.ALBUM, newAlbum)
 
-            if (extension.equals(SupportedFileFormat.OPUS.filesuffix, ignoreCase = true)) {
-                writeOpusTagStreaming(temp, tag)
-            } else {
-                audioFile.commit()
-            }
-
-            activity.contentResolver.openOutputStream(uri, "wt")!!.use { outputStream ->
-                temp.inputStream().use { inputStream ->
-                    inputStream.copyTo(outputStream)
+                if (extension.equals(SupportedFileFormat.OPUS.filesuffix, ignoreCase = true)) {
+                    writeOpusTagStreaming(temp, tag)
+                } else {
+                    audioFile.commit()
                 }
+
+                val outputStream = activity.contentResolver.openOutputStream(uri, "wt")
+                    ?: throw IOException("Cannot open output stream for ${track.path}")
+                outputStream.use { stream ->
+                    temp.inputStream().use { streamIn ->
+                        streamIn.copyTo(stream)
+                    }
+                }
+
+                updateContentResolver(track, newTitle, newArtist, newAlbum)
+            } finally {
+                temp.delete()
             }
-
-            temp.delete()
-
-            updateContentResolver(track, newTitle, newArtist, newAlbum)
         }
     }
 
@@ -99,6 +106,7 @@ class TagHelper(private val activity: BaseSimpleActivity) {
                     // 2. 기존 OpusTags 페이지 건너뛰기
                     readPage(sourceRaf) // 기존 태그 첫 페이지 건너뜀
                     var firstAudioPage: OggPage? = null
+                    // Ogg 페이지 기본 헤더(Ogg Page Header)의 최소 고정 크기(27 바이트)
                     while (sourceRaf.length() - sourceRaf.filePointer >= 27) {
                         val page = try {
                             readPage(sourceRaf)
@@ -113,35 +121,30 @@ class TagHelper(private val activity: BaseSimpleActivity) {
                         }
                     }
 
-                    // 3. 새 태그 페이지 쓰기
-                    val segments = tagBuffer.capacity() / 65025
-                    val remainder = tagBuffer.capacity() % 65025
-                    val serialNumber = firstPage.header.serialNumber
-                    var sequenceNo = 1
-
-                    for (i in 0 until segments) {
-                        val isContinued = (i != 0)
-                        val header = OggPageHeader.createCommentHeader(65025, isContinued, serialNumber, sequenceNo++)
-                        val slice = tagBuffer.slice()
-                        (slice as Buffer).limit(65025)
-                        writePage(targetChannel, OggPage(header, slice))
-                        Utils.skip(tagBuffer, 65025)
+                    if (firstAudioPage == null) {
+                        throw IOException("Failed to find audio stream in Opus file: ${file.name}")
                     }
 
-                    if (remainder > 0) {
-                        val isContinued = (segments > 0)
-                        val header = OggPageHeader.createCommentHeader(remainder, isContinued, serialNumber, sequenceNo++)
+                    // 3. 새 태그 페이지 쓰기
+                    val serialNumber = firstPage.header.serialNumber
+                    var sequenceNo = 1
+                    var isContinued = false
+
+                    while (tagBuffer.hasRemaining()) {
+                        val chunkSize = minOf(tagBuffer.remaining(), 65025)
+                        val header = OggPageHeader.createCommentHeader(chunkSize, isContinued, serialNumber, sequenceNo++)
                         val slice = tagBuffer.slice()
+                        (slice as Buffer).limit(chunkSize)
                         writePage(targetChannel, OggPage(header, slice))
+                        Utils.skip(tagBuffer, chunkSize)
+                        isContinued = true
                     }
 
                     // 4. 나머지 모든 오디오 페이지 스트리밍 복사 및 sequenceNo 갱신
-                    if (firstAudioPage != null) {
-                        firstAudioPage.setSequenceNo(sequenceNo++)
-                        writePage(targetChannel, firstAudioPage)
-                        if (firstAudioPage.header.isLastPage) {
-                            return
-                        }
+                    firstAudioPage.setSequenceNo(sequenceNo++)
+                    writePage(targetChannel, firstAudioPage)
+                    if (firstAudioPage.header.isLastPage) {
+                        return
                     }
                     while (sourceRaf.length() - sourceRaf.filePointer >= 27) {
                         val audioPage = try {
@@ -186,6 +189,7 @@ class TagHelper(private val activity: BaseSimpleActivity) {
         return when (extension) {
             SupportedFileFormat.OGG.filesuffix,
             SupportedFileFormat.OPUS.filesuffix -> VorbisCommentTag()
+
             SupportedFileFormat.M4A.filesuffix -> Mp4Tag()
             SupportedFileFormat.FLAC.filesuffix -> FlacTag()
             else -> ID3v24Tag()
