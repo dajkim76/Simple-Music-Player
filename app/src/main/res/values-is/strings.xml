@@ -88,4 +88,5 @@
     <!-- FAQ -->
     <string name="faq_1_title">Hvernig get ég hraðspólað lög\?</string>
     <string name="faq_1_text">Þú getur smellt á núverandi eða hámarkslengd texta nálægt leitarstikunni sem mun færa lagið annað hvort afturábak eða áfram.</string>
+    <string name="edit_tags">Breyta merkjum</string>
 </resources>
