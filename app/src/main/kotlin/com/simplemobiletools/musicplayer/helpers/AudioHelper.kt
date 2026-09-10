@@ -59,8 +59,8 @@ class AudioHelper(private val context: Context) {
         return tracks
     }
 
-    fun updateTrackInfo(newPath: String, artist: String, title: String, oldPath: String) {
-        context.tracksDAO.updateSongInfo(newPath, artist, title, oldPath)
+    fun updateTrackInfo(newPath: String, artist: String, title: String, album: String, oldPath: String) {
+        context.tracksDAO.updateSongInfo(newPath, artist, title, album, oldPath)
     }
 
     fun deleteTrack(mediaStoreId: Long) {

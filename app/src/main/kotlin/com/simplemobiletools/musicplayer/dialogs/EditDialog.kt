@@ -86,7 +86,7 @@ class EditDialog(val activity: BaseSimpleActivity, val track: Track, val callbac
     private fun storeEditedSong(track: Track, oldPath: String, newPath: String) {
         ensureBackgroundThread {
             try {
-                activity.audioHelper.updateTrackInfo(newPath, track.artist, track.title, oldPath)
+                activity.audioHelper.updateTrackInfo(newPath, track.artist, track.title, track.album, oldPath)
             } catch (e: Exception) {
                 activity.showErrorToast(e)
             }
@@ -105,7 +105,9 @@ class EditDialog(val activity: BaseSimpleActivity, val track: Track, val callbac
                     }
                 }
             } catch (e: Exception) {
-                activity.toast(com.simplemobiletools.commons.R.string.unknown_error_occurred)
+                e.printStackTrace()
+                android.util.Log.e("EditDialog", "Error updating tags", e)
+                activity.showErrorToast(e)
             }
         }
     }
