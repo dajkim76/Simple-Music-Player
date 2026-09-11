@@ -24,12 +24,13 @@ import com.simplemobiletools.musicplayer.R
 import com.simplemobiletools.musicplayer.adapters.ViewPagerAdapter
 import com.simplemobiletools.musicplayer.databinding.ActivityMainBinding
 import com.simplemobiletools.musicplayer.dialogs.*
+import com.simplemobiletools.musicplayer.dialogs.SelectQueueDialog.Companion.showQueueNameDialog
 import com.simplemobiletools.musicplayer.extensions.*
 import com.simplemobiletools.musicplayer.fragments.MultiQueueFragment
 import com.simplemobiletools.musicplayer.fragments.PlaylistsFragment
 import com.simplemobiletools.musicplayer.helpers.*
 import com.simplemobiletools.musicplayer.helpers.M3uImporter.ImportResult
-import com.simplemobiletools.musicplayer.models.Events
+import com.simplemobiletools.musicplayer.models.*
 import com.simplemobiletools.musicplayer.playback.CustomCommands
 import me.grantland.widget.AutofitHelper
 import org.greenrobot.eventbus.EventBus
@@ -134,6 +135,10 @@ class MainActivity : SimpleMusicActivity() {
             findItem(R.id.create_new_playlist).isVisible = isPlaylistFragment
             findItem(R.id.create_playlist_from_folder).isVisible = isPlaylistFragment
             findItem(R.id.import_playlist).isVisible = isPlaylistFragment && isOreoPlus()
+
+            val isQueueFragment = getCurrentFragment() is MultiQueueFragment
+            findItem(R.id.create_new_queue).isVisible = isQueueFragment
+            findItem(R.id.create_queue_from_folder).isVisible = isQueueFragment
         }
     }
 
@@ -159,6 +164,8 @@ class MainActivity : SimpleMusicActivity() {
                 R.id.change_queue -> SelectQueueDialog(this)
                 R.id.rescan_media -> refreshAllFragments(showProgress = true)
                 R.id.sleep_timer -> showSleepTimer()
+                R.id.create_new_queue -> createNewQueue()
+                R.id.create_queue_from_folder -> createQueueFromFolder()
                 R.id.create_new_playlist -> createNewPlaylist()
                 R.id.create_playlist_from_folder -> createPlaylistFromFolder()
                 R.id.import_playlist -> tryImportPlaylist()
@@ -340,6 +347,58 @@ class MainActivity : SimpleMusicActivity() {
         getCurrentFragment()?.onSortOpen(this)
     }
 
+    private fun createNewQueue() {
+        showQueueNameDialog("") { queueName ->
+            val newQueueId = config.nextQueueId
+            config.nextQueueId++
+            val queueDataList = getQueueDataListFromJson(config.queueListJson).toMutableList()
+            queueDataList.add(QueueData(queueName, newQueueId))
+            config.queueListJson = queueDataList.toJson()
+            EventBus.getDefault().post(Events.QueueItemsChanged.setQueueId(newQueueId))
+        }
+    }
+
+    private fun createQueueFromFolder() {
+        FilePickerDialog(this, pickFile = false, enforceStorageRestrictions = false) { folderPath ->
+            createQueueFrom(folderPath)
+        }
+    }
+
+    private fun createQueueFrom(path: String) {
+        ensureBackgroundThread {
+            getFolderTracks(path, true) { tracks ->
+                if (tracks.isEmpty()) {
+                    toast(R.string.folder_contains_no_audio)
+                    return@getFolderTracks
+                }
+                runOnUiThread {
+                    showQueueNameDialog(path.getFilenameFromPath()) { queueName ->
+                        val newQueueId = config.nextQueueId
+                        config.nextQueueId++
+                        val queueDataList = getQueueDataListFromJson(config.queueListJson).toMutableList()
+                        queueDataList.add(QueueData(queueName, newQueueId))
+                        config.queueListJson = queueDataList.toJson()
+
+                        ensureBackgroundThread {
+                            val queueItems = tracks.mapIndexed { index, track ->
+                                QueueItem(
+                                    id = 0,
+                                    queueId = newQueueId,
+                                    trackId = track.mediaStoreId,
+                                    trackOrder = index,
+                                    isCurrent = false,
+                                    lastPosition = 0
+                                )
+                            }
+                            queueDAO.insertAll(queueItems)
+                            EventBus.getDefault().post(Events.QueueItemsChanged.setQueueId(newQueueId))
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     private fun createNewPlaylist() {
         NewPlaylistDialog(this) {
             EventBus.getDefault().post(Events.PlaylistsUpdated())
@@ -356,7 +415,7 @@ class MainActivity : SimpleMusicActivity() {
         ensureBackgroundThread {
             getFolderTracks(path, true) { tracks ->
                 runOnUiThread {
-                    NewPlaylistDialog(this) { playlistId ->
+                    NewPlaylistDialog(this, title = path.getFilenameFromPath()) { playlistId ->
                         tracks.forEach {
                             it.playListId = playlistId
                         }

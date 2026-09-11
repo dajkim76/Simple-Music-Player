@@ -10,13 +10,13 @@ import com.simplemobiletools.musicplayer.extensions.audioHelper
 import com.simplemobiletools.musicplayer.extensions.getPlaylistIdWithTitle
 import com.simplemobiletools.musicplayer.models.Playlist
 
-class NewPlaylistDialog(val activity: Activity, var playlist: Playlist? = null, val callback: (playlistId: Int) -> Unit) {
+class NewPlaylistDialog(val activity: Activity, var title: String? = null, var playlist: Playlist? = null, val callback: (playlistId: Int) -> Unit) {
     private var isNewPlaylist = playlist == null
     private val binding by activity.viewBinding(DialogNewPlaylistBinding::inflate)
 
     init {
         if (playlist == null) {
-            playlist = Playlist(0, "")
+            playlist = Playlist(0, title ?: "")
         }
 
         binding.newPlaylistTitle.setText(playlist!!.title)

@@ -102,7 +102,7 @@ class PlaylistsAdapter(
     }
 
     private fun showRenameDialog() {
-        NewPlaylistDialog(context, items[getItemKeyPosition(selectedKeys.first())]) {
+        NewPlaylistDialog(context, playlist = items[getItemKeyPosition(selectedKeys.first())]) {
             context.runOnUiThread {
                 finishActMode()
             }
