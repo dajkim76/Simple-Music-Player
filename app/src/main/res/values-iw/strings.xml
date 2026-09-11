@@ -97,4 +97,21 @@
         https://github.com/SimpleMobileTools/Simple-Commons/tree/master/commons/src/main/res
     -->
     <string name="edit_tags">ערוך תגיות</string>
+    <string name="backup_data">גיבוי נתונים</string>
+    <string name="restore_data">שחזור נתונים</string>
+    <string name="backup_data_description">הפריטים הבאים יגובו:
+
+• תור השמעה
+• רשימת השמעה
+• מועדפים (רשימת השמעה, אלבום, תיקייה, אמן)
+• Cue</string>
+    <string name="restore_data_title">בחר נתונים לשחזור</string>
+    <string name="restore_queuelist">תור השמעה</string>
+    <string name="restore_playlist">רשימת השמעה</string>
+    <string name="restore_favorite">מועדפים (רשימת השמעה, אלבום, תיקייה, אמן)</string>
+    <string name="restore_cue">Cue</string>
+    <string name="backup_data_exported_successfully">הנתונים גובו בהצלחה</string>
+    <string name="backup_data_restored_successfully">הנתונים שוחזרו בהצלחה</string>
+    <string name="no_data_selected_to_restore">לא נבחרו פריטים לשחזור</string>
+    <string name="invalid_backup_file">קובץ גיבוי לא תקין</string>
 </resources>

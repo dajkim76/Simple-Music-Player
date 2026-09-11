@@ -93,4 +93,21 @@
         https://github.com/SimpleMobileTools/Simple-Commons/tree/master/commons/src/main/res
     -->
     <string name="edit_tags">Επεξεργασία ετικετών</string>
+    <string name="backup_data">Δημιουργία αντιγράφου ασφαλείας</string>
+    <string name="restore_data">Επαναφορά δεδομένων</string>
+    <string name="backup_data_description">Θα δημιουργηθεί αντίγραφο ασφαλείας για τα ακόλουθα στοιχεία:
+
+• Ουρά αναπαραγωγής
+• Λίστα αναπαραγωγής
+• Αγαπημένα (Λίστα αναπαραγωγής, Άλμπουμ, Φάκελος, Καλλιτέχνης)
+• Cue</string>
+    <string name="restore_data_title">Επιλέξτε δεδομένα για επαναφορά</string>
+    <string name="restore_queuelist">Ουρά αναπαραγωγής</string>
+    <string name="restore_playlist">Λίστα αναπαραγωγής</string>
+    <string name="restore_favorite">Αγαπημένα (Λίστα αναπαραγωγής, Άλμπουμ, Φάκελος, Καλλιτέχνης)</string>
+    <string name="restore_cue">Cue</string>
+    <string name="backup_data_exported_successfully">Τα δεδομένα αποθηκεύτηκαν επιτυχώς</string>
+    <string name="backup_data_restored_successfully">Τα δεδομένα επαναφέρθηκαν επιτυχώς</string>
+    <string name="no_data_selected_to_restore">Δεν επιλέχθηκαν στοιχεία για επαναφορά</string>
+    <string name="invalid_backup_file">Μη έγκυρο αρχείο αντιγράφου ασφαλείας</string>
 </resources>

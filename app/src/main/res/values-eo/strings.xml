@@ -93,4 +93,21 @@
         https://github.com/SimpleMobileTools/Simple-Commons/tree/master/commons/src/main/res
     -->
     <string name="edit_tags">Redakti etikedojn</string>
+    <string name="backup_data">Sekurkopii datumojn</string>
+    <string name="restore_data">Restaŭri datumojn</string>
+    <string name="backup_data_description">La sekvaj eroj estos sekurkopie konservitaj:
+
+• Vicordo
+• Ludlisto
+• Favoratoj (Ludlisto, Albumo, Dosierujo, Artisto)
+• Cue</string>
+    <string name="restore_data_title">Elektu restaŭrindajn datumojn</string>
+    <string name="restore_queuelist">Vicordo</string>
+    <string name="restore_playlist">Ludlisto</string>
+    <string name="restore_favorite">Favoratoj (Ludlisto, Albumo, Dosierujo, Artisto)</string>
+    <string name="restore_cue">Cue</string>
+    <string name="backup_data_exported_successfully">Datumoj sukcese sekurkopie konservitaj</string>
+    <string name="backup_data_restored_successfully">Datumoj sukcese restaŭritaj</string>
+    <string name="no_data_selected_to_restore">Neniuj eroj elektitaj por restaŭro</string>
+    <string name="invalid_backup_file">Nevalida sekurkopia dosiero</string>
 </resources>

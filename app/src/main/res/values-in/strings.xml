@@ -91,4 +91,21 @@
         https://github.com/SimpleMobileTools/Simple-Commons/tree/master/commons/src/main/res
     -->
     <string name="edit_tags">Edit tag</string>
+    <string name="backup_data">Cadangkan data</string>
+    <string name="restore_data">Pulihkan data</string>
+    <string name="backup_data_description">Item berikut akan dicadangkan:
+
+• Antrean putar
+• Daftar putar
+• Favorit (Daftar putar, Album, Folder, Artis)
+• Cue</string>
+    <string name="restore_data_title">Pilih data yang akan dipulihkan</string>
+    <string name="restore_queuelist">Antrean putar</string>
+    <string name="restore_playlist">Daftar putar</string>
+    <string name="restore_favorite">Favorit (Daftar putar, Album, Folder, Artis)</string>
+    <string name="restore_cue">Cue</string>
+    <string name="backup_data_exported_successfully">Data berhasil dicadangkan</string>
+    <string name="backup_data_restored_successfully">Data berhasil dipulihkan</string>
+    <string name="no_data_selected_to_restore">Tidak ada item yang dipilih untuk dipulihkan</string>
+    <string name="invalid_backup_file">File cadangan tidak valid</string>
 </resources>

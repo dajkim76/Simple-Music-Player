@@ -97,4 +97,21 @@
         https://github.com/SimpleMobileTools/Simple-Commons/tree/master/commons/src/main/res
     -->
     <string name="edit_tags">Edytuj tagi</string>
+    <string name="backup_data">Kopia zapasowa danych</string>
+    <string name="restore_data">Przywróć dane</string>
+    <string name="backup_data_description">Zostaną zarchiwizowane następujące elementy:
+
+• Kolejka odtwarzania
+• Playlista
+• Ulubione (Playlista, Album, Folder, Wykonawca)
+• Cue</string>
+    <string name="restore_data_title">Wybierz dane do przywrócenia</string>
+    <string name="restore_queuelist">Kolejka odtwarzania</string>
+    <string name="restore_playlist">Playlista</string>
+    <string name="restore_favorite">Ulubione (Playlista, Album, Folder, Wykonawca)</string>
+    <string name="restore_cue">Cue</string>
+    <string name="backup_data_exported_successfully">Pomyślnie utworzono kopię zapasową danych</string>
+    <string name="backup_data_restored_successfully">Dane zostały pomyślnie przywrócone</string>
+    <string name="no_data_selected_to_restore">Nie wybrano elementów do przywrócenia</string>
+    <string name="invalid_backup_file">Nieprawidłowy plik kopii zapasowej</string>
 </resources>

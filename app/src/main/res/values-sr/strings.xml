@@ -91,4 +91,21 @@
     <string name="faq_1_title">Како могу да премотам песме унапред\?</string>
     <string name="faq_1_text">Можете кликнути на текст тренутног или максималног трајања у близини траке за тражење, што ће померити песму уназад или унапред.</string>
     <string name="edit_tags">Уреди ознаке</string>
+    <string name="backup_data">Резервна копија података</string>
+    <string name="restore_data">Врати податке</string>
+    <string name="backup_data_description">Следеће ставке ће бити сачуване:
+
+• Ред за репродукцију
+• Плејлиста
+• Омиљено (Плејлиста, Албум, Фасцикла, Извођач)
+• Cue</string>
+    <string name="restore_data_title">Изаберите податке за враћање</string>
+    <string name="restore_queuelist">Ред за репродукцију</string>
+    <string name="restore_playlist">Плејлиста</string>
+    <string name="restore_favorite">Омиљено (Плејлиста, Албум, Фасцикла, Извођач)</string>
+    <string name="restore_cue">Cue</string>
+    <string name="backup_data_exported_successfully">Подаци су успешно сачувани</string>
+    <string name="backup_data_restored_successfully">Подаци су успешно враћени</string>
+    <string name="no_data_selected_to_restore">Ниједна ставка није изабрана за враћање</string>
+    <string name="invalid_backup_file">Неважећа датотека резервне копије</string>
 </resources>

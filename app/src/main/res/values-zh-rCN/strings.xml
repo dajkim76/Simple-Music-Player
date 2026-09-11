@@ -91,4 +91,21 @@
         https://github.com/SimpleMobileTools/Simple-Commons/tree/master/commons/src/main/res
     -->
     <string name="edit_tags">编辑标签</string>
+    <string name="backup_data">备份数据</string>
+    <string name="restore_data">恢复数据</string>
+    <string name="backup_data_description">将备份以下项目：
+
+• 播放队列
+• 播放列表
+• 收藏夹（播放列表、专辑、文件夹、艺术家）
+• Cue</string>
+    <string name="restore_data_title">选择要恢复的数据</string>
+    <string name="restore_queuelist">播放队列</string>
+    <string name="restore_playlist">播放列表</string>
+    <string name="restore_favorite">收藏夹（播放列表、专辑、文件夹、艺术家）</string>
+    <string name="restore_cue">Cue</string>
+    <string name="backup_data_exported_successfully">数据备份成功</string>
+    <string name="backup_data_restored_successfully">数据恢复成功</string>
+    <string name="no_data_selected_to_restore">未选择要恢复的项目</string>
+    <string name="invalid_backup_file">无效的备份文件</string>
 </resources>

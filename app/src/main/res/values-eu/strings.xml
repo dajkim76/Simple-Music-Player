@@ -93,4 +93,21 @@
         https://github.com/SimpleMobileTools/Simple-Commons/tree/master/commons/src/main/res
     -->
     <string name="edit_tags">Editatu etiketak</string>
+    <string name="backup_data">Datuen babeskopia</string>
+    <string name="restore_data">Datuak leheneratu</string>
+    <string name="backup_data_description">Elementu hauen babeskopia egingo da:
+
+• Erreprodukzio-ilararen
+• Erreprodukzio-zerrenda
+• Gogokoak (Erreprodukzio-zerrenda, Albuma, Karpeta, Artista)
+• Cue</string>
+    <string name="restore_data_title">Hautatu leheneratzeko datuak</string>
+    <string name="restore_queuelist">Erreprodukzio-ilararen</string>
+    <string name="restore_playlist">Erreprodukzio-zerrenda</string>
+    <string name="restore_favorite">Gogokoak (Erreprodukzio-zerrenda, Albuma, Karpeta, Artista)</string>
+    <string name="restore_cue">Cue</string>
+    <string name="backup_data_exported_successfully">Datuen babeskopia behar bezala egin da</string>
+    <string name="backup_data_restored_successfully">Datuak behar bezala leheneratu dira</string>
+    <string name="no_data_selected_to_restore">Ez da leheneratzeko elementurik hautatu</string>
+    <string name="invalid_backup_file">Babeskopia-fitxategi baliogabea</string>
 </resources>

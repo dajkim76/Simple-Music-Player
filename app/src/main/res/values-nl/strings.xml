@@ -93,4 +93,21 @@
         https://github.com/SimpleMobileTools/Simple-Commons/tree/master/commons/src/main/res
     -->
     <string name="edit_tags">Tags bewerken</string>
+    <string name="backup_data">Gegevens back-uppen</string>
+    <string name="restore_data">Gegevens herstellen</string>
+    <string name="backup_data_description">Van de volgende onderdelen wordt een back-up gemaakt:
+
+• Wachtrij
+• Afspeellijst
+• Favorieten (Afspeellijst, Album, Map, Artiest)
+• Cue</string>
+    <string name="restore_data_title">Selecteer te herstellen gegevens</string>
+    <string name="restore_queuelist">Wachtrij</string>
+    <string name="restore_playlist">Afspeellijst</string>
+    <string name="restore_favorite">Favorieten (Afspeellijst, Album, Map, Artiest)</string>
+    <string name="restore_cue">Cue</string>
+    <string name="backup_data_exported_successfully">Back-up van gegevens succesvol gemaakt</string>
+    <string name="backup_data_restored_successfully">Gegevens succesvol hersteld</string>
+    <string name="no_data_selected_to_restore">Geen items geselecteerd om te herstellen</string>
+    <string name="invalid_backup_file">Ongeldig back-upbestand</string>
 </resources>

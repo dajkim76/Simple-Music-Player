@@ -89,4 +89,21 @@
     <string name="faq_1_title">میں گیتاں نوں کیویں تیزی نال اگے ودھا سکدا ہاں؟</string>
     <string name="faq_1_text">You can click on the current or max duration texts near the seekbar, that will move the song either backward, or forward.</string>
     <string name="edit_tags">ਟੈਗ ਸੰਪਾਦਿਤ ਕਰੋ</string>
+    <string name="backup_data">ڈیٹا بیک اپ کرو</string>
+    <string name="restore_data">ڈیٹا بحال کرو</string>
+    <string name="backup_data_description">ایہ چیزاں بیک اپ کیتیاں جان گیਆਂ:
+
+• قطار دی فہرست
+• پلے لسٹ
+• پسندیدہ (پلے لسٹ، البم، فولڈر، فنکار)
+• Cue</string>
+    <string name="restore_data_title">بحال کرن لئی ڈیٹا چنو</string>
+    <string name="restore_queuelist">قطار دی فہرست</string>
+    <string name="restore_playlist">پلے لسٹ</string>
+    <string name="restore_favorite">پسندیدہ (پلے لسٹ، البم، فولڈر، فنکار)</string>
+    <string name="restore_cue">Cue</string>
+    <string name="backup_data_exported_successfully">ڈیٹا کامیابی نال بیک اپ ہو گیا</string>
+    <string name="backup_data_restored_successfully">ڈیٹا کامیابی نال بحال ہو گیا</string>
+    <string name="no_data_selected_to_restore">بحال کرن لئی کوئی چیز نہیں چنی گئی</string>
+    <string name="invalid_backup_file">غلط بیک اپ فائل</string>
 </resources>

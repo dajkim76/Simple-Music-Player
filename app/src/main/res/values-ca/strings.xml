@@ -93,4 +93,21 @@
         https://github.com/SimpleMobileTools/Simple-Commons/tree/master/commons/src/main/res
     -->
     <string name="edit_tags">Edita les etiquetes</string>
+    <string name="backup_data">Còpia de seguretat de dades</string>
+    <string name="restore_data">Restaura les dades</string>
+    <string name="backup_data_description">Es farà una còpia de seguretat dels elements següents:
+
+• Cua de reproducció
+• Llista de reproducció
+• Preferits (Llista de reproducció, Àlbum, Carpeta, Artista)
+• Cue</string>
+    <string name="restore_data_title">Seleccioneu les dades a restaurar</string>
+    <string name="restore_queuelist">Cua de reproducció</string>
+    <string name="restore_playlist">Llista de reproducció</string>
+    <string name="restore_favorite">Preferits (Llista de reproducció, Àlbum, Carpeta, Artista)</string>
+    <string name="restore_cue">Cue</string>
+    <string name="backup_data_exported_successfully">S\'ha fet la còpia de seguretat correctament</string>
+    <string name="backup_data_restored_successfully">Les dades s\'han restaurat correctament</string>
+    <string name="no_data_selected_to_restore">No s\'ha seleccionat cap element per restaurar</string>
+    <string name="invalid_backup_file">Fitxer de còpia de seguretat no vàlid</string>
 </resources>

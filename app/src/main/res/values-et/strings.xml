@@ -93,4 +93,21 @@
         https://github.com/SimpleMobileTools/Simple-Commons/tree/master/commons/src/main/res
     -->
     <string name="edit_tags">Muuda silte</string>
+    <string name="backup_data">Varunda andmed</string>
+    <string name="restore_data">Taasta andmed</string>
+    <string name="backup_data_description">Varundatakse järgmised üksused:
+
+• Esitusjärjekord
+• Esitusloend
+• Lemmikud (Esitusloend, Album, Kaust, Esitaja)
+• Cue</string>
+    <string name="restore_data_title">Vali taastatavad andmed</string>
+    <string name="restore_queuelist">Esitusjärjekord</string>
+    <string name="restore_playlist">Esitusloend</string>
+    <string name="restore_favorite">Lemmikud (Esitusloend, Album, Kaust, Esitaja)</string>
+    <string name="restore_cue">Cue</string>
+    <string name="backup_data_exported_successfully">Andmed on edukalt varundatud</string>
+    <string name="backup_data_restored_successfully">Andmed on edukalt taastatud</string>
+    <string name="no_data_selected_to_restore">Taastamiseks pole ühtegi üksust valitud</string>
+    <string name="invalid_backup_file">Vigane varukoopia fail</string>
 </resources>

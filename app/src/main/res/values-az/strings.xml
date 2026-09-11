@@ -93,4 +93,21 @@
         https://github.com/SimpleMobileTools/Simple-Commons/tree/master/commons/src/main/res
     -->
     <string name="edit_tags">Teqləri redaktə et</string>
+    <string name="backup_data">Məlumatların ehtiyat nüsxəsini çıxarın</string>
+    <string name="restore_data">Məlumatları bərpa edin</string>
+    <string name="backup_data_description">Aşağıdakı elementlərin ehtiyat nüsxəsi çıxarılacaq:
+
+• Növbə siyahısı
+• Pleylist
+• Sevimlilər (Pleylist, Albom, Qovluq, İfaçı)
+• Cue</string>
+    <string name="restore_data_title">Bərpa ediləcək məlumatları seçin</string>
+    <string name="restore_queuelist">Növbə siyahısı</string>
+    <string name="restore_playlist">Pleylist</string>
+    <string name="restore_favorite">Sevimlilər (Pleylist, Albom, Qovluq, İfaçı)</string>
+    <string name="restore_cue">Cue</string>
+    <string name="backup_data_exported_successfully">Məlumatların ehtiyat nüsxəsi uğurla çıxarıldı</string>
+    <string name="backup_data_restored_successfully">Məlumatlar uğurla bərpa edildi</string>
+    <string name="no_data_selected_to_restore">Bərpa üçün heç bir element seçilməyib</string>
+    <string name="invalid_backup_file">Yararsız ehtiyat nüsxə faylı</string>
 </resources>

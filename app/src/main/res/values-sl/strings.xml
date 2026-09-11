@@ -93,4 +93,21 @@
     <string name="faq_1_title">Kako lahko pesmi prestavim naprej\?</string>
     <string name="faq_1_text">Kliknete na besedilo trenutnega ali največjega trajanja v bližini iskalne vrstice, kar bo premaknilo skladbo nazaj ali naprej.</string>
     <string name="edit_tags">Uredi oznake</string>
+    <string name="backup_data">Varnostno kopiranje podatkov</string>
+    <string name="restore_data">Obnovi podatke</string>
+    <string name="backup_data_description">Varnostno kopirani bodo naslednji elementi:
+
+• Čakalna vrsta
+• Seznam predvajanja
+• Priljubljene (Seznam predvajanja, Album, Mapa, Izvajalec)
+• Cue</string>
+    <string name="restore_data_title">Izberite podatke za obnovitev</string>
+    <string name="restore_queuelist">Čakalna vrsta</string>
+    <string name="restore_playlist">Seznam predvajanja</string>
+    <string name="restore_favorite">Priljubljene (Seznam predvajanja, Album, Mapa, Izvajalec)</string>
+    <string name="restore_cue">Cue</string>
+    <string name="backup_data_exported_successfully">Podatki so bili uspešno varnostno kopirani</string>
+    <string name="backup_data_restored_successfully">Podatki so bili uspešno obnovljeni</string>
+    <string name="no_data_selected_to_restore">Za obnovitev ni izbran noben element</string>
+    <string name="invalid_backup_file">Neveljavna varnostna kopija</string>
 </resources>

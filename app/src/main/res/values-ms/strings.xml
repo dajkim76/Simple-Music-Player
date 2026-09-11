@@ -91,4 +91,21 @@
         https://github.com/SimpleMobileTools/Simple-Commons/tree/master/commons/src/main/res
     -->
     <string name="edit_tags">Edit tag</string>
+    <string name="backup_data">Sandarkan data</string>
+    <string name="restore_data">Pulihkan data</string>
+    <string name="backup_data_description">Item berikut akan disandarkan:
+
+• Baris gilir main
+• Senarai main
+• Kegemaran (Senarai main, Album, Folder, Artis)
+• Cue</string>
+    <string name="restore_data_title">Pilih data untuk dipulihkan</string>
+    <string name="restore_queuelist">Baris gilir main</string>
+    <string name="restore_playlist">Senarai main</string>
+    <string name="restore_favorite">Kegemaran (Senarai main, Album, Folder, Artis)</string>
+    <string name="restore_cue">Cue</string>
+    <string name="backup_data_exported_successfully">Data berjaya disandarkan</string>
+    <string name="backup_data_restored_successfully">Data berjaya dipulihkan</string>
+    <string name="no_data_selected_to_restore">Tiada item dipilih untuk dipulihkan</string>
+    <string name="invalid_backup_file">Fail sandaran tidak sah</string>
 </resources>

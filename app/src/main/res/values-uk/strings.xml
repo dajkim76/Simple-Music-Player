@@ -97,4 +97,21 @@
         https://github.com/SimpleMobileTools/Simple-Commons/tree/master/commons/src/main/res
     -->
     <string name="edit_tags">Редагувати теги</string>
+    <string name="backup_data">Резервне копіювання даних</string>
+    <string name="restore_data">Відновлення даних</string>
+    <string name="backup_data_description">Буде створено резервну копію таких елементів:
+
+• Черга відтворення
+• Плейліст
+• Вибране (Плейліст, Альбом, Папка, Виконавець)
+• Cue</string>
+    <string name="restore_data_title">Виберіть дані для відновлення</string>
+    <string name="restore_queuelist">Черга відтворення</string>
+    <string name="restore_playlist">Плейліст</string>
+    <string name="restore_favorite">Вибране (Плейліст, Альбом, Папка, Виконавець)</string>
+    <string name="restore_cue">Cue</string>
+    <string name="backup_data_exported_successfully">Дані успішно заархівовано</string>
+    <string name="backup_data_restored_successfully">Дані успішно відновлено</string>
+    <string name="no_data_selected_to_restore">Не вибрано жодного елемента для відновлення</string>
+    <string name="invalid_backup_file">Недійсний файл резервної копії</string>
 </resources>

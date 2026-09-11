@@ -91,4 +91,21 @@
         https://github.com/SimpleMobileTools/Simple-Commons/tree/master/commons/src/main/res
     -->
     <string name="edit_tags">タグを編集</string>
+    <string name="backup_data">データをバックアップ</string>
+    <string name="restore_data">データを復元</string>
+    <string name="backup_data_description">次の項目がバックアップされます:
+
+• 再生キュー
+• プレイリスト
+• お気に入り (プレイリスト、アルバム、フォルダ、アーティスト)
+• Cue</string>
+    <string name="restore_data_title">復元するデータを選択</string>
+    <string name="restore_queuelist">再生キュー</string>
+    <string name="restore_playlist">プレイリスト</string>
+    <string name="restore_favorite">お気に入り (プレイリスト、アルバム、フォルダ、アーティスト)</string>
+    <string name="restore_cue">Cue</string>
+    <string name="backup_data_exported_successfully">データのバックアップが完了しました</string>
+    <string name="backup_data_restored_successfully">データが正常に復元されました</string>
+    <string name="no_data_selected_to_restore">復元する項目が選択されていません</string>
+    <string name="invalid_backup_file">無効なバックアップファイルです</string>
 </resources>

@@ -93,4 +93,21 @@
         https://github.com/SimpleMobileTools/Simple-Commons/tree/master/commons/src/main/res
     -->
     <string name="edit_tags">Etiketleri düzenle</string>
+    <string name="backup_data">Verileri yedekle</string>
+    <string name="restore_data">Verileri geri yükle</string>
+    <string name="backup_data_description">Aşağıdaki öğeler yedeklenecektir:
+
+• Çalma kuyruğu
+• Çalma listesi
+• Favoriler (Çalma listesi, Albüm, Klasör, Sanatçı)
+• Cue</string>
+    <string name="restore_data_title">Geri yüklenecek verileri seçin</string>
+    <string name="restore_queuelist">Çalma kuyruğu</string>
+    <string name="restore_playlist">Çalma listesi</string>
+    <string name="restore_favorite">Favoriler (Çalma listesi, Albüm, Klasör, Sanatçı)</string>
+    <string name="restore_cue">Cue</string>
+    <string name="backup_data_exported_successfully">Veriler başarıyla yedeklendi</string>
+    <string name="backup_data_restored_successfully">Veriler başarıyla geri yüklendi</string>
+    <string name="no_data_selected_to_restore">Geri yüklenecek öğe seçilmedi</string>
+    <string name="invalid_backup_file">Geçersiz yedekleme dosyası</string>
 </resources>

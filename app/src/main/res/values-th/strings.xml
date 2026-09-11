@@ -91,4 +91,21 @@
         https://github.com/SimpleMobileTools/Simple-Commons/tree/master/commons/src/main/res
     -->
     <string name="edit_tags">แก้ไขแท็ก</string>
+    <string name="backup_data">สำรองข้อมูล</string>
+    <string name="restore_data">กู้คืนข้อมูล</string>
+    <string name="backup_data_description">รายการต่อไปนี้จะได้รับการสำรองข้อมูล:
+
+• คิวการเล่น
+• เพลย์ลิสต์
+• รายการโปรด (เพลย์ลิสต์, อัลบั้ม, โฟลเดอร์, ศิลปิน)
+• Cue</string>
+    <string name="restore_data_title">เลือกข้อมูลที่ต้องการกู้คืน</string>
+    <string name="restore_queuelist">คิวการเล่น</string>
+    <string name="restore_playlist">เพลย์ลิสต์</string>
+    <string name="restore_favorite">รายการโปรด (เพลย์ลิสต์, อัลบั้ม, โฟลเดอร์, ศิลปิน)</string>
+    <string name="restore_cue">Cue</string>
+    <string name="backup_data_exported_successfully">สำรองข้อมูลเรียบร้อยแล้ว</string>
+    <string name="backup_data_restored_successfully">กู้คืนข้อมูลเรียบร้อยแล้ว</string>
+    <string name="no_data_selected_to_restore">ไม่ได้เลือกรายการที่จะกู้คืน</string>
+    <string name="invalid_backup_file">ไฟล์สำรองข้อมูลไม่ถูกต้อง</string>
 </resources>

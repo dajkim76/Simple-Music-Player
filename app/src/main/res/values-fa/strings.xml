@@ -93,4 +93,21 @@
        https://github.com/SimpleMobileTools/Simple-Commons/tree/master/commons/src/main/res
    -->
     <string name="edit_tags">ویرایش برچسب‌ها</string>
+    <string name="backup_data">پشتیبان‌گیری از داده‌ها</string>
+    <string name="restore_data">بازیابی داده‌ها</string>
+    <string name="backup_data_description">موارد زیر پشتیبان‌گیری خواهند شد:
+
+• صف پخش
+• لیست پخش
+• علاقه‌مندی‌ها (لیست پخش، آلبوم، پوشه، هنرمند)
+• Cue</string>
+    <string name="restore_data_title">داده‌های مورد نظر برای بازیابی را انتخاب کنید</string>
+    <string name="restore_queuelist">صف پخش</string>
+    <string name="restore_playlist">لیست پخش</string>
+    <string name="restore_favorite">علاقه‌مندی‌ها (لیست پخش، آلبوم، پوشه، هنرمند)</string>
+    <string name="restore_cue">Cue</string>
+    <string name="backup_data_exported_successfully">پشتیبان‌گیری از داده‌ها با موفقیت انجام شد</string>
+    <string name="backup_data_restored_successfully">بازیابی داده‌ها با موفقیت انجام شد</string>
+    <string name="no_data_selected_to_restore">هیچ موردی برای بازیابی انتخاب نشده است</string>
+    <string name="invalid_backup_file">فایل پشتیبان نامعتبر است</string>
 </resources>

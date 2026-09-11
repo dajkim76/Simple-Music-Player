@@ -95,4 +95,21 @@
         https://github.com/SimpleMobileTools/Simple-Commons/tree/master/commons/src/main/res
     -->
     <string name="edit_tags">Editați etichetele</string>
+    <string name="backup_data">Copie de rezervă a datelor</string>
+    <string name="restore_data">Restaurare date</string>
+    <string name="backup_data_description">Următoarele elemente vor fi salvate:
+
+• Coadă de redare
+• Listă de redare
+• Favorite (Listă de redare, Album, Dosar, Artist)
+• Cue</string>
+    <string name="restore_data_title">Selectați datele de restaurat</string>
+    <string name="restore_queuelist">Coadă de redare</string>
+    <string name="restore_playlist">Listă de redare</string>
+    <string name="restore_favorite">Favorite (Listă de redare, Album, Dosar, Artist)</string>
+    <string name="restore_cue">Cue</string>
+    <string name="backup_data_exported_successfully">Datele au fost salvate cu succes</string>
+    <string name="backup_data_restored_successfully">Datele au fost restaurate cu succes</string>
+    <string name="no_data_selected_to_restore">Niciun element selectat pentru restaurare</string>
+    <string name="invalid_backup_file">Fișier de rezervă nevalid</string>
 </resources>

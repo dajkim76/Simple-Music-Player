@@ -95,4 +95,21 @@
         https://github.com/SimpleMobileTools/Simple-Commons/tree/master/commons/src/main/res
     -->
     <string name="edit_tags">Redaguoti žymas</string>
+    <string name="backup_data">Atsarginė duomenų kopija</string>
+    <string name="restore_data">Atkurti duomenis</string>
+    <string name="backup_data_description">Bus sukurta šių elementų atsarginė kopija:
+
+• Grojimo eilė
+• Grojaraštis
+• Mėgstamiausi (Grojaraštis, Albumas, Aplankas, Atlikėjas)
+• Cue</string>
+    <string name="restore_data_title">Pasirinkite atkurtinus duomenis</string>
+    <string name="restore_queuelist">Grojimo eilė</string>
+    <string name="restore_playlist">Grojaraštis</string>
+    <string name="restore_favorite">Mėgstamiausi (Grojaraštis, Albumas, Aplankas, Atlikėjas)</string>
+    <string name="restore_cue">Cue</string>
+    <string name="backup_data_exported_successfully">Atsarginė duomenų kopija sėkmingai sukurta</string>
+    <string name="backup_data_restored_successfully">Duomenys sėkmingai atkurti</string>
+    <string name="no_data_selected_to_restore">Nepasirinktas joks atkurtinas elementas</string>
+    <string name="invalid_backup_file">Netinkamas atsarginės kopijos failas</string>
 </resources>

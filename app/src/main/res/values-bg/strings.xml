@@ -93,4 +93,21 @@
         https://github.com/SimpleMobileTools/Simple-Commons/tree/master/commons/src/main/res
     -->
     <string name="edit_tags">Редактиране на етикети</string>
+    <string name="backup_data">Резервно копие на данни</string>
+    <string name="restore_data">Възстановяване на данни</string>
+    <string name="backup_data_description">Следните елементи ще бъдат архивирани:
+
+• Опашка за възпроизвеждане
+• Плейлист
+• Любими (Плейлист, Албум, Папка, Изпълнител)
+• Cue</string>
+    <string name="restore_data_title">Изберете данни за възстановяване</string>
+    <string name="restore_queuelist">Опашка за възпроизвеждане</string>
+    <string name="restore_playlist">Плейлист</string>
+    <string name="restore_favorite">Любими (Плейлист, Албум, Папка, Изпълнител)</string>
+    <string name="restore_cue">Cue</string>
+    <string name="backup_data_exported_successfully">Данните са архивирани успешно</string>
+    <string name="backup_data_restored_successfully">Данните са възстановени успешно</string>
+    <string name="no_data_selected_to_restore">Няма избрани елементи за възстановяване</string>
+    <string name="invalid_backup_file">Невалиден архивен файл</string>
 </resources>

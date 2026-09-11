@@ -95,4 +95,21 @@
         https://github.com/SimpleMobileTools/Simple-Commons/tree/master/commons/src/main/res
     -->
     <string name="edit_tags">Modifica tag</string>
+    <string name="backup_data">Backup dei dati</string>
+    <string name="restore_data">Ripristina i dati</string>
+    <string name="backup_data_description">Verrà eseguito il backup dei seguenti elementi:
+
+• Coda di riproduzione
+• Playlist
+• Preferiti (Playlist, Album, Cartella, Artista)
+• Cue</string>
+    <string name="restore_data_title">Seleziona i dati da ripristinare</string>
+    <string name="restore_queuelist">Coda di riproduzione</string>
+    <string name="restore_playlist">Playlist</string>
+    <string name="restore_favorite">Preferiti (Playlist, Album, Cartella, Artista)</string>
+    <string name="restore_cue">Cue</string>
+    <string name="backup_data_exported_successfully">Backup dei dati eseguito con successo</string>
+    <string name="backup_data_restored_successfully">Dati ripristinati con successo</string>
+    <string name="no_data_selected_to_restore">Nessun elemento selezionato per il ripristino</string>
+    <string name="invalid_backup_file">File di backup non valido</string>
 </resources>

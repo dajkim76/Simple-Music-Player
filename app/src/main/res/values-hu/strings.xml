@@ -93,4 +93,21 @@
         https://github.com/SimpleMobileTools/Simple-Commons/tree/master/commons/src/main/res
     -->
     <string name="edit_tags">Címkék szerkesztése</string>
+    <string name="backup_data">Adatok biztonsági mentése</string>
+    <string name="restore_data">Adatok visszaállítása</string>
+    <string name="backup_data_description">A következő elemekről készül biztonsági mentés:
+
+• Lejátszási sor
+• Lejátszási lista
+• Kedvencek (Lejátszási lista, Album, Mappa, Előadó)
+• Cue</string>
+    <string name="restore_data_title">Válassza ki a visszaállítandó adatokat</string>
+    <string name="restore_queuelist">Lejátszási sor</string>
+    <string name="restore_playlist">Lejátszási lista</string>
+    <string name="restore_favorite">Kedvencek (Lejátszási lista, Album, Mappa, Előadó)</string>
+    <string name="restore_cue">Cue</string>
+    <string name="backup_data_exported_successfully">Az adatok mentése sikeresen megtörtént</string>
+    <string name="backup_data_restored_successfully">Az adatok sikeresen visszaállítva</string>
+    <string name="no_data_selected_to_restore">Nincs kiválasztva visszaállítandó elem</string>
+    <string name="invalid_backup_file">Érvénytelen biztonsági mentési fájl</string>
 </resources>

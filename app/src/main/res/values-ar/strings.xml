@@ -101,4 +101,21 @@
         https://github.com/SimpleMobileTools/Simple-Commons/tree/master/commons/src/main/res
     -->
     <string name="edit_tags">تعديل العلامات</string>
+    <string name="backup_data">نسخ احتياطي للبيانات</string>
+    <string name="restore_data">استعادة البيانات</string>
+    <string name="backup_data_description">سيتم نسخ العناصر التالية احتياطياً:
+
+• قائمة الانتظار
+• قائمة التشغيل
+• المفضلة (قائمة التشغيل، الألبوم، المجلد، الفنان)
+• Cue</string>
+    <string name="restore_data_title">حدد البيانات المراد استعادتها</string>
+    <string name="restore_queuelist">قائمة الانتظار</string>
+    <string name="restore_playlist">قائمة التشغيل</string>
+    <string name="restore_favorite">المفضلة (قائمة التشغيل، الألبوم، المجلد، الفنان)</string>
+    <string name="restore_cue">Cue</string>
+    <string name="backup_data_exported_successfully">تم نسخ البيانات احتياطياً بنجاح</string>
+    <string name="backup_data_restored_successfully">تمت استعادة البيانات بنجاح</string>
+    <string name="no_data_selected_to_restore">لم يتم تحديد أي عناصر للاستعادة</string>
+    <string name="invalid_backup_file">ملف النسخ الاحتياطي غير صالح</string>
 </resources>

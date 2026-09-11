@@ -93,4 +93,21 @@
         https://github.com/SimpleMobileTools/Simple-Commons/tree/master/commons/src/main/res
     -->
     <string name="edit_tags">Muokkaa tunnisteita</string>
+    <string name="backup_data">Varmuuskopioi tiedot</string>
+    <string name="restore_data">Palauta tiedot</string>
+    <string name="backup_data_description">Seuraavat kohteet varmuuskopioidaan:
+
+• Toistojono
+• Soittolista
+• Suosikit (Soittolista, Albumi, Kansio, Esittäjä)
+• Cue</string>
+    <string name="restore_data_title">Valitse palautettavat tiedot</string>
+    <string name="restore_queuelist">Toistojono</string>
+    <string name="restore_playlist">Soittolista</string>
+    <string name="restore_favorite">Suosikit (Soittolista, Albumi, Kansio, Esittäjä)</string>
+    <string name="restore_cue">Cue</string>
+    <string name="backup_data_exported_successfully">Tiedot varmuuskopioitu onnistuneesti</string>
+    <string name="backup_data_restored_successfully">Tiedot palautettu onnistuneesti</string>
+    <string name="no_data_selected_to_restore">Palautettavia kohteita ei ole valittu</string>
+    <string name="invalid_backup_file">Virheellinen varmuuskopiotiedosto</string>
 </resources>

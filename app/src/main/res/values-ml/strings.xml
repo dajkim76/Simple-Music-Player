@@ -89,4 +89,21 @@
     <string name="faq_1_title">എനിക്ക് എങ്ങനെ പാട്ടുകൾ വേഗത്തിൽ മുന്നോട്ട് ചെയ്യാം\?</string>
     <string name="faq_1_text">നിങ്ങൾക്ക് സീക്ക്ബാറിന് സമീപമുള്ള നിലവിലെ അല്ലെങ്കിൽ പരമാവധി ദൈർഘ്യമുള്ള ടെക്‌സ്‌റ്റുകളിൽ ക്ലിക്കുചെയ്യാം, അത് പാട്ടിനെ പിന്നോട്ടോ മുന്നിലോ നീക്കും.</string>
     <string name="edit_tags">ടാഗുകൾ എഡിറ്റുചെയ്യുക</string>
+    <string name="backup_data">ഡാറ്റ ബാക്കപ്പ് ചെയ്യുക</string>
+    <string name="restore_data">ഡാറ്റ പുനഃസ്ഥാപിക്കുക</string>
+    <string name="backup_data_description">ഇനിപ്പറയുന്ന ഇനങ്ങൾ ബാക്കപ്പ് ചെയ്യപ്പെടും:
+
+• പ്ലേ ക്യൂ
+• പ്ലേലിസ്റ്റ്
+• പ്രിയപ്പെട്ടവ (പ്ലേലിസ്റ്റ്, ആൽബം, ഫോൾഡർ, ആർട്ടിസ്റ്റ്)
+• Cue</string>
+    <string name="restore_data_title">പുനഃസ്ഥാപിക്കേണ്ട ഡാറ്റ തിരഞ്ഞെടുക്കുക</string>
+    <string name="restore_queuelist">പ്ലേ ക്യൂ</string>
+    <string name="restore_playlist">പ്ലേലിസ്റ്റ്</string>
+    <string name="restore_favorite">പ്രിയപ്പെട്ടവ (പ്ലേലിസ്റ്റ്, ആൽബം, ഫോൾഡർ, ആർട്ടിസ്റ്റ്)</string>
+    <string name="restore_cue">Cue</string>
+    <string name="backup_data_exported_successfully">ഡാറ്റ വിജയകരമായി ബാക്കപ്പ് ചെയ്തു</string>
+    <string name="backup_data_restored_successfully">ഡാറ്റ വിജയകരമായി പുനഃസ്ഥാപിച്ചു</string>
+    <string name="no_data_selected_to_restore">പുനഃസ്ഥാപിക്കാൻ ഇനങ്ങളൊന്നും തിരഞ്ഞെടുത്തിട്ടില്ല</string>
+    <string name="invalid_backup_file">അസാധുവായ ബാക്കപ്പ് ഫയൽ</string>
 </resources>

@@ -93,4 +93,21 @@
         https://github.com/SimpleMobileTools/Simple-Commons/tree/master/commons/src/main/res
     -->
     <string name="edit_tags">Redigera taggar</string>
+    <string name="backup_data">Säkerhetskopiera data</string>
+    <string name="restore_data">Återställ data</string>
+    <string name="backup_data_description">Följande objekt kommer att säkerhetskopieras:
+
+• Spelkö
+• Spellista
+• Favoriter (Spellista, Album, Mapp, Artist)
+• Cue</string>
+    <string name="restore_data_title">Välj data att återställa</string>
+    <string name="restore_queuelist">Spelkö</string>
+    <string name="restore_playlist">Spellista</string>
+    <string name="restore_favorite">Favoriter (Spellista, Album, Mapp, Artist)</string>
+    <string name="restore_cue">Cue</string>
+    <string name="backup_data_exported_successfully">Data har säkerhetskopierats</string>
+    <string name="backup_data_restored_successfully">Data har återställts</string>
+    <string name="no_data_selected_to_restore">Inga objekt valda att återställa</string>
+    <string name="invalid_backup_file">Ogiltig säkerhetskopia</string>
 </resources>

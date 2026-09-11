@@ -91,4 +91,21 @@
         https://github.com/SimpleMobileTools/Simple-Commons/tree/master/commons/src/main/res
     -->
     <string name="edit_tags">編輯標籤</string>
+    <string name="backup_data">備份資料</string>
+    <string name="restore_data">還原資料</string>
+    <string name="backup_data_description">將備份以下項目：
+
+• 播放佇列
+• 播放清單
+• 最愛（播放清單、專輯、資料夾、演出者）
+• Cue</string>
+    <string name="restore_data_title">選取要還原的資料</string>
+    <string name="restore_queuelist">播放佇列</string>
+    <string name="restore_playlist">播放清單</string>
+    <string name="restore_favorite">最愛（播放清單、專輯、資料夾、演出者）</string>
+    <string name="restore_cue">Cue</string>
+    <string name="backup_data_exported_successfully">資料備份成功</string>
+    <string name="backup_data_restored_successfully">資料還原成功</string>
+    <string name="no_data_selected_to_restore">未選取要還原的項目</string>
+    <string name="invalid_backup_file">無效的備份檔案</string>
 </resources>

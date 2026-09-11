@@ -93,4 +93,21 @@
         https://github.com/SimpleMobileTools/Simple-Commons/tree/master/commons/src/main/res
     -->
     <string name="edit_tags">Endra taggar</string>
+    <string name="backup_data">Tryggleikskopier data</string>
+    <string name="restore_data">Gjenopprett data</string>
+    <string name="backup_data_description">Følgjande element vert tryggleikskopierte:
+
+• Avspelingskø
+• Speleliste
+• Favorittar (Speleliste, Album, Mappe, Artist)
+• Cue</string>
+    <string name="restore_data_title">Vel data som skal gjenopprettast</string>
+    <string name="restore_queuelist">Avspelingskø</string>
+    <string name="restore_playlist">Speleliste</string>
+    <string name="restore_favorite">Favorittar (Speleliste, Album, Mappe, Artist)</string>
+    <string name="restore_cue">Cue</string>
+    <string name="backup_data_exported_successfully">Tryggleikskopiering av data var vellukka</string>
+    <string name="backup_data_restored_successfully">Gjenoppretting av data var vellukka</string>
+    <string name="no_data_selected_to_restore">Ingen element valde for gjenoppretting</string>
+    <string name="invalid_backup_file">Ugyldig tryggleikskopifil</string>
 </resources>

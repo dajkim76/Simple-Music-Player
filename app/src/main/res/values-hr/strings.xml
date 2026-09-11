@@ -95,4 +95,21 @@
         https://github.com/SimpleMobileTools/Simple-Commons/tree/master/commons/src/main/res
     -->
     <string name="edit_tags">Uredi oznake</string>
+    <string name="backup_data">Sigurnosna kopija podataka</string>
+    <string name="restore_data">Vrati podatke</string>
+    <string name="backup_data_description">Sljedeće stavke bit će sigurnosno kopirane:
+
+• Red čekanja
+• Popis pjesama
+• Favoriti (Popis pjesama, Album, Mapa, Izvođač)
+• Cue</string>
+    <string name="restore_data_title">Odaberite podatke za vraćanje</string>
+    <string name="restore_queuelist">Red čekanja</string>
+    <string name="restore_playlist">Popis pjesama</string>
+    <string name="restore_favorite">Favoriti (Popis pjesama, Album, Mapa, Izvođač)</string>
+    <string name="restore_cue">Cue</string>
+    <string name="backup_data_exported_successfully">Podaci su uspješno sigurnosno kopirani</string>
+    <string name="backup_data_restored_successfully">Podaci su uspješno vraćeni</string>
+    <string name="no_data_selected_to_restore">Nema odabranih stavki za vraćanje</string>
+    <string name="invalid_backup_file">Nevaljana datoteka sigurnosne kopije</string>
 </resources>

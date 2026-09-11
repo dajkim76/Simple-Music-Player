@@ -95,4 +95,21 @@
         https://github.com/SimpleMobileTools/Simple-Commons/tree/master/commons/src/main/res
     -->
     <string name="edit_tags">Modifier les tags</string>
+    <string name="backup_data">Sauvegarder les données</string>
+    <string name="restore_data">Restaurer les données</string>
+    <string name="backup_data_description">Les éléments suivants seront sauvegardés :
+
+• File d\'attente
+• Liste de lecture
+• Favoris (Liste de lecture, Album, Dossier, Artiste)
+• Cue</string>
+    <string name="restore_data_title">Sélectionner les données à restaurer</string>
+    <string name="restore_queuelist">File d\'attente</string>
+    <string name="restore_playlist">Liste de lecture</string>
+    <string name="restore_favorite">Favoris (Liste de lecture, Album, Dossier, Artiste)</string>
+    <string name="restore_cue">Cue</string>
+    <string name="backup_data_exported_successfully">Données sauvegardées avec succès</string>
+    <string name="backup_data_restored_successfully">Données restaurées avec succès</string>
+    <string name="no_data_selected_to_restore">Aucun élément sélectionné à restaurer</string>
+    <string name="invalid_backup_file">Fichier de sauvegarde non valide</string>
 </resources>

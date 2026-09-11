@@ -95,4 +95,21 @@
         https://github.com/SimpleMobileTools/Simple-Commons/tree/master/commons/src/main/res
     -->
     <string name="edit_tags">Upraviť značky</string>
+    <string name="backup_data">Zálohovať dáta</string>
+    <string name="restore_data">Obnoviť dáta</string>
+    <string name="backup_data_description">Budú zálohované nasledujúce položky:
+
+• Poradie prehrávania
+• Zoznam skladieb
+• Obľúbené (Zoznam skladieb, Album, Priečinok, Interpret)
+• Cue</string>
+    <string name="restore_data_title">Vyberte dáta na obnovenie</string>
+    <string name="restore_queuelist">Poradie prehrávania</string>
+    <string name="restore_playlist">Zoznam skladieb</string>
+    <string name="restore_favorite">Obľúbené (Zoznam skladieb, Album, Priečinok, Interpret)</string>
+    <string name="restore_cue">Cue</string>
+    <string name="backup_data_exported_successfully">Dáta boli úspešne zálohované</string>
+    <string name="backup_data_restored_successfully">Dáta boli úspešne obnovené</string>
+    <string name="no_data_selected_to_restore">Neboli vybrané žiadne položky na obnovenie</string>
+    <string name="invalid_backup_file">Neplatný záložný súbor</string>
 </resources>

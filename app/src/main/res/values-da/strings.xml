@@ -93,4 +93,21 @@
         https://github.com/SimpleMobileTools/Simple-Commons/tree/master/commons/src/main/res
     -->
     <string name="edit_tags">Rediger tags</string>
+    <string name="backup_data">Sikkerhedskopiér data</string>
+    <string name="restore_data">Gendan data</string>
+    <string name="backup_data_description">Følgende elementer vil blive sikkerhedskopieret:
+
+• Afspilningskø
+• Afspilningsliste
+• Favoritter (Afspilningsliste, Album, Mappe, Kunstner)
+• Cue</string>
+    <string name="restore_data_title">Vælg data der skal gendannes</string>
+    <string name="restore_queuelist">Afspilningskø</string>
+    <string name="restore_playlist">Afspilningsliste</string>
+    <string name="restore_favorite">Favoritter (Afspilningsliste, Album, Mappe, Kunstner)</string>
+    <string name="restore_cue">Cue</string>
+    <string name="backup_data_exported_successfully">Data blev sikkerhedskopieret</string>
+    <string name="backup_data_restored_successfully">Data blev gendannet</string>
+    <string name="no_data_selected_to_restore">Ingen elementer valgt til gendannelse</string>
+    <string name="invalid_backup_file">Ugyldig sikkerhedskopifil</string>
 </resources>

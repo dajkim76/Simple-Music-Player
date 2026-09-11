@@ -89,4 +89,21 @@
     <string name="faq_1_title">Hvernig get ég hraðspólað lög\?</string>
     <string name="faq_1_text">Þú getur smellt á núverandi eða hámarkslengd texta nálægt leitarstikunni sem mun færa lagið annað hvort afturábak eða áfram.</string>
     <string name="edit_tags">Breyta merkjum</string>
+    <string name="backup_data">Öryggisafrita gögn</string>
+    <string name="restore_data">Endurheimta gögn</string>
+    <string name="backup_data_description">Eftirfarandi atriði verða afrituð:
+
+• Biðröð
+• Lagalisti
+• Eftirlæti (Lagalisti, Plata, Mappa, Flytjandi)
+• Cue</string>
+    <string name="restore_data_title">Veldu gögn til að endurheimta</string>
+    <string name="restore_queuelist">Biðröð</string>
+    <string name="restore_playlist">Lagalisti</string>
+    <string name="restore_favorite">Eftirlæti (Lagalisti, Plata, Mappa, Flytjandi)</string>
+    <string name="restore_cue">Cue</string>
+    <string name="backup_data_exported_successfully">Öryggisafritun gagna tókst</string>
+    <string name="backup_data_restored_successfully">Endurheimt gagna tókst</string>
+    <string name="no_data_selected_to_restore">Engin atriði valin til endurheimtar</string>
+    <string name="invalid_backup_file">Ógild öryggisafritsskrá</string>
 </resources>
