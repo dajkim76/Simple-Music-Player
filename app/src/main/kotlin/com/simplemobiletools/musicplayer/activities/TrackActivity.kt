@@ -65,9 +65,13 @@ import com.simplemobiletools.musicplayer.fragments.PlaybackSpeedFragment
 import com.simplemobiletools.musicplayer.helpers.*
 import com.simplemobiletools.musicplayer.interfaces.PlaybackSpeedListener
 import com.simplemobiletools.musicplayer.models.Cue
+import com.simplemobiletools.musicplayer.models.Events
 import com.simplemobiletools.musicplayer.models.Track
 import com.simplemobiletools.musicplayer.playback.CustomCommands
 import com.simplemobiletools.musicplayer.playback.PlaybackService
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import org.mp4parser.IsoFile
 import org.mp4parser.PropertyBoxParserImpl
 import java.io.File
@@ -148,6 +152,7 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
                 overridePendingTransition(R.anim.slide_up_enter, R.anim.slide_up_exit)
             }
         }
+        EventBus.getDefault().register(this)
     }
 
     override fun onResume() {
@@ -171,6 +176,7 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
     }
 
     override fun onDestroy() {
+        EventBus.getDefault().unregister(this)
         super.onDestroy()
         cancelProgressUpdate()
         if (isThirdPartyIntent && !isChangingConfigurations) {
@@ -184,6 +190,25 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
         binding.activityTrackImage.setImageDrawable(null)
         binding.activityTrackNext.setImageBitmap(null)
         cueAdapter?.onDestroy()
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun tracksUpdated(event: Events.RefreshTracks) {
+        val track = currentTrack
+        if (track != null) {
+            executeBackgroundThread {
+                val dbTrack = audioHelper.getTrack(track.mediaStoreId)
+                runOnUiThread {
+                    if (dbTrack != null) {
+                        setupTrackInfo(dbTrack.toMediaItem())
+                    } else {
+                        updateTrackInfo()
+                    }
+                }
+            }
+        } else {
+            updateTrackInfo()
+        }
     }
 
     private fun setupTrackInfo(item: MediaItem?) {

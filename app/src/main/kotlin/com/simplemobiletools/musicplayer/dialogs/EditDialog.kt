@@ -15,13 +15,23 @@ import com.simplemobiletools.musicplayer.databinding.DialogRenameSongBinding
 import com.simplemobiletools.musicplayer.extensions.audioHelper
 import com.simplemobiletools.musicplayer.helpers.CueListCache
 import com.simplemobiletools.musicplayer.helpers.TagHelper
+import com.simplemobiletools.musicplayer.models.Events
 import com.simplemobiletools.musicplayer.models.Track
+import org.greenrobot.eventbus.EventBus
 import java.io.File
 
 class EditDialog(val activity: BaseSimpleActivity, val track: Track, val callback: (track: Track) -> Unit) {
     private val tagHelper = TagHelper(activity)
     private val binding by activity.viewBinding(DialogRenameSongBinding::inflate)
-    private val oldFileStableId = track.fileStableId
+    private val oldFileStableId: Long
+        get() {
+            val file = File(track.path)
+            if (file.exists()) {
+                track.fileLength = file.length()
+                track.fileLastModified = file.lastModified()
+            }
+            return track.fileStableId
+        }
 
     init {
         val uri = ContentUris.withAppendedId(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, track.mediaStoreId)
@@ -73,6 +83,7 @@ class EditDialog(val activity: BaseSimpleActivity, val track: Track, val callbac
                             return@setOnClickListener
                         }
 
+                        val initialStableId = oldFileStableId
                         if (track.title != newTitle || track.artist != newArtist || track.album != newAlbum) {
                             updateContentResolver(track, newArtist, newTitle, newAlbum) {
                                 track.artist = newArtist
@@ -81,7 +92,7 @@ class EditDialog(val activity: BaseSimpleActivity, val track: Track, val callbac
                                 val oldPath = track.path
                                 val newPath = "${oldPath.getParentPath()}/$newFilename.$newFileExtension"
                                 if (oldPath == newPath) {
-                                    storeEditedSong(track, oldPath, newPath) {
+                                    storeEditedSong(track, initialStableId, oldPath, newPath) {
                                         callback(track)
                                         alertDialog.dismiss()
                                     }
@@ -92,7 +103,7 @@ class EditDialog(val activity: BaseSimpleActivity, val track: Track, val callbac
                                     activity.renameFile(oldPath, newPath, false) { success, _ ->
                                         if (success) {
                                             track.path = newPath
-                                            storeEditedSong(track, oldPath, newPath) {
+                                            storeEditedSong(track, initialStableId, oldPath, newPath) {
                                                 callback(track)
                                                 alertDialog.dismiss()
                                             }
@@ -104,14 +115,31 @@ class EditDialog(val activity: BaseSimpleActivity, val track: Track, val callbac
                                 }
                             }
                         } else {
-                            alertDialog.dismiss()
+                            val oldPath = track.path
+                            val newPath = "${oldPath.getParentPath()}/$newFilename.$newFileExtension"
+                            if (oldPath != newPath && !isRPlus()) {
+                                activity.renameFile(oldPath, newPath, false) { success, _ ->
+                                    if (success) {
+                                        track.path = newPath
+                                        storeEditedSong(track, initialStableId, oldPath, newPath) {
+                                            callback(track)
+                                            alertDialog.dismiss()
+                                        }
+                                    } else {
+                                        activity.toast(R.string.rename_song_error)
+                                        alertDialog.dismiss()
+                                    }
+                                }
+                            } else {
+                                alertDialog.dismiss()
+                            }
                         }
                     }
                 }
             }
     }
 
-    private fun storeEditedSong(track: Track, oldPath: String, newPath: String, onDone: () -> Unit) {
+    private fun storeEditedSong(track: Track, oldFileStableId: Long, oldPath: String, newPath: String, onDone: () -> Unit) {
         val finalFile = File(newPath)
         if (finalFile.exists()) {
             track.fileLength = finalFile.length()
@@ -126,6 +154,7 @@ class EditDialog(val activity: BaseSimpleActivity, val track: Track, val callbac
                     activity.audioHelper.updateCueFileStableId(oldFileStableId, newFileStableId, newPath, track.fileLength, track.fileLastModified)
                     CueListCache.migrateCache(oldFileStableId, newFileStableId)
                 }
+                EventBus.getDefault().post(Events.RefreshTracks())
             } catch (e: Exception) {
                 activity.showErrorToast(e)
             }
