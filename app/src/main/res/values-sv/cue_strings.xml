@@ -28,6 +28,7 @@
     <string name="no_tracks">Inga spår</string>
     <string name="play_queue">Spelkön</string>
     <string name="create_new_queue">Skapa ny kö här</string>
+    <string name="create_queue_from_folder">Skapa ny kö från mapp</string>
     <string name="queue_name">Könamn</string>
     <string name="select_queue">Välj kö</string>
     <string name="default_queue">Standard Könamn</string>

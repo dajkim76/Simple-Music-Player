@@ -28,6 +28,7 @@
     <string name="no_tracks">Tiada trek</string>
     <string name="play_queue">Giliran main</string>
     <string name="create_new_queue">Cipta giliran baru</string>
+    <string name="create_queue_from_folder">Cipta giliran baru dari folder</string>
     <string name="queue_name">Nama giliran</string>
     <string name="select_queue">Pilih giliran</string>
     <string name="default_queue">Lalai Nama giliran</string>

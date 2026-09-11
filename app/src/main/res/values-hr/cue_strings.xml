@@ -28,6 +28,7 @@
     <string name="no_tracks">Nema zapisa</string>
     <string name="play_queue">Redoslijed reprodukcije</string>
     <string name="create_new_queue">Ovdje stvori novi redoslijed</string>
+    <string name="create_queue_from_folder">Izradi novi red čekanja iz mape</string>
     <string name="queue_name">Naziv redoslijeda</string>
     <string name="select_queue">Odaberi redoslijed</string>
     <string name="default_queue">Zadano Naziv redoslijeda</string>

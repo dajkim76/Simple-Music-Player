@@ -28,6 +28,7 @@
     <string name="no_tracks">کوئی ٹریک نہیں</string>
     <string name="play_queue">پلے کیو</string>
     <string name="create_new_queue">نویں کیو بناؤ</string>
+    <string name="create_queue_from_folder">فولڈر توں نویں کیو بناؤ</string>
     <string name="queue_name">کیو دا ناں</string>
     <string name="select_queue">کیو چنو</string>
     <string name="default_queue">ڈیفالٹ کیو دا ناں</string>

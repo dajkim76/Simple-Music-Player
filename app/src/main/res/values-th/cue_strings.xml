@@ -28,6 +28,7 @@
     <string name="no_tracks">ไม่มีแทร็ก</string>
     <string name="play_queue">คิวการเล่น</string>
     <string name="create_new_queue">สร้างคิวใหม่</string>
+    <string name="create_queue_from_folder">สร้างคิวใหม่จากโฟลเดอร์</string>
     <string name="queue_name">ชื่อคิว</string>
     <string name="select_queue">เลือกคิว</string>
     <string name="default_queue">คิวเริ่มต้น</string>

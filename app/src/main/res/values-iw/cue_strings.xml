@@ -28,6 +28,7 @@
     <string name="no_tracks">אין רצועות</string>
     <string name="play_queue">תור השמעה</string>
     <string name="create_new_queue">צור תור חדש</string>
+    <string name="create_queue_from_folder">צור תור חדש מהתיקייה</string>
     <string name="queue_name">שם התור</string>
     <string name="select_queue">בחר תור</string>
     <string name="default_queue">ברירת מחדל שם התור</string>

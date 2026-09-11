@@ -28,6 +28,7 @@
     <string name="no_tracks">Inga spor</string>
     <string name="play_queue">Avspelingskø</string>
     <string name="create_new_queue">Opprett ny kø</string>
+    <string name="create_queue_from_folder">Lag ei ny kø ifrå ei mappe</string>
     <string name="queue_name">Kønamn</string>
     <string name="select_queue">Vel kø</string>
     <string name="default_queue">Standard Kønamn</string>

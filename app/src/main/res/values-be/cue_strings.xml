@@ -28,6 +28,7 @@
     <string name="no_tracks">Няма трэкаў</string>
     <string name="play_queue">Чарга прайгравання</string>
     <string name="create_new_queue">Стварыць новую чаргу</string>
+    <string name="create_queue_from_folder">Стварыць новую чаргу з папкі</string>
     <string name="queue_name">Назва чаргі</string>
     <string name="select_queue">Выбраць чаргу</string>
     <string name="default_queue">Па змаўчанні Назва чаргі</string>

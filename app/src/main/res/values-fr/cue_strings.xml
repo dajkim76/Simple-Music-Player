@@ -28,6 +28,7 @@
     <string name="no_tracks">Aucune piste</string>
     <string name="play_queue">Lire la file d\'attente</string>
     <string name="create_new_queue">Créer une nouvelle file d\'attente</string>
+    <string name="create_queue_from_folder">Créer une nouvelle file d\'attente à partir du dossier</string>
     <string name="queue_name">Nom de la file d\'attente</string>
     <string name="select_queue">Sélectionner la file d\'attente</string>
     <string name="default_queue">Par défaut de la file d\'attente</string>

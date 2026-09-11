@@ -28,6 +28,7 @@
     <string name="no_tracks">Нет треков</string>
     <string name="play_queue">Очередь воспроизведения</string>
     <string name="create_new_queue">Создать новую очередь</string>
+    <string name="create_queue_from_folder">Создать новую очередь из папки</string>
     <string name="queue_name">Название очереди</string>
     <string name="select_queue">Выбрать очередь</string>
     <string name="default_queue">Стандартная очередь</string>

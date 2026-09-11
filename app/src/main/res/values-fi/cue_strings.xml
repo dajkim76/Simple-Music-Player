@@ -28,6 +28,7 @@
     <string name="no_tracks">Ei kappaleita</string>
     <string name="play_queue">Toistojono</string>
     <string name="create_new_queue">Luo uusi jono</string>
+    <string name="create_queue_from_folder">Luo uusi jono kansiosta</string>
     <string name="queue_name">Jonon nimi</string>
     <string name="select_queue">Valitse jono</string>
     <string name="default_queue">Oletus Jonon nimi</string>

@@ -28,6 +28,7 @@
     <string name="no_tracks">Brak utworów</string>
     <string name="play_queue">Kolejka odtwarzania</string>
     <string name="create_new_queue">Utwórz aj nową kolejkę</string>
+    <string name="create_queue_from_folder">Utwórz nową kolejkę z folderu</string>
     <string name="queue_name">Nazwa kolejki</string>
     <string name="select_queue">Wybierz kolejkę</string>
     <string name="default_queue">Domyślne Nazwa kolejki</string>

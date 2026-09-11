@@ -28,6 +28,7 @@
     <string name="no_tracks">Ni skladb</string>
     <string name="play_queue">Čakalna vrsta za predvajanje</string>
     <string name="create_new_queue">Aj ustvari novo vrsto</string>
+    <string name="create_queue_from_folder">Ustvarite novo vrsto iz mape</string>
     <string name="queue_name">Ime čakalne vrste</string>
     <string name="select_queue">Izberi čakalno vrsto</string>
     <string name="default_queue">Privzeto Ime čakalne vrste</string>

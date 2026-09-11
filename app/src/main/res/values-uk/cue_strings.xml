@@ -28,6 +28,7 @@
     <string name="no_tracks">Немає треків</string>
     <string name="play_queue">Черга відтворення</string>
     <string name="create_new_queue">Створити нову чергу</string>
+    <string name="create_queue_from_folder">Створити нову чергу з теки</string>
     <string name="queue_name">Назва черги</string>
     <string name="select_queue">Вибрати чергу</string>
     <string name="default_queue">За замовчуванням Назва черги</string>

@@ -28,6 +28,7 @@
     <string name="no_tracks">Ingen numre</string>
     <string name="play_queue">Afspilningskø</string>
     <string name="create_new_queue">Opret ny kø</string>
+    <string name="create_queue_from_folder">Opret ny kø fra mappe</string>
     <string name="queue_name">Kønavn</string>
     <string name="select_queue">Vælg kø</string>
     <string name="default_queue">Standard Kønavn</string>

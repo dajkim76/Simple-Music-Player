@@ -28,6 +28,7 @@
     <string name="no_tracks">Δεν υπάρχουν κομμάτια</string>
     <string name="play_queue">Ουρά αναπαραγωγής</string>
     <string name="create_new_queue">Δημιουργία νέας ουράς εδώ</string>
+    <string name="create_queue_from_folder">Δημιουργία νέας ουράς από φάκελο</string>
     <string name="queue_name">Όνομα ουράς</string>
     <string name="select_queue">Επιλογή ουράς</string>
     <string name="default_queue">Προεπιλογή Όνομα ουράς</string>

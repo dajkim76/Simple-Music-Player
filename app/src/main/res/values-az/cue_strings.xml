@@ -28,6 +28,7 @@
     <string name="no_tracks">Mahnı yoxdur</string>
     <string name="play_queue">Pley növbəsi</string>
     <string name="create_new_queue">Yeni növbə yaradın</string>
+    <string name="create_queue_from_folder">Qovluqdan yeni növbə yaradın</string>
     <string name="queue_name">Növbə adı</string>
     <string name="select_queue">Növbə seçin</string>
     <string name="default_queue">Defolt Növbə adı</string>

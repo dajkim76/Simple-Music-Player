@@ -28,6 +28,7 @@
     <string name="no_tracks">آهنگی وجود ندارد</string>
     <string name="play_queue">صف پخش</string>
     <string name="create_new_queue">ایجاد صف جدید</string>
+    <string name="create_queue_from_folder">ایجاد صف جدید از پوشه</string>
     <string name="queue_name">نام صف</string>
     <string name="select_queue">انتخاب صف</string>
     <string name="default_queue">پیش‌فرض نام صف</string>

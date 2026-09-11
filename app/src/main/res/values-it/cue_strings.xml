@@ -28,6 +28,7 @@
     <string name="no_tracks">Nessun brano</string>
     <string name="play_queue">Coda di riproduzione</string>
     <string name="create_new_queue">Crea nuova coda</string>
+    <string name="create_queue_from_folder">Crea una nuova coda dalla cartella</string>
     <string name="queue_name">Nome coda</string>
     <string name="select_queue">Seleziona coda</string>
     <string name="default_queue">Predefinito e coda</string>

@@ -28,6 +28,7 @@
     <string name="no_tracks">無音軌</string>
     <string name="play_queue">播放隊列</string>
     <string name="create_new_queue">創建新隊列</string>
+    <string name="create_queue_from_folder">從資料夾建立新隊列</string>
     <string name="queue_name">隊列名稱</string>
     <string name="select_queue">選擇隊列</string>
     <string name="default_queue">默認 隊列稱</string>
