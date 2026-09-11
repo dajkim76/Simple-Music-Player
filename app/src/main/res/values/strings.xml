@@ -94,4 +94,16 @@
         https://github.com/SimpleMobileTools/Simple-Commons/tree/master/commons/src/main/res
     -->
     <string name="edit_tags">Edit tags</string>
+    <string name="backup_data">Backup data</string>
+    <string name="restore_data">Restore data</string>
+    <string name="backup_data_description">The following items will be backed up:\n\n• Queuelist\n• Playlist\n• Favorite (Playlist, Album, Folder, Artist)\n• Cue</string>
+    <string name="restore_data_title">Select data to restore</string>
+    <string name="restore_queuelist">Queuelist</string>
+    <string name="restore_playlist">Playlist</string>
+    <string name="restore_favorite">Favorite (Playlist, Album, Folder, Artist)</string>
+    <string name="restore_cue">Cue</string>
+    <string name="backup_data_exported_successfully">Data backed up successfully</string>
+    <string name="backup_data_restored_successfully">Data restored successfully</string>
+    <string name="no_data_selected_to_restore">No items selected to restore</string>
+    <string name="invalid_backup_file">Invalid backup file</string>
 </resources>

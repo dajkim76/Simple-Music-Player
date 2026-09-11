@@ -92,4 +92,16 @@
         https://github.com/SimpleMobileTools/Simple-Commons/tree/master/commons/src/main/res
     -->
     <string name="edit_tags">태그 편집</string>
+    <string name="backup_data">데이터 백업</string>
+    <string name="restore_data">데이터 복원</string>
+    <string name="backup_data_description">다음 정보들이 백업됩니다:\n\n• Queuelist\n• Playlist\n• Favorite (Playlist, Album, Folder, Artist)\n• Cue</string>
+    <string name="restore_data_title">복원할 항목 선택</string>
+    <string name="restore_queuelist">Queuelist</string>
+    <string name="restore_playlist">Playlist</string>
+    <string name="restore_favorite">Favorite (Playlist, Album, Folder, Artist)</string>
+    <string name="restore_cue">Cue</string>
+    <string name="backup_data_exported_successfully">데이터가 성공적으로 백업되었습니다.</string>
+    <string name="backup_data_restored_successfully">데이터가 성공적으로 복원되었습니다.</string>
+    <string name="no_data_selected_to_restore">복원할 항목이 선택되지 않았습니다.</string>
+    <string name="invalid_backup_file">올바르지 않은 백업 파일입니다.</string>
 </resources>

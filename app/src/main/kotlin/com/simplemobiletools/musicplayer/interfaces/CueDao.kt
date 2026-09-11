@@ -25,4 +25,7 @@ interface CueDao {
 
     @Query("UPDATE track_cues SET file_stable_id = :newFileStableId, path = :newPath, file_length = :newLength, file_last_modified = :newLastModified WHERE file_stable_id = :oldFileStableId")
     fun updateCueFileStableId(oldFileStableId: Long, newFileStableId: Long, newPath: String, newLength: Long, newLastModified: Long): Int
+
+    @Query("SELECT * FROM track_cues")
+    fun getAllCues(): List<CueEntity>
 }

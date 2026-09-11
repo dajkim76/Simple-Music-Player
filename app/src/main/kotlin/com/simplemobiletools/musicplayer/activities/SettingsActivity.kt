@@ -1,26 +1,38 @@
 package com.simplemobiletools.musicplayer.activities
 
+import android.app.Activity
+import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
+import com.simplemobiletools.commons.dialogs.ConfirmationDialog
 import com.simplemobiletools.commons.dialogs.RadioGroupDialog
 import com.simplemobiletools.commons.extensions.*
 import com.simplemobiletools.commons.helpers.IS_CUSTOMIZING_COLORS
 import com.simplemobiletools.commons.helpers.NavigationIcon
+import com.simplemobiletools.commons.helpers.ensureBackgroundThread
 import com.simplemobiletools.commons.helpers.isTiramisuPlus
 import com.simplemobiletools.commons.models.RadioItem
 import com.simplemobiletools.musicplayer.R
 import com.simplemobiletools.musicplayer.databinding.ActivitySettingsBinding
 import com.simplemobiletools.musicplayer.dialogs.ManageVisibleTabsDialog
+import com.simplemobiletools.musicplayer.dialogs.RestoreDataDialog
+import com.simplemobiletools.musicplayer.dialogs.RestoreOptions
 import com.simplemobiletools.musicplayer.extensions.config
 import com.simplemobiletools.musicplayer.extensions.sendCommand
+import com.simplemobiletools.musicplayer.helpers.BackupHelper
 import com.simplemobiletools.musicplayer.helpers.SHOW_FILENAME_ALWAYS
 import com.simplemobiletools.musicplayer.helpers.SHOW_FILENAME_IF_UNAVAILABLE
 import com.simplemobiletools.musicplayer.helpers.SHOW_FILENAME_NEVER
 import com.simplemobiletools.musicplayer.playback.CustomCommands
+import java.io.File
 import java.util.Locale
 import kotlin.system.exitProcess
 
 class SettingsActivity : SimpleControllerActivity() {
+
+    private val BACKUP_DATA_INTENT = 10001
+    private val RESTORE_DATA_INTENT = 10002
 
     private val binding by viewBinding(ActivitySettingsBinding::inflate)
 
@@ -46,6 +58,8 @@ class SettingsActivity : SimpleControllerActivity() {
         setupManageShownTabs()
         setupSwapPrevNext()
         setupReplaceTitle()
+        setupBackupData()
+        setupRestoreData()
         setupGaplessPlayback()
         setupAutoplayOnBluetoothConnect()
         setupShowPlaybackActivity()
@@ -175,6 +189,108 @@ class SettingsActivity : SimpleControllerActivity() {
         settingsShowPlaybackActivityHolder.setOnClickListener {
             settingsShowPlaybackActivity.toggle()
             config.showPlaybackActivity = settingsShowPlaybackActivity.isChecked
+        }
+    }
+
+    private fun setupBackupData() = binding.apply {
+        settingsBackupDataHolder.setOnClickListener {
+            ConfirmationDialog(
+                activity = this@SettingsActivity,
+                message = "",
+                messageId = R.string.backup_data_description,
+                positive = com.simplemobiletools.commons.R.string.ok,
+                negative = com.simplemobiletools.commons.R.string.cancel
+            ) {
+                val fileName = "music_player_backup_${getCurrentFormattedDateTime()}.json"
+                Intent(Intent.ACTION_CREATE_DOCUMENT).apply {
+                    type = "application/json"
+                    putExtra(Intent.EXTRA_TITLE, fileName)
+                    addCategory(Intent.CATEGORY_OPENABLE)
+
+                    try {
+                        startActivityForResult(this, BACKUP_DATA_INTENT)
+                    } catch (e: ActivityNotFoundException) {
+                        toast(com.simplemobiletools.commons.R.string.system_service_disabled, Toast.LENGTH_LONG)
+                    } catch (e: Exception) {
+                        showErrorToast(e)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun setupRestoreData() = binding.apply {
+        settingsRestoreDataHolder.setOnClickListener {
+            Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
+                type = "application/json"
+                addCategory(Intent.CATEGORY_OPENABLE)
+
+                try {
+                    startActivityForResult(this, RESTORE_DATA_INTENT)
+                } catch (e: ActivityNotFoundException) {
+                    toast(com.simplemobiletools.commons.R.string.system_service_disabled, Toast.LENGTH_LONG)
+                } catch (e: Exception) {
+                    showErrorToast(e)
+                }
+            }
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, resultData: Intent?) {
+        super.onActivityResult(requestCode, resultCode, resultData)
+        if (resultCode == Activity.RESULT_OK && resultData != null && resultData.data != null) {
+            when (requestCode) {
+                BACKUP_DATA_INTENT -> {
+                    val uri = resultData.data!!
+                    val outputStream = contentResolver.openOutputStream(uri)
+                    if (outputStream == null) {
+                        toast(com.simplemobiletools.commons.R.string.unknown_error_occurred)
+                        return
+                    }
+                    BackupHelper(this).exportData(outputStream) { success ->
+                        runOnUiThread {
+                            if (success) {
+                                toast(R.string.backup_data_exported_successfully)
+                            } else {
+                                toast(com.simplemobiletools.commons.R.string.exporting_failed)
+                            }
+                        }
+                    }
+                }
+                RESTORE_DATA_INTENT -> {
+                    val uri = resultData.data!!
+                    RestoreDataDialog(this) { options ->
+                        if (!options.hasAnySelected()) {
+                            toast(R.string.no_data_selected_to_restore)
+                            return@RestoreDataDialog
+                        }
+
+                        val inputStream = contentResolver.openInputStream(uri)
+                        if (inputStream == null) {
+                            toast(com.simplemobiletools.commons.R.string.unknown_error_occurred)
+                            return@RestoreDataDialog
+                        }
+
+                        BackupHelper(this).restoreData(inputStream, options) { success ->
+                            runOnUiThread {
+                                if (success) {
+                                    toast(R.string.backup_data_restored_successfully)
+                                    withPlayer {
+                                        sendCommand(CustomCommands.RELOAD_CONTENT)
+                                    }
+                                    Intent(this, MainActivity::class.java).apply {
+                                        addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                                        startActivity(this)
+                                    }
+                                    finish()
+                                } else {
+                                    toast(R.string.invalid_backup_file)
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 
