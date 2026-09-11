@@ -38,12 +38,12 @@ import androidx.media3.common.Player
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.common.util.Util
 import androidx.media3.container.MdtaMetadataEntry
-import androidx.media3.exoplayer.MetadataRetriever
 import androidx.media3.extractor.metadata.id3.ChapterFrame
 import androidx.media3.extractor.metadata.id3.CommentFrame
 import androidx.media3.extractor.metadata.id3.TextInformationFrame
 import androidx.media3.extractor.metadata.id3.UrlLinkFrame
 import androidx.media3.extractor.metadata.vorbis.VorbisComment
+import androidx.media3.inspector.MetadataRetriever
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
@@ -1022,7 +1022,8 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
 
         data class MetaData(val type: String, val key: String, val value: String)
 
-        val metadataFuture = MetadataRetriever.retrieveMetadata(this, mediaItem)
+        val retriever = MetadataRetriever.Builder(this, mediaItem).build()
+        val metadataFuture = retriever.retrieveTrackGroups()
         metadataFuture.addListener({
             val metaDataList = mutableListOf<MetaData>()
             val allList = StringBuilder()
@@ -1110,6 +1111,8 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
+            } finally {
+                retriever.close()
             }
 
             // try m4b/m4a Chapters

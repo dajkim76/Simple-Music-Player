@@ -23,7 +23,8 @@ eventbus = "3.3.1"
 lottie = "6.7.1"
 m3uParser = "1.4.0"
 media = "1.7.1"
-media3 = "1.10.0"
+media3 = "1.11.1"
+media3Inspector = "1.11.1"
 room = "2.8.4"
 #Gradle
 gradlePlugins-agp = "9.1.0"
@@ -78,6 +79,7 @@ androidx-lifecycle-runtime-compose = { module = "androidx.lifecycle:lifecycle-ru
 androidx-lifecycle-viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "androidx-lifecycle-runtime-ktx" }
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activity-compose" }
 androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "androidx-compose-bom" }
+androidx-media3-inspector = { module = "androidx.media3:media3-inspector", version.ref = "media3Inspector" }
 androidx-ui = { group = "androidx.compose.ui", name = "ui" }
 androidx-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
 androidx-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }

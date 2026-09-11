@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.os.ConditionVariable
 import androidx.media3.common.C
 import androidx.media3.common.MediaItem
+import androidx.media3.common.Player
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.session.*
 import androidx.media3.session.MediaLibraryService.MediaLibrarySession
@@ -44,8 +45,8 @@ internal fun PlaybackService.getMediaSessionCallback() = object : MediaLibrarySe
     }
 
     override fun onConnect(session: MediaSession, controller: MediaSession.ControllerInfo): MediaSession.ConnectionResult {
-        val connectionResult = super.onConnect(session, controller)
-        val availableSessionCommands = connectionResult.availableSessionCommands.buildUpon()
+        val acceptedResultBuilder = MediaSession.ConnectionResult.AcceptedResultBuilder(session, controller)
+        val availableSessionCommands = acceptedResultBuilder.build().availableSessionCommands.buildUpon()
         for (command in customCommands) {
             availableSessionCommands.add(command)
         }
@@ -53,10 +54,14 @@ internal fun PlaybackService.getMediaSessionCallback() = object : MediaLibrarySe
         // Search function is removed for now because the loading bar spins infinitely during searches., not working
         availableSessionCommands.remove(SessionCommand.COMMAND_CODE_LIBRARY_SEARCH)
 
-        return MediaSession.ConnectionResult.accept(
-            availableSessionCommands.build(),
-            connectionResult.availablePlayerCommands
-        )
+        val availablePlayerCommands = Player.Commands.Builder()
+            .addAllCommands()
+            .build()
+
+        return acceptedResultBuilder
+            .setAvailableSessionCommands(availableSessionCommands.build())
+            .setAvailablePlayerCommands(availablePlayerCommands)
+            .build()
     }
 
     override fun onPostConnect(session: MediaSession, controller: MediaSession.ControllerInfo) {

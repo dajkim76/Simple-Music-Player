@@ -122,6 +122,7 @@ dependencies {
     implementation(libs.androidx.lifecycle.process)
     implementation(libs.androidx.media3.session)
     implementation(libs.androidx.media3.exoplayer)
+    implementation(libs.androidx.media3.inspector)
     implementation(libs.lottie)
     implementation(libs.m3u.parser)
     implementation(libs.autofittextview)
