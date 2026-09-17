@@ -265,15 +265,13 @@ internal fun PlaybackService.getMediaSessionCallback() = object : MediaLibrarySe
 
     // Save the media currently playing and the position.
     private fun saveCurrentMediaLastPosition(mediaSession: MediaSession) {
-        with(mediaSession) {
-            if (player.isPlaying) {
-                val currentItem = player.currentMediaItem ?: return@with
-                val playPosition = player.currentPosition
-                if (config.keepTrackLastPosition) {
-                    audioHelper.updateRecentPlayedTrackLastPosition(currentItem, playPosition)
-                }
-                audioHelper.updateQueueSourceLastMedia(config.lastQueueSource, currentItem.getMediaStoreId(), playPosition)
+        if (player.isPlaying) {
+            val currentItem = player.currentMediaItem ?: return
+            val playPosition = player.currentPosition
+            if (config.keepTrackLastPosition) {
+                audioHelper.updateRecentPlayedTrackLastPosition(currentItem, playPosition)
             }
+            audioHelper.updateQueueSourceLastMedia(config.lastQueueSource, currentItem.getMediaStoreId(), playPosition)
         }
     }
 
