@@ -51,6 +51,7 @@ class MainActivity : SimpleMusicActivity() {
         isMaterialActivity = true
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+        EdgeToEdgeHelper.applyWindowInsets(topView = binding.mainMenu, true, bottomView = binding.root)
         myAppLaunched(BuildConfig.APPLICATION_ID)
         setupOptionsMenu()
         refreshMenuItems()
@@ -121,11 +122,12 @@ class MainActivity : SimpleMusicActivity() {
         bus?.unregister(this)
     }
 
-    override fun onBackPressed() {
+    override fun handleBackPressed(): Boolean {
         if (binding.mainMenu.isSearchOpen) {
             binding.mainMenu.closeSearch()
+            return true
         } else {
-            super.onBackPressed()
+            return super.handleBackPressed()
         }
     }
 
@@ -144,7 +146,6 @@ class MainActivity : SimpleMusicActivity() {
 
     private fun setupOptionsMenu() {
         binding.mainMenu.getToolbar().inflateMenu(R.menu.menu_main)
-        binding.mainMenu.toggleHideOnScroll(false)
         binding.mainMenu.setupMenu()
 
         binding.mainMenu.onSearchClosedListener = {

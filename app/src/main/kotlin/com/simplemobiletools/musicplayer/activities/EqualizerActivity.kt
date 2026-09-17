@@ -9,6 +9,7 @@ import com.google.gson.reflect.TypeToken
 import com.simplemobiletools.commons.dialogs.RadioGroupDialog
 import com.simplemobiletools.commons.extensions.*
 import com.simplemobiletools.commons.helpers.DARK_GREY
+import com.simplemobiletools.commons.helpers.EdgeToEdgeHelper
 import com.simplemobiletools.commons.helpers.NavigationIcon
 import com.simplemobiletools.commons.models.RadioItem
 import com.simplemobiletools.commons.views.MySeekBar
@@ -32,7 +33,7 @@ class EqualizerActivity : SimpleActivity() {
         isMaterialActivity = true
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-
+        EdgeToEdgeHelper.applyWindowInsets(binding.equalizerToolbar, true, binding.root)
         updateMaterialActivityViews(binding.equalizerCoordinator, binding.equalizerHolder, useTransparentNavigation = true, useTopSearchMenu = false)
         setupMaterialScrollListener(binding.equalizerNestedScrollview, binding.equalizerToolbar)
         if (!SimpleEqualizer.isInstanceInitialized()) {

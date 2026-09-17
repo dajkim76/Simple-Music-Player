@@ -8,6 +8,7 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.simplemobiletools.commons.dialogs.PermissionRequiredDialog
 import com.simplemobiletools.commons.extensions.*
+import com.simplemobiletools.commons.helpers.EdgeToEdgeHelper
 import com.simplemobiletools.commons.helpers.NavigationIcon
 import com.simplemobiletools.commons.helpers.ensureBackgroundThread
 import com.simplemobiletools.commons.helpers.executeBackgroundThread
@@ -33,7 +34,7 @@ class AlbumsActivity : SimpleMusicActivity() {
         isMaterialActivity = true
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-
+        EdgeToEdgeHelper.applyWindowInsets(binding.albumsToolbar, true, binding.root)
         updateMaterialActivityViews(binding.albumsCoordinator, binding.albumsHolder, useTransparentNavigation = true, useTopSearchMenu = false)
         setupMaterialScrollListener(binding.albumsList, binding.albumsToolbar)
 

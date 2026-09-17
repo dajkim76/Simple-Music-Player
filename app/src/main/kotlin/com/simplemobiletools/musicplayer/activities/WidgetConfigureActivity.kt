@@ -10,6 +10,7 @@ import android.widget.RemoteViews
 import com.simplemobiletools.commons.dialogs.ColorPickerDialog
 import com.simplemobiletools.commons.dialogs.FeatureLockedDialog
 import com.simplemobiletools.commons.extensions.*
+import com.simplemobiletools.commons.helpers.EdgeToEdgeHelper
 import com.simplemobiletools.commons.helpers.IS_CUSTOMIZING_COLORS
 import com.simplemobiletools.musicplayer.R
 import com.simplemobiletools.musicplayer.databinding.WidgetConfigBinding
@@ -32,6 +33,7 @@ class WidgetConfigureActivity : SimpleActivity() {
         super.onCreate(savedInstanceState)
         setResult(Activity.RESULT_CANCELED)
         setContentView(binding.root)
+        EdgeToEdgeHelper.applyWindowInsets(binding.root, true, binding.root)
         initVariables()
 
         val isCustomizingColors = intent.extras?.getBoolean(IS_CUSTOMIZING_COLORS) ?: false

@@ -8,16 +8,15 @@ import android.widget.Toast
 import com.simplemobiletools.commons.dialogs.ConfirmationDialog
 import com.simplemobiletools.commons.dialogs.RadioGroupDialog
 import com.simplemobiletools.commons.extensions.*
+import com.simplemobiletools.commons.helpers.EdgeToEdgeHelper
 import com.simplemobiletools.commons.helpers.IS_CUSTOMIZING_COLORS
 import com.simplemobiletools.commons.helpers.NavigationIcon
-import com.simplemobiletools.commons.helpers.ensureBackgroundThread
 import com.simplemobiletools.commons.helpers.isTiramisuPlus
 import com.simplemobiletools.commons.models.RadioItem
 import com.simplemobiletools.musicplayer.R
 import com.simplemobiletools.musicplayer.databinding.ActivitySettingsBinding
 import com.simplemobiletools.musicplayer.dialogs.ManageVisibleTabsDialog
 import com.simplemobiletools.musicplayer.dialogs.RestoreDataDialog
-import com.simplemobiletools.musicplayer.dialogs.RestoreOptions
 import com.simplemobiletools.musicplayer.extensions.config
 import com.simplemobiletools.musicplayer.extensions.sendCommand
 import com.simplemobiletools.musicplayer.helpers.BackupHelper
@@ -25,7 +24,6 @@ import com.simplemobiletools.musicplayer.helpers.SHOW_FILENAME_ALWAYS
 import com.simplemobiletools.musicplayer.helpers.SHOW_FILENAME_IF_UNAVAILABLE
 import com.simplemobiletools.musicplayer.helpers.SHOW_FILENAME_NEVER
 import com.simplemobiletools.musicplayer.playback.CustomCommands
-import java.io.File
 import java.util.Locale
 import kotlin.system.exitProcess
 
@@ -40,7 +38,7 @@ class SettingsActivity : SimpleControllerActivity() {
         isMaterialActivity = true
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-
+        EdgeToEdgeHelper.applyWindowInsets(binding.settingsToolbar, true, binding.root)
         updateMaterialActivityViews(binding.settingsCoordinator, binding.settingsHolder, useTransparentNavigation = true, useTopSearchMenu = false)
         setupMaterialScrollListener(binding.settingsNestedScrollview, binding.settingsToolbar)
     }
@@ -257,6 +255,7 @@ class SettingsActivity : SimpleControllerActivity() {
                         }
                     }
                 }
+
                 RESTORE_DATA_INTENT -> {
                     val uri = resultData.data!!
                     RestoreDataDialog(this) { options ->

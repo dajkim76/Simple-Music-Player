@@ -57,6 +57,7 @@ class TracksActivity : SimpleMusicActivity() {
         isMaterialActivity = true
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+        EdgeToEdgeHelper.applyWindowInsets(binding.tracksToolbar, true, binding.root)
         setupOptionsMenu()
         refreshMenuItems()
 
@@ -80,6 +81,15 @@ class TracksActivity : SimpleMusicActivity() {
         setupToolbar(binding.tracksToolbar, NavigationIcon.Arrow, searchMenuItem = searchMenuItem)
         refreshTracks()
         updateFavoriteMenu()
+    }
+
+    override fun handleBackPressed(): Boolean {
+        if (isSearchOpen && searchMenuItem != null) {
+            searchMenuItem!!.collapseActionView()
+            return true
+        } else {
+            return super.handleBackPressed()
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, resultData: Intent?) {

@@ -5,6 +5,7 @@ import com.simplemobiletools.commons.dialogs.FilePickerDialog
 import com.simplemobiletools.commons.extensions.beVisibleIf
 import com.simplemobiletools.commons.extensions.getProperTextColor
 import com.simplemobiletools.commons.extensions.viewBinding
+import com.simplemobiletools.commons.helpers.EdgeToEdgeHelper
 import com.simplemobiletools.commons.helpers.NavigationIcon
 import com.simplemobiletools.commons.interfaces.RefreshRecyclerViewListener
 import com.simplemobiletools.musicplayer.R
@@ -20,7 +21,7 @@ class ExcludedFoldersActivity : SimpleActivity(), RefreshRecyclerViewListener {
         isMaterialActivity = true
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-
+        EdgeToEdgeHelper.applyWindowInsets(binding.excludedFoldersToolbar, true, binding.root)
         updateMaterialActivityViews(binding.excludedFoldersCoordinator, binding.excludedFoldersList, useTransparentNavigation = true, useTopSearchMenu = false)
         setupMaterialScrollListener(binding.excludedFoldersList, binding.excludedFoldersToolbar)
         updateFolders()

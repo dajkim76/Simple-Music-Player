@@ -50,6 +50,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import com.google.gson.Gson
 import com.simplemobiletools.commons.extensions.*
+import com.simplemobiletools.commons.helpers.EdgeToEdgeHelper
 import com.simplemobiletools.commons.helpers.MEDIUM_ALPHA
 import com.simplemobiletools.commons.helpers.executeBackgroundThread
 import com.simplemobiletools.musicplayer.BuildConfig
@@ -100,6 +101,7 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
         showTransparentTop = true
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+        EdgeToEdgeHelper.applyWindowInsets(null, false, binding.root)
         nextTrackPlaceholder = resources.getColoredDrawableWithColor(R.drawable.ic_headset_small, getProperTextColor())
         setupImageSwitcher()
         setupButtons()

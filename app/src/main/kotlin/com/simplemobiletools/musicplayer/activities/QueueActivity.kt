@@ -11,6 +11,7 @@ import androidx.core.view.MenuItemCompat
 import androidx.media3.common.MediaItem
 import androidx.recyclerview.widget.RecyclerView
 import com.simplemobiletools.commons.extensions.*
+import com.simplemobiletools.commons.helpers.EdgeToEdgeHelper
 import com.simplemobiletools.commons.helpers.NavigationIcon
 import com.simplemobiletools.commons.helpers.ensureBackgroundThread
 import com.simplemobiletools.commons.helpers.executeBackgroundThread
@@ -41,6 +42,7 @@ class QueueActivity : SimpleControllerActivity() {
         isMaterialActivity = true
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+        EdgeToEdgeHelper.applyWindowInsets(binding.queueToolbar, true, binding.root)
         setupOptionsMenu()
         updateMaterialActivityViews(binding.queueCoordinator, binding.queueList, useTransparentNavigation = true, useTopSearchMenu = false)
         setupMaterialScrollListener(binding.queueList, binding.queueToolbar)
@@ -72,11 +74,12 @@ class QueueActivity : SimpleControllerActivity() {
         getAdapter()?.updateCurrentTrack()
     }
 
-    override fun onBackPressed() {
+    override fun handleBackPressed(): Boolean {
         if (isSearchOpen && searchMenuItem != null) {
             searchMenuItem!!.collapseActionView()
+            return true
         } else {
-            super.onBackPressed()
+            return super.handleBackPressed()
         }
     }
 
