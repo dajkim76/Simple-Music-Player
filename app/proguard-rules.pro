@@ -40,3 +40,6 @@
 -assumenosideeffects class com.simplemobiletools.commons.helpers.TraceUtils {
 	public static void *** (...);
 }
+
+# Reprint / FingerprintManager
+-dontwarn android.hardware.fingerprint.**
