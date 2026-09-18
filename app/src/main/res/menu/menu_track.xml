@@ -44,6 +44,11 @@
         app:showAsAction="never" />
 
     <item
+        android:id="@+id/add_to_queue"
+        android:title="@string/add_to_queue"
+        app:showAsAction="never" />
+
+    <item
         android:id="@+id/goto_artist_page"
         android:title="@string/artist"
         app:showAsAction="never" />

@@ -67,6 +67,7 @@ import com.simplemobiletools.musicplayer.helpers.*
 import com.simplemobiletools.musicplayer.interfaces.PlaybackSpeedListener
 import com.simplemobiletools.musicplayer.models.Cue
 import com.simplemobiletools.musicplayer.models.Events
+import com.simplemobiletools.musicplayer.models.QueueItem
 import com.simplemobiletools.musicplayer.models.Track
 import com.simplemobiletools.musicplayer.playback.CustomCommands
 import com.simplemobiletools.musicplayer.playback.PlaybackService
@@ -124,6 +125,7 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
                     R.id.change_queue -> SelectQueueDialog(this@TrackActivity)
                     R.id.equalizer -> startActivity(Intent(applicationContext, EqualizerActivity::class.java))
                     R.id.add_to_playlist -> currentTrack?.let { addTracksToPlaylist(listOf(it)) {} }
+                    R.id.add_to_queue -> currentTrack?.let { addToQueue(it) }
                     R.id.goto_artist_page -> gotoArtistPage()
                     R.id.goto_album_page -> gotoAlbumPage()
                     R.id.track_property -> currentTrack?.let { showTrackProperties(listOf(it)) }
@@ -1294,6 +1296,30 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
                 Intent(this, TracksActivity::class.java).apply {
                     putExtra(ALBUM, Gson().toJson(album))
                     startActivity(this)
+                }
+            }
+        }
+    }
+
+    private fun addToQueue(track: Track) {
+        SelectQueueDialog(this, playQueue = false) { queueId ->
+            if (config.queueId == queueId) {
+                addTracksToQueue(listOf(track)) {
+                    Events.QueueItemsChanged.setNeedToPost()
+                }
+            } else {
+                executeBackgroundThread {
+                    val maxOrder = queueDAO.getMaxOrder(queueId) + 1
+                    val queueItem = QueueItem(
+                        id = 0,
+                        queueId = queueId,
+                        trackId = track.mediaStoreId,
+                        trackOrder = maxOrder,
+                        isCurrent = false,
+                        lastPosition = 0
+                    )
+                    queueDAO.insertAll(listOf(queueItem))
+                    EventBus.getDefault().post(Events.QueueItemsChanged.setQueueId(queueId))
                 }
             }
         }
