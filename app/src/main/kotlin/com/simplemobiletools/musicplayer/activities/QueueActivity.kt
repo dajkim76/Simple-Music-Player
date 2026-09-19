@@ -50,22 +50,24 @@ class QueueActivity : SimpleControllerActivity() {
         setupAdapter()
         setupFlingListener()
         binding.queueFastscroller.updateColors(getProperPrimaryColor())
-        EventBus.getDefault().register(this)
+        EventBus.getDefault().register(eventBusSubscriber)
     }
 
     override fun onDestroy() {
-        EventBus.getDefault().unregister(this)
+        EventBus.getDefault().unregister(eventBusSubscriber)
         super.onDestroy()
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun queueItemsChanged(event: Events.QueueItemsChanged) {
-        if (event.fromQueueActivity) {
-            event.fromQueueActivity = false
-            return
+    private val eventBusSubscriber = object {
+        @Subscribe(threadMode = ThreadMode.MAIN)
+        fun queueItemsChanged(event: Events.QueueItemsChanged) {
+            if (event.fromQueueActivity) {
+                event.fromQueueActivity = false
+                return
+            }
+            binding.queueList.adapter = null
+            setupAdapter()
         }
-        binding.queueList.adapter = null
-        setupAdapter()
     }
 
     override fun onResume() {

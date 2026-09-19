@@ -156,7 +156,7 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
                 overridePendingTransition(R.anim.slide_up_enter, R.anim.slide_up_exit)
             }
         }
-        EventBus.getDefault().register(this)
+        EventBus.getDefault().register(eventBusSubscriber)
     }
 
     override fun onResume() {
@@ -180,7 +180,7 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
     }
 
     override fun onDestroy() {
-        EventBus.getDefault().unregister(this)
+        EventBus.getDefault().unregister(eventBusSubscriber)
         super.onDestroy()
         cancelProgressUpdate()
         if (isThirdPartyIntent && !isChangingConfigurations) {
@@ -196,22 +196,24 @@ class TrackActivity : SimpleControllerActivity(), PlaybackSpeedListener {
         cueAdapter?.onDestroy()
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun tracksUpdated(event: Events.RefreshTracks) {
-        val track = currentTrack
-        if (track != null) {
-            executeBackgroundThread {
-                val dbTrack = audioHelper.getTrack(track.mediaStoreId)
-                runOnUiThread {
-                    if (dbTrack != null) {
-                        setupTrackInfo(dbTrack.toMediaItem())
-                    } else {
-                        updateTrackInfo()
+    private val eventBusSubscriber = object {
+        @Subscribe(threadMode = ThreadMode.MAIN)
+        fun tracksUpdated(event: Events.RefreshTracks) {
+            val track = currentTrack
+            if (track != null) {
+                executeBackgroundThread {
+                    val dbTrack = audioHelper.getTrack(track.mediaStoreId)
+                    runOnUiThread {
+                        if (dbTrack != null) {
+                            setupTrackInfo(dbTrack.toMediaItem())
+                        } else {
+                            updateTrackInfo()
+                        }
                     }
                 }
+            } else {
+                updateTrackInfo()
             }
-        } else {
-            updateTrackInfo()
         }
     }
 

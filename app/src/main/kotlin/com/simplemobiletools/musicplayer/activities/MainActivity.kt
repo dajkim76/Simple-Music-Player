@@ -119,7 +119,7 @@ class MainActivity : SimpleMusicActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        bus?.unregister(this)
+        bus?.unregister(eventBusSubscriber)
     }
 
     override fun handleBackPressed(): Boolean {
@@ -194,7 +194,7 @@ class MainActivity : SimpleMusicActivity() {
 
     private fun initActivity() {
         bus = EventBus.getDefault()
-        bus!!.register(this)
+        bus!!.register(eventBusSubscriber)
         // trigger a scan first so that the fragments will accurately reflect the scanning state
         mediaScanner.scan()
         initFragments()
@@ -583,50 +583,52 @@ class MainActivity : SimpleMusicActivity() {
 
     private fun getCurrentFragment() = getAdapter()?.getFragment(binding.viewPager.currentItem)
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun sleepTimerChanged(event: Events.SleepTimerChanged) {
-        binding.sleepTimerValue.text = event.seconds.getFormattedDuration()
-        binding.sleepTimerHolder.beVisible()
+    private val eventBusSubscriber = object {
+        @Subscribe(threadMode = ThreadMode.MAIN)
+        fun sleepTimerChanged(event: Events.SleepTimerChanged) {
+            binding.sleepTimerValue.text = event.seconds.getFormattedDuration()
+            binding.sleepTimerHolder.beVisible()
 
-        if (event.seconds == 0) {
-            finish()
+            if (event.seconds == 0) {
+                finish()
+            }
         }
-    }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun playlistsUpdated(event: Events.PlaylistsUpdated) {
-        getAdapter()?.getPlaylistsFragment()?.setupFragment(this)
-    }
+        @Subscribe(threadMode = ThreadMode.MAIN)
+        fun playlistsUpdated(event: Events.PlaylistsUpdated) {
+            getAdapter()?.getPlaylistsFragment()?.setupFragment(this@MainActivity)
+        }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun foldersUpdated(event: Events.FoldersUpdated) {
-        getAdapter()?.getFoldersFragment()?.setupFragment(this)
-    }
+        @Subscribe(threadMode = ThreadMode.MAIN)
+        fun foldersUpdated(event: Events.FoldersUpdated) {
+            getAdapter()?.getFoldersFragment()?.setupFragment(this@MainActivity)
+        }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun artistsUpdated(event: Events.ArtistsUpdated) {
-        getAdapter()?.getArtistsFragment()?.setupFragment(this)
-    }
+        @Subscribe(threadMode = ThreadMode.MAIN)
+        fun artistsUpdated(event: Events.ArtistsUpdated) {
+            getAdapter()?.getArtistsFragment()?.setupFragment(this@MainActivity)
+        }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun albumsUpdated(event: Events.AlbumsUpdated) {
-        getAdapter()?.getAlbumsFragment()?.setupFragment(this)
-    }
+        @Subscribe(threadMode = ThreadMode.MAIN)
+        fun albumsUpdated(event: Events.AlbumsUpdated) {
+            getAdapter()?.getAlbumsFragment()?.setupFragment(this@MainActivity)
+        }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun tracksUpdated(event: Events.RefreshTracks) {
-        getAdapter()?.getTracksFragment()?.setupFragment(this)
-    }
+        @Subscribe(threadMode = ThreadMode.MAIN)
+        fun tracksUpdated(event: Events.RefreshTracks) {
+            getAdapter()?.getTracksFragment()?.setupFragment(this@MainActivity)
+        }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun queueItemsUpdated(event: Events.QueueItemsChanged) {
-        val multiQueueFragment = getAdapter()?.getMultiQueueFragment() as? MultiQueueFragment
-        multiQueueFragment?.queueItemsUpdated(this, event.queueId)
-    }
+        @Subscribe(threadMode = ThreadMode.MAIN)
+        fun queueItemsUpdated(event: Events.QueueItemsChanged) {
+            val multiQueueFragment = getAdapter()?.getMultiQueueFragment() as? MultiQueueFragment
+            multiQueueFragment?.queueItemsUpdated(this@MainActivity, event.queueId)
+        }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun shouldRefreshFragments(event: Events.RefreshFragments) {
-        refreshAllFragments(forceScan = true)
+        @Subscribe(threadMode = ThreadMode.MAIN)
+        fun shouldRefreshFragments(event: Events.RefreshFragments) {
+            refreshAllFragments(forceScan = true)
+        }
     }
 
     override fun onMediaItemTransition(mediaItem: MediaItem?, reason: Int) {
